@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import { viteJs13k } from './plugins/vite-js13k'
 
 export default defineConfig({
-  root: 'src',
   server: {
     port: 3000
   },
