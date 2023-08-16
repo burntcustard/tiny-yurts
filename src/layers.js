@@ -70,6 +70,7 @@ const addYurtDecorationLayer = (color) => {
 
 // Order is important here, because it determines stacking in the SVG
 export const layers = {
+  grid: addGridToSvg(),
   fenceShadows: addFenceShadowLayer(),
   fences: addFenceLayer(),
   paths: addPathLayer(),
@@ -81,7 +82,6 @@ export const layers = {
     ox: addYurtDecorationLayer(colors.ox),
     goat: addYurtDecorationLayer(colors.goat),
   },
-  grid: addGridToSvg(),
 };
 
 export const animalShadowLayer = layers.animalShadows;
