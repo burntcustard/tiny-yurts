@@ -3,7 +3,7 @@ import { createSvgElement } from './svg';
 import {
   yurtDecorationLayers, yurtLayer, yurtShadowLayer, pathLayer,
 } from './layers';
-import { gridSize } from './grid';
+import { gridCellSize } from './grid';
 
 /**
  * Yurts each need to have...
@@ -26,28 +26,25 @@ export class Yurt extends GameObjectClass {
   }
 
   addToSvg() {
+    const x = gridCellSize / 2 + this.x * gridCellSize;
+    const y = gridCellSize / 2 + this.y * gridCellSize;
+
     const yurt = createSvgElement('circle');
-    yurt.setAttribute('transform', `translate(${
-      gridSize / 2 + this.x * gridSize},${gridSize / 2 + this.y * gridSize
-    })`);
+    yurt.setAttribute('transform', `translate(${x},${y})`);
     yurt.style.transition = 'all.4s';
     yurtLayer.appendChild(yurt);
 
     const shadow = createSvgElement('path');
     shadow.setAttribute('stroke-width', '0');
     shadow.setAttribute('d', 'M0 0l0 0');
-    shadow.setAttribute('transform', `translate(
-      ${gridSize / 2 + this.x * gridSize},${gridSize / 2 + this.y * gridSize}
-    )`);
+    shadow.setAttribute('transform', `translate(${x},${y})`);
     shadow.style.transition = 'stroke-width.4s,d.4s.3s';
     yurtShadowLayer.appendChild(shadow);
 
     const decoration = createSvgElement('circle');
     decoration.setAttribute('fill', 'none');
     decoration.setAttribute('r', 1);
-    decoration.setAttribute('transform', `translate(
-      ${gridSize / 2 + this.x * gridSize},${gridSize / 2 + this.y * gridSize}
-    )`);
+    decoration.setAttribute('transform', `translate(${x},${y})`);
     decoration.setAttribute('stroke-dasharray', 6.3); // Math.PI * 2 + a bit
     decoration.setAttribute('stroke-dashoffset', 6.3);
     decoration.style.transition = 'all.5s.5s';
@@ -64,8 +61,8 @@ export class Yurt extends GameObjectClass {
 
   addPath() {
     const path = createSvgElement('path'); // Convenient naming there
-    const x = gridSize / 2 + this.x * gridSize;
-    const y = gridSize / 2 + this.y * gridSize;
+    const x = gridCellSize / 2 + this.x * gridCellSize;
+    const y = gridCellSize / 2 + this.y * gridCellSize;
     const relativePathX = this.direction.x * 4;
     const relativePathY = this.direction.y * 4;
     path.setAttribute('fill', 'none');

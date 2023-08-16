@@ -3,7 +3,7 @@ import { Animal } from './animal';
 import { animalLayer, animalShadowLayer } from './layers';
 import { colors } from './colors';
 import { createSvgElement } from './svg';
-import { gridSize } from './grid';
+import { gridCellSize } from './grid';
 
 export class Ox extends Animal {
   constructor(properties) {
@@ -17,8 +17,8 @@ export class Ox extends Animal {
 
   addToSvg() {
     const ox = createSvgElement('rect');
-    const x = this.parent.x * gridSize + this.x - this.width / 2;
-    const y = this.parent.y * gridSize + this.y - this.height / 2;
+    const x = this.parent.x * gridCellSize + this.x - this.width / 2;
+    const y = this.parent.y * gridCellSize + this.y - this.height / 2;
     ox.setAttribute('transform', `translate(${x},${y}) rotate(${radToDeg(this.rotation)})`);
     ox.setAttribute('fill', colors.ox);
     ox.setAttribute('width', this.width);

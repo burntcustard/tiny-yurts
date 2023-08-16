@@ -1,6 +1,8 @@
 import { init, GameLoop } from 'kontra';
 import { Yurt } from './yurt';
 import { Farm } from './farm';
+import { svgElement } from './svg';
+import { initPointer } from './pointer';
 
 init(null, { contextless: true });
 
@@ -46,6 +48,8 @@ for (let i = 0; i < 3; i++) {
     testFarm.addAnimal();
   }, 4500 + i * 500);
 }
+
+initPointer(svgElement);
 
 const loop = GameLoop({
   update() {

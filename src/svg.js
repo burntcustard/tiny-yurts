@@ -2,10 +2,16 @@ import { colors } from './colors';
 
 export const createSvgElement = (tag) => document.createElementNS('http://www.w3.org/2000/svg', tag);
 
+export const boardPxWidth = 384;
+export const boardPxHeight = 384;
+export const boardSvgWidth = 72;
+export const boardSvgHeight = 72;
+export const boardScale = boardPxWidth / boardSvgWidth;
+
 // Initial SVG element
 export const svgElement = createSvgElement('svg');
-svgElement.setAttribute('width', 384);
-svgElement.setAttribute('height', 384);
-svgElement.setAttribute('viewBox', '0 0 72 72');
+svgElement.setAttribute('width', boardPxWidth);
+svgElement.setAttribute('height', boardPxHeight);
+svgElement.setAttribute('viewBox', `0 0 ${boardSvgWidth} ${boardSvgHeight}`);
 svgElement.style.background = colors.grass;
 document.body.appendChild(svgElement);

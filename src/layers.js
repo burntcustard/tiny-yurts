@@ -1,5 +1,6 @@
 import { addGridToSvg } from './grid';
 import { svgElement, createSvgElement } from './svg';
+import { pathSvgWidth } from './path';
 import { colors } from './colors';
 
 const addAnimalShadowLayer = () => {
@@ -39,7 +40,7 @@ const addPathLayer = () => {
   pathLayer.setAttribute('stroke-linecap', 'round');
   // stroke-linejoin might not be needed(?)
   pathLayer.setAttribute('stroke-linejoin', 'round');
-  pathLayer.setAttribute('stroke-width', 3);
+  pathLayer.setAttribute('stroke-width', pathSvgWidth);
   svgElement.appendChild(pathLayer);
   return pathLayer;
 };
@@ -68,6 +69,11 @@ const addYurtDecorationLayer = (color) => {
   return yurtDecorationLayer;
 };
 
+const addPointerLayer = () => {
+  const pointerLayer = createSvgElement('g');
+  return pointerLayer;
+}
+
 // Order is important here, because it determines stacking in the SVG
 export const layers = {
   grid: addGridToSvg(),
@@ -82,6 +88,7 @@ export const layers = {
     ox: addYurtDecorationLayer(colors.ox),
     goat: addYurtDecorationLayer(colors.goat),
   },
+  pointerLayer: addPointerLayer(),
 };
 
 export const animalShadowLayer = layers.animalShadows;

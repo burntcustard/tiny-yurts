@@ -1,13 +1,13 @@
 import { GameObjectClass } from 'kontra';
 import { createSvgElement } from './svg';
 import { fenceLayer, fenceShadowLayer } from './layers';
-import { gridSize, gridLineThickness } from './grid';
+import { gridCellSize, gridLineThickness } from './grid';
 import { Ox } from './ox';
 
 // TODO: Landscape and portrait fences? Square or circle fences?
 const width = 3;
 const height = 2;
-const circumference = width * gridSize * 2 + height * gridSize * 2;
+const circumference = width * gridCellSize * 2 + height * gridCellSize * 2;
 const padding = 3;
 const roundness = 2;
 const fenceLineThickness = 1;
@@ -20,8 +20,8 @@ export class Farm extends GameObjectClass {
 
   addAnimal() {
     const animal = new Ox({
-      x: padding + (Math.random() * (width * gridSize - padding * 2)),
-      y: padding + (Math.random() * (height * gridSize - padding * 2)),
+      x: padding + (Math.random() * (width * gridCellSize - padding * 2)),
+      y: padding + (Math.random() * (height * gridCellSize - padding * 2)),
       parent: this,
       rotation: Math.random() * Math.PI * 4,
     });
@@ -30,10 +30,10 @@ export class Farm extends GameObjectClass {
   }
 
   addToSvg() {
-    const x = this.x * gridSize + fenceLineThickness / 2 + gridLineThickness;
-    const y = this.y * gridSize + fenceLineThickness / 2 + gridLineThickness;
-    const svgWidth = gridSize * width - fenceLineThickness - gridLineThickness;
-    const svgHeight = gridSize * height - fenceLineThickness - gridLineThickness;
+    const x = this.x * gridCellSize + fenceLineThickness / 2 + gridLineThickness;
+    const y = this.y * gridCellSize + fenceLineThickness / 2 + gridLineThickness;
+    const svgWidth = gridCellSize * width - fenceLineThickness - gridLineThickness;
+    const svgHeight = gridCellSize * height - fenceLineThickness - gridLineThickness;
     const fence = createSvgElement('rect');
     fence.setAttribute('width', svgWidth);
     fence.setAttribute('height', svgHeight);
