@@ -15,11 +15,11 @@ export const addGridToSvg = () => {
   gridPath.setAttribute('d', 'M8 0L0 0 0 8');
   gridPath.setAttribute('fill', 'none');
   gridPath.setAttribute('stroke', '#0001');
-  gridPath.setAttribute('stroke-width', .5);
+  gridPath.setAttribute('stroke-width', 0.5);
   pattern.appendChild(gridPath);
   const gridRect = createSvgElement('rect');
   gridRect.setAttribute('width', '100%');
   gridRect.setAttribute('height', '100%');
   gridRect.setAttribute('fill', 'url(#grid)');
   svgElement.appendChild(gridRect);
-}
+};

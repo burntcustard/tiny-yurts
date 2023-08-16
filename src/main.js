@@ -1,19 +1,18 @@
-import { init, Sprite, GameLoop } from 'kontra';
+import { init, GameLoop } from 'kontra';
 
-import { createSvgElement } from './svg';
 import { Yurt } from './yurt';
 import { Farm } from './farm';
 
-const { canvas } = init();
+init('', { contextless: true });
 
-const sprite = Sprite({
-  x: 100,        // starting x,y position of the sprite
-  y: 80,
-  color: 'red',  // fill color of the sprite rectangle
-  width: 20,     // width and height of the sprite rectangle
-  height: 40,
-  dx: 2          // move the sprite 2px to the right every frame
-});
+// const sprite = Sprite({
+//   x: 100,        // starting x,y position of the sprite
+//   y: 80,
+//   color: 'red',  // fill color of the sprite rectangle
+//   width: 20,     // width and height of the sprite rectangle
+//   height: 40,
+//   dx: 2          // move the sprite 2px to the right every frame
+// });
 
 /**
  * TODO: Add layer groups to SVG:
@@ -26,35 +25,36 @@ const sprite = Sprite({
 const testYurt = new Yurt({ x: 2, y: 3, type: 'ox' });
 testYurt.addToSvg();
 
+setTimeout(() => {
+  testYurt.addPath();
+}, 1000);
+
 const testYurt2 = new Yurt({ x: 5, y: 4, type: 'goat' });
 setTimeout(() => {
   testYurt2.addToSvg();
 }, 1000);
+setTimeout(() => {
+  testYurt2.addPath();
+}, 2000);
 
 const testFarm = new Farm({ x: 1, y: 6, type: 'ox' });
 setTimeout(() => {
   testFarm.addToSvg();
-}, 2000);
+}, 3000);
 
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 3; i++) {
   setTimeout(() => {
     testFarm.addAnimal();
-  }, 3500 + i * 500);
+  }, 4500 + i * 500);
 }
 
-const loop = GameLoop({  // create the main game loop
-  update: function() { // update the game state
-    sprite.update();
+const loop = GameLoop({
+  update() {
 
-    // wrap the sprites position when it reaches
-    // the edge of the screen
-    if (sprite.x > canvas.width) {
-      sprite.x = -sprite.width;
-    }
   },
-  render: function() { // render the game state
-    sprite.render();
-  }
+  render() {
+
+  },
 });
 
-loop.start();    // start the game
+loop.start();

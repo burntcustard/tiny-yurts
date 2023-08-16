@@ -1,6 +1,8 @@
-import { createSvgElement } from './svg';
 import { GameObjectClass } from 'kontra';
-import { yurtDecorationLayers, yurtLayer, yurtShadowLayer } from './layers'
+import { createSvgElement } from './svg';
+import {
+  yurtDecorationLayers, yurtLayer, yurtShadowLayer, pathLayer,
+} from './layers';
 import { gridSize } from './grid';
 
 /**
@@ -15,6 +17,12 @@ export class Yurt extends GameObjectClass {
   constructor(properties) {
     super(properties);
     this.type = properties.type;
+
+    // Similar to rotation, but is stored in x/y because it's easier for SVG & grid coords:
+    this.direction = {
+      x: 0,
+      y: 1,
+    };
   }
 
   addToSvg() {
@@ -54,7 +62,19 @@ export class Yurt extends GameObjectClass {
     }, 500);
   }
 
-  draw() {
-    // Do we add to SVG here?
+  addPath() {
+    const path = createSvgElement('path'); // Convenient naming there
+    const x = gridSize / 2 + this.x * gridSize;
+    const y = gridSize / 2 + this.y * gridSize;
+    const relativePathX = this.direction.x * 4;
+    const relativePathY = this.direction.y * 4;
+    path.setAttribute('fill', 'none');
+    path.setAttribute('d', `M${x} ${y}l${0} ${0}`);
+    path.style.transition = 'all.5s';
+    pathLayer.appendChild(path);
+
+    setTimeout(() => {
+      path.setAttribute('d', `M${x} ${y}l${relativePathX} ${relativePathY}`);
+    }, 500);
   }
 }

@@ -3,16 +3,16 @@ import { svgElement, createSvgElement } from './svg';
 
 const addAnimalShadowLayer = () => {
   const animalShadowLayer = createSvgElement('g');
-  animalShadowLayer.setAttribute('transform', 'translate(.2,.2)');
+  animalShadowLayer.setAttribute('transform', 'translate(.3,.3)');
   svgElement.appendChild(animalShadowLayer);
   return animalShadowLayer;
-}
+};
 
 const addAnimalLayer = () => {
   const animalLayer = createSvgElement('g');
   svgElement.appendChild(animalLayer);
   return animalLayer;
-}
+};
 
 const addFenceShadowLayer = () => {
   const fenceShadowLayer = createSvgElement('g');
@@ -21,7 +21,7 @@ const addFenceShadowLayer = () => {
   fenceShadowLayer.setAttribute('transform', 'translate(.5,.5)');
   svgElement.appendChild(fenceShadowLayer);
   return fenceShadowLayer;
-}
+};
 
 const addFenceLayer = () => {
   const fenceLayer = createSvgElement('g');
@@ -29,7 +29,7 @@ const addFenceLayer = () => {
   fenceLayer.setAttribute('stroke', '#975');
   svgElement.appendChild(fenceLayer);
   return fenceLayer;
-}
+};
 
 const addPathLayer = () => {
   const pathLayer = createSvgElement('g');
@@ -41,14 +41,14 @@ const addPathLayer = () => {
   pathLayer.setAttribute('stroke-width', 3);
   svgElement.appendChild(pathLayer);
   return pathLayer;
-}
+};
 
 const addYurtLayer = () => {
   const yurtLayer = createSvgElement('g');
   yurtLayer.setAttribute('fill', '#fff');
   svgElement.appendChild(yurtLayer);
   return yurtLayer;
-}
+};
 
 const addYurtShadowLayer = () => {
   const yurtShadowLayer = createSvgElement('g');
@@ -57,7 +57,7 @@ const addYurtShadowLayer = () => {
   yurtShadowLayer.setAttribute('stroke', '#0002');
   svgElement.appendChild(yurtShadowLayer);
   return yurtShadowLayer;
-}
+};
 
 const addYurtDecorationLayer = (color) => {
   const yurtDecorationLayer = createSvgElement('g');
@@ -65,7 +65,7 @@ const addYurtDecorationLayer = (color) => {
   yurtDecorationLayer.setAttribute('stroke', color);
   svgElement.appendChild(yurtDecorationLayer);
   return yurtDecorationLayer;
-}
+};
 
 // Order is important here, because it determines stacking in the SVG
 export const layers = {
@@ -81,13 +81,13 @@ export const layers = {
     goat: addYurtDecorationLayer('#bcc'),
   },
   grid: addGridToSvg(),
-}
+};
 
 export const animalShadowLayer = layers.animalShadows;
 export const animalLayer = layers.animals;
 export const fenceLayer = layers.fences;
 export const fenceShadowLayer = layers.fenceShadows;
 export const pathLayer = layers.paths;
-export const yurtDecorationLayers = layers.yurtDecorationLayers;
+export const { yurtDecorationLayers } = layers;
 export const yurtLayer = layers.yurts;
 export const yurtShadowLayer = layers.yurtShadows;
