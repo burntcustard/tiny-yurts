@@ -22,6 +22,6 @@ export default defineConfig({
       mangle: { properties: 'true' },
       module: true,
     },
-    assetsInlineLimit: 100000000,
+    assetsInlineLimit: 0,
   },
 });
