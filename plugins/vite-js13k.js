@@ -27,11 +27,6 @@ async function zip(content) {
   });
 }
 
-function removePreloads(scriptCode) {
-  const preloadMatch = scriptCode.match(/!function\(\)(?:(?!\(\))[\s\S])*\(\);/);
-  return scriptCode.replace(preloadMatch, '');
-}
-
 export async function replaceScript(html, scriptFilename, scriptCode) {
   const reScript = new RegExp(`<script([^>]*?) src="[./]*${scriptFilename}"([^>]*)></script>`);
 
@@ -43,7 +38,7 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
     .replace(html.match(reScript)[0], '');
 
   const packer = new Packer([{
-    data: removePreloads(scriptCode),
+    data: scriptCode,
     type: 'js',
     action: 'eval',
   }], {});
