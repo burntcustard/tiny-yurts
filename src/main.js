@@ -3,7 +3,7 @@ import { init, GameLoop } from 'kontra';
 import { Yurt } from './yurt';
 import { Farm } from './farm';
 
-init('', { contextless: true });
+init(null, { contextless: true });
 
 // const sprite = Sprite({
 //   x: 100,        // starting x,y position of the sprite
