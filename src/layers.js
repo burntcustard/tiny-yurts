@@ -1,5 +1,6 @@
 import { addGridToSvg } from './grid';
 import { svgElement, createSvgElement } from './svg';
+import { colors } from './colors';
 
 const addAnimalShadowLayer = () => {
   const animalShadowLayer = createSvgElement('g');
@@ -17,7 +18,7 @@ const addAnimalLayer = () => {
 const addFenceShadowLayer = () => {
   const fenceShadowLayer = createSvgElement('g');
   fenceShadowLayer.setAttribute('fill', 'none');
-  fenceShadowLayer.setAttribute('stroke', '#0002');
+  fenceShadowLayer.setAttribute('stroke', colors.shadow);
   fenceShadowLayer.setAttribute('transform', 'translate(.5,.5)');
   svgElement.appendChild(fenceShadowLayer);
   return fenceShadowLayer;
@@ -26,7 +27,7 @@ const addFenceShadowLayer = () => {
 const addFenceLayer = () => {
   const fenceLayer = createSvgElement('g');
   fenceLayer.setAttribute('fill', 'none');
-  fenceLayer.setAttribute('stroke', '#975');
+  fenceLayer.setAttribute('stroke', colors.fence);
   svgElement.appendChild(fenceLayer);
   return fenceLayer;
 };
@@ -34,7 +35,7 @@ const addFenceLayer = () => {
 const addPathLayer = () => {
   const pathLayer = createSvgElement('g');
   pathLayer.setAttribute('fill', 'none');
-  pathLayer.setAttribute('stroke', '#ba8');
+  pathLayer.setAttribute('stroke', colors.path);
   pathLayer.setAttribute('stroke-linecap', 'round');
   // stroke-linejoin might not be needed(?)
   pathLayer.setAttribute('stroke-linejoin', 'round');
@@ -45,7 +46,7 @@ const addPathLayer = () => {
 
 const addYurtLayer = () => {
   const yurtLayer = createSvgElement('g');
-  yurtLayer.setAttribute('fill', '#fff');
+  yurtLayer.setAttribute('fill', colors.yurt);
   svgElement.appendChild(yurtLayer);
   return yurtLayer;
 };
@@ -54,7 +55,7 @@ const addYurtShadowLayer = () => {
   const yurtShadowLayer = createSvgElement('g');
   yurtShadowLayer.setAttribute('fill', 'none');
   yurtShadowLayer.setAttribute('stroke-linecap', 'round');
-  yurtShadowLayer.setAttribute('stroke', '#0002');
+  yurtShadowLayer.setAttribute('stroke', colors.shadow);
   svgElement.appendChild(yurtShadowLayer);
   return yurtShadowLayer;
 };
@@ -77,8 +78,8 @@ export const layers = {
   yurtShadows: addYurtShadowLayer(),
   yurts: addYurtLayer(),
   yurtDecorationLayers: {
-    ox: addYurtDecorationLayer('#b75'),
-    goat: addYurtDecorationLayer('#bcc'),
+    ox: addYurtDecorationLayer(colors.ox),
+    goat: addYurtDecorationLayer(colors.goat),
   },
   grid: addGridToSvg(),
 };

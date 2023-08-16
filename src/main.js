@@ -1,5 +1,4 @@
 import { init, GameLoop } from 'kontra';
-
 import { Yurt } from './yurt';
 import { Farm } from './farm';
 

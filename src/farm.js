@@ -1,15 +1,16 @@
 import { GameObjectClass } from 'kontra';
 import { createSvgElement } from './svg';
 import { fenceLayer, fenceShadowLayer } from './layers';
-import { gridSize } from './grid';
+import { gridSize, gridLineThickness } from './grid';
 import { Ox } from './ox';
 
 // TODO: Landscape and portrait fences? Square or circle fences?
 const width = 3;
 const height = 2;
 const circumference = width * gridSize * 2 + height * gridSize * 2;
-const gridLineThickness = 1;
 const padding = 3;
+const roundness = 2;
+const fenceLineThickness = 1;
 
 export class Farm extends GameObjectClass {
   constructor(properties) {
@@ -29,14 +30,14 @@ export class Farm extends GameObjectClass {
   }
 
   addToSvg() {
-    const x = this.x * gridSize + 0.5;
-    const y = this.y * gridSize + 0.5;
-    const svgWidth = gridSize * width - gridLineThickness;
-    const svgHeight = gridSize * height - gridLineThickness;
+    const x = this.x * gridSize + fenceLineThickness / 2 + gridLineThickness;
+    const y = this.y * gridSize + fenceLineThickness / 2 + gridLineThickness;
+    const svgWidth = gridSize * width - fenceLineThickness - gridLineThickness;
+    const svgHeight = gridSize * height - fenceLineThickness - gridLineThickness;
     const fence = createSvgElement('rect');
     fence.setAttribute('width', svgWidth);
     fence.setAttribute('height', svgHeight);
-    fence.setAttribute('rx', 2);
+    fence.setAttribute('rx', roundness);
     fence.setAttribute('transform', `translate(${x},${y})`);
     fence.setAttribute('stroke-dasharray', circumference); // Math.PI * 2 + a bit
     fence.setAttribute('stroke-dashoffset', circumference);
@@ -47,7 +48,7 @@ export class Farm extends GameObjectClass {
     // TODO: Landscape and portrait fences? Square or circle fences?
     shadow.setAttribute('width', svgWidth);
     shadow.setAttribute('height', svgHeight);
-    shadow.setAttribute('rx', 2);
+    shadow.setAttribute('rx', roundness);
     shadow.setAttribute('transform', `translate(${x},${y})`);
     shadow.setAttribute('stroke-dasharray', circumference); // Math.PI * 2 + a bit
     shadow.setAttribute('stroke-dashoffset', circumference);

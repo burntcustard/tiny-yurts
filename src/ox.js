@@ -1,7 +1,8 @@
 import { radToDeg } from 'kontra';
 import { Animal } from './animal';
-import { createSvgElement } from './svg';
 import { animalLayer, animalShadowLayer } from './layers';
+import { colors } from './colors';
+import { createSvgElement } from './svg';
 import { gridSize } from './grid';
 
 export class Ox extends Animal {
@@ -19,7 +20,7 @@ export class Ox extends Animal {
     const x = this.parent.x * gridSize + this.x - this.width / 2;
     const y = this.parent.y * gridSize + this.y - this.height / 2;
     ox.setAttribute('transform', `translate(${x},${y}) rotate(${radToDeg(this.rotation)})`);
-    ox.setAttribute('fill', '#b75');
+    ox.setAttribute('fill', colors.ox);
     ox.setAttribute('width', this.width);
     ox.setAttribute('height', this.height);
     ox.setAttribute('rx', this.roundness);
@@ -34,7 +35,7 @@ export class Ox extends Animal {
     animalLayer.appendChild(ox);
 
     const shadow = createSvgElement('rect');
-    shadow.setAttribute('fill', '#0002');
+    shadow.setAttribute('fill', colors.shadow);
     shadow.setAttribute('width', this.width);
     shadow.setAttribute('height', this.height);
     shadow.setAttribute('rx', this.roundness);
