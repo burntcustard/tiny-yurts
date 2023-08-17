@@ -1,9 +1,10 @@
-import { GameObjectClass } from 'kontra';
 import { createSvgElement } from './svg';
+import { Structure } from './structure';
 import {
   yurtDecorationLayers, yurtLayer, yurtShadowLayer, pathLayer,
 } from './layers';
 import { gridCellSize } from './grid';
+import { Path } from './path';
 
 /**
  * Yurts each need to have...
@@ -13,16 +14,54 @@ import { gridCellSize } from './grid';
  * - x and y coordinate in the grid
  */
 
-export class Yurt extends GameObjectClass {
+export class Yurt extends Structure {
   constructor(properties) {
-    super(properties);
-    this.type = properties.type;
+    const { x, y } = properties;
 
-    // Similar to rotation, but is stored in x/y because it's easier for SVG & grid coords:
-    this.direction = {
-      x: 0,
-      y: 1,
+    super({
+      ...properties,
+      connections: [
+        { from: { x, y }, to: { x: x    , y: y - 1}, object: null },
+        { from: { x, y }, to: { x: x + 1, y: y - 1}, object: null },
+        { from: { x, y }, to: { x: x + 1, y: y    }, object: null },
+        { from: { x, y }, to: { x: x + 1, y: y + 1}, object: null },
+        { from: { x, y }, to: { x: x    , y: y + 1}, object: null },
+        { from: { x, y }, to: { x: x - 1, y: y + 1}, object: null },
+        { from: { x, y }, to: { x: x - 1, y: y    }, object: null },
+        { from: { x, y }, to: { x: x - 1, y: y - 1}, object: null },
+      ],
+    });
+
+    // Which way is the yurt facing (randomly up/down/left/right to start)
+    // TODO: Less disguisting way to determine initial direction
+    const facingInt = Math.floor(Math.random() * 4);
+    if (facingInt < 0.25) {
+      this.facing = { x: 0, y: -1 }
+    } else if (facingInt < 0.5) {
+      this.facing = { x: 1, y: 0 }
+    } else if (facingInt < 0.75) {
+      this.facing = { x: 0, y: 1 }
+    } else {
+      this.facing = { x: -1, y: 0 }
+    }
+
+    this.startPath = new Path([
+      { x, y, locked: true },
+      { x: x + this.facing.x, y: y + this.facing.y },
+    ]);
+
+    this.type = properties.type;
+  }
+
+  rotateTo({ x, y }) {
+    this.facing = {
+      x: x - this.x,
+      y: y - this.y,
     };
+
+    this.startPath.points[1] = { x: x + this.facing.x, y: y + this.facing.y };
+
+    // this.path.drawSvg();
   }
 
   addToSvg() {
@@ -60,18 +99,18 @@ export class Yurt extends GameObjectClass {
   }
 
   addPath() {
-    const path = createSvgElement('path'); // Convenient naming there
-    const x = gridCellSize / 2 + this.x * gridCellSize;
-    const y = gridCellSize / 2 + this.y * gridCellSize;
-    const relativePathX = this.direction.x * 4;
-    const relativePathY = this.direction.y * 4;
-    path.setAttribute('fill', 'none');
-    path.setAttribute('d', `M${x} ${y}l${0} ${0}`);
-    path.style.transition = 'all.5s';
-    pathLayer.appendChild(path);
+    // const path = createSvgElement('path'); // Convenient naming there
+    // const x = gridCellSize / 2 + this.x * gridCellSize;
+    // const y = gridCellSize / 2 + this.y * gridCellSize;
+    // const relativePathX = this.direction.x * 4;
+    // const relativePathY = this.direction.y * 4;
+    // path.setAttribute('fill', 'none');
+    // path.setAttribute('d', `M${x} ${y}l${0} ${0}`);
+    // path.style.transition = 'all.5s';
+    // pathLayer.appendChild(path);
 
-    setTimeout(() => {
-      path.setAttribute('d', `M${x} ${y}l${relativePathX} ${relativePathY}`);
-    }, 500);
+    // setTimeout(() => {
+    //   path.setAttribute('d', `M${x} ${y}l${relativePathX} ${relativePathY}`);
+    // }, 500);
   }
 }

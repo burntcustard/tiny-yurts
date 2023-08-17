@@ -3,6 +3,7 @@ import { gridCellSize } from './grid';
 import { Path } from './path';
 import { inventory } from './inventory';
 
+// 384 / (72 / 8)
 const gridCellSizePx = boardPxWidth / (boardSvgWidth / gridCellSize);
 
 const gridCellPadding = 8; // Size in px of clicky cell padding (should be svg scaled instead of px?)
@@ -13,7 +14,6 @@ let dragStartCell = {
 };
 
 const getGridCell = (x, y) => {
-  // 384 / (72 / 8)
 
   return {
     x: Math.floor(x / gridCellSizePx),
