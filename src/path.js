@@ -15,11 +15,13 @@ import { gridCellSize } from './grid';
 
 const toSvgCoord = (c) => gridCellSize / 2 + c * gridCellSize;
 
-export const paths = [];
+export let paths = [];
 
 export const pathSvgWidth = 3;
 
 export let connections = [];
+
+export let pathsData = [];
 
 export const drawPaths = () => {
   // Convert list of paths into list of connections
@@ -34,6 +36,14 @@ export const drawPaths = () => {
 
       // If there is already this pair of paths in the connections list, skip
       if (connections.find(c => c.path1 === path2 && c.path2 === path1)) {
+        return;
+      }
+
+      // If the path is just a dot (both points in same cell), skip
+      if (
+        (path1.points[0].x === path1.points[1].x && path1.points[0].y === path1.points[1].y) ||
+        (path2.points[0].x === path2.points[1].x && path2.points[0].y === path2.points[1].y)
+      ) {
         return;
       }
 
@@ -93,11 +103,10 @@ export const drawPaths = () => {
     });
   });
 
-  connections.forEach(connection => {
-    const {path1, path2, points} = connection;
+  let newPathsData = [];
 
-    // draw an arc between the two non-connected points
-    const pathElement = createSvgElement('path');
+  connections.forEach(connection => {
+    const { path1, path2, points } = connection;
 
     // Starting point
     const M = `M${toSvgCoord(points[0].x)} ${toSvgCoord(points[0].y)}`;
@@ -128,9 +137,78 @@ export const drawPaths = () => {
       '' :
       L2;
 
-    pathElement.setAttribute('d', `${start}${Q}${end}`);
-    pathLayer.appendChild(pathElement);
+    newPathsData.push({
+      path1,
+      path2,
+      d: `${start}${Q}${end}`
+    });
+
+    // pathElement.setAttribute('d', `${start}${Q}${end}`);
+    // pathLayer.appendChild(pathElement);
   });
+
+  // What about paths that have 0 connections ???
+  paths.forEach(path => {
+    if (!connections.find(c => c.path1 !== path && c.path2 !== path)) {
+      const { points } = path;
+      // this path has no connections, we need to add it to the list as a little 2x1 path
+      const M = `M${toSvgCoord(points[0].x)} ${toSvgCoord(points[0].y)}`;
+      const L = `L${toSvgCoord(points[1].x)} ${toSvgCoord(points[1].y)}`;
+      newPathsData.push({
+        path,
+        d: `${M}${L}`,
+      });
+    }
+  });
+
+  console.log('path elements:');
+  newPathsData.forEach(newPathData => {
+    let doesntExistYet = true;
+
+    pathsData.forEach(oldPathData => {
+      // it's the same path, skip
+      // if (newPathData === oldPathData) return;
+
+      // it's the same connection (set of two specific paths) as before
+      if (
+        (newPathData.path && newPathData.path === oldPathData.path) ||
+        (newPathData.path1 && newPathData.path1 === oldPathData.path1 && newPathData.path2 === oldPathData.path2)
+      ) {
+        doesntExistYet = false;
+        newPathData.svgElement = oldPathData.svgElement;
+
+        // The two path datas are different, this connection/path aaah needs updating
+        if (newPathData.d !== oldPathData.d) {
+          newPathData.svgElement.setAttribute('d', newPathData.d);
+        }
+      }
+    });
+
+    if (doesntExistYet) {
+      newPathData.svgElement = createSvgElement('path');
+      newPathData.svgElement.setAttribute('d', newPathData.d);
+      newPathData.svgElement.style.transition = 'all.3s';
+      pathLayer.appendChild(newPathData.svgElement);
+    }
+
+    // console.log(newPathData.svgElement);
+  });
+
+  // pathsData.forEach(oldPathData => {
+  //   let foundInNewData = false;
+
+  //   newPathsData.forEach(newPathData => {
+  //     if (oldPathData.path === newPathData.path) {
+  //       foundInNewData = true;
+  //     }
+  //   });
+
+  //   if (!foundInNewData) {
+
+  //   }
+  // });
+
+  pathsData = [...newPathsData];
 }
 
 export class Path extends Structure {
@@ -143,7 +221,17 @@ export class Path extends Structure {
     });
 
     paths.push(this);
+
+    // drawPaths();
     // Redraw all paths that are connected immediately to this?
+  }
+
+  remove() {
+    // Remove from DOM
+    pathsData.find(p => p.path === this).svgElement.remove();
+
+    // Remove from paths array
+    paths.splice(paths.findIndex((p) => p === this), 1);
   }
 
   // drawSvg() {

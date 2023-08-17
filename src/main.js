@@ -24,29 +24,32 @@ init(null, { contextless: true });
  * - people
  */
 
-const testPath1 = new Path({ points: [{ x: 0, y: 1 }, { x: 1, y: 1}]} );
-const testPath2 = new Path({ points: [{ x: 1, y: 1 }, { x: 2, y: 1}]} );
-const testPath3 = new Path({ points: [{ x: 2, y: 1 }, { x: 2, y: 2}]} );
-const testPath4 = new Path({ points: [{ x: 2, y: 2 }, { x: 1, y: 2}]} );
-const testPath5 = new Path({ points: [{ x: 1, y: 2 }, { x: 0, y: 3}]} );
-const testPath6 = new Path({ points: [{ x: 0, y: 3 }, { x: 0, y: 4}]} );
-const testPath7 = new Path({ points: [{ x: 0, y: 4 }, { x: 1, y: 4}]} );
-const testPath8 = new Path({ points: [{ x: 1, y: 4 }, { x: 2, y: 4}]} );
-const testPath9 = new Path({ points: [{ x: 2, y: 4 }, { x: 3, y: 4}]} );
-const testPath10 = new Path({ points: [{ x: 2, y: 4 }, { x: 2, y: 5}]} );
+// const testPath1 = new Path({ points: [{ x: 0, y: 1 }, { x: 1, y: 1}]} );
+// const testPath2 = new Path({ points: [{ x: 1, y: 1 }, { x: 2, y: 1}]} );
+// const testPath3 = new Path({ points: [{ x: 2, y: 1 }, { x: 2, y: 2}]} );
+// const testPath4 = new Path({ points: [{ x: 2, y: 2 }, { x: 1, y: 2}]} );
+// const testPath5 = new Path({ points: [{ x: 1, y: 2 }, { x: 0, y: 3}]} );
+// const testPath6 = new Path({ points: [{ x: 0, y: 3 }, { x: 0, y: 4}]} );
+// const testPath7 = new Path({ points: [{ x: 0, y: 4 }, { x: 1, y: 4}]} );
+// const testPath8 = new Path({ points: [{ x: 1, y: 4 }, { x: 2, y: 4}]} );
+// const testPath9 = new Path({ points: [{ x: 2, y: 4 }, { x: 3, y: 4}]} );
+// const testPath10 = new Path({ points: [{ x: 2, y: 4 }, { x: 2, y: 5}]} );
 
-const testPathA = new Path({ points: [{ x: 5, y: 1 }, { x: 6, y: 1}]} );
-const testPathB = new Path({ points: [{ x: 6, y: 1 }, { x: 6, y: 2}]} );
-const testPathC = new Path({ points: [{ x: 6, y: 2 }, { x: 5, y: 2}]} );
-const testPathD = new Path({ points: [{ x: 5, y: 2 }, { x: 5, y: 1}]} );
-// const testPath4 = new Path({ points: [{ x: 2, y: 2 }, { x: 3, y: 3}]} );
-drawPaths();
+// const testPathA = new Path({ points: [{ x: 5, y: 1 }, { x: 6, y: 1}]} );
+// const testPathB = new Path({ points: [{ x: 6, y: 1 }, { x: 6, y: 2}]} );
+// const testPathC = new Path({ points: [{ x: 6, y: 2 }, { x: 5, y: 2}]} );
+// const testPathD = new Path({ points: [{ x: 5, y: 2 }, { x: 5, y: 1}]} );
+// // const testPath4 = new Path({ points: [{ x: 2, y: 2 }, { x: 3, y: 3}]} );
+
+// const testPathE = new Path({ points: [{ x: 3, y: 5 }, { x: 2, y: 4 }]});
+
+// drawPaths();
 
 const testYurt = new Yurt({ x: 2, y: 3, type: 'ox' });
 testYurt.addToSvg();
 
 setTimeout(() => {
-  testYurt.addPath();
+  testYurt.rotateTo({ x: 2, y: 4 });
 }, 1000);
 
 const testYurt2 = new Yurt({ x: 5, y: 4, type: 'goat' });

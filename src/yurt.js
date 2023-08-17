@@ -4,7 +4,7 @@ import {
   yurtDecorationLayers, yurtLayer, yurtShadowLayer, pathLayer,
 } from './layers';
 import { gridCellSize } from './grid';
-import { Path } from './path';
+import { Path, drawPaths } from './path';
 
 /**
  * Yurts each need to have...
@@ -45,10 +45,14 @@ export class Yurt extends Structure {
       this.facing = { x: -1, y: 0 }
     }
 
-    this.startPath = new Path([
-      { x, y, locked: true },
-      { x: x + this.facing.x, y: y + this.facing.y },
-    ]);
+    this.startPath = new Path({
+      points: [
+        { x, y, fixed: true },
+        { x: x + this.facing.x, y: y + this.facing.y },
+      ],
+    });
+
+    drawPaths();
 
     this.type = properties.type;
   }
@@ -59,9 +63,28 @@ export class Yurt extends Structure {
       y: y - this.y,
     };
 
-    this.startPath.points[1] = { x: x + this.facing.x, y: y + this.facing.y };
+    this.startPath.points[1] = { x: this.x, y: this.y };
+    this.oldStartPath = this.startPath;
 
-    // this.path.drawSvg();
+    // Add the new path
+
+    this.startPath = new Path({
+      points: [
+        { x: this.x, y: this.y, fixed: true },
+        { x: this.x, y: this.y },
+      ],
+    });
+    // Redraw
+    drawPaths();
+
+    setTimeout(() => {
+      this.startPath.points[1] = { x, y };
+      drawPaths();
+    }, 10);
+
+    setTimeout(() => {
+      this.oldStartPath.remove();
+    }, 400);
   }
 
   addToSvg() {

@@ -1,6 +1,6 @@
 import { boardSvgWidth, boardSvgHeight, boardPxWidth, boardPxHeight, svgElement, createSvgElement } from './svg';
 import { gridCellSize } from './grid';
-import { Path } from './path';
+import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';
 
 // 384 / (72 / 8)
@@ -8,13 +8,14 @@ const gridCellSizePx = boardPxWidth / (boardSvgWidth / gridCellSize);
 
 const gridCellPadding = 8; // Size in px of clicky cell padding (should be svg scaled instead of px?)
 
+let dragging = false;
+
 let dragStartCell = {
   x: undefined,
   y: undefined,
 };
 
 const getGridCell = (x, y) => {
-
   return {
     x: Math.floor(x / gridCellSizePx),
     y: Math.floor(y / gridCellSizePx),
@@ -45,65 +46,67 @@ const tryAddPath = ({ cellX, cellY, isInsideCellPadding }) => {
     console.log('gridCellAlreadyHasSomethingIn');
     // do nothing
     /// .... unless? Maybe the start of the path is in a yurt? Or at the edge of a farm?
+    return;
   }
 
   if (!isInsideCellPadding) {
     console.log('!isInsideCellPadding');
-    // do nothing
+    return;
   }
 
   if (inventory.paths <= 0) {
     console.log('no path pieces left');
     // No paths left, show some sort of red flashy need more paths indicator
+    return;
   }
 
+  dragging = true;
   dragStartCell = { x: cellX, y: cellY };
 
-  const pathObject = new Path({ x: cellX, y: cellY });
-  pathObject.addToSvg();
-  newPath = pathObject;
+  // const pathObject = new Path({ points: [{ x: cellX, y: cellY }, { x: cellX, y: cellY }]});
+  // drawPaths();
+  // newPath = pathObject;
 }
 
 const handlePointerdown = (event) => {
-  const rect = event.target.getBoundingClientRect();
+  const rect = svgElement.getBoundingClientRect();
 
   // TODO:
   // figure out starting cell?
 
   const { x: cellX, y: cellY, isInsideCellPadding } = getGridCellWithPadding(event.x - rect.left, event.y - rect.top);
 
-  tryAddPath({ cellX, cellY, isInsideCellPadding });
+  // tryAddPath({ cellX, cellY, isInsideCellPadding });
+
+  dragging = true;
+  dragStartCell = { x: cellX, y: cellY };
 
   // join the path piece to nearby paths?
 };
 
 const handlePointermove = (event) => {
-  const rect = event.target.getBoundingClientRect();
-
   // Is left click being held down? If not, we don't care
   if (event.buttons !== 1) {
     return;
   }
 
-  if (newPath) {
-    console.log('theres a path lets extend it?');
+  const rect = svgElement.getBoundingClientRect();
 
+  if (dragging) {
     const { x: cellX, y: cellY, isInsideCellPadding } = getGridCellWithPadding(event.x - rect.left, event.y - rect.top);
 
-    if (cellX === newPath.x && cellY === newPath.y) {
-      console.log('same cell doesnt count');
+    if (!isInsideCellPadding) {
       return;
     }
 
-    if (cellX === newPath.points.at(-1)?.x && cellY === newPath.points.at(-1)?.y) {
-      console.log('same as last point of a different path');
+    // Same cell still, doesn't count
+    if (cellX === dragStartCell.x && cellY === dragStartCell.y) {
       return;
     }
 
-    if (isInsideCellPadding) {
-      console.log('adding a point to the path');
-      newPath.addPoint({ x: cellX, y: cellY });
-    }
+    newPath = new Path({ points: [{ x: dragStartCell.x, y: dragStartCell.y }, { x: cellX, y: cellY }] });
+    dragStartCell = { x: cellX, y: cellY };
+    drawPaths();
   }
 
   // TODO:
@@ -112,6 +115,15 @@ const handlePointermove = (event) => {
 }
 
 const handlePointerup = (event) => {
+  // if (dragging) {
+    // if (newPath.points[0].x === newPath.points[1].x && newPath.points[0].y === newPath.points[1].y) {
+    //   newPath.remove();
+    //   newPath = null;
+    // }
+  // }
+
+  dragging = false;
+  dragStartCell = { x: undefined, y: undefined };
   // console.log(event);
   // TODO:
   // clear the "starting cell pointer held down in"... maybe?
