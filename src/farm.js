@@ -1,4 +1,4 @@
-import { GameObjectClass } from 'kontra';
+import { Structure } from './structure';
 import { createSvgElement } from './svg';
 import { fenceLayer, fenceShadowLayer } from './layers';
 import { gridCellSize, gridLineThickness } from './grid';
@@ -12,7 +12,7 @@ const padding = 3;
 const roundness = 2;
 const fenceLineThickness = 1;
 
-export class Farm extends GameObjectClass {
+export class Farm extends Structure {
   constructor(properties) {
     super(properties);
     this.type = properties.type;

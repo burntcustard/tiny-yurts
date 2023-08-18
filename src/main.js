@@ -4,6 +4,7 @@ import { Farm } from './farm';
 import { svgElement } from './svg';
 import { initPointer } from './pointer';
 import { drawPaths, Path } from './path';
+import { structures } from './structure';
 
 init(null, { contextless: true });
 
@@ -56,9 +57,8 @@ const testYurt2 = new Yurt({ x: 5, y: 4, type: 'goat' });
 setTimeout(() => {
   testYurt2.addToSvg();
 }, 1000);
-setTimeout(() => {
-  testYurt2.addPath();
-}, 2000);
+
+console.log(structures);
 
 const testFarm = new Farm({ x: 1, y: 6, type: 'ox' });
 setTimeout(() => {

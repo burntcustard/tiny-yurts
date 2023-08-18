@@ -1,5 +1,6 @@
 import { gridCellSize } from './grid';
 import { boardSvgWidth, boardPxWidth } from './svg';
+import { structures } from './structure';
 
 // 384 / (72 / 8)
 export const cellSizePx = boardPxWidth / (boardSvgWidth / gridCellSize);
@@ -10,6 +11,8 @@ export const getGridCell = (x, y) => {
     y: Math.floor(y / cellSizePx),
   }
 }
+
+export const isCellOccupied = (x, y) => structures.some(s => { console.log(s.x, s.y); s.x === x && s.y === y});
 
 export const isPastHalfwayInto = ({ pointer, from, to }) => {
   const fuzzyness = 4; // In px, how closish to half way is required
