@@ -23,29 +23,37 @@ export let pathsData = [];
 
 export let recentlyRemoved = [];
 
-export const drawPaths = () => {
-  // Convert list of paths into list of connections
+export const drawPaths = ({ fadeout, changedCells, newPath }) => {
+  // only care about paths in or next to changedCell
+
+  // const changedPaths = changedCells.length ? paths.filter(path => {
+  //   return changedCells.some(changedCell => (
+  //     (
+  //       (path.points[0].x === changedCell.x) &&
+  //       (path.points[0].y === changedCell.y)
+  //     ) || (
+  //       (path.points[1].x === changedCell.x) &&
+  //       (path.points[1].y === changedCell.y)
+  //     )
+  //   ));
+  // }) : paths;
+
+  // console.log(changedCells);
+
+  const changedPaths = paths;
 
   // go through each cell and look for paths with either end on both points?
   connections = [];
 
   // Compare each path to every other path
-  paths.forEach((path1) => {
-    paths.forEach((path2) => {
+  changedPaths.forEach((path1) => {
+    changedPaths.forEach((path2) => {
       if (path1 === path2) return;
 
       // If there is already this pair of paths in the connections list, skip
       if (connections.find((c) => c.path1 === path2 && c.path2 === path1)) {
         return;
       }
-
-      // If the path is just a dot (both points in same cell), skip
-      // if (
-      //   (path1.points[0].x === path1.points[1].x && path1.points[0].y === path1.points[1].y) ||
-      //   (path2.points[0].x === path2.points[1].x && path2.points[0].y === path2.points[1].y)
-      // ) {
-      //   return;
-      // }
 
       // If either path has the 'do not connect anything to me' flag then skip
       if (path1.noConnect || path2.noConnect) return;
@@ -148,17 +156,19 @@ export const drawPaths = () => {
   });
 
   // What about paths that have 0 connections ???
-  paths.forEach((path) => {
+  changedPaths.forEach((path) => {
     const connected = connections.find((c) => c.path1 === path || c.path2 === path);
 
     if (!connected && !path.noConnect) {
       const { points } = path;
       // this path has no connections, need to add it to the list as a little 2x1 path
-      const M = `M${toSvgCoord(points[0].x)} ${toSvgCoord(points[0].y)}`;
-      const L = `L${toSvgCoord(points[1].x)} ${toSvgCoord(points[1].y)}`;
+      const M = `${toSvgCoord(points[0].x)} ${toSvgCoord(points[0].y)}`;
+      const L = `${toSvgCoord(points[1].x)} ${toSvgCoord(points[1].y)}`;
       newPathsData.push({
         path,
-        d: `${M}${L}`,
+        d: `M${M}L${L}`,
+        M,
+        L,
       });
     }
   });
@@ -188,7 +198,15 @@ export const drawPaths = () => {
     pathsData.forEach((oldPathData) => {
       if (!newPathsData.find((newPathData2) => oldPathData.d === newPathData2.d)) {
         if (oldPathData.path) {
-          oldPathData.svgElement.remove();
+          // if (changedPaths.includes(oldPathData.path)) {
+            if (fadeout) {
+              setInterval(() => {
+                oldPathData.svgElement.remove();
+              }, 500);
+            } else {
+              oldPathData.svgElement.remove();
+            }
+          // }
         }
       }
     });
@@ -211,19 +229,34 @@ export const drawPaths = () => {
         )
       ));
 
-      if (newPathData.path === undefined || !pathInSameCellRecentlyRemoved) {
-        newPathData.svgElement.setAttribute('stroke-width', '0');
-        newPathData.svgElement.setAttribute('opacity', '0');
+      const isYurtPath = newPathData.path?.points[0].fixed;
 
+      if (newPathData.path === undefined || !pathInSameCellRecentlyRemoved) {
+        newPathData.svgElement.setAttribute('stroke-width', 0);
+        newPathData.svgElement.setAttribute('opacity', 0);
         newPathData.svgElementShadow = createSvgElement('path');
-        newPathData.svgElementShadow.setAttribute('d', newPathData.d);
-        // pathShadows do not transition, they're instant
+
+        if (isYurtPath) {
+          newPathData.svgElement.setAttribute('d', `M${newPathData.M}L${newPathData.M}`);
+          newPathData.svgElementShadow.style.transition = 'all.4s';
+          newPathData.svgElementShadow.setAttribute('d', `M${newPathData.M}L${newPathData.M}`);
+        } else {
+          newPathData.svgElementShadow.setAttribute('d', newPathData.d);
+        }
+
         pathShadowLayer.appendChild(newPathData.svgElementShadow);
 
         setTimeout(() => {
-          newPathData.svgElement.setAttribute('stroke-width', '');
-          newPathData.svgElement.setAttribute('opacity', '1');
+          if (isYurtPath) {
+            newPathData.svgElement.setAttribute('d', `M${newPathData.M}L${newPathData.L}`);
+            newPathData.svgElementShadow.setAttribute('d', newPathData.d);
+          }
         }, 10);
+
+        setTimeout(() => {
+          newPathData.svgElement.setAttribute('stroke-width', '');
+          newPathData.svgElement.setAttribute('opacity', 1);
+        });
 
         // After transition complete, we don't need the shadow anymore
         setTimeout(() => newPathData.svgElementShadow.remove(), 500);

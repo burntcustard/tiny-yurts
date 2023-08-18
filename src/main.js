@@ -46,17 +46,17 @@ init(null, { contextless: true });
 
 // drawPaths();
 
-const testYurt = new Yurt({ x: 2, y: 3, type: 'ox' });
+const testYurt = new Yurt({ x: 6, y: 7, type: 'ox' });
 testYurt.addToSvg();
 
-setTimeout(() => {
-  testYurt.rotateTo(2, 4);
-}, 1000);
+// setTimeout(() => {
+//   testYurt.rotateTo(2, 4);
+// }, 1000);
 
-const testYurt2 = new Yurt({ x: 5, y: 4, type: 'goat' });
 setTimeout(() => {
+  const testYurt2 = new Yurt({ x: 5, y: 4, type: 'goat' });
   testYurt2.addToSvg();
-}, 1000);
+}, 2000);
 
 const testFarm = new Farm({ x: 1, y: 6, type: 'ox' });
 setTimeout(() => {

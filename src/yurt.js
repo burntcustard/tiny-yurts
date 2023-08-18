@@ -34,6 +34,7 @@ export class Yurt extends Structure {
       ],
     });
 
+    this.type = properties.type;
     yurts.push(this);
 
     // Which way is the yurt facing (randomly up/down/left/right to start)
@@ -49,16 +50,19 @@ export class Yurt extends Structure {
       this.facing = { x: -1, y: 0 }
     }
 
-    this.startPath = new Path({
-      points: [
+    setTimeout(() => {
+      this.startPath = new Path({
+        points: [
+          { x, y, fixed: true },
+          { x: x + this.facing.x, y: y + this.facing.y },
+        ],
+      });
+
+      drawPaths({ changedCells: [
         { x, y, fixed: true },
-        { x: x + this.facing.x, y: y + this.facing.y },
-      ],
-    });
-
-    drawPaths();
-
-    this.type = properties.type;
+        { x: x + this.facing.x, y: y + this.facing.y }
+      ]});
+    }, 1000)
   }
 
   rotateTo(x, y) {
@@ -97,7 +101,7 @@ export class Yurt extends Structure {
     });
 
     // Redraw
-    drawPaths();
+    drawPaths({ changedCells: [{ x: this.x, y: this.y, fixed: true }, { x, y }], fadeout: true });
 
     const pathInPathData = pathsData.find(p => p.path === this.startPath);
 
@@ -106,7 +110,7 @@ export class Yurt extends Structure {
 
       setTimeout(() => {
         pathInPathData.svgElement.setAttribute('stroke-width', '');
-        drawPaths();
+        drawPaths({ changedCells: [{ x, y }] });
       }, 100);
     }
 
