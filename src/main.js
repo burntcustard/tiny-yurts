@@ -50,15 +50,13 @@ const testYurt = new Yurt({ x: 2, y: 3, type: 'ox' });
 testYurt.addToSvg();
 
 setTimeout(() => {
-  testYurt.rotateTo({ x: 2, y: 4 });
+  testYurt.rotateTo(2, 4);
 }, 1000);
 
 const testYurt2 = new Yurt({ x: 5, y: 4, type: 'goat' });
 setTimeout(() => {
   testYurt2.addToSvg();
 }, 1000);
-
-console.log(structures);
 
 const testFarm = new Farm({ x: 1, y: 6, type: 'ox' });
 setTimeout(() => {

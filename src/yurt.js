@@ -4,7 +4,9 @@ import {
   yurtDecorationLayers, yurtLayer, yurtShadowLayer, pathLayer,
 } from './layers';
 import { gridCellSize } from './grid';
-import { Path, drawPaths } from './path';
+import { Path, drawPaths, pathsData } from './path';
+
+export const yurts = [];
 
 /**
  * Yurts each need to have...
@@ -32,6 +34,8 @@ export class Yurt extends Structure {
       ],
     });
 
+    yurts.push(this);
+
     // Which way is the yurt facing (randomly up/down/left/right to start)
     // TODO: Less disguisting way to determine initial direction
     const facingInt = Math.floor(Math.random() * 4);
@@ -57,30 +61,45 @@ export class Yurt extends Structure {
     this.type = properties.type;
   }
 
-  rotateTo({ x, y }) {
+  rotateTo(x, y) {
     this.facing = {
       x: x - this.x,
       y: y - this.y,
     };
 
-    this.startPath.points[1] = { x: this.x, y: this.y };
+    const oldPathInPathData = pathsData.find(p => p.path === this.startPath);
+
+    if (oldPathInPathData) {
+      oldPathInPathData.svgElement.setAttribute('stroke-width', 0);
+    }
+
+    // this.startPath.points[1] = { x: this.x, y: this.y };
+    // console.log(this.startPath.points[1]);
     this.oldStartPath = this.startPath;
+    this.oldStartPath.noConnect = true;
 
     // Add the new path
 
     this.startPath = new Path({
       points: [
         { x: this.x, y: this.y, fixed: true },
-        { x: this.x, y: this.y },
+        { x, y },
       ],
     });
+
     // Redraw
     drawPaths();
 
-    setTimeout(() => {
-      this.startPath.points[1] = { x, y };
-      drawPaths();
-    }, 10);
+    const pathInPathData = pathsData.find(p => p.path === this.startPath);
+
+    if (pathInPathData) {
+      pathInPathData.svgElement.setAttribute('stroke-width', '0');
+
+      setTimeout(() => {
+        pathInPathData.svgElement.setAttribute('stroke-width', '');
+        drawPaths();
+      }, 100);
+    }
 
     setTimeout(() => {
       this.oldStartPath.remove();

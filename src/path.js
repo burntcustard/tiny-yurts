@@ -1,8 +1,6 @@
-import { Structure } from './structure';
-import { pathLayer } from './layers';
+import { GameObjectClass } from  'kontra';
+import { pathLayer, pathShadowLayer } from './layers';
 import { createSvgElement } from './svg';
-// import { createSvgElement } from './svg';
-// import { pathLayer } from './layers';
 import { gridCellSize } from './grid';
 
 /**
@@ -40,12 +38,15 @@ export const drawPaths = () => {
       }
 
       // If the path is just a dot (both points in same cell), skip
-      if (
-        (path1.points[0].x === path1.points[1].x && path1.points[0].y === path1.points[1].y) ||
-        (path2.points[0].x === path2.points[1].x && path2.points[0].y === path2.points[1].y)
-      ) {
-        return;
-      }
+      // if (
+      //   (path1.points[0].x === path1.points[1].x && path1.points[0].y === path1.points[1].y) ||
+      //   (path2.points[0].x === path2.points[1].x && path2.points[0].y === path2.points[1].y)
+      // ) {
+      //   return;
+      // }
+
+      // If either path has the 'do not connect anything to me' flag then skip
+      if (path1.noConnect || path2.noConnect) return;
 
       if (
         path1.points[0].x === path2.points[0].x &&
@@ -171,6 +172,7 @@ export const drawPaths = () => {
         (newPathData.path1 && newPathData.path1 === oldPathData.path1 && newPathData.path2 === oldPathData.path2)
       ) {
         newPathData.svgElement = oldPathData.svgElement;
+        newPathData.svgElementShadow = oldPathData.svgElementShadow;
 
         // The two path datas are different, this connection/path aaah needs updating
         if (newPathData.d !== oldPathData.d) {
@@ -180,6 +182,7 @@ export const drawPaths = () => {
       }
     });
 
+    // Remove old path SVGs
     pathsData.forEach(oldPathData => {
       if (!newPathsData.find(newPathData => oldPathData.d === newPathData.d)) {
         if (oldPathData.path) {
@@ -188,18 +191,34 @@ export const drawPaths = () => {
       }
     });
 
+    // There's a new bit of path data that needs drawing
     if (!newPathData.svgElement) {
       newPathData.svgElement = createSvgElement('path');
       newPathData.svgElement.setAttribute('d', newPathData.d);
-      newPathData.svgElement.style.transition = 'all.3s';
+      newPathData.svgElement.setAttribute('stroke-width', '0');
+      newPathData.svgElement.setAttribute('opacity', '0');
+      newPathData.svgElement.style.transition = 'all.4s';
       pathLayer.appendChild(newPathData.svgElement);
+
+      newPathData.svgElementShadow = createSvgElement('path');
+      newPathData.svgElementShadow.setAttribute('d', newPathData.d);
+      // pathShadows do not transition, they're instant
+      pathShadowLayer.appendChild(newPathData.svgElementShadow);
+
+      setTimeout(() => {
+        newPathData.svgElement.setAttribute('stroke-width', '');
+        newPathData.svgElement.setAttribute('opacity', '1');
+      }, 10);
+
+      // After transition complete, we don't need the shadow anymore
+      setTimeout(() => newPathData.svgElementShadow.remove(), 500);
     }
   });
 
   pathsData = [...newPathsData];
 }
 
-export class Path extends Structure {
+export class Path extends GameObjectClass {
   constructor(properties) {
     const { points } = properties;
 
@@ -216,6 +235,7 @@ export class Path extends Structure {
     pathsData = pathsData.filter(p => {
       if (p.path === this || p.path1 === this || p.path2 === this) {
         p.svgElement.remove();
+        p.svgElementShadow?.remove();
         return false;
       }
 
@@ -225,6 +245,7 @@ export class Path extends Structure {
     // Remove from paths array
     paths.splice(paths.findIndex((p) => p === this), 1);
 
-    super.remove();
+    // No longer calling Structure.remove()
+    // super.remove();
   }
 }

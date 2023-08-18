@@ -2,22 +2,31 @@ import { svgElement } from './svg';
 import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';
 import { isPastHalfwayInto, getGridCell, isCellOccupied } from './cell';
+import { farms } from './farm';
+import { yurts } from './yurt';
 
 let dragStartCell = {};
+let isDragging = false;
 
-const okayToBuild = (x, y) => {
-  console.log(x, y);
-  if (inventory.paths <= 0) {
-    console.log('no path pieces left');
-    return;
-  }
+const yurtInCell = (x, y) => yurts.find(yurt => yurt.x === x && yurt.y === y);
+const farmInCell = (x, y) => farms.find(farm => farm.x === x && farm.y === y);
 
-  if (isCellOccupied(x, y)) {
-    console.log('cant build there mate');
-    return;
-  }
+const cantBuildNoPaths = () => {
 
-  return true;
+}
+
+const removePathsOnRightClick = (x, y) => {
+  paths.filter(path =>
+    (
+      (path.points[0].x === x && path.points[0].y === y) ||
+      (path.points[1].x === x && path.points[1].y === y)
+    ) && (
+      // Don't remove "fixed" paths i.e. under yurts
+      !path.points[0].fixed && !path.points[1].fixed
+    )
+  ).forEach(pathToRemove => pathToRemove.remove());
+
+  drawPaths();
 }
 
 const handlePointerdown = (event) => {
@@ -25,20 +34,11 @@ const handlePointerdown = (event) => {
   const { x: cellX, y: cellY } = getGridCell(event.x - rect.left, event.y - rect.top);
 
   if (event.buttons === 1) {
-    if (!okayToBuild(cellX, cellY)) return;
-
+    if (farmInCell(cellX, cellY)) return;
+    isDragging = true;
     dragStartCell = { x: cellX, y: cellY };
   } else if (event.buttons === 2) {
-    paths.filter(path =>
-      (
-        (path.points[0].x === cellX && path.points[0].y === cellY) ||
-        (path.points[1].x === cellX && path.points[1].y === cellY)
-      ) && (
-        !path.points[0].fixed && !path.points[1].fixed
-      )
-    ).forEach(pathToRemove => pathToRemove.remove());
-
-    drawPaths();
+    removePathsOnRightClick();
   }
 };
 
@@ -46,14 +46,19 @@ const handlePointermove = (event) => {
   // Is left click being held down? If not, we don't care
   if (event.buttons !== 1) return;
 
-  const rect = svgElement.getBoundingClientRect();
+  if (!isDragging) return;
 
+  const rect = svgElement.getBoundingClientRect();
   const { x: cellX, y: cellY } = getGridCell(event.x - rect.left, event.y - rect.top);
 
-  if (!okayToBuild(cellX, cellY)) return;
-
-  // Same cell still, doesn't count
+  // Still dragging in the start cell, do nothing
   if (cellX === dragStartCell.x && cellY === dragStartCell.y) return;
+
+  if (farmInCell(cellX, cellY)) {
+    dragStartCell = {};
+    isDragging = false;
+    return;
+  }
 
   // Have we gone +50% into the new cell?
   if (!isPastHalfwayInto({
@@ -61,6 +66,27 @@ const handlePointermove = (event) => {
     from: { x: dragStartCell.x, y: dragStartCell.y },
     to: { x: cellX, y: cellY }
   })) return;
+
+  const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
+  const yurtInEndCell = yurtInCell(cellX, cellY);
+  if (yurtInStartCell) {
+    yurtInStartCell.rotateTo(cellX, cellY);
+    dragStartCell = {};
+    isDragging = false;
+    return;
+  } else if (yurtInEndCell) {
+    yurtInEndCell.rotateTo(dragStartCell.x, dragStartCell.y);
+    dragStartCell = {};
+    isDragging = false;
+    return;
+  }
+
+  if (inventory.paths <= 0) {
+    cantBuildNoPaths();
+    dragStartCell = {};
+    isDragging = false;
+    return;
+  }
 
   new Path({ points: [{ x: dragStartCell.x, y: dragStartCell.y }, { x: cellX, y: cellY }] });
 

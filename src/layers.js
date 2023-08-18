@@ -33,6 +33,17 @@ const addFenceLayer = () => {
   return fenceLayer;
 };
 
+const addPathShadowLayer = () => {
+  const pathShadowLayer = createSvgElement('g');
+  pathShadowLayer.setAttribute('fill', 'none');
+  pathShadowLayer.setAttribute('stroke', colors.base);
+  pathShadowLayer.setAttribute('stroke-linecap', 'round');
+  pathShadowLayer.setAttribute('stroke-linejoin', 'round');
+  pathShadowLayer.setAttribute('stroke-width', pathSvgWidth);
+  svgElement.appendChild(pathShadowLayer);
+  return pathShadowLayer;
+};
+
 const addPathLayer = () => {
   const pathLayer = createSvgElement('g');
   pathLayer.setAttribute('fill', 'none');
@@ -79,6 +90,7 @@ export const layers = {
   grid: addGridToSvg(),
   fenceShadows: addFenceShadowLayer(),
   fences: addFenceLayer(),
+  pathShadows: addPathShadowLayer(),
   paths: addPathLayer(),
   animalShadows: addAnimalShadowLayer(),
   animals: addAnimalLayer(),
@@ -91,11 +103,12 @@ export const layers = {
   pointerLayer: addPointerLayer(),
 };
 
-export const animalShadowLayer = layers.animalShadows;
+export const { yurtDecorationLayers } = layers;
 export const animalLayer = layers.animals;
+export const animalShadowLayer = layers.animalShadows;
 export const fenceLayer = layers.fences;
 export const fenceShadowLayer = layers.fenceShadows;
 export const pathLayer = layers.paths;
-export const { yurtDecorationLayers } = layers;
+export const pathShadowLayer = layers.pathShadows;
 export const yurtLayer = layers.yurts;
 export const yurtShadowLayer = layers.yurtShadows;

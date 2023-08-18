@@ -13,6 +13,8 @@ export class Structure extends GameObjectClass {
 
     structures.push(this);
 
+    // console.log(this.x, this.y);
+
     // All structures have an array of possible connection points
     this.connections = properties.connections;
   }

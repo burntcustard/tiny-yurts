@@ -4,6 +4,8 @@ import { fenceLayer, fenceShadowLayer } from './layers';
 import { gridCellSize, gridLineThickness } from './grid';
 import { Ox } from './ox';
 
+export const farms = [];
+
 // TODO: Landscape and portrait fences? Square or circle fences?
 const width = 3;
 const height = 2;
@@ -16,6 +18,7 @@ export class Farm extends Structure {
   constructor(properties) {
     super(properties);
     this.type = properties.type;
+    farms.push(this);
   }
 
   addAnimal() {

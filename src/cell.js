@@ -12,7 +12,13 @@ export const getGridCell = (x, y) => {
   }
 }
 
-export const isCellOccupied = (x, y) => structures.some(s => { console.log(s.x, s.y); s.x === x && s.y === y});
+export const isCellOccupied = (x, y) => structures.some(s => {
+  const isOccupied = s.x === x && s.y === y;
+
+  if (isOccupied) {
+    return true;
+  }
+});
 
 export const isPastHalfwayInto = ({ pointer, from, to }) => {
   const fuzzyness = 4; // In px, how closish to half way is required
