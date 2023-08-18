@@ -1,4 +1,4 @@
-import { GameObjectClass } from  'kontra';
+import { GameObjectClass } from 'kontra';
 import { pathLayer, pathShadowLayer } from './layers';
 import { createSvgElement } from './svg';
 import { gridCellSize } from './grid';
@@ -13,13 +13,15 @@ import { gridCellSize } from './grid';
 
 const toSvgCoord = (c) => gridCellSize / 2 + c * gridCellSize;
 
-export let paths = [];
+export const paths = [];
 
 export const pathSvgWidth = 3;
 
 export let connections = [];
 
 export let pathsData = [];
+
+export let recentlyRemoved = [];
 
 export const drawPaths = () => {
   // Convert list of paths into list of connections
@@ -28,12 +30,12 @@ export const drawPaths = () => {
   connections = [];
 
   // Compare each path to every other path
-  paths.forEach(path1 => {
-    paths.forEach(path2 => {
+  paths.forEach((path1) => {
+    paths.forEach((path2) => {
       if (path1 === path2) return;
 
       // If there is already this pair of paths in the connections list, skip
-      if (connections.find(c => c.path1 === path2 && c.path2 === path1)) {
+      if (connections.find((c) => c.path1 === path2 && c.path2 === path1)) {
         return;
       }
 
@@ -49,8 +51,8 @@ export const drawPaths = () => {
       if (path1.noConnect || path2.noConnect) return;
 
       if (
-        path1.points[0].x === path2.points[0].x &&
-        path1.points[0].y === path2.points[0].y
+        path1.points[0].x === path2.points[0].x
+        && path1.points[0].y === path2.points[0].y
       ) {
         connections.push({
           path1,
@@ -61,9 +63,9 @@ export const drawPaths = () => {
             path2.points[1],
           ],
         });
-      } else if  (
-        path1.points[0].x === path2.points[1].x &&
-        path1.points[0].y === path2.points[1].y
+      } else if (
+        path1.points[0].x === path2.points[1].x
+        && path1.points[0].y === path2.points[1].y
       ) {
         connections.push({
           path1,
@@ -75,8 +77,8 @@ export const drawPaths = () => {
           ],
         });
       } else if (
-        path1.points[1].x === path2.points[0].x &&
-        path1.points[1].y === path2.points[0].y
+        path1.points[1].x === path2.points[0].x
+        && path1.points[1].y === path2.points[0].y
       ) {
         connections.push({
           path1,
@@ -88,8 +90,8 @@ export const drawPaths = () => {
           ],
         });
       } else if (
-        path1.points[1].x === path2.points[1].x &&
-        path1.points[1].y === path2.points[1].y
+        path1.points[1].x === path2.points[1].x
+        && path1.points[1].y === path2.points[1].y
       ) {
         connections.push({
           path1,
@@ -104,9 +106,9 @@ export const drawPaths = () => {
     });
   });
 
-  let newPathsData = [];
+  const newPathsData = [];
 
-  connections.forEach(connection => {
+  connections.forEach((connection) => {
     const { path1, path2, points } = connection;
 
     // Starting point
@@ -130,26 +132,26 @@ export const drawPaths = () => {
 
     // Only draw the starty bit if it's not the center of another connection
     const start = connections
-      .find(c => points[0].x === c.points[1].x && points[0].y === c.points[1].y) ?
-      `M${Lx1} ${Ly1}` :
-      `${M}${L1}`;
+      .find((c) => points[0].x === c.points[1].x && points[0].y === c.points[1].y)
+      ? `M${Lx1} ${Ly1}`
+      : `${M}${L1}`;
     const end = connections
-      .find(c => points[2].x === c.points[1].x && points[2].y === c.points[1].y) ?
-      '' :
-      L2;
+      .find((c) => points[2].x === c.points[1].x && points[2].y === c.points[1].y)
+      ? ''
+      : L2;
 
     newPathsData.push({
       path1,
       path2,
-      d: `${start}${Q}${end}`
+      d: `${start}${Q}${end}`,
     });
   });
 
   // What about paths that have 0 connections ???
-  paths.forEach(path => {
-    const connected = connections.find(c => c.path1 === path || c.path2 === path);
+  paths.forEach((path) => {
+    const connected = connections.find((c) => c.path1 === path || c.path2 === path);
 
-    if (!connected) {
+    if (!connected && !path.noConnect) {
       const { points } = path;
       // this path has no connections, need to add it to the list as a little 2x1 path
       const M = `M${toSvgCoord(points[0].x)} ${toSvgCoord(points[0].y)}`;
@@ -161,16 +163,16 @@ export const drawPaths = () => {
     }
   });
 
-  newPathsData.forEach(newPathData => {
-    pathsData.forEach(oldPathData => {
+  newPathsData.forEach((newPathData) => {
+    pathsData.forEach((oldPathData) => {
       // it's the same path, skip
       // if (newPathData === oldPathData) return;
 
       // it's the same connection (set of two specific paths) as before
-      if (
-        (newPathData.path && newPathData.path === oldPathData.path) ||
-        (newPathData.path1 && newPathData.path1 === oldPathData.path1 && newPathData.path2 === oldPathData.path2)
-      ) {
+      const samePath = newPathData.path && newPathData.path === oldPathData.path;
+      const samePath1 = newPathData.path1 && newPathData.path1 === oldPathData.path1;
+      const samePath2 = newPathData.path2 && newPathData.path2 === oldPathData.path2;
+      if ((samePath) || (samePath1 && samePath2)) {
         newPathData.svgElement = oldPathData.svgElement;
         newPathData.svgElementShadow = oldPathData.svgElementShadow;
 
@@ -183,8 +185,8 @@ export const drawPaths = () => {
     });
 
     // Remove old path SVGs
-    pathsData.forEach(oldPathData => {
-      if (!newPathsData.find(newPathData => oldPathData.d === newPathData.d)) {
+    pathsData.forEach((oldPathData) => {
+      if (!newPathsData.find((newPathData2) => oldPathData.d === newPathData2.d)) {
         if (oldPathData.path) {
           oldPathData.svgElement.remove();
         }
@@ -195,28 +197,43 @@ export const drawPaths = () => {
     if (!newPathData.svgElement) {
       newPathData.svgElement = createSvgElement('path');
       newPathData.svgElement.setAttribute('d', newPathData.d);
-      newPathData.svgElement.setAttribute('stroke-width', '0');
-      newPathData.svgElement.setAttribute('opacity', '0');
       newPathData.svgElement.style.transition = 'all.4s';
       pathLayer.appendChild(newPathData.svgElement);
 
-      newPathData.svgElementShadow = createSvgElement('path');
-      newPathData.svgElementShadow.setAttribute('d', newPathData.d);
-      // pathShadows do not transition, they're instant
-      pathShadowLayer.appendChild(newPathData.svgElementShadow);
+      // Only transition "new new" single paths
+      const pathInSameCellRecentlyRemoved = newPathData.path && recentlyRemoved.some((r) => (
+        (
+          r.x === newPathData.path.points[0].x
+            && r.y === newPathData.path.points[0].y
+        ) || (
+          r.x === newPathData.path.points[1].x
+            && r.y === newPathData.path.points[1].y
+        )
+      ));
 
-      setTimeout(() => {
-        newPathData.svgElement.setAttribute('stroke-width', '');
-        newPathData.svgElement.setAttribute('opacity', '1');
-      }, 10);
+      if (newPathData.path === undefined || !pathInSameCellRecentlyRemoved) {
+        newPathData.svgElement.setAttribute('stroke-width', '0');
+        newPathData.svgElement.setAttribute('opacity', '0');
 
-      // After transition complete, we don't need the shadow anymore
-      setTimeout(() => newPathData.svgElementShadow.remove(), 500);
+        newPathData.svgElementShadow = createSvgElement('path');
+        newPathData.svgElementShadow.setAttribute('d', newPathData.d);
+        // pathShadows do not transition, they're instant
+        pathShadowLayer.appendChild(newPathData.svgElementShadow);
+
+        setTimeout(() => {
+          newPathData.svgElement.setAttribute('stroke-width', '');
+          newPathData.svgElement.setAttribute('opacity', '1');
+        }, 10);
+
+        // After transition complete, we don't need the shadow anymore
+        setTimeout(() => newPathData.svgElementShadow.remove(), 500);
+      }
     }
   });
 
   pathsData = [...newPathsData];
-}
+  recentlyRemoved = [];
+};
 
 export class Path extends GameObjectClass {
   constructor(properties) {
@@ -231,11 +248,14 @@ export class Path extends GameObjectClass {
   }
 
   remove() {
-    // Remove from pathsData:
-    pathsData = pathsData.filter(p => {
+    pathsData = pathsData.filter((p) => {
       if (p.path === this || p.path1 === this || p.path2 === this) {
-        p.svgElement.remove();
-        p.svgElementShadow?.remove();
+        p.svgElement.setAttribute('opacity', 0);
+        p.svgElement.setAttribute('stroke-width', 0);
+
+        setTimeout(() => {
+          p.svgElement.remove();
+        }, 500);
         return false;
       }
 
@@ -245,7 +265,9 @@ export class Path extends GameObjectClass {
     // Remove from paths array
     paths.splice(paths.findIndex((p) => p === this), 1);
 
-    // No longer calling Structure.remove()
-    // super.remove();
+    recentlyRemoved.push(
+      { x: this.points[0].x, y: this.points[0].y },
+      { x: this.points[1].x, y: this.points[1].y },
+    );
   }
 }

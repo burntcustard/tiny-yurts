@@ -67,11 +67,20 @@ export class Yurt extends Structure {
       y: y - this.y,
     };
 
-    const oldPathInPathData = pathsData.find(p => p.path === this.startPath);
+    const oldPathsInPathData = pathsData.filter(p =>
+      p.path === this.startPath ||
+      p.path1 === this.startPath ||
+      p.path2 === this.startPath
+    );
 
-    if (oldPathInPathData) {
-      oldPathInPathData.svgElement.setAttribute('stroke-width', 0);
-    }
+    oldPathsInPathData.forEach(p => {
+      p.svgElement.setAttribute('stroke-width', 0);
+      p.svgElement.setAttribute('opacity', 0);
+
+      setTimeout(() => {
+        p.svgElement.remove();
+      }, 500);
+    });
 
     // this.startPath.points[1] = { x: this.x, y: this.y };
     // console.log(this.startPath.points[1]);

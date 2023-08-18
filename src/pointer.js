@@ -38,7 +38,7 @@ const handlePointerdown = (event) => {
     isDragging = true;
     dragStartCell = { x: cellX, y: cellY };
   } else if (event.buttons === 2) {
-    removePathsOnRightClick();
+    removePathsOnRightClick(cellX, cellY);
   }
 };
 
@@ -69,6 +69,7 @@ const handlePointermove = (event) => {
 
   const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
   const yurtInEndCell = yurtInCell(cellX, cellY);
+
   if (yurtInStartCell) {
     yurtInStartCell.rotateTo(cellX, cellY);
     dragStartCell = {};
