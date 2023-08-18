@@ -142,16 +142,15 @@ export const drawPaths = () => {
       path2,
       d: `${start}${Q}${end}`
     });
-
-    // pathElement.setAttribute('d', `${start}${Q}${end}`);
-    // pathLayer.appendChild(pathElement);
   });
 
   // What about paths that have 0 connections ???
   paths.forEach(path => {
-    if (!connections.find(c => c.path1 !== path && c.path2 !== path)) {
+    const connected = connections.find(c => c.path1 === path || c.path2 === path);
+
+    if (!connected) {
       const { points } = path;
-      // this path has no connections, we need to add it to the list as a little 2x1 path
+      // this path has no connections, need to add it to the list as a little 2x1 path
       const M = `M${toSvgCoord(points[0].x)} ${toSvgCoord(points[0].y)}`;
       const L = `L${toSvgCoord(points[1].x)} ${toSvgCoord(points[1].y)}`;
       newPathsData.push({
@@ -161,10 +160,7 @@ export const drawPaths = () => {
     }
   });
 
-  console.log('path elements:');
   newPathsData.forEach(newPathData => {
-    let doesntExistYet = true;
-
     pathsData.forEach(oldPathData => {
       // it's the same path, skip
       // if (newPathData === oldPathData) return;
@@ -174,39 +170,31 @@ export const drawPaths = () => {
         (newPathData.path && newPathData.path === oldPathData.path) ||
         (newPathData.path1 && newPathData.path1 === oldPathData.path1 && newPathData.path2 === oldPathData.path2)
       ) {
-        doesntExistYet = false;
         newPathData.svgElement = oldPathData.svgElement;
 
         // The two path datas are different, this connection/path aaah needs updating
         if (newPathData.d !== oldPathData.d) {
+          oldPathData.d = newPathData.d;
           newPathData.svgElement.setAttribute('d', newPathData.d);
         }
       }
     });
 
-    if (doesntExistYet) {
+    pathsData.forEach(oldPathData => {
+      if (!newPathsData.find(newPathData => oldPathData.d === newPathData.d)) {
+        if (oldPathData.path) {
+          oldPathData.svgElement.remove();
+        }
+      }
+    });
+
+    if (!newPathData.svgElement) {
       newPathData.svgElement = createSvgElement('path');
       newPathData.svgElement.setAttribute('d', newPathData.d);
       newPathData.svgElement.style.transition = 'all.3s';
       pathLayer.appendChild(newPathData.svgElement);
     }
-
-    // console.log(newPathData.svgElement);
   });
-
-  // pathsData.forEach(oldPathData => {
-  //   let foundInNewData = false;
-
-  //   newPathsData.forEach(newPathData => {
-  //     if (oldPathData.path === newPathData.path) {
-  //       foundInNewData = true;
-  //     }
-  //   });
-
-  //   if (!foundInNewData) {
-
-  //   }
-  // });
 
   pathsData = [...newPathsData];
 }
@@ -221,59 +209,22 @@ export class Path extends Structure {
     });
 
     paths.push(this);
-
-    // drawPaths();
-    // Redraw all paths that are connected immediately to this?
   }
 
   remove() {
-    // Remove from DOM
-    pathsData.find(p => p.path === this).svgElement.remove();
+    // Remove from pathsData:
+    pathsData = pathsData.filter(p => {
+      if (p.path === this || p.path1 === this || p.path2 === this) {
+        p.svgElement.remove();
+        return false;
+      }
+
+      return true;
+    });
 
     // Remove from paths array
     paths.splice(paths.findIndex((p) => p === this), 1);
+
+    super.remove();
   }
-
-  // drawSvg() {
-  //   this.svgElement.setAttribute('d', `M${x} ${y} ${this.points.reduce((p, i) => `L${i < index ? toSvgCoord(p.x) : x} ${toSvgCoord(p.y)}`, '')}`);
-  // }
-
-  // drawSvg() {
-  //   // Start and end match, actually just draw a circle
-  //   // if (this.start.x === this.end.x && this.start.y === this.start.y) {
-  //   //   this.svgElement = createSvgElement('circle');
-  //   //   this.svgElement.setAttribute('fill', colors.path);
-  //   // }
-  //   const x = toSvgCoord(this.x);
-  //   const y = toSvgCoord(this.y);
-  //   this.svgElement.setAttribute('d', `M${x} ${y} L${x} ${y} ${this.points.reduce((p, i) => i > 0 ? `L${toSvgCoord(p.x)} ${toSvgCoord(p.y)}` : '', '')}`);
-
-  //   for (let index = 0; index < this.points.length; index++) {
-  //     setTimeout(() => {
-  //       this.svgElement.setAttribute('d', `M${x} ${y} ${this.points.reduce((p, i) => `L${i < index ? toSvgCoord(p.x) : x} ${toSvgCoord(p.y)}`, '')}`);
-  //     }, 500 * index);
-  //   }
-  // }
-
-  // addToSvg() {
-  //   const x = gridCellSize / 2 + this.x * gridCellSize;
-  //   const y = gridCellSize / 2 + this.y * gridCellSize;
-  //   this.svgElement.setAttribute('fill', 'none');
-  //   this.svgElement.setAttribute('d', this.d);
-  //   this.svgElement.setAttribute('stroke-width', 0);
-  //   this.svgElement.style.transition = 'all.3s';
-  //   pathLayer.appendChild(this.svgElement);
-
-  //   // After a while, animate to real radius and shadow coords
-  //   setTimeout(() => {
-  //     this.svgElement.setAttribute('stroke-width', pathSvgWidth);
-  //   });
-
-  //   this.drawSvg();
-  // }
-
-  // addPoint({ x, y }) {
-  //   this.points.push({ x, y });
-  //   this.drawSvg();
-  // }
 }

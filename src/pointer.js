@@ -1,12 +1,8 @@
-import { boardSvgWidth, boardSvgHeight, boardPxWidth, boardPxHeight, svgElement, createSvgElement } from './svg';
-import { gridCellSize } from './grid';
+import { svgElement } from './svg';
 import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';
-
-// 384 / (72 / 8)
-const gridCellSizePx = boardPxWidth / (boardSvgWidth / gridCellSize);
-
-const gridCellPadding = 8; // Size in px of clicky cell padding (should be svg scaled instead of px?)
+import { structures } from './structure';
+import { isPastHalfwayInto, getGridCell } from './cell';
 
 let dragging = false;
 
@@ -15,73 +11,45 @@ let dragStartCell = {
   y: undefined,
 };
 
-const getGridCell = (x, y) => {
-  return {
-    x: Math.floor(x / gridCellSizePx),
-    y: Math.floor(y / gridCellSizePx),
-  }
-}
+const isCellOccupied = ({ x, y }) => structures.some(s => s.x === x && s.y === y);
 
-const getGridCellWithPadding = (x, y) => {
-  const { x: cellX, y: cellY } = getGridCell(x, y);
-  const internalX = x - cellX * gridCellSizePx;
-  const internalY = y - cellY * gridCellSizePx;
-  // Maybe x and y will have different amounts of padding if... like, thumbs are weird
-  const isInPaddingX = gridCellPadding < internalX && internalX < gridCellSizePx - gridCellPadding;
-  const isInPaddingY = gridCellPadding < internalY && internalY < gridCellSizePx - gridCellPadding;
-
-  return {
-    x: cellX,
-    y: cellY,
-    isInsideCellPadding: isInPaddingX && isInPaddingY,
-  };
-}
-
-let newPath = null;
-
-const tryAddPath = ({ cellX, cellY, isInsideCellPadding }) => {
-  const gridCellAlreadyHasSomethingIn = false;
-
-  if (gridCellAlreadyHasSomethingIn) {
-    console.log('gridCellAlreadyHasSomethingIn');
-    // do nothing
-    /// .... unless? Maybe the start of the path is in a yurt? Or at the edge of a farm?
-    return;
-  }
-
-  if (!isInsideCellPadding) {
-    console.log('!isInsideCellPadding');
-    return;
-  }
-
+const okayToBuild = ({ x, y }) => {
   if (inventory.paths <= 0) {
     console.log('no path pieces left');
     // No paths left, show some sort of red flashy need more paths indicator
     return;
   }
 
-  dragging = true;
-  dragStartCell = { x: cellX, y: cellY };
+  if (isCellOccupied({ x, y })) {
+    console.log('cant build there mate');
+    return;
+  }
 
-  // const pathObject = new Path({ points: [{ x: cellX, y: cellY }, { x: cellX, y: cellY }]});
-  // drawPaths();
-  // newPath = pathObject;
+  return true;
 }
 
 const handlePointerdown = (event) => {
   const rect = svgElement.getBoundingClientRect();
 
-  // TODO:
-  // figure out starting cell?
+  const { x: cellX, y: cellY } = getGridCell(event.x - rect.left, event.y - rect.top);
 
-  const { x: cellX, y: cellY, isInsideCellPadding } = getGridCellWithPadding(event.x - rect.left, event.y - rect.top);
+  if (event.buttons === 1) {
+    if (!okayToBuild({ x: cellX, y: cellY })) return;
 
-  // tryAddPath({ cellX, cellY, isInsideCellPadding });
+    dragging = true;
+    dragStartCell = { x: cellX, y: cellY };
+  } else if (event.buttons === 2) {
+    paths.filter(path =>
+      (
+        (path.points[0].x === cellX && path.points[0].y === cellY) ||
+        (path.points[1].x === cellX && path.points[1].y === cellY)
+      ) && (
+        !path.points[0].fixed && !path.points[1].fixed
+      )
+    ).forEach(pathToRemove => pathToRemove.remove());
 
-  dragging = true;
-  dragStartCell = { x: cellX, y: cellY };
-
-  // join the path piece to nearby paths?
+    drawPaths();
+  }
 };
 
 const handlePointermove = (event) => {
@@ -93,19 +61,26 @@ const handlePointermove = (event) => {
   const rect = svgElement.getBoundingClientRect();
 
   if (dragging) {
-    const { x: cellX, y: cellY, isInsideCellPadding } = getGridCellWithPadding(event.x - rect.left, event.y - rect.top);
+    const { x: cellX, y: cellY } = getGridCell(event.x - rect.left, event.y - rect.top);
 
-    if (!isInsideCellPadding) {
-      return;
-    }
+    if (!okayToBuild({ x: cellX, y: cellY })) return;
+
+    // if (!isInsideCellPadding) return;
 
     // Same cell still, doesn't count
-    if (cellX === dragStartCell.x && cellY === dragStartCell.y) {
-      return;
-    }
+    if (cellX === dragStartCell.x && cellY === dragStartCell.y) return;
 
-    newPath = new Path({ points: [{ x: dragStartCell.x, y: dragStartCell.y }, { x: cellX, y: cellY }] });
+    // Have we gone +50% into the new cell?
+    if (!isPastHalfwayInto({
+      pointer: { x: event.x - rect.left, y: event.y - rect.y },
+      from: { x: dragStartCell.x, y: dragStartCell.y },
+      to: { x: cellX, y: cellY }
+    })) return;
+
+    new Path({ points: [{ x: dragStartCell.x, y: dragStartCell.y }, { x: cellX, y: cellY }] });
+
     dragStartCell = { x: cellX, y: cellY };
+
     drawPaths();
   }
 
@@ -115,21 +90,12 @@ const handlePointermove = (event) => {
 }
 
 const handlePointerup = (event) => {
-  // if (dragging) {
-    // if (newPath.points[0].x === newPath.points[1].x && newPath.points[0].y === newPath.points[1].y) {
-    //   newPath.remove();
-    //   newPath = null;
-    // }
-  // }
-
   dragging = false;
   dragStartCell = { x: undefined, y: undefined };
-  // console.log(event);
-  // TODO:
-  // clear the "starting cell pointer held down in"... maybe?
 }
 
 export const initPointer = (target) => {
+  target.addEventListener('contextmenu', (event) => event.preventDefault());
   target.addEventListener('pointerdown', handlePointerdown);
   target.addEventListener('pointermove', handlePointermove);
   target.addEventListener('pointerup', handlePointerup);
