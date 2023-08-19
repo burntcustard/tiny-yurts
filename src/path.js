@@ -234,24 +234,18 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
       if (newPathData.path === undefined || !pathInSameCellRecentlyRemoved) {
         newPathData.svgElement.setAttribute('stroke-width', 0);
         newPathData.svgElement.setAttribute('opacity', 0);
-        newPathData.svgElementShadow = createSvgElement('path');
 
         if (isYurtPath) {
           newPathData.svgElement.setAttribute('d', `M${newPathData.M}L${newPathData.M}`);
-          newPathData.svgElementShadow.style.transition = 'all.4s';
-          newPathData.svgElementShadow.setAttribute('d', `M${newPathData.M}L${newPathData.M}`);
-        } else {
-          newPathData.svgElementShadow.setAttribute('d', newPathData.d);
-        }
 
-        pathShadowLayer.appendChild(newPathData.svgElementShadow);
-
-        setTimeout(() => {
-          if (isYurtPath) {
+          setTimeout(() => {
             newPathData.svgElement.setAttribute('d', `M${newPathData.M}L${newPathData.L}`);
-            newPathData.svgElementShadow.setAttribute('d', newPathData.d);
-          }
-        }, 10);
+          }, 10);
+        } else {
+          newPathData.svgElementShadow = createSvgElement('path');
+          newPathData.svgElementShadow.setAttribute('d', newPathData.d);
+          pathShadowLayer.appendChild(newPathData.svgElementShadow);
+        }
 
         setTimeout(() => {
           newPathData.svgElement.setAttribute('stroke-width', '');
@@ -259,7 +253,7 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
         });
 
         // After transition complete, we don't need the shadow anymore
-        setTimeout(() => newPathData.svgElementShadow.remove(), 500);
+        setTimeout(() => newPathData.svgElementShadow?.remove(), 500);
       }
     }
   });

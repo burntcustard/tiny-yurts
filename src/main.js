@@ -46,8 +46,10 @@ init(null, { contextless: true });
 
 // drawPaths();
 
+setTimeout(() => {
 const testYurt = new Yurt({ x: 6, y: 7, type: 'ox' });
-testYurt.addToSvg();
+  testYurt.addToSvg();
+}, 500);
 
 // setTimeout(() => {
 //   testYurt.rotateTo(2, 4);
