@@ -58,11 +58,12 @@ const handlePointermove = (event) => {
     || yDiff > 1
   ) return;
 
-  if (farmInCell(cellX, cellY)) {
-    dragStartCell = {};
-    isDragging = false;
-    return;
-  }
+  // We actually don't want to block building paths in farms :)
+  // if (farmInCell(cellX, cellY)) {
+  //   dragStartCell = {};
+  //   isDragging = false;
+  //   return;
+  // }
 
   // Have we gone +50% into the new cell?
   if (!isPastHalfwayInto({

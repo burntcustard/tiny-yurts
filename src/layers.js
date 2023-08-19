@@ -25,6 +25,13 @@ const addFenceShadowLayer = () => {
   return fenceShadowLayer;
 };
 
+const addGridBlockLayer = () => {
+  const gridBlockLayer = createSvgElement('g');
+  gridBlockLayer.setAttribute('fill', 'none');
+  svgElement.appendChild(gridBlockLayer);
+  return gridBlockLayer;
+};
+
 const addFenceLayer = () => {
   const fenceLayer = createSvgElement('g');
   fenceLayer.setAttribute('fill', 'none');
@@ -37,8 +44,6 @@ const addPathShadowLayer = () => {
   const pathShadowLayer = createSvgElement('g');
   pathShadowLayer.setAttribute('fill', 'none');
   pathShadowLayer.setAttribute('stroke', colors.base);
-  pathShadowLayer.setAttribute('stroke-linecap', 'round');
-  pathShadowLayer.setAttribute('stroke-linejoin', 'round');
   pathShadowLayer.setAttribute('stroke-width', pathSvgWidth);
   svgElement.appendChild(pathShadowLayer);
   return pathShadowLayer;
@@ -48,9 +53,6 @@ const addPathLayer = () => {
   const pathLayer = createSvgElement('g');
   pathLayer.setAttribute('fill', 'none');
   pathLayer.setAttribute('stroke', colors.path);
-  pathLayer.setAttribute('stroke-linecap', 'round');
-  // stroke-linejoin might not be needed(?)
-  pathLayer.setAttribute('stroke-linejoin', 'round');
   pathLayer.setAttribute('stroke-width', pathSvgWidth);
   svgElement.appendChild(pathLayer);
   return pathLayer;
@@ -66,7 +68,6 @@ const addYurtLayer = () => {
 const addYurtShadowLayer = () => {
   const yurtShadowLayer = createSvgElement('g');
   yurtShadowLayer.setAttribute('fill', 'none');
-  yurtShadowLayer.setAttribute('stroke-linecap', 'round');
   yurtShadowLayer.setAttribute('stroke', colors.shadow);
   svgElement.appendChild(yurtShadowLayer);
   return yurtShadowLayer;
@@ -82,16 +83,18 @@ const addYurtDecorationLayer = (color) => {
 
 const addPointerLayer = () => {
   const pointerLayer = createSvgElement('g');
+  svgElement.appendChild(pointerLayer);
   return pointerLayer;
 }
 
 // Order is important here, because it determines stacking in the SVG
 export const layers = {
   grid: addGridToSvg(),
-  fenceShadows: addFenceShadowLayer(),
-  fences: addFenceLayer(),
+  gridBlock: addGridBlockLayer(),
   pathShadows: addPathShadowLayer(),
   paths: addPathLayer(),
+  fenceShadows: addFenceShadowLayer(),
+  fences: addFenceLayer(),
   animalShadows: addAnimalShadowLayer(),
   animals: addAnimalLayer(),
   yurtShadows: addYurtShadowLayer(),
@@ -108,7 +111,9 @@ export const animalLayer = layers.animals;
 export const animalShadowLayer = layers.animalShadows;
 export const fenceLayer = layers.fences;
 export const fenceShadowLayer = layers.fenceShadows;
+export const gridBlockLayer = layers.gridBlock;
 export const pathLayer = layers.paths;
 export const pathShadowLayer = layers.pathShadows;
+export const pointerLayer = layers.pointerLayer;
 export const yurtLayer = layers.yurts;
 export const yurtShadowLayer = layers.yurtShadows;

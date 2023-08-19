@@ -236,7 +236,6 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
         newPathData.svgElement.setAttribute('opacity', 0);
 
         if (isYurtPath) {
-          console.log('yurt path changing');
           newPathData.svgElement.setAttribute('d', `M${newPathData.M}L${newPathData.M}`);
 
           setTimeout(() => {

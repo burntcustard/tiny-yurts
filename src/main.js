@@ -5,6 +5,7 @@ import { svgElement } from './svg';
 import { initPointer } from './pointer';
 import { drawPaths, Path } from './path';
 import { structures } from './structure';
+import { Ox } from './ox';
 
 init(null, { contextless: true });
 
@@ -60,26 +61,38 @@ setTimeout(() => {
   testYurt2.addToSvg();
 }, 2000);
 
-const testFarm = new Farm({ x: 1, y: 6, type: 'ox' });
+let testFarm;
+
 setTimeout(() => {
+  testFarm = new Farm({ x: 1, y: 6, type: 'ox' });
   testFarm.addToSvg();
+
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => {
+      testFarm.addAnimal();
+    }, 1500 + i * 500);
+  }
 }, 3000);
 
-for (let i = 0; i < 3; i++) {
-  setTimeout(() => {
-    testFarm.addAnimal();
-  }, 4500 + i * 500);
-}
+const testOx = new Ox({ x: 4, y: 4 });
+testOx.parent = { x: 0, y: 0 };
+testOx.addToSvg();
+
+const testOx2 = new Ox({ x: 8, y: 4, rotation: 0.6 });
+testOx2.parent = { x: 0, y: 0 };
+testOx2.addToSvg();
 
 initPointer(svgElement);
 
 const loop = GameLoop({
   update() {
-
+    testFarm.update();
   },
   render() {
-
+    testFarm.render();
   },
 });
 
-loop.start();
+setTimeout(() => {
+  loop.start();
+}, 4000);

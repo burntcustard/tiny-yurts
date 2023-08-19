@@ -5,6 +5,7 @@ import {
 } from './layers';
 import { gridCellSize } from './grid';
 import { Path, drawPaths, pathsData } from './path';
+import { colors } from './colors';
 
 export const yurts = [];
 
@@ -106,10 +107,10 @@ export class Yurt extends Structure {
     const pathInPathData = pathsData.find(p => p.path === this.startPath);
 
     if (pathInPathData) {
-      pathInPathData.svgElement.setAttribute('stroke-width', '0');
+      pathInPathData.svgElement.setAttribute('stroke-width', 0);
 
       setTimeout(() => {
-        pathInPathData.svgElement.setAttribute('stroke-width', '');
+        pathInPathData.svgElement.removeAttribute('stroke-width');
       }, 100);
     }
 
@@ -127,8 +128,17 @@ export class Yurt extends Structure {
     yurt.style.transition = 'all.4s';
     yurtLayer.appendChild(yurt);
 
+    const baseShadow = createSvgElement('circle');
+    baseShadow.setAttribute('fill', colors.shadowS);
+    baseShadow.setAttribute('r', 0)
+    baseShadow.setAttribute('stroke', 'none');
+    baseShadow.setAttribute('transform', `translate(${x},${y})`);
+    baseShadow.style.transition = 'all.2s';
+    yurtShadowLayer.appendChild(baseShadow);
+    setTimeout(() => baseShadow.setAttribute('r', 3));
+
     const shadow = createSvgElement('path');
-    shadow.setAttribute('stroke-width', '0');
+    shadow.setAttribute('stroke-width', 0);
     shadow.setAttribute('d', 'M0 0l0 0');
     shadow.setAttribute('transform', `translate(${x},${y})`);
     shadow.style.transition = 'stroke-width.4s,d.4s.3s';
@@ -149,7 +159,7 @@ export class Yurt extends Structure {
       shadow.setAttribute('stroke-width', '6');
       shadow.setAttribute('d', 'M0 0l2 2');
       decoration.setAttribute('stroke-dashoffset', 0);
-    }, 500);
+    }, 200);
   }
 
   addPath() {

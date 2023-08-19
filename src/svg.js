@@ -13,6 +13,7 @@ export const svgElement = createSvgElement('svg');
 svgElement.setAttribute('width', boardPxWidth);
 svgElement.setAttribute('height', boardPxHeight);
 svgElement.setAttribute('viewBox', `0 0 ${boardSvgWidth} ${boardSvgHeight}`);
+svgElement.setAttribute('stroke-linecap', 'round');
 svgElement.style.display = 'grid'; // Maybe required, cause of random extra px
 svgElement.style.touchAction = 'none'; // Required to prevent default draggness
 svgElement.style.background = colors.grass;
