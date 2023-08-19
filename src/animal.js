@@ -16,6 +16,7 @@ export class Animal extends GameObjectClass {
       y: getRandom(properties.parent?.height ?? 0),
       rotation: properties.rotation ?? (Math.random() * Math.PI * 4) - Math.PI * 2,
     });
+    this.isBaby = properties.isBaby ?? false;
     this.roundness = properties.roundness;
   }
 

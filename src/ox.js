@@ -17,18 +17,16 @@ export class Ox extends Animal {
   }
 
   addToSvg() {
-    const x = this.parent.x * gridCellSize + this.x - this.width / 2;
-    const y = this.parent.y * gridCellSize + this.y - this.height / 2;
     this.scale = 0;
 
     const ox = createSvgElement('g');
     ox.style.transformOrigin = 'center';
     ox.style.transformBox = 'fill-box';
-    ox.style.transform = `
-      translate(${x}px, ${y}px)
-      rotate(${radToDeg(this.rotation) - 90}deg)
-      scale(${this.scale})
-    `;
+    // ox.style.transform = `
+    //   translate(${x}px, ${y}px)
+    //   rotate(${radToDeg(this.rotation) - 90}deg)
+    //   scale(${this.scale})
+    // `;
     ox.style.transition = 'all 1s';
     this.svgElement = ox;
     animalLayer.appendChild(ox);
@@ -49,6 +47,11 @@ export class Ox extends Animal {
     horns.setAttribute('d', 'M0 2Q0 1 1 1 Q2 1 2 2');
     horns.setAttribute('transform', 'translate(-0.2 .6)');
     horns.setAttribute('stroke-width', 0.4);
+    if (this.isBaby) {
+      horns.style.transition = 'all 1s';
+      horns.style.opacity = 0;
+    }
+    this.svgHorns = horns;
     ox.appendChild(horns);
 
     const shadow = createSvgElement('rect');
@@ -58,11 +61,11 @@ export class Ox extends Animal {
     shadow.setAttribute('rx', this.roundness);
     shadow.style.transformOrigin = 'center';
     shadow.style.transformBox = 'fill-box';
-    shadow.style.transform = `
-      translate(${x}px, ${y}px)
-      rotate(${radToDeg(this.rotation) - 90}deg)
-      scale(${this.scale + 0.04})
-    `;
+    // shadow.style.transform = `
+    //   translate(${x}px, ${y}px)
+    //   rotate(${radToDeg(this.rotation) - 90}deg)
+    //   scale(${this.scale + 0.04})
+    // `;
     shadow.style.transition = 'all 1s';
     this.svgShadowElement = shadow;
     animalShadowLayer.appendChild(shadow);
@@ -70,6 +73,11 @@ export class Ox extends Animal {
     setTimeout(() => {
       this.scale = 1;
     }, 500);
+
+    setTimeout(() => {
+      this.isBaby = false;
+      this.svgHorns.style.opacity = 1;
+    }, 10000);
   }
 
   update() {
@@ -99,8 +107,9 @@ export class Ox extends Animal {
         const tooCloseToOtherOxes = this.parent.children.some(o => {
           if (this === o) return false;
           const otherOxVector = Vector(o);
-          const distToOtherOx = otherOxVector.distance({ x: newPosX, y: newPosY });
-          return distToOtherOx < 4;
+          const oldDistToOtherOx = otherOxVector.distance({ x: this.x, y: this.y });
+          const newDistToOtherOx = otherOxVector.distance({ x: newPosX, y: newPosY });
+          return newDistToOtherOx < 4 && newDistToOtherOx < oldDistToOtherOx;
         });
         if (!tooCloseToOtherOxes) {
           this.x = newPosX;
@@ -117,12 +126,12 @@ export class Ox extends Animal {
     this.svgElement.style.transform = `
       translate(${x}px, ${y}px)
       rotate(${radToDeg(this.rotation) - 90}deg)
-      scale(${this.scale})
+      scale(${this.scale * (this.isBaby ? 0.6 : 1)})
     `;
     this.svgShadowElement.style.transform = `
       translate(${x}px, ${y}px)
       rotate(${radToDeg(this.rotation) - 90}deg)
-      scale(${this.scale + 0.04})
+      scale(${(this.scale + 0.04) * (this.isBaby ? 0.6 : 1)})
     `;
   }
 }

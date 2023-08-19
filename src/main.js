@@ -69,7 +69,7 @@ setTimeout(() => {
 
   for (let i = 0; i < 3; i++) {
     setTimeout(() => {
-      testFarm.addAnimal();
+      testFarm.addAnimal({});
     }, 1500 + i * 500);
   }
 }, 3000);

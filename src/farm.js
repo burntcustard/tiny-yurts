@@ -32,19 +32,28 @@ export class Farm extends Structure {
 
       drawPaths({});
     }, 1000)
+
+    setTimeout(() => {
+      this.upgrade();
+    }, 10000);
   }
 
-  addAnimal() {
+  addAnimal({ isBaby = false }) {
     const animal = new Ox({
       parent: this,
+      isBaby,
     });
     this.addChild(animal);
     animal.addToSvg();
   }
 
+  upgrade() {
+    this.addAnimal({ isBaby: true });
+    this.addAnimal({ isBaby: true });
+  }
+
   update() {
     this.children.forEach(ox => {
-      // console.log('update ox');
       ox.update();
     });
   }
