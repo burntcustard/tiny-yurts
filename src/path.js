@@ -199,7 +199,7 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
       if (!newPathsData.find((newPathData2) => oldPathData.d === newPathData2.d)) {
         if (oldPathData.path) {
           // if (changedPaths.includes(oldPathData.path)) {
-            if (fadeout) {
+            if (fadeout && oldPathData.path && oldPathData.path.points[0].fixed) {
               setInterval(() => {
                 oldPathData.svgElement.remove();
               }, 500);
@@ -236,6 +236,7 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
         newPathData.svgElement.setAttribute('opacity', 0);
 
         if (isYurtPath) {
+          console.log('yurt path changing');
           newPathData.svgElement.setAttribute('d', `M${newPathData.M}L${newPathData.M}`);
 
           setTimeout(() => {
@@ -248,7 +249,7 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
         }
 
         setTimeout(() => {
-          newPathData.svgElement.setAttribute('stroke-width', '');
+          newPathData.svgElement.removeAttribute('stroke-width');
           newPathData.svgElement.setAttribute('opacity', 1);
         }, 10);
 

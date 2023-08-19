@@ -110,7 +110,6 @@ export class Yurt extends Structure {
 
       setTimeout(() => {
         pathInPathData.svgElement.setAttribute('stroke-width', '');
-        drawPaths({ changedCells: [{ x, y }] });
       }, 100);
     }
 
