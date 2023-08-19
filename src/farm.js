@@ -20,7 +20,8 @@ export class Farm extends Structure {
     this.height = 2;
     this.circumference = this.width * gridCellSize * 2 + this.height * gridCellSize * 2;
     this.type = properties.type;
-    farms.push(this);
+    this.demand = 9900;
+    this.numIssues = 0;
 
     setTimeout(() => {
       this.startPath = new Path({
@@ -31,7 +32,15 @@ export class Farm extends Structure {
       });
 
       drawPaths({});
-    }, 1000)
+    }, 1500)
+
+    farms.push(this); // Must be after farms.length baby check
+
+    this.addToSvg();
+    setTimeout(() => this.addAnimal({}), 2000);
+    setTimeout(() => this.addAnimal({}), 3000);
+    setTimeout(() => this.addAnimal({ isBaby: (farms.length - 1) % 2 }), 4000);
+
 
     setTimeout(() => {
       this.upgrade();
@@ -53,7 +62,18 @@ export class Farm extends Structure {
   }
 
   update() {
-    this.children.forEach(ox => {
+    // So 3 ox = 2 demand per update, 5 ox = 2 demand per update,
+    // so upgrading doubles the demand(?)
+    this.demand += this.children.filter(c => !c.isBaby).length - 1;
+
+    this.numIssues = Math.floor(this.demand / 10000);
+
+    this.children.forEach((ox, i) => {
+      if (i < this.numIssues) {
+        ox.giveIssue();
+      } else {
+        ox.removeIssue();
+      }
       ox.update();
     });
   }
@@ -76,10 +96,11 @@ export class Farm extends Structure {
     gridBlock.setAttribute('rx', roundness);
     gridBlock.setAttribute('transform', `translate(${x},${y})`);
     gridBlock.style.opacity = 0;
-    gridBlock.style.transition = 'all 1s';
+    gridBlock.style.transition = 'opacity 1s';
+    gridBlock.style.willChange = 'opacity';
     gridBlock.setAttribute('fill', colors.grass);
     gridBlockLayer.appendChild(gridBlock);
-    setTimeout(() => gridBlock.style.opacity = 1, 500);
+    setTimeout(() => gridBlock.style.opacity = 1, 1000);
 
     const fence = createSvgElement('rect');
     fence.setAttribute('width', svgWidth);
@@ -96,16 +117,20 @@ export class Farm extends Structure {
     shadow.setAttribute('width', svgWidth);
     shadow.setAttribute('height', svgHeight);
     shadow.setAttribute('rx', roundness);
-    shadow.setAttribute('transform', `translate(${x},${y})`);
+    shadow.style.transform = `translate(${x - 0.5}px,${y - 0.5}px)`;
+    shadow.style.willChange = 'stroke-dashoffset, transform';
     shadow.setAttribute('stroke-dasharray', this.circumference); // Math.PI * 2 + a bit
     shadow.setAttribute('stroke-dashoffset', this.circumference);
-    shadow.style.transition = 'all 1s';
+    shadow.style.transition = 'stroke-dashoffset 1s,transform.5s';
     fenceShadowLayer.appendChild(shadow);
 
-    // After a while, animate
     setTimeout(() => {
       fence.setAttribute('stroke-dashoffset', 0);
       shadow.setAttribute('stroke-dashoffset', 0);
-    }, 500);
+    }, 100);
+
+    setTimeout(() => {
+      shadow.style.transform = `translate(${x}px,${y}px)`;
+    }, 1000);
   }
 }

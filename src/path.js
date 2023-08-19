@@ -234,6 +234,7 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
       if (newPathData.path === undefined || !pathInSameCellRecentlyRemoved) {
         newPathData.svgElement.setAttribute('stroke-width', 0);
         newPathData.svgElement.setAttribute('opacity', 0);
+        newPathData.svgElement.style.willChange = 'stroke-width, opacity';
 
         if (isYurtPath) {
           newPathData.svgElement.setAttribute('d', `M${newPathData.M}L${newPathData.M}`);

@@ -65,22 +65,7 @@ let testFarm;
 
 setTimeout(() => {
   testFarm = new Farm({ x: 1, y: 6, type: 'ox' });
-  testFarm.addToSvg();
-
-  for (let i = 0; i < 3; i++) {
-    setTimeout(() => {
-      testFarm.addAnimal({});
-    }, 1500 + i * 500);
-  }
 }, 3000);
-
-const testOx = new Ox({ x: 4, y: 4 });
-testOx.parent = { x: 0, y: 0 };
-testOx.addToSvg();
-
-const testOx2 = new Ox({ x: 8, y: 4, rotation: 0.6 });
-testOx2.parent = { x: 0, y: 0 };
-testOx2.addToSvg();
 
 initPointer(svgElement);
 

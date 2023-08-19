@@ -22,12 +22,8 @@ export class Ox extends Animal {
     const ox = createSvgElement('g');
     ox.style.transformOrigin = 'center';
     ox.style.transformBox = 'fill-box';
-    // ox.style.transform = `
-    //   translate(${x}px, ${y}px)
-    //   rotate(${radToDeg(this.rotation) - 90}deg)
-    //   scale(${this.scale})
-    // `;
     ox.style.transition = 'all 1s';
+    ox.style.willChange = 'transform';
     this.svgElement = ox;
     animalLayer.appendChild(ox);
 
@@ -49,6 +45,7 @@ export class Ox extends Animal {
     horns.setAttribute('stroke-width', 0.4);
     if (this.isBaby) {
       horns.style.transition = 'all 1s';
+      horns.style.willChange = 'opacity';
       horns.style.opacity = 0;
     }
     this.svgHorns = horns;
@@ -61,14 +58,12 @@ export class Ox extends Animal {
     shadow.setAttribute('rx', this.roundness);
     shadow.style.transformOrigin = 'center';
     shadow.style.transformBox = 'fill-box';
-    // shadow.style.transform = `
-    //   translate(${x}px, ${y}px)
-    //   rotate(${radToDeg(this.rotation) - 90}deg)
-    //   scale(${this.scale + 0.04})
-    // `;
     shadow.style.transition = 'all 1s';
+    shadow.style.willChange = 'transform';
     this.svgShadowElement = shadow;
     animalShadowLayer.appendChild(shadow);
+
+    this.render();
 
     setTimeout(() => {
       this.scale = 1;
@@ -120,6 +115,8 @@ export class Ox extends Animal {
   }
 
   render() {
+    super.render();
+
     const x = this.parent.x * gridCellSize + this.x - this.width / 2;
     const y = this.parent.y * gridCellSize + this.y - this.height / 2;
 

@@ -1,6 +1,5 @@
 import { addGridToSvg } from './grid';
 import { svgElement, createSvgElement } from './svg';
-import { pathSvgWidth } from './path';
 import { colors } from './colors';
 
 const addAnimalShadowLayer = () => {
@@ -44,7 +43,7 @@ const addPathShadowLayer = () => {
   const pathShadowLayer = createSvgElement('g');
   pathShadowLayer.setAttribute('fill', 'none');
   pathShadowLayer.setAttribute('stroke', colors.base);
-  pathShadowLayer.setAttribute('stroke-width', pathSvgWidth);
+  pathShadowLayer.setAttribute('stroke-width', 3);
   svgElement.appendChild(pathShadowLayer);
   return pathShadowLayer;
 };
@@ -53,7 +52,7 @@ const addPathLayer = () => {
   const pathLayer = createSvgElement('g');
   pathLayer.setAttribute('fill', 'none');
   pathLayer.setAttribute('stroke', colors.path);
-  pathLayer.setAttribute('stroke-width', pathSvgWidth);
+  pathLayer.setAttribute('stroke-width', 3);
   svgElement.appendChild(pathLayer);
   return pathLayer;
 };
@@ -81,6 +80,12 @@ const addYurtDecorationLayer = (color) => {
   return yurtDecorationLayer;
 };
 
+const addPinLayer = () => {
+  const pinLayer = createSvgElement('g');
+  svgElement.appendChild(pinLayer);
+  return pinLayer;
+}
+
 const addPointerLayer = () => {
   const pointerLayer = createSvgElement('g');
   svgElement.appendChild(pointerLayer);
@@ -103,6 +108,7 @@ export const layers = {
     ox: addYurtDecorationLayer(colors.ox),
     goat: addYurtDecorationLayer(colors.goat),
   },
+  pinLayer: addPinLayer(),
   pointerLayer: addPointerLayer(),
 };
 
@@ -115,5 +121,6 @@ export const gridBlockLayer = layers.gridBlock;
 export const pathLayer = layers.paths;
 export const pathShadowLayer = layers.pathShadows;
 export const pointerLayer = layers.pointerLayer;
+export const pinLayer = layers.pinLayer;
 export const yurtLayer = layers.yurts;
 export const yurtShadowLayer = layers.yurtShadows;
