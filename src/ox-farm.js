@@ -20,6 +20,24 @@ export class OxFarm extends Farm {
     }, 10000);
   }
 
+  upgrade() {
+    const parent1 = this.children.at(-1);
+    const parent2 = this.children.at(-2);
+    const parent3 = this.children.at(-3);
+    parent1.showLove();
+    setTimeout(() => parent2.showLove(), 1000);
+    setTimeout(() => parent3.showLove(), 2000);
+
+    setTimeout(() => {
+      parent1.hideLove();
+      parent2.hideLove();
+      parent3.hideLove();
+    }, 7000);
+
+    setTimeout(() => this.addAnimal({ isBaby: true }), 8000);
+    setTimeout(() => this.addAnimal({ isBaby: true }), 9000);
+  }
+
   addAnimal({ isBaby = false }) {
     super.addAnimal(new Ox({
       parent: this,

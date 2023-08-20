@@ -5,6 +5,8 @@ import { colors } from './colors';
 import { createSvgElement } from './svg';
 import { gridCellSize } from './grid';
 
+export const oxen = [];
+
 export class Ox extends Animal {
   constructor(properties) {
     super({
@@ -13,7 +15,10 @@ export class Ox extends Animal {
       width: 1.5,
       height: 2.5,
       roundness: 0.6,
+      color: colors.ox,
     });
+
+    oxen.push(this);
   }
 
   addToSvg() {
@@ -117,18 +122,18 @@ export class Ox extends Animal {
   render() {
     super.render();
 
-    const x = this.parent.x * gridCellSize + this.x - this.width / 2;
-    const y = this.parent.y * gridCellSize + this.y - this.height / 2;
+    const x = this.parent.x * gridCellSize + this.x;
+    const y = this.parent.y * gridCellSize + this.y;
 
     this.svgElement.style.transform = `
       translate(${x}px, ${y}px)
       rotate(${radToDeg(this.rotation) - 90}deg)
-      scale(${this.scale * (this.isBaby ? 0.6 : 1)})
+      scale(${this.scale * (this.isBaby ? 0.5 : 1)})
     `;
     this.svgShadowElement.style.transform = `
       translate(${x}px, ${y}px)
       rotate(${radToDeg(this.rotation) - 90}deg)
-      scale(${(this.scale + 0.04) * (this.isBaby ? 0.6 : 1)})
+      scale(${(this.scale + 0.04) * (this.isBaby ? 0.5 : 1)})
     `;
   }
 }

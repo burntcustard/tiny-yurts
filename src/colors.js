@@ -7,7 +7,7 @@ export const colors = {
   fence:  '#975',
   ox:     '#b75',
   oxHorn: '#dee',
-  goat:   '#bcc',
+  goat:   '#abb',
   grid:   '#0001',
   shadow: '#0002',
 };

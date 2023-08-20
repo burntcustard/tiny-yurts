@@ -3,6 +3,7 @@ import { Yurt } from './yurt';
 import { svgElement } from './svg';
 import { initPointer } from './pointer';
 import { OxFarm } from './ox-farm';
+import { GoatFarm } from './goat-farm';
 
 init(null, { contextless: true });
 
@@ -58,23 +59,31 @@ setTimeout(() => {
   testYurt2.addToSvg();
 }, 2000);
 
-let testFarm;
+let testGoatFarm;
 
 setTimeout(() => {
-  testFarm = new OxFarm({ width: 3, height: 2, x: 1, y: 6 });
+  testGoatFarm = new GoatFarm({ width: 2, height: 3, x: 6, y: 1 });
 }, 3000);
+
+let testOxFarm;
+
+setTimeout(() => {
+  testOxFarm = new OxFarm({ width: 3, height: 2, x: 1, y: 6 });
+}, 7000);
 
 initPointer(svgElement);
 
 const loop = GameLoop({
   update() {
-    testFarm.update();
+    testGoatFarm.update();
+    testOxFarm.update();
   },
   render() {
-    testFarm.render();
+    testGoatFarm.render();
+    testOxFarm.render();
   },
 });
 
 setTimeout(() => {
   loop.start();
-}, 4000);
+}, 8000);
