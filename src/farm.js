@@ -17,7 +17,6 @@ export class Farm extends Structure {
     const { x, y } = properties;
     super(properties);
     this.circumference = this.width * gridCellSize * 2 + this.height * gridCellSize * 2;
-    this.type = properties.type;
     this.numIssues = 0;
 
     setTimeout(() => {

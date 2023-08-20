@@ -105,8 +105,8 @@ export const layers = {
   yurtShadows: addYurtShadowLayer(),
   yurts: addYurtLayer(),
   yurtDecorationLayers: {
-    ox: addYurtDecorationLayer(colors.ox),
-    goat: addYurtDecorationLayer(colors.goat),
+    'ox': addYurtDecorationLayer(colors.ox),
+    'goat': addYurtDecorationLayer(colors.goat),
   },
   pinLayer: addPinLayer(),
   pointerLayer: addPointerLayer(),

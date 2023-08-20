@@ -19,7 +19,7 @@ export default defineConfig({
         unsafe_comps: true,
         unsafe_math: true,
       },
-      mangle: { properties: 'true' },
+      mangle: { properties: { keep_quoted: true }},
       module: true,
     },
     assetsInlineLimit: 0,
