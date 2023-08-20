@@ -16,11 +16,8 @@ export class Farm extends Structure {
   constructor(properties) {
     const { x, y } = properties;
     super(properties);
-    this.width = 3;
-    this.height = 2;
     this.circumference = this.width * gridCellSize * 2 + this.height * gridCellSize * 2;
     this.type = properties.type;
-    this.demand = 9900;
     this.numIssues = 0;
 
     setTimeout(() => {
@@ -34,54 +31,50 @@ export class Farm extends Structure {
       drawPaths({});
     }, 1500)
 
-    farms.push(this); // Must be after farms.length baby check
+    farms.push(this);
 
     this.addToSvg();
-    setTimeout(() => this.addAnimal({}), 2000);
-    setTimeout(() => this.addAnimal({}), 3000);
-    setTimeout(() => this.addAnimal({ isBaby: (farms.length - 1) % 2 }), 4000);
-
-
-    setTimeout(() => {
-      this.upgrade();
-    }, 10000);
   }
 
-  addAnimal({ isBaby = false }) {
-    const animal = new Ox({
-      parent: this,
-      isBaby,
-    });
+  addAnimal(animal) {
     this.addChild(animal);
     animal.addToSvg();
   }
 
   upgrade() {
-    this.addAnimal({ isBaby: true });
-    this.addAnimal({ isBaby: true });
+    const parent1 = this.children.at(-1);
+    const parent2 = this.children.at(-2);
+    const parent3 = this.children.at(-3);
+    parent1.showLove();
+    setTimeout(() => parent2.showLove(), 1000);
+    setTimeout(() => parent3.showLove(), 2000);
+
+    setTimeout(() => {
+      parent1.hideLove();
+      parent2.hideLove();
+      parent3.hideLove();
+    }, 7000);
+
+    setTimeout(() => this.addAnimal({ isBaby: true }), 8000);
+    setTimeout(() => this.addAnimal({ isBaby: true }), 9000);
   }
 
   update() {
-    // So 3 ox = 2 demand per update, 5 ox = 2 demand per update,
-    // so upgrading doubles the demand(?)
-    this.demand += this.children.filter(c => !c.isBaby).length - 1;
-
-    this.numIssues = Math.floor(this.demand / 10000);
-
-    this.children.forEach((ox, i) => {
+    this.children.forEach((animal, i) => {
       if (i < this.numIssues) {
-        ox.giveIssue();
+        animal.showWarn();
       } else {
-        ox.removeIssue();
+        animal.removeWarn();
       }
-      ox.update();
+
+      animal.update();
     });
   }
 
   render() {
-    this.children.forEach(ox => {
-      ox.render();
-    })
+    this.children.forEach(animal => {
+      animal.render();
+    });
   }
 
   addToSvg() {

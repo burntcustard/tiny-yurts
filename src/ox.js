@@ -72,7 +72,7 @@ export class Ox extends Animal {
     setTimeout(() => {
       this.isBaby = false;
       this.svgHorns.style.opacity = 1;
-    }, 10000);
+    }, 60000);
   }
 
   update() {

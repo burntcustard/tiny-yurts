@@ -23,43 +23,48 @@ export class Animal extends GameObjectClass {
 
     this.isBaby = properties.isBaby ?? false;
     this.roundness = properties.roundness;
-    this.hasIssue = false;
+    this.hasWarn = false;
 
-    this.issueSvg = createSvgElement('g');
-    this.issueSvg.style.opacity = 0;
-    this.issueSvg.style.willChange = 'opacity, transform';
-    this.issueSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1)';
-    this.issueSvg.style.transformOrigin = 'bottom';
-    this.issueSvg.style.transformBox = 'fill-box';
-    this.issueSvg.style.transform = `
-      translate(${x}px, ${y}px)
-      scale(${this.hasIssue ? 1 : 0})
-    `;
-    pinLayer.appendChild(this.issueSvg);
+    this.pinSvg = createSvgElement('g');
+    this.pinSvg.style.opacity = 0;
+    this.pinSvg.style.willChange = 'opacity, transform';
+    this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1)';
+    this.pinSvg.style.transformOrigin = 'bottom';
+    this.pinSvg.style.transformBox = 'fill-box';
+    this.pinSvg.style.transform = `translate(${x}px, ${y}px)`;
+    pinLayer.appendChild(this.pinSvg);
 
-    const issueBubble = createSvgElement('path');
-    issueBubble.setAttribute('fill', '#fff');
-    issueBubble.setAttribute('d', 'm6 6-2-2a3 3 0 1 1 4 0Z');
-    issueBubble.setAttribute('transform', 'scale(.5) translate(-4 -8)');
-    this.issueSvg.appendChild(issueBubble);
+    const pinBubble = createSvgElement('path');
+    pinBubble.setAttribute('fill', '#fff');
+    pinBubble.setAttribute('d', 'm6 6-2-2a3 3 0 1 1 4 0Z');
+    pinBubble.setAttribute('transform', 'scale(.5) translate(-4 -8)');
+    this.pinSvg.appendChild(pinBubble);
 
-    const dot = createSvgElement('path');
-    dot.setAttribute('stroke', colors.ox);
-    dot.setAttribute('d', 'M3 6L3 6M3 4.5L3 3');
-    dot.setAttribute('transform', 'scale(.5) translate(-1 -10.5)');
-    this.issueSvg.appendChild(dot);
+    // !
+    this.warnSvg = createSvgElement('path');
+    this.warnSvg.setAttribute('stroke', colors.ox);
+    this.warnSvg.setAttribute('d', 'M3 6L3 6M3 4.5L3 3');
+    this.warnSvg.setAttribute('transform', 'scale(.5) translate(-1 -10.5)');
+    this.warnSvg.style.opacity = 0;
+    this.pinSvg.appendChild(this.warnSvg);
+
+    // ♥
+    this.loveSvg = createSvgElement('path');
+    this.loveSvg.setAttribute('fill', colors.ox);
+    this.loveSvg.setAttribute('d', 'M6 6L4 4A1 1 0 1 1 6 2 1 1 0 1 1 8 4Z');
+    this.loveSvg.setAttribute('transform', 'scale(.4) translate(-3.5 -10.7)');
+    this.loveSvg.style.opacity = 0;
+    this.pinSvg.appendChild(this.loveSvg);
   }
 
   render() {
     const x = this.parent.x * gridCellSize + this.x - this.width / 2;
     const y = this.parent.y * gridCellSize + this.y - this.height / 2;
 
-    if (this.hasIssue) {
-      this.issueSvg.style.transform = `
-        translate(${x}px, ${y}px)
-        scale(${this.hasIssue ? 1 : 0})
-      `;
-    }
+    this.pinSvg.style.transform = `
+      translate(${x}px, ${y}px)
+      scale(${this.hasWarn || this.hasLove ? 1 : 0})
+    `;
   }
 
   getRandomTarget() {
@@ -79,16 +84,32 @@ export class Animal extends GameObjectClass {
     return randomTarget;
   }
 
-  giveIssue() {
-    if (this.hasIssue) return;
-    this.hasIssue = true;
-    this.render(); // Extra render to get the issueSvg in the correct x/y
-    this.issueSvg.style.opacity = 1;
+  showLove() {
+    this.hasLove = true;
+    this.pinSvg.style.opacity = 1;
+    this.warnSvg.style.opacity = 0;
+    this.loveSvg.style.opacity = 1;
   }
 
-  removeIssue() {
-    if (!this.hasIssue) return;
-    this.hasIssue = false;
-    this.issueSvg.style.opacity = 0;
+  hideLove() {
+    this.hasLove = false;
+    this.pinSvg.style.opacity = this.hasWarn ? 1 : 0;
+    this.warnSvg.style.opacity = this.hasWarn ? 1 : 0;
+    this.loveSvg.style.opacity = 0;
+  }
+
+  showWarn() {
+    if (this.hasWarn) return;
+    this.hasWarn = true;
+    this.warnSvg.style.opacity = 1;
+    this.loveSvg.style.opacity = 0;
+    this.pinSvg.style.opacity = 1;
+  }
+
+  removeWarn() {
+    if (!this.hasWarn) return;
+    this.hasWarn = false;
+    this.warnSvg.style.opacity = 0;
+    this.pinSvg.style.opacity = 0;
   }
 }

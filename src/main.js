@@ -1,11 +1,8 @@
 import { init, GameLoop } from 'kontra';
 import { Yurt } from './yurt';
-import { Farm } from './farm';
 import { svgElement } from './svg';
 import { initPointer } from './pointer';
-import { drawPaths, Path } from './path';
-import { structures } from './structure';
-import { Ox } from './ox';
+import { OxFarm } from './ox-farm';
 
 init(null, { contextless: true });
 
@@ -64,7 +61,7 @@ setTimeout(() => {
 let testFarm;
 
 setTimeout(() => {
-  testFarm = new Farm({ x: 1, y: 6, type: 'ox' });
+  testFarm = new OxFarm({ width: 3, height: 2, x: 1, y: 6 });
 }, 3000);
 
 initPointer(svgElement);
