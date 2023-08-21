@@ -254,7 +254,10 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
         }, 10);
 
         // After transition complete, we don't need the shadow anymore
-        setTimeout(() => newPathData.svgElementShadow?.remove(), 500);
+        setTimeout(() => {
+          newPathData.svgElementShadow?.remove()
+          newPathData.svgElement.style.willChange = '';
+        }, 500);
       }
     }
   });
