@@ -40,7 +40,6 @@ export class Ox extends Animal {
     ox.appendChild(body);
 
     const horns = createSvgElement('path');
-    // horns.setAttribute('transform', `translate(${x},${y}) rotate(${radToDeg(this.rotation)})`);
     horns.setAttribute('fill', 'none');
     horns.setAttribute('stroke', colors.oxHorn);
     horns.setAttribute('width', this.width);

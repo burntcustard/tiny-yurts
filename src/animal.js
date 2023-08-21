@@ -32,7 +32,7 @@ export class Animal extends GameObjectClass {
     this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1)';
     this.pinSvg.style.transformOrigin = 'bottom';
     this.pinSvg.style.transformBox = 'fill-box';
-    this.pinSvg.style.transform = `translate(${x}px, ${y}px)`;
+    this.pinSvg.style.transform = `translate(${x}px, ${y - this.height / 2}px)`;
     pinLayer.appendChild(this.pinSvg);
 
     // this.testSvg = createSvgElement('circle');
@@ -45,14 +45,14 @@ export class Animal extends GameObjectClass {
     const pinBubble = createSvgElement('path');
     pinBubble.setAttribute('fill', '#fff');
     pinBubble.setAttribute('d', 'm6 6-2-2a3 3 0 1 1 4 0Z');
-    pinBubble.setAttribute('transform', 'scale(.5) translate(-6 -9)');
+    pinBubble.setAttribute('transform', 'scale(.5) translate(-6 -8)');
     this.pinSvg.appendChild(pinBubble);
 
     // !
     this.warnSvg = createSvgElement('path');
     this.warnSvg.setAttribute('stroke', this.color);
     this.warnSvg.setAttribute('d', 'M3 6L3 6M3 4.5L3 3');
-    this.warnSvg.setAttribute('transform', 'scale(.5) translate(-3 -11.4)');
+    this.warnSvg.setAttribute('transform', 'scale(.5) translate(-3 -10.4)');
     this.warnSvg.style.opacity = 0;
     this.pinSvg.appendChild(this.warnSvg);
 
@@ -60,7 +60,7 @@ export class Animal extends GameObjectClass {
     this.loveSvg = createSvgElement('path');
     this.loveSvg.setAttribute('fill', this.color);
     this.loveSvg.setAttribute('d', 'M6 6L4 4A1 1 0 1 1 6 2 1 1 0 1 1 8 4Z');
-    this.loveSvg.setAttribute('transform', 'scale(.3) translate(-6 -15)');
+    this.loveSvg.setAttribute('transform', 'scale(.3) translate(-6 -13)');
     this.loveSvg.style.opacity = 0;
     this.pinSvg.appendChild(this.loveSvg);
   }
@@ -70,7 +70,7 @@ export class Animal extends GameObjectClass {
     const y = this.parent.y * gridCellSize + this.y;
 
     this.pinSvg.style.transform = `
-      translate(${x}px, ${y}px)
+      translate(${x}px, ${y - this.height / 2}px)
       scale(${this.hasWarn || this.hasLove ? 1 : 0})
     `;
 

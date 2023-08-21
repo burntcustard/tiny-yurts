@@ -100,7 +100,6 @@ export class Yurt extends Structure {
     this.oldStartPath.noConnect = true;
 
     // Add the new path
-
     this.startPath = new Path({
       points: [
         { x: this.x, y: this.y, fixed: true },
@@ -176,21 +175,5 @@ export class Yurt extends Structure {
     yurtDecorationLayers[this.type].appendChild(decoration);
     setTimeout(() => decoration.setAttribute('stroke-dashoffset', 0), 700);
     setTimeout(() => decoration.style.willChange = '', 1300);
-  }
-
-  addPath() {
-    // const path = createSvgElement('path'); // Convenient naming there
-    // const x = gridCellSize / 2 + this.x * gridCellSize;
-    // const y = gridCellSize / 2 + this.y * gridCellSize;
-    // const relativePathX = this.direction.x * 4;
-    // const relativePathY = this.direction.y * 4;
-    // path.setAttribute('fill', 'none');
-    // path.setAttribute('d', `M${x} ${y}l${0} ${0}`);
-    // path.style.transition = 'all.5s';
-    // pathLayer.appendChild(path);
-
-    // setTimeout(() => {
-    //   path.setAttribute('d', `M${x} ${y}l${relativePathX} ${relativePathY}`);
-    // }, 500);
   }
 }

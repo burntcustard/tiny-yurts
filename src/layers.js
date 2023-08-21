@@ -12,12 +12,14 @@ const addAnimalShadowLayer = () => {
 
 const addAnimalLayer = () => {
   const animalLayer = createSvgElement('g');
+  animalLayer.setAttribute('stroke-linecap', 'round');
   svgElement.appendChild(animalLayer);
   return animalLayer;
 };
 
 const addFenceShadowLayer = () => {
   const fenceShadowLayer = createSvgElement('g');
+  fenceShadowLayer.setAttribute('stroke-linecap', 'round');
   fenceShadowLayer.setAttribute('fill', 'none');
   fenceShadowLayer.setAttribute('stroke', colors.black);
   fenceShadowLayer.setAttribute('opacity', shadowOpacity);
@@ -35,6 +37,7 @@ const addGridBlockLayer = () => {
 
 const addFenceLayer = () => {
   const fenceLayer = createSvgElement('g');
+  fenceLayer.setAttribute('stroke-linecap', 'round');
   fenceLayer.setAttribute('fill', 'none');
   fenceLayer.setAttribute('stroke', colors.fence);
   svgElement.appendChild(fenceLayer);
@@ -51,6 +54,7 @@ const addBaseLayer = () => {
 
 const addPathShadowLayer = () => {
   const pathShadowLayer = createSvgElement('g');
+  pathShadowLayer.setAttribute('stroke-linecap', 'round');
   pathShadowLayer.setAttribute('fill', 'none');
   pathShadowLayer.setAttribute('stroke', colors.base);
   pathShadowLayer.setAttribute('stroke-width', 3);
@@ -60,6 +64,7 @@ const addPathShadowLayer = () => {
 
 const addPathLayer = () => {
   const pathLayer = createSvgElement('g');
+  pathLayer.setAttribute('stroke-linecap', 'round');
   pathLayer.setAttribute('fill', 'none');
   pathLayer.setAttribute('stroke', colors.path);
   pathLayer.setAttribute('stroke-width', 3);
@@ -69,6 +74,7 @@ const addPathLayer = () => {
 
 const addPersonLayer = () => {
   const personLayer = createSvgElement('g');
+  personLayer.setAttribute('stroke-linecap', 'round');
   personLayer.setAttribute('fill', 'none');
   svgElement.appendChild(personLayer);
   return personLayer;
@@ -76,6 +82,7 @@ const addPersonLayer = () => {
 
 const addYurtAndPersonShadowLayer = () => {
   const shadowLayer = createSvgElement('g');
+  shadowLayer.setAttribute('stroke-linecap', 'round');
   shadowLayer.setAttribute('fill', 'none');
   shadowLayer.setAttribute('stroke', colors.black);
   shadowLayer.setAttribute('opacity', shadowOpacity);
@@ -85,6 +92,7 @@ const addYurtAndPersonShadowLayer = () => {
 
 const addYurtLayer = () => {
   const yurtLayer = createSvgElement('g');
+  yurtLayer.setAttribute('stroke-linecap', 'round');
   yurtLayer.setAttribute('fill', colors.yurt);
   svgElement.appendChild(yurtLayer);
   return yurtLayer;
@@ -100,6 +108,7 @@ const addYurtDecorationLayer = (color) => {
 
 const addPinLayer = () => {
   const pinLayer = createSvgElement('g');
+  pinLayer.setAttribute('stroke-linecap', 'round');
   svgElement.appendChild(pinLayer);
   return pinLayer;
 }
