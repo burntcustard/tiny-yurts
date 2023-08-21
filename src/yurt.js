@@ -6,6 +6,7 @@ import {
 import { gridCellSize } from './grid';
 import { Path, drawPaths, pathsData } from './path';
 import { colors } from './colors';
+import { Person } from './person';
 
 export const yurts = [];
 
@@ -23,16 +24,16 @@ export class Yurt extends Structure {
 
     super({
       ...properties,
-      connections: [
-        { from: { x, y }, to: { x: x    , y: y - 1}, object: null },
-        { from: { x, y }, to: { x: x + 1, y: y - 1}, object: null },
-        { from: { x, y }, to: { x: x + 1, y: y    }, object: null },
-        { from: { x, y }, to: { x: x + 1, y: y + 1}, object: null },
-        { from: { x, y }, to: { x: x    , y: y + 1}, object: null },
-        { from: { x, y }, to: { x: x - 1, y: y + 1}, object: null },
-        { from: { x, y }, to: { x: x - 1, y: y    }, object: null },
-        { from: { x, y }, to: { x: x - 1, y: y - 1}, object: null },
-      ],
+      // connections: [
+      //   { from: { x, y }, to: { x: x    , y: y - 1}, object: null },
+      //   { from: { x, y }, to: { x: x + 1, y: y - 1}, object: null },
+      //   { from: { x, y }, to: { x: x + 1, y: y    }, object: null },
+      //   { from: { x, y }, to: { x: x + 1, y: y + 1}, object: null },
+      //   { from: { x, y }, to: { x: x    , y: y + 1}, object: null },
+      //   { from: { x, y }, to: { x: x - 1, y: y + 1}, object: null },
+      //   { from: { x, y }, to: { x: x - 1, y: y    }, object: null },
+      //   { from: { x, y }, to: { x: x - 1, y: y - 1}, object: null },
+      // ],
     });
 
     this.type = properties.type;
@@ -64,6 +65,12 @@ export class Yurt extends Structure {
         { x: x + this.facing.x, y: y + this.facing.y }
       ]});
     }, 1000)
+
+    setTimeout(() => {
+      this.children.push(new Person({ x: this.x, y: this.y, parent: this }));
+      this.children.push(new Person({ x: this.x, y: this.y, parent: this }));
+      this.children.forEach(p => p.addToSvg());
+    }, 2000);
   }
 
   rotateTo(x, y) {

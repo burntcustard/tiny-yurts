@@ -57,12 +57,20 @@ const addPathLayer = () => {
   return pathLayer;
 };
 
-const addYurtLayer = () => {
-  const yurtLayer = createSvgElement('g');
-  yurtLayer.setAttribute('fill', colors.yurt);
-  svgElement.appendChild(yurtLayer);
-  return yurtLayer;
-};
+const addPersonShadowLayer = () => {
+  const personShadowLayer = createSvgElement('g');
+  personShadowLayer.setAttribute('fill', 'none');
+  personShadowLayer.setAttribute('stroke', colors.shadow);
+  svgElement.appendChild(personShadowLayer);
+  return personShadowLayer;
+}
+
+const addPersonLayer = () => {
+  const personLayer = createSvgElement('g');
+  personLayer.setAttribute('fill', 'none');
+  svgElement.appendChild(personLayer);
+  return personLayer;
+}
 
 const addYurtShadowLayer = () => {
   const yurtShadowLayer = createSvgElement('g');
@@ -70,6 +78,13 @@ const addYurtShadowLayer = () => {
   yurtShadowLayer.setAttribute('stroke', colors.shadow);
   svgElement.appendChild(yurtShadowLayer);
   return yurtShadowLayer;
+};
+
+const addYurtLayer = () => {
+  const yurtLayer = createSvgElement('g');
+  yurtLayer.setAttribute('fill', colors.yurt);
+  svgElement.appendChild(yurtLayer);
+  return yurtLayer;
 };
 
 const addYurtDecorationLayer = (color) => {
@@ -100,6 +115,8 @@ export const layers = {
   paths: addPathLayer(),
   fenceShadows: addFenceShadowLayer(),
   fences: addFenceLayer(),
+  // personShadows: addPersonShadowLayer(),
+  // personLayer: addPersonLayer(),
   animalShadows: addAnimalShadowLayer(),
   animals: addAnimalLayer(),
   yurtShadows: addYurtShadowLayer(),
@@ -108,6 +125,11 @@ export const layers = {
     'ox': addYurtDecorationLayer(colors.ox),
     'goat': addYurtDecorationLayer(colors.goat),
   },
+
+  // Temporarily on top for testing
+  personShadows: addPersonShadowLayer(),
+  personLayer: addPersonLayer(),
+
   pinLayer: addPinLayer(),
   pointerLayer: addPointerLayer(),
 };
@@ -120,7 +142,9 @@ export const fenceShadowLayer = layers.fenceShadows;
 export const gridBlockLayer = layers.gridBlock;
 export const pathLayer = layers.paths;
 export const pathShadowLayer = layers.pathShadows;
-export const pointerLayer = layers.pointerLayer;
+export const personLayer = layers.personLayer;
+export const personShadowLayer = layers.personShadows;
 export const pinLayer = layers.pinLayer;
+export const pointerLayer = layers.pointerLayer;
 export const yurtLayer = layers.yurts;
 export const yurtShadowLayer = layers.yurtShadows;
