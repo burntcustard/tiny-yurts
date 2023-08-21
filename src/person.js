@@ -2,7 +2,7 @@ import { GameObjectClass } from 'kontra';
 import { gridCellSize } from './grid';
 import { createSvgElement } from './svg';
 import { colors } from './colors';
-import { personLayer, personShadowLayer } from './layers';
+import { personLayer, yurtAndPersonShadowLayer } from './layers';
 
 export const people = [];
 
@@ -38,7 +38,7 @@ export class Person extends GameObjectClass {
     const shadow = createSvgElement('path');
     shadow.setAttribute('d', 'M0 0l.3 .3');
     shadow.setAttribute('transform', `translate(${x},${y})`);
-    personShadowLayer.appendChild(shadow);
+    yurtAndPersonShadowLayer.appendChild(shadow);
     this.shadowElement = shadow;
   }
 

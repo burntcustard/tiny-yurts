@@ -8,6 +8,9 @@ export const colors = {
   ox:     '#b75',
   oxHorn: '#dee',
   goat:   '#abb',
+  black:  '#000',
   grid:   '#0001',
-  shadow: '#0002',
+  shade:  '#0001',
 };
+
+export const shadowOpacity = 0.12;

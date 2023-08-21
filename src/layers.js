@@ -1,9 +1,10 @@
 import { addGridToSvg } from './grid';
 import { svgElement, createSvgElement } from './svg';
-import { colors } from './colors';
+import { colors, shadowOpacity } from './colors';
 
 const addAnimalShadowLayer = () => {
   const animalShadowLayer = createSvgElement('g');
+  animalShadowLayer.setAttribute('opacity', shadowOpacity);
   animalShadowLayer.setAttribute('transform', 'translate(.3,.3)');
   svgElement.appendChild(animalShadowLayer);
   return animalShadowLayer;
@@ -18,7 +19,8 @@ const addAnimalLayer = () => {
 const addFenceShadowLayer = () => {
   const fenceShadowLayer = createSvgElement('g');
   fenceShadowLayer.setAttribute('fill', 'none');
-  fenceShadowLayer.setAttribute('stroke', colors.shadow);
+  fenceShadowLayer.setAttribute('stroke', colors.black);
+  fenceShadowLayer.setAttribute('opacity', shadowOpacity);
   fenceShadowLayer.setAttribute('transform', 'translate(.5,.5)');
   svgElement.appendChild(fenceShadowLayer);
   return fenceShadowLayer;
@@ -39,6 +41,14 @@ const addFenceLayer = () => {
   return fenceLayer;
 };
 
+const addBaseLayer = () => {
+  const baseLayer = createSvgElement('g');
+  baseLayer.id = 'baseLayer';
+  baseLayer.setAttribute('fill', colors.base);
+  svgElement.appendChild(baseLayer);
+  return baseLayer;
+}
+
 const addPathShadowLayer = () => {
   const pathShadowLayer = createSvgElement('g');
   pathShadowLayer.setAttribute('fill', 'none');
@@ -57,14 +67,6 @@ const addPathLayer = () => {
   return pathLayer;
 };
 
-const addPersonShadowLayer = () => {
-  const personShadowLayer = createSvgElement('g');
-  personShadowLayer.setAttribute('fill', 'none');
-  personShadowLayer.setAttribute('stroke', colors.shadow);
-  svgElement.appendChild(personShadowLayer);
-  return personShadowLayer;
-}
-
 const addPersonLayer = () => {
   const personLayer = createSvgElement('g');
   personLayer.setAttribute('fill', 'none');
@@ -72,12 +74,13 @@ const addPersonLayer = () => {
   return personLayer;
 }
 
-const addYurtShadowLayer = () => {
-  const yurtShadowLayer = createSvgElement('g');
-  yurtShadowLayer.setAttribute('fill', 'none');
-  yurtShadowLayer.setAttribute('stroke', colors.shadow);
-  svgElement.appendChild(yurtShadowLayer);
-  return yurtShadowLayer;
+const addYurtAndPersonShadowLayer = () => {
+  const shadowLayer = createSvgElement('g');
+  shadowLayer.setAttribute('fill', 'none');
+  shadowLayer.setAttribute('stroke', colors.black);
+  shadowLayer.setAttribute('opacity', shadowOpacity);
+  svgElement.appendChild(shadowLayer);
+  return shadowLayer;
 };
 
 const addYurtLayer = () => {
@@ -111,6 +114,7 @@ const addPointerLayer = () => {
 export const layers = {
   grid: addGridToSvg(),
   gridBlock: addGridBlockLayer(),
+  base: addBaseLayer(),
   pathShadows: addPathShadowLayer(),
   paths: addPathLayer(),
   fenceShadows: addFenceShadowLayer(),
@@ -118,8 +122,8 @@ export const layers = {
   // personShadows: addPersonShadowLayer(),
   // personLayer: addPersonLayer(),
   animalShadows: addAnimalShadowLayer(),
+  yurtAndPersonShadows: addYurtAndPersonShadowLayer(),
   animals: addAnimalLayer(),
-  yurtShadows: addYurtShadowLayer(),
   yurts: addYurtLayer(),
   yurtDecorationLayers: {
     'ox': addYurtDecorationLayer(colors.ox),
@@ -127,7 +131,6 @@ export const layers = {
   },
 
   // Temporarily on top for testing
-  personShadows: addPersonShadowLayer(),
   personLayer: addPersonLayer(),
 
   pinLayer: addPinLayer(),
@@ -137,14 +140,14 @@ export const layers = {
 export const { yurtDecorationLayers } = layers;
 export const animalLayer = layers.animals;
 export const animalShadowLayer = layers.animalShadows;
+export const baseLayer = layers.base;
 export const fenceLayer = layers.fences;
 export const fenceShadowLayer = layers.fenceShadows;
 export const gridBlockLayer = layers.gridBlock;
 export const pathLayer = layers.paths;
 export const pathShadowLayer = layers.pathShadows;
 export const personLayer = layers.personLayer;
-export const personShadowLayer = layers.personShadows;
 export const pinLayer = layers.pinLayer;
 export const pointerLayer = layers.pointerLayer;
 export const yurtLayer = layers.yurts;
-export const yurtShadowLayer = layers.yurtShadows;
+export const yurtAndPersonShadowLayer = layers.yurtAndPersonShadows;

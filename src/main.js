@@ -11,7 +11,7 @@ init(null, { contextless: true });
 setTimeout(() => {
 const testYurt = new Yurt({ x: 6, y: 7, type: 'ox' });
   testYurt.addToSvg();
-}, 500);
+}, 1500);
 
 const testYurt2 = new Yurt({ x: 5, y: 4, type: 'goat' });
 testYurt2.addToSvg();

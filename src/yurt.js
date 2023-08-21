@@ -1,7 +1,7 @@
 import { createSvgElement } from './svg';
 import { Structure } from './structure';
 import {
-  yurtDecorationLayers, yurtLayer, yurtShadowLayer, pathLayer,
+  baseLayer, yurtDecorationLayers, yurtLayer, yurtAndPersonShadowLayer,
 } from './layers';
 import { gridCellSize } from './grid';
 import { Path, drawPaths, pathsData } from './path';
@@ -130,26 +130,40 @@ export class Yurt extends Structure {
     const x = gridCellSize / 2 + this.x * gridCellSize;
     const y = gridCellSize / 2 + this.y * gridCellSize;
 
-    const yurt = createSvgElement('circle');
-    yurt.setAttribute('transform', `translate(${x},${y})`);
-    yurt.style.transition = 'all.4s';
-    yurtLayer.appendChild(yurt);
-
     const baseShadow = createSvgElement('circle');
-    baseShadow.setAttribute('fill', colors.shadowS);
+    baseShadow.setAttribute('fill', colors.shade);
     baseShadow.setAttribute('r', 0)
     baseShadow.setAttribute('stroke', 'none');
     baseShadow.setAttribute('transform', `translate(${x},${y})`);
-    baseShadow.style.transition = 'all.2s';
-    yurtShadowLayer.appendChild(baseShadow);
-    setTimeout(() => baseShadow.setAttribute('r', 3));
+    baseShadow.style.willChange = 'r, opacity';
+    baseShadow.style.opacity = 0;
+    baseShadow.style.transition = 'all.4s';
+    baseLayer.appendChild(baseShadow);
+    setTimeout(() => {
+      baseShadow.setAttribute('r', 3);
+      baseShadow.style.opacity = 1;
+    }, 100);
+    setTimeout(() => baseShadow.style.willChange = '', 600);
+
+    const yurt = createSvgElement('circle');
+    yurt.setAttribute('transform', `translate(${x},${y})`);
+    yurt.style.transition = 'r.4s';
+    yurt.style.willChange = 'r';
+    yurtLayer.appendChild(yurt);
+    setTimeout(() => yurt.setAttribute('r', 3), 400);
+    setTimeout(() => yurt.style.willChange = '', 900);
 
     const shadow = createSvgElement('path');
-    shadow.setAttribute('stroke-width', 0);
     shadow.setAttribute('d', 'M0 0l0 0');
+    shadow.setAttribute('stroke-width', '6');
     shadow.setAttribute('transform', `translate(${x},${y})`);
-    shadow.style.transition = 'stroke-width.4s,d.4s.3s';
-    yurtShadowLayer.appendChild(shadow);
+    shadow.style.opacity = 0;
+    shadow.style.willChange = 'd';
+    shadow.style.transition = 'd.6s';
+    yurtAndPersonShadowLayer.appendChild(shadow);
+    setTimeout(() => shadow.style.opacity = 1, 800);
+    setTimeout(() => shadow.setAttribute('d', 'M0 0l2 2'), 900);
+    setTimeout(() => shadow.style.willChange = '', 1600);
 
     const decoration = createSvgElement('circle');
     decoration.setAttribute('fill', 'none');
@@ -157,16 +171,11 @@ export class Yurt extends Structure {
     decoration.setAttribute('transform', `translate(${x},${y})`);
     decoration.setAttribute('stroke-dasharray', 6.3); // Math.PI * 2 + a bit
     decoration.setAttribute('stroke-dashoffset', 6.3);
-    decoration.style.transition = 'all.5s.5s';
+    decoration.style.willChange = 'stroke-dashoffset';
+    decoration.style.transition = 'stroke-dashoffset .5s';
     yurtDecorationLayers[this.type].appendChild(decoration);
-
-    // After a while, animate to real radius and shadow coords
-    setTimeout(() => {
-      yurt.setAttribute('r', 3);
-      shadow.setAttribute('stroke-width', '6');
-      shadow.setAttribute('d', 'M0 0l2 2');
-      decoration.setAttribute('stroke-dashoffset', 0);
-    }, 200);
+    setTimeout(() => decoration.setAttribute('stroke-dashoffset', 0), 700);
+    setTimeout(() => decoration.style.willChange = '', 1300);
   }
 
   addPath() {
