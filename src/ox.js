@@ -122,8 +122,8 @@ export class Ox extends Animal {
   render() {
     super.render();
 
-    const x = this.parent.x * gridCellSize + this.x;
-    const y = this.parent.y * gridCellSize + this.y;
+    const x = this.parent.x * gridCellSize + this.x - this.width / 2;
+    const y = this.parent.y * gridCellSize + this.y - this.height / 2;
 
     this.svgElement.style.transform = `
       translate(${x}px, ${y}px)

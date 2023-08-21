@@ -45,14 +45,14 @@ export class Animal extends GameObjectClass {
     const pinBubble = createSvgElement('path');
     pinBubble.setAttribute('fill', '#fff');
     pinBubble.setAttribute('d', 'm6 6-2-2a3 3 0 1 1 4 0Z');
-    pinBubble.setAttribute('transform', 'scale(.5) translate(-4 -8)');
+    pinBubble.setAttribute('transform', 'scale(.5) translate(-6 -9)');
     this.pinSvg.appendChild(pinBubble);
 
     // !
     this.warnSvg = createSvgElement('path');
     this.warnSvg.setAttribute('stroke', this.color);
     this.warnSvg.setAttribute('d', 'M3 6L3 6M3 4.5L3 3');
-    this.warnSvg.setAttribute('transform', 'scale(.5) translate(-1 -10.5)');
+    this.warnSvg.setAttribute('transform', 'scale(.5) translate(-3 -11.4)');
     this.warnSvg.style.opacity = 0;
     this.pinSvg.appendChild(this.warnSvg);
 
@@ -60,7 +60,7 @@ export class Animal extends GameObjectClass {
     this.loveSvg = createSvgElement('path');
     this.loveSvg.setAttribute('fill', this.color);
     this.loveSvg.setAttribute('d', 'M6 6L4 4A1 1 0 1 1 6 2 1 1 0 1 1 8 4Z');
-    this.loveSvg.setAttribute('transform', 'scale(.4) translate(-3.5 -10.7)');
+    this.loveSvg.setAttribute('transform', 'scale(.3) translate(-6 -15)');
     this.loveSvg.style.opacity = 0;
     this.pinSvg.appendChild(this.loveSvg);
   }
