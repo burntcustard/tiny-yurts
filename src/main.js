@@ -73,14 +73,49 @@ setTimeout(() => {
 
 initPointer(svgElement);
 
+let updateCount = 0;
+let renderCount = 0;
+
 const loop = GameLoop({
   update() {
-    testGoatFarm.update();
-    testOxFarm.update();
+    updateCount++;
+
+    // Some things happen 15 times/s instead of 60.
+    // E.g. because movement handled with CSS transitions will be done at browser refresh rate anyway
+    switch (updateCount % 4) {
+      case 0:
+        testGoatFarm.update();
+        break;
+      case 1:
+        testOxFarm.update();
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+    }
+
+    if (updateCount >= 60) updateCount = 0;
   },
   render() {
-    testGoatFarm.render();
-    testOxFarm.render();
+    renderCount++;
+
+    // Some things happen 15 times/s instead of 60.
+    // E.g. because movement handled with CSS transitions will be done at browser refresh rate anyway
+    switch (renderCount % 4) {
+      case 0:
+        testGoatFarm.render();
+        break;
+      case 1:
+        testOxFarm.render();
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+    }
+
+    if (renderCount >= 60) renderCount = 0;
   },
 });
 

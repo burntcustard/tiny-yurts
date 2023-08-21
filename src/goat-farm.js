@@ -25,7 +25,6 @@ export class GoatFarm extends Farm {
     const parent2 = this.children.at(-2);
     parent1.showLove();
     setTimeout(() => parent2.showLove(), 1000);
-    setTimeout(() => parent3.showLove(), 2000);
 
     setTimeout(() => {
       parent1.hideLove();

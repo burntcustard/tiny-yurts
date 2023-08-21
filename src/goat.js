@@ -86,7 +86,7 @@ export class Goat extends Animal {
     this.advance();
 
     // Maybe pick a new target location
-    if (Math.random() > 0.99) {
+    if (Math.random() > 0.96) {
       this.target = this.getRandomTarget();
     }
 
@@ -98,13 +98,13 @@ export class Goat extends Animal {
       const targetVector = Vector(this.target);
       const dist = targetVector.distance(this) > 1;
 
-      if (Math.abs(angleDiff % (Math.PI * 2)) > .01) {
-        this.rotation += angleDiff > 0 ? 0.04 : -0.04;
+      if (Math.abs(angleDiff % (Math.PI * 2)) > .1) {
+        this.rotation += angleDiff > 0 ? 0.1 : -0.1;
         // console.log(radToDeg(this.rotation), radToDeg(angle));
       } else if (dist > 0.1) {
         const normalized = targetVector.subtract(this).normalize();
-        const newPosX = this.x + normalized.x * 0.02;
-        const newPosY = this.y + normalized.y * 0.02;
+        const newPosX = this.x + normalized.x * 0.1;
+        const newPosY = this.y + normalized.y * 0.1;
         // Check if new pos is not too close to other ox
         const tooCloseToOtherOxes = this.parent.children.some(o => {
           if (this === o) return false;
