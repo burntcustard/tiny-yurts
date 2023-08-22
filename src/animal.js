@@ -2,7 +2,6 @@ import { GameObjectClass } from 'kontra';
 import { gridCellSize } from './grid';
 import { createSvgElement } from './svg';
 import { pinLayer, pointerLayer } from './layers';
-import { colors } from './colors';
 
 const padding = 3;
 
@@ -119,10 +118,18 @@ export class Animal extends GameObjectClass {
     this.pinSvg.style.opacity = 1;
   }
 
-  removeWarn() {
+  hideWarn() {
     if (!this.hasWarn) return;
     this.hasWarn = false;
     this.warnSvg.style.opacity = 0;
     this.pinSvg.style.opacity = 0;
+  }
+
+  toggleWarn(toggle) {
+    if (toggle) {
+      this.showWarn();
+    } else {
+      this.hideWarn();
+    }
   }
 }

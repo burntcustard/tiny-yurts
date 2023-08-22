@@ -9,6 +9,7 @@ export class GoatFarm extends Farm {
 
     this.demand = 9900;
 
+    this.type = 'goat';
     goatFarms.push(this);
 
     setTimeout(() => this.addAnimal({}), 3000);

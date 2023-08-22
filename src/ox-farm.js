@@ -8,6 +8,7 @@ export class OxFarm extends Farm {
     super(properties);
 
     this.demand = 9900;
+    this.type = 'ox';
 
     oxFarms.push(this);
 

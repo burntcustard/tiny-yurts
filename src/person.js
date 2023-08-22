@@ -2,6 +2,7 @@ import { GameObjectClass } from 'kontra';
 import { gridCellSize } from './grid';
 import { createSvgElement } from './svg';
 import { colors } from './colors';
+import { farms } from './farm';
 import { personLayer, yurtAndPersonShadowLayer } from './layers';
 
 export const people = [];
@@ -15,12 +16,13 @@ export class Person extends GameObjectClass {
     this.type = this.parent.type;
     this.height = 1;
     this.width = 1;
+    this.atHome = true; // Is this person sitting in their yurt?
+    this.atFarm = false; // Is this person currently at a farm?
+    this.destination = null;
     // Parent x/y is in grid coords instead of SVG coords, so need to convert
     this.x = gridCellSize / 2 + this.parent.x * gridCellSize;
     this.y = gridCellSize / 2 + this.parent.y * gridCellSize;
 
-    // const x = this.parent.x * gridCellSize + this.x;
-    // const y = this.parent.y * gridCellSize + this.y;
     people.push(this);
   }
 
@@ -54,6 +56,17 @@ export class Person extends GameObjectClass {
 
   update() {
     this.advance();
+
+    // Figure out destination
+    // if (this.atHome) {
+    //   // Do any farms of the same type have issues that need addressing?
+    //   const matchingFarmsWithDemand = farms.map(farm => farm.type === this.type && farm.numIssues);
+
+    //   if (matchingFarmsWithDemand.length) {
+    //     this.destination =
+    //   }
+    // }
+
     this.x += 0.01;
     this.y += 0.01;
   }

@@ -4,7 +4,8 @@ import { gridBlockLayer, fenceLayer, fenceShadowLayer } from './layers';
 import { gridCellSize, gridLineThickness } from './grid';
 import { Path, drawPaths } from './path';
 import { colors } from './colors';
-import { Ox } from './ox';
+import { people } from './person';
+import { findBestRoute } from './findBestRoute';
 
 export const farms = [];
 
@@ -18,6 +19,14 @@ export class Farm extends Structure {
     super(properties);
     this.circumference = this.width * gridCellSize * 2 + this.height * gridCellSize * 2;
     this.numIssues = 0;
+
+    this.cells = [];
+
+    for (let w = 0; w < this.width; w++) {
+      for (let h = 0; h < this.height; h++) {
+        this.cells.push({ x: this.x + w, y: this.y + h });
+      }
+    }
 
     setTimeout(() => {
       this.startPath = new Path({
@@ -42,13 +51,53 @@ export class Farm extends Structure {
 
   update() {
     this.children.forEach((animal, i) => {
-      if (i < this.numIssues) {
-        animal.showWarn();
-      } else {
-        animal.removeWarn();
+      animal.toggleWarn(i < this.numIssues);
+      animal.update();
+    });
+
+    // For every animal with a warning pin (including love+warn at the same time)
+    this.children.map((animal) => animal.hasWarn).forEach((animal) => {
+      // Find someone people sitting around doing nothing
+      const atHomePeopleOfSameType = people.filter((person) => person.atHome && person.type === this.type);
+
+      if (atHomePeopleOfSameType.length === 0) return;
+
+      // Assign whoever is closest to this farm, to this animal(?)
+      let closestPerson = atHomePeopleOfSameType[0];
+
+      let bestRoute = findBestRoute({
+        from: { x: closestPerson.parent.x, y: closestPerson.parent.y },
+        to: this.cells,
+      });
+
+      for (let i = 1; i < atHomePeopleOfSameType.length; i++) {
+        const thisPersonsRoute = findBestRoute({
+          from: {
+            x: atHomePeopleOfSameType[i].parent.x,
+            y: atHomePeopleOfSameType[i].parent.y
+          },
+          to: this.cells,
+        });
+
+        if (thisPersonsRoute?.length < bestRoute?.length) {
+          bestRoute = route;
+          closestPerson = atHomePeopleOfSameType[i];
+        }
       }
 
-      animal.update();
+      if (bestRoute) {
+        closestPerson.destination = bestRoute.at(-1);
+        closestPerson.hasDestination = true;
+        closestPerson.route = bestRoute;
+        // console.log('bestRoute');
+        console.log(bestRoute);
+      } else {
+        console.log('no route found');
+      }
+
+      // closestPerson.destination = this;
+      // closestPerson.route = closestRoute;
+      // animal.assignedPerson = closestPerson;
     });
   }
 
