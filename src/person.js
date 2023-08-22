@@ -1,8 +1,7 @@
-import { GameObjectClass } from 'kontra';
+import { GameObjectClass, Vector } from 'kontra';
 import { gridCellSize } from './grid';
 import { createSvgElement } from './svg';
 import { colors } from './colors';
-import { farms } from './farm';
 import { personLayer, yurtAndPersonShadowLayer } from './layers';
 
 export const people = [];
@@ -57,15 +56,20 @@ export class Person extends GameObjectClass {
   update() {
     this.advance();
 
-    // Figure out destination
-    // if (this.atHome) {
-    //   // Do any farms of the same type have issues that need addressing?
-    //   const matchingFarmsWithDemand = farms.map(farm => farm.type === this.type && farm.numIssues);
-
-    //   if (matchingFarmsWithDemand.length) {
-    //     this.destination =
-    //   }
-    // }
+    // If the person has a destination, gotta follow the route to it!
+    // TODO: We have 3 variables for kinda the same thing but maybe we need them
+    if (this.hasDestination) {
+      if (this.destination) {
+        if (this.route?.length) {
+          // Head to the first point in the route, and then... remove it when we get there?
+          const firstRoutePoint = new Vector(
+            gridCellSize / 2 + this.route[0].x * gridCellSize,
+            gridCellSize / 2 + this.route[0].y * gridCellSize,
+          );
+          // console.log(firstRoutePoint);
+        }
+      }
+    }
 
     this.x += 0.01;
     this.y += 0.01;

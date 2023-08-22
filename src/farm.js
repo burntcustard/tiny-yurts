@@ -93,6 +93,9 @@ export class Farm extends Structure {
         console.log(bestRoute);
       } else {
         console.log('no route found');
+
+        // There's an animal that has no people of the same type waiting around at home that can come help
+        // ... try again next update? (15 times/s)
       }
 
       // closestPerson.destination = this;
