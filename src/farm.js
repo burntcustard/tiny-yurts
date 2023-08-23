@@ -85,12 +85,9 @@ export class Farm extends Structure {
       // Assign whoever is closest to this farm, to this animal(?)
       let closestPerson = atHomePeopleOfSameType[0];
 
-      let bestRoute = findBestRoute({
-        from: { x: closestPerson.parent.x, y: closestPerson.parent.y },
-        to: this.cells,
-      });
+      let bestRoute = null;
 
-      for (let i = 1; i < atHomePeopleOfSameType.length; i++) {
+      for (let i = 0; i < atHomePeopleOfSameType.length; i++) {
         const thisPersonsRoute = findBestRoute({
           from: {
             x: atHomePeopleOfSameType[i].parent.x,
@@ -99,7 +96,9 @@ export class Farm extends Structure {
           to: this.cells,
         });
 
-        if (thisPersonsRoute?.length < bestRoute?.length) {
+        if (!bestRoute
+          || thisPersonsRoute && thisPersonsRoute.length < bestRoute.length
+        ) {
           bestRoute = thisPersonsRoute;
           closestPerson = atHomePeopleOfSameType[i];
         }

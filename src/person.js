@@ -2,7 +2,7 @@ import { GameObjectClass, Vector } from 'kontra';
 import { gridCellSize } from './grid';
 import { createSvgElement } from './svg';
 import { colors } from './colors';
-import { personLayer, yurtAndPersonShadowLayer } from './layers';
+import { personLayer, pointerLayer, yurtAndPersonShadowLayer } from './layers';
 import { findBestRoute } from './findBestRoute';
 import { rotateVector, combineVectors } from './vector';
 
@@ -171,7 +171,7 @@ export class Person extends GameObjectClass {
 
     const slowyDistance = 6;
     const avoidanceDistance = 2;
-    const turnyness = 0.02;
+    const turnyness = 0.03;
     // Is currently travelling?
     // could check velocity instead?
     if (this.route?.length > 1) {
@@ -181,12 +181,10 @@ export class Person extends GameObjectClass {
 
         if (nextDistanceBetween < distanceBetween) {
           if (nextDistanceBetween < avoidanceDistance) {
+            // TODO: Turn left or right depending on what makes most sense
             const vectorBetweenPeople = this.position.subtract(otherPerson.position);
             const normalBetweenPeople = vectorBetweenPeople.normalize();
-            const angleBetweenVelocityAndOtherPerson = this.velocity.angle(vectorBetweenPeople);
-            const direction = Math.sign(angleBetweenVelocityAndOtherPerson - Math.PI * 0.75);
-            console.log(direction);
-            const turnLeftVector = rotateVector(normalBetweenPeople, Math.PI / 2 * -direction);
+            const turnLeftVector = rotateVector(normalBetweenPeople, (Math.PI / 2));
             // const turnLeftVectorScaled = turnLeftVector.scale((avoidanceDistance - distanceBetween) * turnyness);
             const turnLeftVectorScaled = turnLeftVector.scale(turnyness);
             this.velocity.set(combineVectors(this.velocity, turnLeftVectorScaled));
@@ -197,13 +195,19 @@ export class Person extends GameObjectClass {
 
         if (nextDistanceBetween < slowyDistance) {
           if (newNextDistanceBetween < distanceBetween) {
-            // Getting closer, we want to go 0.98x the speed we were going before:
-            this.dx *= 0.8;
-            this.dy *= 0.8;
+            if (nextDistanceBetween < avoidanceDistance) {
+              this.dx *= 0.86;
+              this.dy *= 0.86;
+            } else {
+              // Getting closer, we want to go 0.98x the speed we were going before:
+              this.dx *= 0.9;
+              this.dy *= 0.9;
+            }
+
           } else {
             // Getting further away (still want to go slower than usual)
-            this.dx *= 0.9;
-            this.dy *= 0.9;
+            this.dx *= 0.95;
+            this.dy *= 0.95;
           }
         }
       });
