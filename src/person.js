@@ -4,6 +4,7 @@ import { createSvgElement } from './svg';
 import { colors } from './colors';
 import { personLayer, yurtAndPersonShadowLayer } from './layers';
 import { findBestRoute } from './findBestRoute';
+import { rotateVector } from './vector';
 
 export const people = [];
 
@@ -62,6 +63,18 @@ export class Person extends GameObjectClass {
       this.dy *= 0.9;
       // TODO: Do this if at destination instead?
       // TODO: Set velocity to 0 when it gets little
+    }
+
+    // Is currently travelling?
+    // could check velocity instead?
+    const avoidanceDistance = 2;
+    if (this.route?.length > 1) {
+      people.forEach(otherPerson => {
+        if (otherPerson === this) return false;
+        if (otherPerson.position.distance(this.position) < avoidanceDistance) {
+          const turnLeftVector = rotateVector(this.position, Math.PI / 2);
+        }
+      });
     }
 
     if (this.atFarm) {
