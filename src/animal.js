@@ -24,6 +24,7 @@ export class Animal extends GameObjectClass {
     this.isBaby = properties.isBaby ?? false;
     this.roundness = properties.roundness;
     this.hasWarn = false;
+    this.hasPerson = null; // Ref to person on their way to say hi
 
     this.pinSvg = createSvgElement('g');
     this.pinSvg.style.opacity = 0;

@@ -128,20 +128,15 @@ export const layers = {
   paths: addPathLayer(),
   fenceShadows: addFenceShadowLayer(),
   fences: addFenceLayer(),
-  // personShadows: addPersonShadowLayer(),
-  // personLayer: addPersonLayer(),
   animalShadows: addAnimalShadowLayer(),
   yurtAndPersonShadows: addYurtAndPersonShadowLayer(),
   animals: addAnimalLayer(),
+  personLayer: addPersonLayer(),
   yurts: addYurtLayer(),
   yurtDecorationLayers: {
     'ox': addYurtDecorationLayer(colors.ox),
     'goat': addYurtDecorationLayer(colors.goat),
   },
-
-  // Temporarily on top for testing
-  personLayer: addPersonLayer(),
-
   pinLayer: addPinLayer(),
   pointerLayer: addPointerLayer(),
 };

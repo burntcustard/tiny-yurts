@@ -49,14 +49,29 @@ export class Farm extends Structure {
     animal.addToSvg();
   }
 
+  assignWarn() {
+    const notWarnedAnimals = this.children.filter(c => !c.hasWarn);
+
+    if (this.numIssues > this.children.length - notWarnedAnimals.length) {
+      notWarnedAnimals[Math.floor(Math.random() * notWarnedAnimals.length)].showWarn();
+    }
+  }
+
   update() {
+    if (this.appearing) return;
+
+    this.numIssues = Math.floor(this.demand / this.needyness);
+    this.demand += this.children.length - 1;
+    console.log('numIssues:', this.numIssues, ', this.demand:', this.demand);
+
+    this.assignWarn();
+
     this.children.forEach((animal, i) => {
-      animal.toggleWarn(i < this.numIssues);
       animal.update();
     });
 
     // For every animal with a warning pin (including love+warn at the same time)
-    this.children.map((animal) => animal.hasWarn).forEach((animal) => {
+    this.children.filter((animal) => animal.hasWarn && !animal.hasPerson).forEach((animal) => {
       // Find someone people sitting around doing nothing
       const atHomePeopleOfSameType = people.filter((person) => person.atHome && person.type === this.type);
 
@@ -89,18 +104,17 @@ export class Farm extends Structure {
         closestPerson.destination = bestRoute.at(-1);
         closestPerson.hasDestination = true;
         closestPerson.route = bestRoute;
+        closestPerson.atHome = false; // Leave home!
+        animal.hasPerson = closestPerson;
+        closestPerson.animalToVisit = animal;
         // console.log('bestRoute');
-        console.log(bestRoute);
+        // console.log(bestRoute);
       } else {
-        console.log('no route found');
+        // console.log('no route found');
 
         // There's an animal that has no people of the same type waiting around at home that can come help
         // ... try again next update? (15 times/s)
       }
-
-      // closestPerson.destination = this;
-      // closestPerson.route = closestRoute;
-      // animal.assignedPerson = closestPerson;
     });
   }
 

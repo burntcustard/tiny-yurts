@@ -7,7 +7,8 @@ export class OxFarm extends Farm {
   constructor(properties) {
     super(properties);
 
-    this.demand = 9900;
+    this.needyness = 400;
+    this.demand = 0;
     this.type = 'ox';
 
     oxFarms.push(this);
@@ -16,9 +17,13 @@ export class OxFarm extends Farm {
     setTimeout(() => this.addAnimal({}), 4000);
     setTimeout(() => this.addAnimal({ isBaby: (oxFarms.length - 1) % 2 }), 5000);
 
+    this.appearing = true;
+    setTimeout(() => this.appearing = false, 6000);
+
+    // TODO: Swap this to update-based (farm or level) rather than timeout based
     setTimeout(() => {
       this.upgrade();
-    }, 10000);
+    }, 50000);
   }
 
   upgrade() {
@@ -51,7 +56,5 @@ export class OxFarm extends Farm {
 
     // So 3 ox = 2 demand per update, 5 ox = 2 demand per update,
     // so upgrading doubles the demand(?)
-    this.demand += this.children.filter(c => !c.isBaby).length - 1;
-    this.numIssues = Math.floor(this.demand / 10000);
   }
 }
