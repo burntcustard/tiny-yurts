@@ -7,7 +7,7 @@ export class OxFarm extends Farm {
   constructor(properties) {
     super(properties);
 
-    this.needyness = 400;
+    this.needyness = 200; // 400 is good, tweaking for testing
     this.demand = 0;
     this.type = 'ox';
 
@@ -18,7 +18,7 @@ export class OxFarm extends Farm {
     setTimeout(() => this.addAnimal({ isBaby: (oxFarms.length - 1) % 2 }), 5000);
 
     this.appearing = true;
-    setTimeout(() => this.appearing = false, 6000);
+    setTimeout(() => this.appearing = false, 3000);
 
     // TODO: Swap this to update-based (farm or level) rather than timeout based
     setTimeout(() => {

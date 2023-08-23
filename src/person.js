@@ -4,7 +4,7 @@ import { createSvgElement } from './svg';
 import { colors } from './colors';
 import { personLayer, yurtAndPersonShadowLayer } from './layers';
 import { findBestRoute } from './findBestRoute';
-import { rotateVector } from './vector';
+import { rotateVector, combineVectors } from './vector';
 
 export const people = [];
 
@@ -65,18 +65,6 @@ export class Person extends GameObjectClass {
       // TODO: Set velocity to 0 when it gets little
     }
 
-    // Is currently travelling?
-    // could check velocity instead?
-    const avoidanceDistance = 2;
-    if (this.route?.length > 1) {
-      people.forEach(otherPerson => {
-        if (otherPerson === this) return false;
-        if (otherPerson.position.distance(this.position) < avoidanceDistance) {
-          const turnLeftVector = rotateVector(this.position, Math.PI / 2);
-        }
-      });
-    }
-
     if (this.atFarm) {
       // Go back home... soon!
       this.atFarm++;
@@ -134,12 +122,9 @@ export class Person extends GameObjectClass {
                 this.atHome = true;
               } else {
                 this.atFarm = 1;
-                // TODO: get demand from animal or parent farm
                 this.animalToVisit.parent.demand -= this.animalToVisit.parent.needyness;
-                console.log(this.animalToVisit.parent.demand);
                 this.animalToVisit.hideWarn();
                 this.animalToVisit.hasPerson = false;
-                // this.animalToVisit.hasWarn = false;
               }
               this.hasDestination = false;
               return;
@@ -154,6 +139,7 @@ export class Person extends GameObjectClass {
             }
           }
 
+          // Apply a max speed
           // Usually < 10 loops with 0.1 and 0.98
           while (this.velocity.length() > 0.1) {
             this.dx *= 0.98;
@@ -161,24 +147,66 @@ export class Person extends GameObjectClass {
           }
 
           const allowedWonkyness = 0.006;
-          const speed = 0.001;
+          const speed = 0.01;
+          const vectorToNextpoint = this.position.subtract(firstRoutePoint);
+          const normalizedVectorToNextPoints = vectorToNextpoint.normalize();
 
           if (this.x < firstRoutePoint.x + allowedWonkyness) {
-            this.dx += (firstRoutePoint.x - this.x) * speed;
+            this.dx -= normalizedVectorToNextPoints.x * speed;
           }
           if (this.x > firstRoutePoint.x - allowedWonkyness) {
-            this.dx -= (this.x - firstRoutePoint.x) * speed;
+            this.dx -= normalizedVectorToNextPoints.x * speed;
           }
 
           if (this.y < firstRoutePoint.y + allowedWonkyness) {
-            this.dy += (firstRoutePoint.y - this.y) * speed;
+            this.dy -= normalizedVectorToNextPoints.y * speed;
           }
           if (this.y > firstRoutePoint.y - allowedWonkyness) {
-            this.dy -= (this.y - firstRoutePoint.y) * speed;
+            this.dy -= normalizedVectorToNextPoints.y * speed;
           }
           // console.log(firstRoutePoint);
         }
       }
+    }
+
+    const slowyDistance = 6;
+    const avoidanceDistance = 2;
+    const turnyness = 0.02;
+    // Is currently travelling?
+    // could check velocity instead?
+    if (this.route?.length > 1) {
+      people.filter(otherPerson => otherPerson !== this && !otherPerson.atHome).forEach(otherPerson => {
+        const distanceBetween = otherPerson.position.distance(this.position);
+        const nextDistanceBetween = otherPerson.position.distance(this.position.add(this.velocity));
+
+        if (nextDistanceBetween < distanceBetween) {
+          if (nextDistanceBetween < avoidanceDistance) {
+            const vectorBetweenPeople = this.position.subtract(otherPerson.position);
+            const normalBetweenPeople = vectorBetweenPeople.normalize();
+            const angleBetweenVelocityAndOtherPerson = this.velocity.angle(vectorBetweenPeople);
+            const direction = Math.sign(angleBetweenVelocityAndOtherPerson - Math.PI * 0.75);
+            console.log(direction);
+            const turnLeftVector = rotateVector(normalBetweenPeople, Math.PI / 2 * -direction);
+            // const turnLeftVectorScaled = turnLeftVector.scale((avoidanceDistance - distanceBetween) * turnyness);
+            const turnLeftVectorScaled = turnLeftVector.scale(turnyness);
+            this.velocity.set(combineVectors(this.velocity, turnLeftVectorScaled));
+          }
+        }
+
+        const newNextDistanceBetween = otherPerson.position.distance(this.position.add(this.velocity));
+
+        if (nextDistanceBetween < slowyDistance) {
+          if (newNextDistanceBetween < distanceBetween) {
+            // Getting closer, we want to go 0.98x the speed we were going before:
+            this.dx *= 0.8;
+            this.dy *= 0.8;
+          } else {
+            // Getting further away (still want to go slower than usual)
+            this.dx *= 0.9;
+            this.dy *= 0.9;
+          }
+        }
+      });
     }
   }
 }

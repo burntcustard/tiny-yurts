@@ -12,6 +12,11 @@ setTimeout(() => {
   testYurt.addToSvg();
 }, 0);
 
+setTimeout(() => {
+  const testYurt2 = new Yurt({ x: 5, y: 5, type: 'ox' });
+  testYurt2.addToSvg();
+}, 500);
+
 let testOxFarm;
 
 setTimeout(() => {

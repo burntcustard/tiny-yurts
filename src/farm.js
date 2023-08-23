@@ -52,6 +52,11 @@ export class Farm extends Structure {
   assignWarn() {
     const notWarnedAnimals = this.children.filter(c => !c.hasWarn);
 
+    if (notWarnedAnimals.length === 0) {
+      // Go to the next panicy stage of aaaahhh all animals have a warning!
+      return;
+    }
+
     if (this.numIssues > this.children.length - notWarnedAnimals.length) {
       notWarnedAnimals[Math.floor(Math.random() * notWarnedAnimals.length)].showWarn();
     }
@@ -62,7 +67,7 @@ export class Farm extends Structure {
 
     this.numIssues = Math.floor(this.demand / this.needyness);
     this.demand += this.children.length - 1;
-    console.log('numIssues:', this.numIssues, ', this.demand:', this.demand);
+    // console.log('numIssues:', this.numIssues, ', this.demand:', this.demand);
 
     this.assignWarn();
 
@@ -95,7 +100,7 @@ export class Farm extends Structure {
         });
 
         if (thisPersonsRoute?.length < bestRoute?.length) {
-          bestRoute = route;
+          bestRoute = thisPersonsRoute;
           closestPerson = atHomePeopleOfSameType[i];
         }
       }
