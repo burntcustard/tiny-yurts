@@ -24,7 +24,7 @@ const removePathsOnRightClick = (x, y) => {
   // Don't remove "fixed" paths i.e. under yurts
     !path.points[0].fixed && !path.points[1].fixed
   )).forEach((pathToRemove) => {
-    inventory.paths--;
+    inventory.paths++;
     pathToRemove.remove();
   });
 
