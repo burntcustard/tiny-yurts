@@ -83,16 +83,61 @@ export const initUi = () => {
     align-self: start;
     justify-self: start;
   `;
+
   const timeButton = document.createElement('button');
+  timeButton.style.width = '80px';
+  timeButton.style.height = '80px';
   const timeButtonSvg = createSvgElement('svg');
-  timeButtonSvg.setAttribute('viewBox', '0 0 8 24');
-  timeButtonSvg.style.width = '36px';
-  timeButtonSvg.style.height = '36px';
+  timeButtonSvg.setAttribute('stroke-linejoin', 'round');
+  timeButtonSvg.setAttribute('stroke-linecap', 'round');
+  timeButtonSvg.style.outline = '1px solid red';
+
+  timeButtonSvg.setAttribute('viewBox', '0 0 16 16');
+  timeButtonSvg.style.width = '80px';
+  timeButtonSvg.style.height = '80px';
+
+  const timeCircleOuter = createSvgElement('circle');
+  timeCircleOuter.setAttribute('fill', '#443');
+  timeCircleOuter.setAttribute('stroke', '#443');
+  timeCircleOuter.setAttribute('r', 7);
+  timeCircleOuter.style.transform = 'translate(50%, 50%)';
+  timeButtonSvg.append(timeCircleOuter)
+
+  for (let i = 75; i < 350; i += 25) {
+    let timeButtonPath = createSvgElement('path');
+    timeButtonPath.setAttribute('fill', 'none');
+    timeButtonPath.setAttribute('stroke', '#fff');
+    timeButtonPath.setAttribute('transform-origin', 'center');
+    timeButtonPath.setAttribute('d', 'm8 14v0');
+    timeButtonPath.style.transform = `rotate(${i}grad)`;
+    timeButtonSvg.append(timeButtonPath);
+  }
+
+  // const timeCircleInner = createSvgElement('circle');
+  // timeCircleInner.setAttribute('fill', 'none');
+  // timeCircleInner.setAttribute('stroke', '#fff');
+  // timeCircleInner.setAttribute('r', 5);
+  // timeCircleInner.style.transform = 'translate(50%, 50%)';
+  // timeButtonSvg.append(timeCircleInner)
+
   const timeButtonPath = createSvgElement('path');
-  timeButtonPath.setAttribute('d', 'm4 16-2-14a2 2 0 1 1 4 0Z');
+  timeButtonPath.setAttribute('stroke', '#fff');
+  timeButtonPath.setAttribute('transform-origin', 'center');
+  timeButtonPath.setAttribute('d', 'm8 8v4');
+  timeButtonPath.style.transform = 'rotate(180deg)';
+  timeButtonSvg.append(timeButtonPath);
+
+  let time = 0;
+  setInterval(() => {
+    time++;
+    if (time > 360) time = 0;
+    timeButtonPath.style.transform = `rotate(${time}deg)`;
+  }, 16);
+
   const timeButtonSpinnyPath = createSvgElement('path');
-  timeButtonSvg.append(timeButtonPath, timeButtonSpinnyPath);
+  timeButtonSvg.append(timeButtonSpinnyPath);
   timeButton.append(timeButtonSvg);
+
   header.append(menuButton, timeButton);
   const buildBar = document.createElement('footer');
   const pathTilesButton = document.createElement('button');
@@ -107,11 +152,8 @@ export const initUi = () => {
   pathTilesPath.setAttribute('stroke-linejoin', 'round');
   pathTilesPath.setAttribute('stroke-linecap', 'round');
   pathTilesPath.setAttribute('stroke-width', 2);
-  // pathTilesPath.setAttribute('d', 'M5.5 1 h1q2 0 2 2 0 2 -2 2h-3q-2 0-2 2 0 2 2 2h1');
-  // pathTilesPath.setAttribute('d', 'M3 1 h1.5q1 0 1 1 0 1 -1 1h-2q-1 0 -1 1 0 1 1 1h2q 1 0 1 1 0 1 -1 1 h-1.5')
   pathTilesPath.setAttribute('d', 'M11 1h-3 q-2 0 -2 2t2 2h4q2 0 2 2t-2 2h-6q-2 0-2 2t2 2h4q2 0 2 2t-2 2h-3');
   pathTilesButton.append(pathTilesButtonInner);
-
   pathTilesButtonInner.append(pathTilesSvg);
   pathTilesSvg.append(pathTilesPath);
   pathTilesButtonInner.style.transform = 'rotate(-45deg)';
