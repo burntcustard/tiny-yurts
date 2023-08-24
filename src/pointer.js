@@ -23,7 +23,10 @@ const removePathsOnRightClick = (x, y) => {
   ) && (
   // Don't remove "fixed" paths i.e. under yurts
     !path.points[0].fixed && !path.points[1].fixed
-  )).forEach((pathToRemove) => pathToRemove.remove());
+  )).forEach((pathToRemove) => {
+    inventory.paths--;
+    pathToRemove.remove();
+  });
 
   drawPaths({ changedCells: [{ x, y }] });
 };
@@ -95,6 +98,8 @@ const handlePointermove = (event) => {
   }
 
   const newPath = new Path({ points: [{ x: dragStartCell.x, y: dragStartCell.y }, { x: cellX, y: cellY }] });
+
+  inventory.paths--;
 
   drawPaths({ changedCells: [{ x: dragStartCell.x, y: dragStartCell.y }, { x: cellX, y: cellY }], newPath });
 

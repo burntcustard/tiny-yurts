@@ -170,8 +170,8 @@ export class Person extends GameObjectClass {
     }
 
     const slowyDistance = 6;
-    const avoidanceDistance = 2;
-    const turnyness = 0.03;
+    const avoidanceDistance = 1.5;
+    const turnyness = 0.1;
     // Is currently travelling?
     // could check velocity instead?
     if (this.route?.length > 1) {
@@ -196,18 +196,18 @@ export class Person extends GameObjectClass {
         if (nextDistanceBetween < slowyDistance) {
           if (newNextDistanceBetween < distanceBetween) {
             if (nextDistanceBetween < avoidanceDistance) {
-              this.dx *= 0.86;
-              this.dy *= 0.86;
+              this.dx *= 0.87;
+              this.dy *= 0.87;
             } else {
               // Getting closer, we want to go 0.98x the speed we were going before:
-              this.dx *= 0.9;
-              this.dy *= 0.9;
+              this.dx *= 0.89;
+              this.dy *= 0.89;
             }
 
           } else {
             // Getting further away (still want to go slower than usual)
-            this.dx *= 0.95;
-            this.dy *= 0.95;
+            this.dx *= 0.9;
+            this.dy *= 0.9;
           }
         }
       });

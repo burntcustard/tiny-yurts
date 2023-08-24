@@ -1,3 +1,3 @@
 export const inventory = {
-  paths: 10,
+  paths: 63,
 };
