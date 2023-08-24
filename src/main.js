@@ -1,4 +1,4 @@
-import { init, GameLoop } from 'kontra';
+import { init, initKeys, keyMap, onKey, offKey, GameLoop, keyPressed } from 'kontra';
 import { Yurt } from './yurt';
 import { svgElement } from './svg';
 import { initPointer } from './pointer';
@@ -8,7 +8,7 @@ import { inventory } from './inventory';
 import { initUi } from './ui';
 
 init(null, { contextless: true });
-
+initKeys();
 const { pathTilesCountElement } = initUi();
 
 setTimeout(() => {
@@ -39,8 +39,19 @@ let renderCount = 0;
 
 let totalUpdateCount = 0;
 
+let paused = false;
+
+onKey('space', (e) => {
+  paused = !paused;
+});
+
 const loop = GameLoop({
   update() {
+    if (paused) {
+      // If the game is paused, nothing updates, but everything is still rendered
+      return;
+    }
+
     updateCount++;
     totalUpdateCount++;
     // if (totalUpdateCount > 200) return;
