@@ -36,7 +36,7 @@ export const initUi = () => {
       place-items: center;
       width: 56px;
       aspect-ratio: 1;
-      background: #753f;
+      background: #443f;
       border-radius: 50%;
       transition: all.3s;
       overflow: hidden;
@@ -50,19 +50,19 @@ export const initUi = () => {
       height: 20px;
       border-radius: 50%;
       background: #eee;
-      border: 4px solid #753;
+      border: 4px solid #443;
       transform: translateX(50%);
-      color: #753;
+      color: #443;
     }
     button:hover div {
-      border-color: #333b;
-      background: #753b;
+      border-color: #443b;
+      background: #443b;
       color: #fff;
     }
     button:hover div + div {
       background: #fff;
-      color: #753;
-      border: 4px solid #753;
+      color: #443;
+      border: 4px solid #443;
     }
   `.trim();
   document.head.appendChild(styles);
