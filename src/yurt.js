@@ -181,7 +181,7 @@ export class Yurt extends Structure {
     const x = gridCellSize / 2 + this.x * gridCellSize;
     const y = gridCellSize / 2 + this.y * gridCellSize;
 
-    this.shadow.style.transition = 'transform.2s d.6s';
+    this.shadow.style.transition = 'transform.2s d.3s';
     this.shadow.setAttribute('d', 'M0 0l3 3');
 
     this.circle.style.transition = 'transform.2s';
@@ -195,7 +195,7 @@ export class Yurt extends Structure {
     const x = gridCellSize / 2 + this.x * gridCellSize;
     const y = gridCellSize / 2 + this.y * gridCellSize;
 
-    this.shadow.style.transition = 'transform.3s d.6s';
+    this.shadow.style.transition = 'transform.3s d.4s';
     this.shadow.setAttribute('d', 'M0 0l2 2');
     this.shadow.style.transform = `translate(${x}px,${y}px) scale(1)`;
 
