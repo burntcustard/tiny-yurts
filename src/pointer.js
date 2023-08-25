@@ -1,13 +1,14 @@
-import { svgElement } from './svg';
+import { createSvgElement, svgElement } from './svg';
 import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';
-import { isPastHalfwayInto, getGridCell } from './cell';
+import { isPastHalfwayInto, getGridCell, getBoardCell } from './cell';
 import { farms } from './farm';
 import { yurts } from './yurt';
+import { gridCellSize } from './grid';
+import { gridPointerLayer } from './layers';
 
 let dragStartCell = {};
 let isDragging = false;
-const rect = svgElement.getBoundingClientRect();
 
 const yurtInCell = (x, y) => yurts.find((yurt) => yurt.x === x && yurt.y === y);
 const farmInCell = (x, y) => farms.find((farm) => farm.x === x && farm.y === y);
@@ -32,16 +33,36 @@ const removePathsOnRightClick = (x, y) => {
 };
 
 const handlePointerdown = (event) => {
-  const { x: cellX, y: cellY } = getGridCell(event.x - rect.left, event.y - rect.top);
+  const rect = gridPointerLayer.getBoundingClientRect();
+  const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
+
+  // Draw a debug circle
+  // const debugCircle = createSvgElement('circle');
+  // debugCircle.setAttribute('fil', 'red');
+  // debugCircle.setAttribute('r', 1);
+  // debugCircle.setAttribute('cx', gridCellSize / 2 + cellX * gridCellSize);
+  // debugCircle.setAttribute('cy', gridCellSize / 2 + cellY * gridCellSize);
+  // svgElement.append(debugCircle);
+
 
   if (event.buttons === 1) {
     if (farmInCell(cellX, cellY)) return;
     isDragging = true;
     dragStartCell = { x: cellX, y: cellY };
+    const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
+    if (yurtInStartCell) {
+      yurtInStartCell.lift();
+    }
   } else if (event.buttons === 2) {
     removePathsOnRightClick(cellX, cellY);
   }
 };
+
+const handlePointerup = () => {
+  const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
+
+  if (yurtInStartCell) yurtInStartCell.place();
+}
 
 const handlePointermove = (event) => {
   // Is left click being held down? If not, we don't care
@@ -49,7 +70,8 @@ const handlePointermove = (event) => {
 
   if (!isDragging) return;
 
-  const { x: cellX, y: cellY } = getGridCell(event.x - rect.left, event.y - rect.top);
+  const rect = gridPointerLayer.getBoundingClientRect();
+  const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
 
   const xDiff = Math.abs(cellX - dragStartCell.x);
   const yDiff = Math.abs(cellY - dragStartCell.y);
@@ -70,7 +92,7 @@ const handlePointermove = (event) => {
 
   // Have we gone +50% into the new cell?
   if (!isPastHalfwayInto({
-    pointer: { x: event.x - rect.left, y: event.y - rect.y },
+    pointer: { x: event.x - rect.left, y: event.y - rect.top },
     from: { x: dragStartCell.x, y: dragStartCell.y },
     to: { x: cellX, y: cellY },
   })) return;
@@ -80,13 +102,15 @@ const handlePointermove = (event) => {
 
   if (yurtInStartCell) {
     yurtInStartCell.rotateTo(cellX, cellY);
-    dragStartCell = {};
-    isDragging = false;
+    dragStartCell = { x: cellX, y: cellY };
+    yurtInStartCell.place();
     return;
   } if (yurtInEndCell) {
+    // You can't drag through yurt because it was causing too many weird bugs
     yurtInEndCell.rotateTo(dragStartCell.x, dragStartCell.y);
     dragStartCell = {};
     isDragging = false;
+    yurtInEndCell.place();
     return;
   }
 
@@ -106,8 +130,9 @@ const handlePointermove = (event) => {
   dragStartCell = { x: cellX, y: cellY };
 };
 
-export const initPointer = (target) => {
-  target.addEventListener('contextmenu', (event) => event.preventDefault());
-  target.addEventListener('pointerdown', handlePointerdown);
-  target.addEventListener('pointermove', handlePointermove);
+export const initPointer = () => {
+  gridPointerLayer.addEventListener('contextmenu', (event) => event.preventDefault());
+  gridPointerLayer.addEventListener('pointerdown', handlePointerdown);
+  gridPointerLayer.addEventListener('pointermove', handlePointermove);
+  gridPointerLayer.addEventListener('pointerup', handlePointerup);
 };

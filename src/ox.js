@@ -74,6 +74,13 @@ export class Ox extends Animal {
     }, 500);
 
     setTimeout(() => {
+      ox.style.transition = '';
+      ox.style.willChange = '';
+      shadow.style.willChange = '';
+      shadow.style.transition = '';
+    }, 1500);
+
+    setTimeout(() => {
       this.isBaby = false;
       this.svgHorns.style.opacity = 1;
     }, 60000);

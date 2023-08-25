@@ -24,20 +24,20 @@ export class Goat extends Animal {
   addToSvg() {
     this.scale = 0;
 
-    const ox = createSvgElement('g');
-    ox.style.transformOrigin = 'center';
-    ox.style.transformBox = 'fill-box';
-    ox.style.transition = 'all 1s';
-    ox.style.willChange = 'transform';
-    this.svgElement = ox;
-    animalLayer.appendChild(ox);
+    const goat = createSvgElement('g');
+    goat.style.transformOrigin = 'center';
+    goat.style.transformBox = 'fill-box';
+    goat.style.transition = 'all 1s';
+    goat.style.willChange = 'transform';
+    this.svgElement = goat;
+    animalLayer.appendChild(goat);
 
     const body = createSvgElement('rect');
     body.setAttribute('fill', colors.goat);
     body.setAttribute('width', this.width);
     body.setAttribute('height', this.height);
     body.setAttribute('rx', this.roundness);
-    ox.appendChild(body);
+    goat.appendChild(body);
 
     // const horns = createSvgElement('path');
     // // horns.setAttribute('transform', `translate(${x},${y}) rotate(${radToDeg(this.rotation)})`);
@@ -72,13 +72,17 @@ export class Goat extends Animal {
 
     setTimeout(() => {
       this.scale = 1;
-      this.svgElement.style.transition = '';
-      this.svgShadowElement.style.transition = '';
     }, 500);
 
     setTimeout(() => {
+      goat.style.transition = '';
+      goat.style.willChange = '';
+      shadow.style.willChange = '';
+      shadow.style.transition = '';
+    }, 1500);
+
+    setTimeout(() => {
       this.isBaby = false;
-      // this.svgHorns.style.opacity = 1;
     }, 60000);
   }
 

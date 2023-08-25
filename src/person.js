@@ -2,7 +2,7 @@ import { GameObjectClass, Vector } from 'kontra';
 import { gridCellSize } from './grid';
 import { createSvgElement } from './svg';
 import { colors } from './colors';
-import { personLayer, pointerLayer, yurtAndPersonShadowLayer } from './layers';
+import { personLayer, yurtAndPersonShadowLayer } from './layers';
 import { findBestRoute } from './findBestRoute';
 import { rotateVector, combineVectors } from './vector';
 
@@ -193,17 +193,15 @@ export class Person extends GameObjectClass {
 
         const newNextDistanceBetween = otherPerson.position.distance(this.position.add(this.velocity));
 
-        if (nextDistanceBetween < slowyDistance) {
+        if (nextDistanceBetween < slowyDistance && this.velocity.length() > 0.05) {
           if (newNextDistanceBetween < distanceBetween) {
             if (nextDistanceBetween < avoidanceDistance) {
               this.dx *= 0.87;
               this.dy *= 0.87;
             } else {
-              // Getting closer, we want to go 0.98x the speed we were going before:
               this.dx *= 0.89;
               this.dy *= 0.89;
             }
-
           } else {
             // Getting further away (still want to go slower than usual)
             this.dx *= 0.9;

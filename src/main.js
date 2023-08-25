@@ -1,38 +1,39 @@
 import { init, initKeys, keyMap, onKey, offKey, GameLoop, keyPressed } from 'kontra';
-import { Yurt } from './yurt';
 import { svgElement } from './svg';
+import { Yurt } from './yurt';
 import { initPointer } from './pointer';
 import { OxFarm } from './ox-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import { initUi } from './ui';
+import { gridPointerHandler } from './grid';
 
 init(null, { contextless: true });
 initKeys();
 const { pathTilesCountElement } = initUi();
 
 setTimeout(() => {
-  const testYurt = new Yurt({ x: 6, y: 7, type: 'ox' });
+  const testYurt = new Yurt({ x: 9, y: 7, type: 'ox' });
   testYurt.addToSvg();
 }, 0);
 
 setTimeout(() => {
-  const testYurt2 = new Yurt({ x: 5, y: 5, type: 'ox' });
+  const testYurt2 = new Yurt({ x: 8, y: 5, type: 'ox' });
   testYurt2.addToSvg();
 }, 500);
 
 setTimeout(() => {
-  const testYurt3 = new Yurt({ x: 7, y: 5, type: 'ox' });
+  const testYurt3 = new Yurt({ x: 10, y: 5, type: 'ox' });
   testYurt3.addToSvg();
 }, 500);
 
 let testOxFarm;
 
 setTimeout(() => {
-  testOxFarm = new OxFarm({ width: 3, height: 2, x: 1, y: 6 });
+  testOxFarm = new OxFarm({ width: 3, height: 2, x: 4, y: 8 });
 }, 1000);
 
-initPointer(svgElement);
+initPointer();
 
 let updateCount = 0;
 let renderCount = 0;

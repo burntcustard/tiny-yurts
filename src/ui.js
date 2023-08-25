@@ -73,7 +73,7 @@ export const initUi = () => {
 
   // Add HTML UI elements (?)
   const uiContainer = document.createElement('div');
-  uiContainer.style.cssText = 'position:absolute;inset:0;display:grid;padding:12px;pointer-events:none;'
+  uiContainer.style.cssText = 'position:absolute;inset:0;display:grid;padding:12px;pointer-events:none;';
   document.body.append(uiContainer);
 
   const header = document.createElement('header');
@@ -90,8 +90,6 @@ export const initUi = () => {
   const timeButtonSvg = createSvgElement('svg');
   timeButtonSvg.setAttribute('stroke-linejoin', 'round');
   timeButtonSvg.setAttribute('stroke-linecap', 'round');
-  timeButtonSvg.style.outline = '1px solid red';
-
   timeButtonSvg.setAttribute('viewBox', '0 0 16 16');
   timeButtonSvg.style.width = '80px';
   timeButtonSvg.style.height = '80px';

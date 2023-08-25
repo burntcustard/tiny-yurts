@@ -1,5 +1,5 @@
-import { addGridToSvg } from './grid';
-import { svgElement, createSvgElement } from './svg';
+import { addGridToSvg, gridCellSize, gridLineThickness } from './grid';
+import { svgElement, createSvgElement, boardOffsetX, boardOffsetY, boardWidth, boardHeight, boardSvgWidth, boardSvgHeight } from './svg';
 import { colors, shadowOpacity } from './colors';
 
 const addAnimalShadowLayer = () => {
@@ -113,10 +113,16 @@ const addPinLayer = () => {
   return pinLayer;
 }
 
-const addPointerLayer = () => {
-  const pointerLayer = createSvgElement('g');
-  svgElement.appendChild(pointerLayer);
-  return pointerLayer;
+const addGridPointerLayer = () => {
+  const gridPointerLayer = createSvgElement('rect');
+  gridPointerLayer.setAttribute('width', `${boardSvgWidth + gridLineThickness}px`);
+  gridPointerLayer.setAttribute('height', `${boardSvgHeight + gridLineThickness}px`);
+  gridPointerLayer.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness} ${boardOffsetY * gridCellSize - gridLineThickness})`);
+  gridPointerLayer.setAttribute('fill', 'none');
+  gridPointerLayer.setAttribute('stroke-width', 0);
+  gridPointerLayer.style.pointerEvents = 'all';
+  svgElement.appendChild(gridPointerLayer);
+  return gridPointerLayer;
 }
 
 // Order is important here, because it determines stacking in the SVG
@@ -138,7 +144,7 @@ export const layers = {
     'goat': addYurtDecorationLayer(colors.goat),
   },
   pinLayer: addPinLayer(),
-  pointerLayer: addPointerLayer(),
+  gridPointerLayer: addGridPointerLayer(),
 };
 
 export const { yurtDecorationLayers } = layers;
@@ -152,6 +158,6 @@ export const pathLayer = layers.paths;
 export const pathShadowLayer = layers.pathShadows;
 export const personLayer = layers.personLayer;
 export const pinLayer = layers.pinLayer;
-export const pointerLayer = layers.pointerLayer;
+export const gridPointerLayer = layers.gridPointerLayer;
 export const yurtLayer = layers.yurts;
 export const yurtAndPersonShadowLayer = layers.yurtAndPersonShadows;
