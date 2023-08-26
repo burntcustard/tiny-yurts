@@ -1,11 +1,11 @@
 import { createSvgElement, svgElement } from './svg';
 import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';
-import { isPastHalfwayInto, getGridCell, getBoardCell } from './cell';
+import { isPastHalfwayInto, getGridCell, getBoardCell, pointerPxToSvgPx } from './cell';
 import { farms } from './farm';
 import { yurts } from './yurt';
 import { gridCellSize, gridRect, gridRectRed } from './grid';
-import { gridPointerLayer } from './layers';
+import { gridPointerLayer, pathShadowLayer } from './layers';
 import { svgHazardLines, svgHazardLinesRed, svgContainerElement } from './svg';
 import { removePath } from './remove-path';
 import { colors } from './colors';
@@ -27,6 +27,11 @@ const samePathInBothCell = (x0, y0, x1, y1) => paths.find((path) => (
   )
 ));
 
+const toSvgCoord = (c) => gridCellSize / 2 + c * gridCellSize;
+const pathDragIndicator = createSvgElement('path');
+pathDragIndicator.style.opacity = 0;
+pathShadowLayer.append(pathDragIndicator);
+
 const handlePointerdown = (event) => {
   event.stopPropagation(); // Prevent hazard area event handling after this
   const rect = gridPointerLayer.getBoundingClientRect();
@@ -34,12 +39,11 @@ const handlePointerdown = (event) => {
 
   // Draw a debug circle
   // const debugCircle = createSvgElement('circle');
-  // debugCircle.setAttribute('fil', 'red');
-  // debugCircle.setAttribute('r', 1);
+  // debugCircle.setAttribute('fill', colors.base);
+  // debugCircle.setAttribute('r', 1.5);
   // debugCircle.setAttribute('cx', gridCellSize / 2 + cellX * gridCellSize);
   // debugCircle.setAttribute('cy', gridCellSize / 2 + cellY * gridCellSize);
-  // svgElement.append(debugCircle);
-
+  // pathShadowLayer.append(debugCircle);
 
   if (event.buttons === 1) {
     if (farmInCell(cellX, cellY)) return;
@@ -52,6 +56,11 @@ const handlePointerdown = (event) => {
     const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
     if (yurtInStartCell) {
       yurtInStartCell.lift();
+    } else {
+      const M = `${toSvgCoord(cellX)} ${toSvgCoord(cellY)}`;
+      const L = `0 0`;
+      pathDragIndicator.setAttribute('d', `M${M}l${L}`);
+      pathDragIndicator.style.opacity = 1;
     }
   } else if (event.buttons === 2) {
     gridRectRed.style.opacity = 0.9;
@@ -88,6 +97,8 @@ const handlePointerup = (event) => {
   gridRectRed.style.opacity = 0;
   svgHazardLinesRed.style.opacity = 0;
 
+  pathDragIndicator.style.opacity = 0;
+
   if (yurtInStartCell) yurtInStartCell.place();
 }
 
@@ -122,6 +133,12 @@ const handlePointermove = (event) => {
 
   const xDiff = Math.abs(cellX - dragStartCell.x);
   const yDiff = Math.abs(cellY - dragStartCell.y);
+
+  const pointerSvgPx = pointerPxToSvgPx(event.x - rect.left, event.y - rect.top);
+  const M = `${toSvgCoord(dragStartCell.x)} ${toSvgCoord(dragStartCell.y)}`;
+  const L = `${pointerSvgPx.x} ${pointerSvgPx.y}`;
+  pathDragIndicator.setAttribute('d', `M${M}L${L}`);
+  pathDragIndicator.style.opacity = 1;
 
   // Same cell or >1 cell apart somehow, do nothing
   if (

@@ -1,5 +1,5 @@
 import { svgElement, gridWidth, boardWidth, boardOffsetX, boardOffsetY } from './svg';
-import { gridRect } from './grid';
+import { gridRect, gridCellSize } from './grid';
 import { gridPointerLayer } from './layers';
 
 export const getGridCell = (x, y) => {
@@ -21,6 +21,16 @@ export const getBoardCell = (x, y) => {
     y: boardOffsetY + Math.floor(y / cellSizePx),
   }
 }
+
+export const pointerPxToSvgPx = (x, y) => {
+  const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;
+  const scale = cellSizePx / gridCellSize;
+
+  return {
+    x: (boardOffsetX * gridCellSize) + (x / scale),
+    y: (boardOffsetY * gridCellSize) + (y / scale),
+  };
+};
 
 export const isPastHalfwayInto = ({ pointer, from, to }) => {
   const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;
