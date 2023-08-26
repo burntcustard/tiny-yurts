@@ -1,4 +1,5 @@
 import { createSvgElement } from './svg';
+import { emojiOx } from './emoji-ox';
 
 export const oxCounterWrapper = document.createElement('div');
 export const oxCounter = document.createElement('div');
@@ -99,10 +100,7 @@ export const initUi = () => {
   header.append(counters);
 
   oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
-  const oxCounterLogo = document.createElement('span');
-  oxCounterLogo.style.fontSize = '32px';
-  oxCounterLogo.innerText = '🐂'
-  oxCounterWrapper.append(oxCounterLogo, oxCounter);
+  oxCounterWrapper.append(emojiOx, oxCounter);
   counters.append(oxCounterWrapper);
 
   // TODO: Move & export goat & other animal stuff
