@@ -245,7 +245,6 @@ export const drawPaths = ({ fadeout, noShadow }) => {
         }
 
         if (!noShadow) {
-          console.log('avoiding doing a shadow')
           newPathData.svgElementShadow = createSvgElement('path');
           newPathData.svgElementShadow.setAttribute('d', newPathData.d);
           pathShadowLayer.appendChild(newPathData.svgElementShadow);

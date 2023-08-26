@@ -18,5 +18,6 @@ const eye = createSvgElement('circle');
 eye.setAttribute('cx', 6);
 eye.setAttribute('cy', 16);
 eye.setAttribute('r', 1);
+eye.setAttribute('fill', colors.ui);
 
 emojiOx.append(body, horn, eye);

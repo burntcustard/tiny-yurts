@@ -1,11 +1,15 @@
 import { Ox } from './ox';
 import { Farm } from './farm';
+import { colors } from './colors';
 
 export const oxFarms = [];
 
 export class OxFarm extends Farm {
   constructor(properties) {
-    super(properties);
+    super({
+      ...properties,
+      fenceColor: colors.ox,
+    });
 
     this.needyness = 200; // 400 is good, tweaking for testing
     this.demand = 0;

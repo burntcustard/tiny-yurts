@@ -39,7 +39,6 @@ const addFenceLayer = () => {
   const fenceLayer = createSvgElement('g');
   fenceLayer.setAttribute('stroke-linecap', 'round');
   fenceLayer.setAttribute('fill', 'none');
-  fenceLayer.setAttribute('stroke', colors.fence);
   svgElement.appendChild(fenceLayer);
   return fenceLayer;
 };

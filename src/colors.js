@@ -9,6 +9,7 @@ export const colors = {
   oxHorn: '#dee',
   goat:   '#abb',
   black:  '#000',
+  ui:     '#443',
   grid:   '#0001',
   shade:  '#0001',
   gridRed:'#f002',

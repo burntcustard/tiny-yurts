@@ -154,6 +154,7 @@ export class Farm extends Structure {
     fence.setAttribute('height', svgHeight);
     fence.setAttribute('rx', roundness);
     fence.setAttribute('transform', `translate(${x},${y})`);
+    fence.setAttribute('stroke', this.fenceColor);
     fence.setAttribute('stroke-dasharray', this.circumference); // Math.PI * 2 + a bit
     fence.setAttribute('stroke-dashoffset', this.circumference);
     fence.style.transition = 'all 1s';
