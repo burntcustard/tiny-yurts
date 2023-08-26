@@ -120,6 +120,7 @@ const addGridPointerLayer = () => {
   gridPointerLayer.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness} ${boardOffsetY * gridCellSize - gridLineThickness})`);
   gridPointerLayer.setAttribute('fill', 'none');
   gridPointerLayer.setAttribute('stroke-width', 0);
+  gridPointerLayer.style.cursor = 'cell';
   gridPointerLayer.style.pointerEvents = 'all';
   svgElement.appendChild(gridPointerLayer);
   return gridPointerLayer;

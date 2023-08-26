@@ -9,21 +9,17 @@ export class OxFarm extends Farm {
 
     this.needyness = 200; // 400 is good, tweaking for testing
     this.demand = 0;
+    this.totalUpdates = 0;
     this.type = 'ox';
 
     oxFarms.push(this);
 
+    setTimeout(() => this.addAnimal({}), 2000);
     setTimeout(() => this.addAnimal({}), 3000);
-    setTimeout(() => this.addAnimal({}), 4000);
-    setTimeout(() => this.addAnimal({ isBaby: (oxFarms.length - 1) % 2 }), 5000);
+    setTimeout(() => this.addAnimal({ isBaby: (oxFarms.length - 1) % 2 }), 4000);
 
     this.appearing = true;
     setTimeout(() => this.appearing = false, 3000);
-
-    // TODO: Swap this to update-based (farm or level) rather than timeout based
-    setTimeout(() => {
-      this.upgrade();
-    }, 50000);
   }
 
   upgrade() {
@@ -54,6 +50,11 @@ export class OxFarm extends Farm {
   update() {
     super.update();
 
+    this.totalUpdates++;
+
+    if (this.totalUpdates > 10000) {
+      this.upgrade();
+    }
     // So 3 ox = 2 demand per update, 5 ox = 2 demand per update,
     // so upgrading doubles the demand(?)
   }

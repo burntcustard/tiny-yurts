@@ -10,8 +10,8 @@ export const boardOffsetX = 3;
 export const boardOffsetY = 2;
 
 // The number of cells making up the width and height of the game board, only including buildable area
-export const boardWidth = 22;
-export const boardHeight = 11;
+export const boardWidth = 20;
+export const boardHeight = 10;
 
 export const boardSvgWidth = boardWidth * gridCellSize;
 export const boardSvgHeight = boardHeight * gridCellSize;
@@ -63,7 +63,7 @@ svgElement.setAttribute('viewBox', `0 0 ${gridSvgWidth} ${gridSvgHeight}`);
 svgElement.setAttribute('preserveAspectRatio', 'xMidYMid slice');
 svgElement.style.width = '100dvw';
 svgElement.style.height = '100dvh';
-svgElement.style.maxHeight = '65dvw';
+svgElement.style.maxHeight = '68dvw';
 svgElement.style.maxWidth = '200dvh';
 svgElement.style.display = 'grid'; // Maybe required, cause of random extra px
 svgElement.style.touchAction = 'none'; // Required to prevent default draggness

@@ -62,8 +62,8 @@ export class Yurt extends Structure {
 
       drawPaths({ changedCells: [
         { x, y, fixed: true },
-        { x: x + this.facing.x, y: y + this.facing.y }
-      ]});
+        { x: x + this.facing.x, y: y + this.facing.y },
+      ], noShadow: true});
     }, 1000)
 
     setTimeout(() => {

@@ -23,7 +23,7 @@ export let pathsData = [];
 
 export let recentlyRemoved = [];
 
-export const drawPaths = ({ fadeout, changedCells, newPath }) => {
+export const drawPaths = ({ fadeout, noShadow }) => {
   // only care about paths in or next to changedCell
 
   // const changedPaths = changedCells.length ? paths.filter(path => {
@@ -231,10 +231,6 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
 
       const isYurtPath = newPathData.path?.points[0].fixed;
 
-      // console.log('newPathData.path', newPathData.path);
-      console.log(isYurtPath);
-      console.log('!pathInSameCellRecentlyRemoved', !pathInSameCellRecentlyRemoved);
-
       if (newPathData.path === undefined || !pathInSameCellRecentlyRemoved || isYurtPath) {
         newPathData.svgElement.setAttribute('stroke-width', 0);
         newPathData.svgElement.setAttribute('opacity', 0);
@@ -248,20 +244,23 @@ export const drawPaths = ({ fadeout, changedCells, newPath }) => {
           }, 10);
         }
 
-        newPathData.svgElementShadow = createSvgElement('path');
-        newPathData.svgElementShadow.setAttribute('d', newPathData.d);
-        pathShadowLayer.appendChild(newPathData.svgElementShadow);
+        if (!noShadow) {
+          console.log('avoiding doing a shadow')
+          newPathData.svgElementShadow = createSvgElement('path');
+          newPathData.svgElementShadow.setAttribute('d', newPathData.d);
+          pathShadowLayer.appendChild(newPathData.svgElementShadow);
+
+          // After transition complete, we don't need the shadow anymore
+          setTimeout(() => {
+            newPathData.svgElementShadow?.remove()
+            newPathData.svgElement.style.willChange = '';
+          }, 500);
+        }
 
         setTimeout(() => {
           newPathData.svgElement.removeAttribute('stroke-width');
           newPathData.svgElement.setAttribute('opacity', 1);
         }, 10);
-
-        // After transition complete, we don't need the shadow anymore
-        setTimeout(() => {
-          newPathData.svgElementShadow?.remove()
-          newPathData.svgElement.style.willChange = '';
-        }, 500);
       }
     }
   });

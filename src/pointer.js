@@ -63,6 +63,7 @@ const handlePointerdown = (event) => {
       pathDragIndicator.style.transition = 'all.2s, scale.4s cubic-bezier(.5,2,.5,1)';
     }
   } else if (event.buttons === 2) {
+    gridPointerLayer.style.cursor = 'crosshair';
     gridRectRed.style.opacity = 0.9;
     svgHazardLinesRed.style.opacity = 0.9;
     removePath(cellX, cellY);
@@ -92,6 +93,10 @@ const handlePointerup = (event) => {
   event.stopPropagation();
   const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
 
+  if (!yurtInStartCell) {
+    gridPointerLayer.style.cursor = 'cell';
+  }
+
   gridRect.style.opacity = 0;
   svgHazardLines.style.opacity = 0;
   gridRectRed.style.opacity = 0;
@@ -101,21 +106,37 @@ const handlePointerup = (event) => {
   pathDragIndicator.style.scale = 0;
 
   if (yurtInStartCell) yurtInStartCell.place();
+
+  dragStartCell = {};
+  isDragging = false;
 }
 
 const handlePointermove = (event) => {
   // Do not trigger hazard area pointermove
   event.stopPropagation();
 
+  const rect = gridPointerLayer.getBoundingClientRect();
+  const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
+
   if (event.buttons === 2) {
+    gridPointerLayer.style.cursor = 'crosshair';
     gridRectRed.style.opacity = 0.9;
     svgHazardLinesRed.style.opacity = 0.9;
 
-    const rect = gridPointerLayer.getBoundingClientRect();
-    const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
-
     removePath(cellX, cellY);
     return;
+  }
+
+  const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
+  const yurtInEndCell = yurtInCell(cellX, cellY);
+
+  // Assign cursor
+  if ((yurtInStartCell && event.buttons === 1) || yurtInEndCell) {
+    gridPointerLayer.style.cursor = 'move';
+  } else {
+    if (!samePathInBothCell(dragStartCell.x, dragStartCell.y, cellX, cellY)) {
+      gridPointerLayer.style.cursor = 'cell';
+    }
   }
 
   // Is left click being held down? If not, we don't care
@@ -128,9 +149,6 @@ const handlePointermove = (event) => {
   svgHazardLines.style.opacity = 0.9;
 
   if (!isDragging) return;
-
-  const rect = gridPointerLayer.getBoundingClientRect();
-  const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
 
   const xDiff = cellX - dragStartCell.x;
   const yDiff = cellY - dragStartCell.y;
@@ -173,9 +191,6 @@ const handlePointermove = (event) => {
     to: { x: cellX, y: cellY },
   })) return;
 
-  const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
-  const yurtInEndCell = yurtInCell(cellX, cellY);
-
   if (yurtInStartCell) {
     yurtInStartCell.rotateTo(cellX, cellY);
     dragStartCell = { x: cellX, y: cellY };
@@ -201,6 +216,7 @@ const handlePointermove = (event) => {
   }
 
   if (samePathInBothCell(dragStartCell.x, dragStartCell.y, cellX, cellY)) {
+    gridPointerLayer.style.cursor = 'not-allowed';
     return;
   }
 
