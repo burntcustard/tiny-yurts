@@ -180,6 +180,8 @@ const handlePointermove = (event) => {
     yurtInStartCell.rotateTo(cellX, cellY);
     dragStartCell = { x: cellX, y: cellY };
     yurtInStartCell.place();
+    // pathDragIndicator.setAttribute('d', `M0 0L0 0`);
+    pathDragIndicator.style.transition = '';
     return;
   } if (yurtInEndCell) {
     // You can't drag through yurt because it was causing too many weird bugs
@@ -192,6 +194,7 @@ const handlePointermove = (event) => {
 
   // No paths check is done after yurt shenanigans
   if (inventory.paths <= 0) {
+    pathDragIndicator.style.opacity = 0;
     dragStartCell = {};
     isDragging = false;
     return;
