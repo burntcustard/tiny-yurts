@@ -144,11 +144,13 @@ export class Yurt extends Structure {
     }, 100);
     setTimeout(() => baseShadow.style.willChange = '', 600);
 
+    this.svgGroup = createSvgElement('g');
+    this.svgGroup.style.transform = `translate(${x}px,${y}px)`;
+    yurtLayer.appendChild(this.svgGroup);
+
     this.circle = createSvgElement('circle');
-    this.circle.style.transform = `translate(${x}px,${y}px)`;
     this.circle.style.transition = 'r.4s';
     this.circle.style.willChange = 'r';
-    yurtLayer.appendChild(this.circle);
     setTimeout(() => this.circle.setAttribute('r', 3), 400);
     setTimeout(() => this.circle.style.willChange = '', 900);
 
@@ -167,12 +169,14 @@ export class Yurt extends Structure {
     this.decoration = createSvgElement('circle');
     this.decoration.setAttribute('fill', 'none');
     this.decoration.setAttribute('r', 1);
-    this.decoration.style.transform = `translate(${x}px,${y}px)`;
     this.decoration.setAttribute('stroke-dasharray', 6.3); // Math.PI * 2 + a bit
     this.decoration.setAttribute('stroke-dashoffset', 6.3);
+    this.decoration.setAttribute('stroke', colors[this.type]);
     this.decoration.style.willChange = 'stroke-dashoffset';
     this.decoration.style.transition = 'stroke-dashoffset .5s';
-    yurtDecorationLayers[this.type].appendChild(this.decoration);
+
+    this.svgGroup.append(this.circle, this.decoration);
+
     setTimeout(() => this.decoration.setAttribute('stroke-dashoffset', 0), 700);
     setTimeout(() => this.decoration.style.willChange = '', 1300);
   }
@@ -184,11 +188,8 @@ export class Yurt extends Structure {
     this.shadow.style.transition = 'transform.2s d.3s';
     this.shadow.setAttribute('d', 'M0 0l3 3');
 
-    this.circle.style.transition = 'transform.2s';
-    this.circle.style.transform = `translate(${x}px,${y}px) scale(1.1)`;
-
-    this.decoration.style.transition = 'transform.2s';
-    this.decoration.style.transform = `translate(${x}px,${y}px) scale(1.1)`;
+    this.svgGroup.style.transition = 'transform.2s';
+    this.svgGroup.style.transform = `translate(${x}px,${y}px) scale(1.1)`;
   }
 
   place() {
@@ -199,10 +200,7 @@ export class Yurt extends Structure {
     this.shadow.setAttribute('d', 'M0 0l2 2');
     this.shadow.style.transform = `translate(${x}px,${y}px) scale(1)`;
 
-    this.circle.style.transition = 'transform.3s';
-    this.circle.style.transform = `translate(${x}px,${y}px) scale(1)`;
-
-    this.decoration.style.transition = 'transform.3s';
-    this.decoration.style.transform = `translate(${x}px,${y}px) scale(1)`;
+    this.svgGroup.style.transition = 'transform.3s';
+    this.svgGroup.style.transform = `translate(${x}px,${y}px) scale(1)`;
   }
 }

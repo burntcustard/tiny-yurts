@@ -50,10 +50,11 @@ export class Farm extends Structure {
   }
 
   assignWarn() {
-    const notWarnedAnimals = this.children.filter(c => !c.hasWarn);
+    const notWarnedAnimals = this.children.filter(c => !c.hasWarn && !c.isBaby);
 
     if (notWarnedAnimals.length === 0) {
       // Go to the next panicy stage of aaaahhh all animals have a warning!
+      // TODO: Figure out how this works with babies?
       return;
     }
 
@@ -67,7 +68,7 @@ export class Farm extends Structure {
     if (this.appearing) return;
 
     this.numIssues = Math.floor(this.demand / this.needyness);
-    this.demand += this.children.length - 1;
+    this.demand += this.children.filter(c => !c.isBaby).length - 1;
     // console.log('numIssues:', this.numIssues, ', this.demand:', this.demand);
 
     this.assignWarn();
