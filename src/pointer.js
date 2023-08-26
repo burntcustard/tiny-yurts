@@ -1,3 +1,4 @@
+import { Vector } from 'kontra';
 import { createSvgElement, svgElement } from './svg';
 import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';
@@ -28,22 +29,20 @@ const samePathInBothCell = (x0, y0, x1, y1) => paths.find((path) => (
 ));
 
 const toSvgCoord = (c) => gridCellSize / 2 + c * gridCellSize;
+// The pathDragIndicatorWrapper controls the x/y positioning of the indicator
+const pathDragIndicatorWrapper = createSvgElement('g');
+// The pathDragIndicator controls the scale and the path d of the indicator
 const pathDragIndicator = createSvgElement('path');
 pathDragIndicator.style.opacity = 0;
-pathShadowLayer.append(pathDragIndicator);
+pathDragIndicator.style.scale = 0;
+pathDragIndicator.style.transition = 'all.2s, scale.4s cubic-bezier(.5,2,.5,1)';
+pathDragIndicatorWrapper.append(pathDragIndicator);
+pathShadowLayer.append(pathDragIndicatorWrapper);
 
 const handlePointerdown = (event) => {
   event.stopPropagation(); // Prevent hazard area event handling after this
   const rect = gridPointerLayer.getBoundingClientRect();
   const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
-
-  // Draw a debug circle
-  // const debugCircle = createSvgElement('circle');
-  // debugCircle.setAttribute('fill', colors.base);
-  // debugCircle.setAttribute('r', 1.5);
-  // debugCircle.setAttribute('cx', gridCellSize / 2 + cellX * gridCellSize);
-  // debugCircle.setAttribute('cy', gridCellSize / 2 + cellY * gridCellSize);
-  // pathShadowLayer.append(debugCircle);
 
   if (event.buttons === 1) {
     if (farmInCell(cellX, cellY)) return;
@@ -57,10 +56,11 @@ const handlePointerdown = (event) => {
     if (yurtInStartCell) {
       yurtInStartCell.lift();
     } else {
-      const M = `${toSvgCoord(cellX)} ${toSvgCoord(cellY)}`;
-      const L = `0 0`;
-      pathDragIndicator.setAttribute('d', `M${M}l${L}`);
+      pathDragIndicator.setAttribute('d', `M0 0l0 0`);
+      pathDragIndicatorWrapper.setAttribute('transform', `translate(${toSvgCoord(cellX)} ${toSvgCoord(cellY)})`);
       pathDragIndicator.style.opacity = 1;
+      pathDragIndicator.style.scale = 1.3;
+      pathDragIndicator.style.transition = 'all.2s, scale.4s cubic-bezier(.5,2,.5,1)';
     }
   } else if (event.buttons === 2) {
     gridRectRed.style.opacity = 0.9;
@@ -98,6 +98,7 @@ const handlePointerup = (event) => {
   svgHazardLinesRed.style.opacity = 0;
 
   pathDragIndicator.style.opacity = 0;
+  pathDragIndicator.style.scale = 0;
 
   if (yurtInStartCell) yurtInStartCell.place();
 }
@@ -131,21 +132,32 @@ const handlePointermove = (event) => {
   const rect = gridPointerLayer.getBoundingClientRect();
   const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
 
-  const xDiff = Math.abs(cellX - dragStartCell.x);
-  const yDiff = Math.abs(cellY - dragStartCell.y);
+  const xDiff = cellX - dragStartCell.x;
+  const yDiff = cellY - dragStartCell.y;
 
-  const pointerSvgPx = pointerPxToSvgPx(event.x - rect.left, event.y - rect.top);
-  const M = `${toSvgCoord(dragStartCell.x)} ${toSvgCoord(dragStartCell.y)}`;
-  const L = `${pointerSvgPx.x} ${pointerSvgPx.y}`;
-  pathDragIndicator.setAttribute('d', `M${M}L${L}`);
+  const dragStartSvgPx = new Vector({
+    x: toSvgCoord(dragStartCell.x),
+    y: toSvgCoord(dragStartCell.y)
+  });
+
+  const L = `${toSvgCoord(xDiff / 2 - 0.5)} ${toSvgCoord(yDiff / 2 - 0.5)}`;
+  pathDragIndicatorWrapper.setAttribute('transform', `translate(${dragStartSvgPx.x} ${dragStartSvgPx.y})`);
+  pathDragIndicator.setAttribute('d', `M0 0L${L}`);
   pathDragIndicator.style.opacity = 1;
+  pathDragIndicator.style.scale = 1.3;
 
   // Same cell or >1 cell apart somehow, do nothing
   if (
     (xDiff === 0 && yDiff === 0)
-    || xDiff > 1
-    || yDiff > 1
-  ) return;
+    || Math.abs(xDiff) > 1
+    || Math.abs(yDiff) > 1
+  ) {
+    pathDragIndicator.setAttribute('d', `M0 0L0 0`);
+    return;
+  }
+
+  pathDragIndicator.style.transition = 'all.2s, scale.4s cubic-bezier(.5,2,.5,1)';
+  pathDragIndicator.style.scale = 1;
 
   // We actually don't want to block building paths in farms :)
   // if (farmInCell(cellX, cellY)) {
@@ -196,6 +208,7 @@ const handlePointermove = (event) => {
   drawPaths({ changedCells: [{ x: dragStartCell.x, y: dragStartCell.y }, { x: cellX, y: cellY }], newPath });
 
   dragStartCell = { x: cellX, y: cellY };
+  pathDragIndicator.style.transition = '';
 };
 
 export const initPointer = () => {

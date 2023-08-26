@@ -34,7 +34,8 @@ export const pointerPxToSvgPx = (x, y) => {
 
 export const isPastHalfwayInto = ({ pointer, from, to }) => {
   const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;
-  const fuzzyness = 8; // In device px, how closish to half way is required
+  // TODO: convert from display px to svg px to align with cells better
+  const fuzzyness = 4; // In device px, how closish to half way is required
   const xDiff = pointer.x - cellSizePx * (from.x - boardOffsetX + 0.5);
   const yDiff = pointer.y - cellSizePx * (from.y - boardOffsetY + 0.5);
   const top = to.y - from.y < 0;

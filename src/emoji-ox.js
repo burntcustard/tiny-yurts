@@ -3,6 +3,8 @@ import { colors } from "./colors";
 
 export const emojiOx = createSvgElement('svg');
 emojiOx.setAttribute('viewbox', '0 0 36 36');
+emojiOx.style.width = '36px';
+emojiOx.style.height = '36px';
 
 const body = createSvgElement('path');
 body.setAttribute('fill', colors.ox);
