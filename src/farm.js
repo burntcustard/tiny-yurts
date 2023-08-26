@@ -5,7 +5,7 @@ import { gridCellSize, gridLineThickness } from './grid';
 import { Path, drawPaths } from './path';
 import { colors } from './colors';
 import { people } from './person';
-import { findBestRoute } from './findBestRoute';
+import { findRoute } from './find-route';
 
 export const farms = [];
 
@@ -63,6 +63,7 @@ export class Farm extends Structure {
   }
 
   update() {
+    // Don't actually update while the farm is transitioning-in
     if (this.appearing) return;
 
     this.numIssues = Math.floor(this.demand / this.needyness);
@@ -88,7 +89,7 @@ export class Farm extends Structure {
       let bestRoute = null;
 
       for (let i = 0; i < atHomePeopleOfSameType.length; i++) {
-        const thisPersonsRoute = findBestRoute({
+        const thisPersonsRoute = findRoute({
           from: {
             x: atHomePeopleOfSameType[i].parent.x,
             y: atHomePeopleOfSameType[i].parent.y
@@ -129,8 +130,8 @@ export class Farm extends Structure {
   }
 
   addToSvg() {
-    const x = this.x * gridCellSize + fenceLineThickness / 2 + gridLineThickness;
-    const y = this.y * gridCellSize + fenceLineThickness / 2 + gridLineThickness;
+    const x = this.x * gridCellSize + fenceLineThickness / 2;
+    const y = this.y * gridCellSize + fenceLineThickness / 2;
     const svgWidth = gridCellSize * this.width - fenceLineThickness - gridLineThickness;
     const svgHeight = gridCellSize * this.height - fenceLineThickness - gridLineThickness;
 

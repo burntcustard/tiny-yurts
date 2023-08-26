@@ -11,6 +11,7 @@ export const colors = {
   black:  '#000',
   grid:   '#0001',
   shade:  '#0001',
+  gridRed:'#f002',
 };
 
 export const shadowOpacity = 0.12;

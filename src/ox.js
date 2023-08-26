@@ -4,6 +4,7 @@ import { animalLayer, animalShadowLayer } from './layers';
 import { colors } from './colors';
 import { createSvgElement } from './svg';
 import { gridCellSize } from './grid';
+import { oxCounter, oxCounterWrapper } from './ui';
 
 export const oxen = [];
 
@@ -69,8 +70,14 @@ export class Ox extends Animal {
 
     this.render();
 
+    oxCounterWrapper.style.width = '80px';
+    oxCounterWrapper.style.opacity = '1';
+
     setTimeout(() => {
       this.scale = 1;
+
+      // Only add to the counter after 1/2 a second, otherwise it ruins the surprise!
+      oxCounter.innerText = oxen.length;
     }, 500);
 
     setTimeout(() => {

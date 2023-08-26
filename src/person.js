@@ -3,7 +3,7 @@ import { gridCellSize } from './grid';
 import { createSvgElement } from './svg';
 import { colors } from './colors';
 import { personLayer, yurtAndPersonShadowLayer } from './layers';
-import { findBestRoute } from './findBestRoute';
+import { findRoute } from './find-route';
 import { rotateVector, combineVectors } from './vector';
 
 export const people = [];
@@ -14,6 +14,9 @@ export class Person extends GameObjectClass {
       ...properties,
     });
 
+    const xVariance = Math.random() * 2 - 1;
+    const yVariance = Math.random() * 2 - 1;
+
     this.type = this.parent.type;
     this.height = 1;
     this.width = 1;
@@ -21,8 +24,8 @@ export class Person extends GameObjectClass {
     this.atFarm = 0; // Is the person at a farm? How long have they been there?
     this.destination = null;
     // Parent x/y is in grid coords instead of SVG coords, so need to convert
-    this.x = gridCellSize / 2 + this.parent.x * gridCellSize;
-    this.y = gridCellSize / 2 + this.parent.y * gridCellSize;
+    this.x = gridCellSize / 2 + this.parent.x * gridCellSize + xVariance;
+    this.y = gridCellSize / 2 + this.parent.y * gridCellSize + yVariance;
 
     people.push(this);
   }
@@ -74,7 +77,7 @@ export class Person extends GameObjectClass {
       if (this.atFarm > 60) {
 
         // Go back home. If no route is found, errrr dunno?
-        const route = findBestRoute({
+        const route = findRoute({
           from: {
             x: this.destination.x, // from before
             y: this.destination.y,
@@ -103,13 +106,15 @@ export class Person extends GameObjectClass {
       if (this.destination) {
         if (this.route?.length) {
           // Head to the first point in the route, and then... remove it when we get there?
+          const xVariance = Math.random() * 2 - 1;
+          const yVariance = Math.random() * 2 - 1;
           const firstRoutePoint = new Vector(
-            gridCellSize / 2 + this.route[0].x * gridCellSize,
-            gridCellSize / 2 + this.route[0].y * gridCellSize,
+            gridCellSize / 2 + this.route[0].x * gridCellSize + xVariance,
+            gridCellSize / 2 + this.route[0].y * gridCellSize + yVariance,
           );
 
-          const closeEnough = 2.3;
-          const closeEnoughDestination = 2;
+          const closeEnough = 2;
+          const closeEnoughDestination = 1.5;
 
           if (this.route.length === 1) {
             if (

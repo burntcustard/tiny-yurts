@@ -1,11 +1,5 @@
 import { paths } from './path';
-import { boardSvgWidth } from './svg';
-import { gridCellSize } from './grid';
-import { farms } from './farm';
-
-// TODO: store grid width and height somewhere sensible
-const gridWidth = boardSvgWidth / gridCellSize;
-const gridHeight = boardSvgWidth / gridCellSize;
+import { gridWidth, gridHeight } from './svg';
 
 const getGridData = () => {
   // This should be cached somewhere, maybe a second after a grid piece is placed
@@ -80,7 +74,7 @@ const breadthFirstSearch = (gridData, from, to) => {
   return null; // Can't get there at all!
 }
 
-export const findBestRoute = ({ from, to }) => {
+export const findRoute = ({ from, to }) => {
   const gridData = getGridData();
 
   // Convert from and to to actual grid nodes

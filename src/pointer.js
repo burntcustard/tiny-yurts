@@ -4,35 +4,31 @@ import { inventory } from './inventory';
 import { isPastHalfwayInto, getGridCell, getBoardCell } from './cell';
 import { farms } from './farm';
 import { yurts } from './yurt';
-import { gridCellSize } from './grid';
+import { gridCellSize, gridRect, gridRectRed } from './grid';
 import { gridPointerLayer } from './layers';
+import { svgHazardLines, svgHazardLinesRed, svgContainerElement } from './svg';
+import { removePath } from './remove-path';
+import { colors } from './colors';
 
 let dragStartCell = {};
 let isDragging = false;
 
 const yurtInCell = (x, y) => yurts.find((yurt) => yurt.x === x && yurt.y === y);
 const farmInCell = (x, y) => farms.find((farm) => farm.x === x && farm.y === y);
-
-const cantBuildNoPaths = () => {
-
-};
-
-const removePathsOnRightClick = (x, y) => {
-  paths.filter((path) => (
-    (path.points[0].x === x && path.points[0].y === y)
-      || (path.points[1].x === x && path.points[1].y === y)
-  ) && (
-  // Don't remove "fixed" paths i.e. under yurts
-    !path.points[0].fixed && !path.points[1].fixed
-  )).forEach((pathToRemove) => {
-    inventory.paths++;
-    pathToRemove.remove();
-  });
-
-  drawPaths({ changedCells: [{ x, y }] });
-};
+const samePathInBothCell = (x0, y0, x1, y1) => paths.find((path) => (
+  (
+    (path.points[0].x === x0 && path.points[0].y === y0)
+    &&
+    (path.points[1].x === x1 && path.points[1].y === y1)
+  ) || (
+    (path.points[1].x === x0 && path.points[1].y === y0)
+    &&
+    (path.points[0].x === x1 && path.points[0].y === y1)
+  )
+));
 
 const handlePointerdown = (event) => {
+  event.stopPropagation(); // Prevent hazard area event handling after this
   const rect = gridPointerLayer.getBoundingClientRect();
   const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
 
@@ -47,6 +43,10 @@ const handlePointerdown = (event) => {
 
   if (event.buttons === 1) {
     if (farmInCell(cellX, cellY)) return;
+
+    gridRect.style.opacity = 1;
+    svgHazardLines.style.opacity = 0.9;
+
     isDragging = true;
     dragStartCell = { x: cellX, y: cellY };
     const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
@@ -54,19 +54,66 @@ const handlePointerdown = (event) => {
       yurtInStartCell.lift();
     }
   } else if (event.buttons === 2) {
-    removePathsOnRightClick(cellX, cellY);
+    gridRectRed.style.opacity = 0.9;
+    svgHazardLinesRed.style.opacity = 0.9;
+    removePath(cellX, cellY);
   }
 };
 
-const handlePointerup = () => {
+const handleHazardPointerdown = () => {
+  gridRectRed.style.opacity = 0.9;
+  svgHazardLinesRed.style.opacity = 0.9;
+}
+
+const handleHazardPointermove = (event) => {
+  if (event.buttons !== 1) return;
+
+  gridRectRed.style.opacity = 0.9;
+  svgHazardLinesRed.style.opacity = 0.9;
+  gridRect.style.opacity = 0;
+  svgHazardLines.style.opacity = 0;
+}
+
+const handleHazardPointerup = () => {
+  gridRectRed.style.opacity = 0;
+  svgHazardLinesRed.style.opacity = 0;
+}
+
+const handlePointerup = (event) => {
+  event.stopPropagation();
   const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
+
+  gridRect.style.opacity = 0;
+  svgHazardLines.style.opacity = 0;
+  gridRectRed.style.opacity = 0;
+  svgHazardLinesRed.style.opacity = 0;
 
   if (yurtInStartCell) yurtInStartCell.place();
 }
 
 const handlePointermove = (event) => {
+  // Do not trigger hazard area pointermove
+  event.stopPropagation();
+
+  if (event.buttons === 2) {
+    gridRectRed.style.opacity = 0.9;
+    svgHazardLinesRed.style.opacity = 0.9;
+
+    const rect = gridPointerLayer.getBoundingClientRect();
+    const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
+
+    removePath(cellX, cellY);
+    return;
+  }
+
   // Is left click being held down? If not, we don't care
   if (event.buttons !== 1) return;
+
+  gridRectRed.style.opacity = 0;
+  svgHazardLinesRed.style.opacity = 0;
+
+  gridRect.style.opacity = 1;
+  svgHazardLines.style.opacity = 0.9;
 
   if (!isDragging) return;
 
@@ -114,10 +161,14 @@ const handlePointermove = (event) => {
     return;
   }
 
+  // No paths check is done after yurt shenanigans
   if (inventory.paths <= 0) {
-    cantBuildNoPaths();
     dragStartCell = {};
     isDragging = false;
+    return;
+  }
+
+  if (samePathInBothCell(dragStartCell.x, dragStartCell.y, cellX, cellY)) {
     return;
   }
 
@@ -131,7 +182,10 @@ const handlePointermove = (event) => {
 };
 
 export const initPointer = () => {
-  gridPointerLayer.addEventListener('contextmenu', (event) => event.preventDefault());
+  svgContainerElement.addEventListener('pointerdown', handleHazardPointerdown);
+  svgContainerElement.addEventListener('pointermove', handleHazardPointermove);
+  svgContainerElement.addEventListener('pointerup', handleHazardPointerup);
+  svgContainerElement.addEventListener('contextmenu', (event) => event.preventDefault());
   gridPointerLayer.addEventListener('pointerdown', handlePointerdown);
   gridPointerLayer.addEventListener('pointermove', handlePointermove);
   gridPointerLayer.addEventListener('pointerup', handlePointerup);

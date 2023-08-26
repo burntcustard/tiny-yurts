@@ -123,7 +123,7 @@ export class Animal extends GameObjectClass {
     if (!this.hasWarn) return;
     this.hasWarn = false;
     this.warnSvg.style.opacity = 0;
-    this.pinSvg.style.opacity = 0;
+    this.pinSvg.style.opacity = this.hasLove ? 1 : 0;
   }
 
   toggleWarn(toggle) {

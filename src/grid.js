@@ -11,6 +11,7 @@ export const scaledGridLineThickness = 0.5;
 export const gridLineThickness = scaledGridLineThickness / 2;
 
 export const gridRect = createSvgElement('rect');
+export const gridRectRed = createSvgElement('rect');
 export const gridPointerHandler = createSvgElement('rect');
 
 export const addGridToSvg = () => {
@@ -23,6 +24,7 @@ export const addGridToSvg = () => {
 
   const defs = createSvgElement('defs');
   svgElement.appendChild(defs);
+
   const pattern = createSvgElement('pattern');
   pattern.setAttribute('id', 'grid'); // Required for defs, could maybe be minified
   pattern.setAttribute('width', gridCellSize);
@@ -35,13 +37,35 @@ export const addGridToSvg = () => {
   gridPath.setAttribute('stroke', colors.grid);
   gridPath.setAttribute('stroke-width', scaledGridLineThickness);
   pattern.appendChild(gridPath);
-
-  gridRect.setAttribute('width', `${boardSvgWidth + gridLineThickness}px`);
-  gridRect.setAttribute('height', `${boardSvgHeight + gridLineThickness}px`);
+  gridRect.setAttribute('width', `${boardSvgWidth + scaledGridLineThickness}px`);
+  gridRect.setAttribute('height', `${boardSvgHeight + scaledGridLineThickness}px`);
   gridRect.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness} ${boardOffsetY * gridCellSize - gridLineThickness})`)
   gridRect.setAttribute('fill', 'url(#grid)');
+  gridRect.style.opacity = 0;
+  gridRect.style.willChange = 'opacity';
+  gridRect.style.transition = 'opacity.3s';
 
-  svgElement.append(gridRectBackground, gridRect);
+  const patternRed = createSvgElement('pattern');
+  patternRed.setAttribute('id', 'gridred'); // Required for defs, could maybe be minified
+  patternRed.setAttribute('width', gridCellSize);
+  patternRed.setAttribute('height', gridCellSize);
+  patternRed.setAttribute('patternUnits', 'userSpaceOnUse');
+  defs.appendChild(patternRed);
+  const gridPathRed = createSvgElement('path');
+  gridPathRed.setAttribute('d', `M${gridCellSize} 0L0 0 0 ${gridCellSize}`);
+  gridPathRed.setAttribute('fill', 'none');
+  gridPathRed.setAttribute('stroke', colors.gridRed);
+  gridPathRed.setAttribute('stroke-width', scaledGridLineThickness);
+  patternRed.appendChild(gridPathRed);
+  gridRectRed.setAttribute('width', `${boardSvgWidth + scaledGridLineThickness}px`);
+  gridRectRed.setAttribute('height', `${boardSvgHeight + scaledGridLineThickness}px`);
+  gridRectRed.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness} ${boardOffsetY * gridCellSize - gridLineThickness})`)
+  gridRectRed.setAttribute('fill', 'url(#gridred)');
+  gridRectRed.style.opacity = 0;
+  gridRectRed.style.willChange = 'opacity';
+  gridRectRed.style.transition = 'opacity.3s';
+
+  svgElement.append(gridRectBackground, gridRect, gridRectRed);
 };
 
 export const gridToSvgCoords = (object) => ({

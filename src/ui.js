@@ -1,12 +1,22 @@
 import { createSvgElement } from './svg';
 
+export const oxCounterWrapper = document.createElement('div');
+export const oxCounter = document.createElement('div');
+
 export const initUi = () => {
   // TODO: Move elsewhre and minify
   const styles = document.createElement('style');
   styles.innerText = `
+    body {
+      font-family: system-ui;
+      font-size: 20px;
+      font-weight: 700;
+      color: #443;
+    }
     header {
       display: flex;
       justify-content:space-between;
+      align-items: start;
     }
     header button {
       place-self: start;
@@ -84,56 +94,55 @@ export const initUi = () => {
     justify-self: start;
   `;
 
+  const counters = document.createElement('div');
+  counters.style.cssText = 'display:flex;'
+  header.append(counters);
+
+  oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
+  const oxCounterLogo = document.createElement('span');
+  oxCounterLogo.style.fontSize = '32px';
+  oxCounterLogo.innerText = '🐂'
+  oxCounterWrapper.append(oxCounterLogo, oxCounter);
+  counters.append(oxCounterWrapper);
+
+  // TODO: Move & export goat & other animal stuff
+  const goatCounterWrapper = document.createElement('div');
+  goatCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
+  const goatCounterLogo = document.createElement('span');
+  goatCounterLogo.style.fontSize = '26px';
+  goatCounterLogo.innerText = '🐐';
+  const goatCounter = document.createElement('span');
+  goatCounterWrapper.append(goatCounterLogo, goatCounter);
+  counters.append(goatCounterWrapper);
+
   const timeButton = document.createElement('button');
-  timeButton.style.width = '80px';
-  timeButton.style.height = '80px';
+  timeButton.style.width = '48px';
+  timeButton.style.height = '48px';
   const timeButtonSvg = createSvgElement('svg');
   timeButtonSvg.setAttribute('stroke-linejoin', 'round');
   timeButtonSvg.setAttribute('stroke-linecap', 'round');
   timeButtonSvg.setAttribute('viewBox', '0 0 16 16');
-  timeButtonSvg.style.width = '80px';
-  timeButtonSvg.style.height = '80px';
-
-  const timeCircleOuter = createSvgElement('circle');
-  timeCircleOuter.setAttribute('fill', '#443');
-  timeCircleOuter.setAttribute('stroke', '#443');
-  timeCircleOuter.setAttribute('r', 7);
-  timeCircleOuter.style.transform = 'translate(50%, 50%)';
-  timeButtonSvg.append(timeCircleOuter)
+  timeButtonSvg.style.width = '48px';
+  timeButtonSvg.style.height = '48px';
+  timeButtonSvg.style.background = '#443';
+  timeButtonSvg.style.borderRadius = '50%';
 
   for (let i = 75; i < 350; i += 25) {
-    let timeButtonPath = createSvgElement('path');
-    timeButtonPath.setAttribute('fill', 'none');
-    timeButtonPath.setAttribute('stroke', '#fff');
-    timeButtonPath.setAttribute('transform-origin', 'center');
-    timeButtonPath.setAttribute('d', 'm8 14v0');
-    timeButtonPath.style.transform = `rotate(${i}grad)`;
-    timeButtonSvg.append(timeButtonPath);
+    let dot = createSvgElement('path');
+    dot.setAttribute('fill', 'none');
+    dot.setAttribute('stroke', '#fff');
+    dot.setAttribute('transform-origin', 'center');
+    dot.setAttribute('d', 'm8 14.5v0');
+    dot.style.transform = `rotate(${i}grad)`;
+    timeButtonSvg.append(dot);
   }
 
-  // const timeCircleInner = createSvgElement('circle');
-  // timeCircleInner.setAttribute('fill', 'none');
-  // timeCircleInner.setAttribute('stroke', '#fff');
-  // timeCircleInner.setAttribute('r', 5);
-  // timeCircleInner.style.transform = 'translate(50%, 50%)';
-  // timeButtonSvg.append(timeCircleInner)
+  const timeButtonHand = createSvgElement('path');
+  timeButtonHand.setAttribute('stroke', '#fff');
+  timeButtonHand.setAttribute('transform-origin', 'center');
+  timeButtonHand.setAttribute('d', 'm8 4v4');
+  timeButtonSvg.append(timeButtonHand);
 
-  const timeButtonPath = createSvgElement('path');
-  timeButtonPath.setAttribute('stroke', '#fff');
-  timeButtonPath.setAttribute('transform-origin', 'center');
-  timeButtonPath.setAttribute('d', 'm8 8v4');
-  timeButtonPath.style.transform = 'rotate(180deg)';
-  timeButtonSvg.append(timeButtonPath);
-
-  let time = 0;
-  setInterval(() => {
-    time++;
-    if (time > 360) time = 0;
-    timeButtonPath.style.transform = `rotate(${time}deg)`;
-  }, 16);
-
-  const timeButtonSpinnyPath = createSvgElement('path');
-  timeButtonSvg.append(timeButtonSpinnyPath);
   timeButton.append(timeButtonSvg);
 
   header.append(menuButton, timeButton);
@@ -169,5 +178,5 @@ export const initUi = () => {
   buildBar.append(deleteButton, pathTilesButton, otherButton);
   uiContainer.append(header, buildBar);
 
-  return { pathTilesCountElement };
+  return { pathTilesCountElement, timeButtonHand, oxCounter, goatCounter };
 }

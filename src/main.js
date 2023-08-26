@@ -6,11 +6,13 @@ import { OxFarm } from './ox-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import { initUi } from './ui';
+import { oxen } from './ox';
+import { goats } from './goat';
 import { gridPointerHandler } from './grid';
 
 init(null, { contextless: true });
 initKeys();
-const { pathTilesCountElement } = initUi();
+const { pathTilesCountElement, timeButtonHand, oxCounter, goatCounter } = initUi();
 
 setTimeout(() => {
   const testYurt = new Yurt({ x: 9, y: 7, type: 'ox' });
@@ -55,6 +57,9 @@ const loop = GameLoop({
 
     updateCount++;
     totalUpdateCount++;
+
+    timeButtonHand.style.transform = `rotate(${totalUpdateCount}deg)`;
+
     // if (totalUpdateCount > 200) return;
 
     // Some things happen 15 times/s instead of 60.
