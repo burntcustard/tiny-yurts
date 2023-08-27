@@ -1,5 +1,6 @@
 import { init, initKeys, keyMap, onKey, offKey, GameLoop, keyPressed } from 'kontra';
-import { svgElement } from './svg';
+import { svgElement, gridSvgWidth, gridSvgHeight, gridWidth, gridHeight, boardOffsetX, boardOffsetY } from './svg';
+import { gridCellSize } from './grid';
 import { Yurt } from './yurt';
 import { initPointer } from './pointer';
 import { OxFarm } from './ox-farm';
@@ -7,8 +8,7 @@ import { people } from './person';
 import { inventory } from './inventory';
 import { initUi } from './ui';
 import { farms } from './farm';
-import { oxen } from './ox';
-import { goats } from './goat';
+import { svgPxToDisplayPx } from './cell';
 import { gridPointerHandler } from './grid';
 
 init(null, { contextless: true });
@@ -33,7 +33,7 @@ setTimeout(() => {
 let testOxFarm;
 
 setTimeout(() => {
-  testOxFarm = new OxFarm({ width: 3, height: 2, x: 4, y: 8 });
+  testOxFarm = new OxFarm({ width: 3, height: 2, x: 14, y: 10 });
 }, 1000);
 
 initPointer();
@@ -71,7 +71,15 @@ const loop = GameLoop({
     farms.forEach(f => {
       if (!f.isAlive) {
         loop.stop();
+        console.log('gridSvgWidth', gridSvgWidth);
+        const farmPxPosition = svgPxToDisplayPx(
+          f.x - gridWidth / 2 - boardOffsetX + f.width / 2,
+          f.y - gridHeight / 2 - boardOffsetY + f.height / 2,
+        );
+        svgElement.style.transition = 'transform 2s 1s';
+        svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
         console.log('gameover from main');
+        // TODO: White over the top fuzzy screen with restart button
       }
     });
 
