@@ -176,5 +176,22 @@ export const initUi = () => {
   buildBar.append(deleteButton, pathTilesButton, otherButton);
   uiContainer.append(header, buildBar);
 
-  return { pathTilesCountElement, timeButtonHand, oxCounter, goatCounter };
+  // TODO: Move to different file?
+  const gameoverScreen = document.createElement('div');
+  gameoverScreen.style.cssText = 'position:absolute;inset:0;padding:10dvw;display:grid;align-content:center';
+  gameoverScreen.style.pointerEvents = 'none';
+  gameoverScreen.style.background = '#fff0';
+  gameoverScreen.style.backdropFilter = 'blur(0)';
+  gameoverScreen.style.opacity = 0;
+  gameoverScreen.style.transition = 'background 2s 1s, backdrop-filter 2s 1s, opacity 2s 1s';
+
+  const gameoverScreenHeader = document.createElement('h1');
+  gameoverScreenHeader.innerText = 'Game Over';
+  const gameoverScreenText = document.createElement('p');
+  gameoverScreenText.innerText = 'You scored ... ???';
+  gameoverScreen.append(gameoverScreenHeader, gameoverScreenText);
+
+  document.body.append(gameoverScreen);
+
+  return { pathTilesCountElement, timeButtonHand, oxCounter, goatCounter, gameoverScreen };
 }

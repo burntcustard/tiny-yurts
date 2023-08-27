@@ -13,7 +13,7 @@ import { gridPointerHandler } from './grid';
 
 init(null, { contextless: true });
 initKeys();
-const { pathTilesCountElement, timeButtonHand, oxCounter, goatCounter } = initUi();
+const { pathTilesCountElement, timeButtonHand, oxCounter, goatCounter, gameoverScreen } = initUi();
 
 setTimeout(() => {
   const testYurt = new Yurt({ x: 9, y: 7, type: 'ox' });
@@ -33,7 +33,7 @@ setTimeout(() => {
 let testOxFarm;
 
 setTimeout(() => {
-  testOxFarm = new OxFarm({ width: 3, height: 2, x: 14, y: 10 });
+  testOxFarm = new OxFarm({ width: 3, height: 2, x: 5, y: 8 });
 }, 1000);
 
 initPointer();
@@ -76,9 +76,13 @@ const loop = GameLoop({
           f.x - gridWidth / 2 - boardOffsetX + f.width / 2,
           f.y - gridHeight / 2 - boardOffsetY + f.height / 2,
         );
-        svgElement.style.transition = 'transform 2s 1s';
+        svgElement.style.transition = 'transform 2s ease-out .5s';
         svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
         console.log('gameover from main');
+
+        gameoverScreen.style.backdropFilter = 'blur(8px)';
+        gameoverScreen.style.background = '#fffb';
+        gameoverScreen.style.opacity = 0.9;
         // TODO: White over the top fuzzy screen with restart button
       }
     });
