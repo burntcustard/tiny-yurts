@@ -35,13 +35,6 @@ export class Animal extends GameObjectClass {
     this.pinSvg.style.transform = `translate(${x}px, ${y - this.height / 2}px)`;
     pinLayer.appendChild(this.pinSvg);
 
-    // this.testSvg = createSvgElement('circle');
-    // this.testSvg.setAttribute('r', 1);
-    // this.testSvg.style.transform = `translate(${x}px, ${y}px)`;
-    // this.testSvg.setAttribute('fill', 'red');
-    // this.testSvg.setAttribute('opacity', 0.5);
-    // pinLayer.appendChild(this.testSvg);
-
     const pinBubble = createSvgElement('path');
     pinBubble.setAttribute('fill', '#fff');
     pinBubble.setAttribute('d', 'm6 6-2-2a3 3 0 1 1 4 0Z');

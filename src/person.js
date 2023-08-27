@@ -127,9 +127,10 @@ export class Person extends GameObjectClass {
                 this.atHome = true;
               } else {
                 this.atFarm = 1;
-                this.animalToVisit.parent.demand -= this.animalToVisit.parent.needyness;
-                this.animalToVisit.hideWarn();
-                this.animalToVisit.hasPerson = false;
+                this.farmToVisit.demand -= this.farmToVisit.needyness;
+                this.farmToVisit.assignedPeople.splice(this.farmToVisit.assignedPeople.indexOf(this), 1);
+                // this.farmToVisit.hideWarn();
+                // this.animalToVisit.hasPerson = false;
               }
               this.hasDestination = false;
               return;
