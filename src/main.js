@@ -6,6 +6,7 @@ import { OxFarm } from './ox-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import { initUi } from './ui';
+import { farms } from './farm';
 import { oxen } from './ox';
 import { goats } from './goat';
 import { gridPointerHandler } from './grid';
@@ -42,19 +43,8 @@ let renderCount = 0;
 
 let totalUpdateCount = 0;
 
-let paused = false;
-
-onKey('space', (e) => {
-  paused = !paused;
-});
-
 const loop = GameLoop({
   update() {
-    if (paused) {
-      // If the game is paused, nothing updates, but everything is still rendered
-      return;
-    }
-
     updateCount++;
     totalUpdateCount++;
 
@@ -77,6 +67,13 @@ const loop = GameLoop({
     }
 
     if (updateCount >= 60) updateCount = 0;
+
+    farms.forEach(f => {
+      if (!f.isAlive) {
+        loop.stop();
+        console.log('gameover from main');
+      }
+    });
 
     people.forEach(p => p.update());
   },
@@ -102,6 +99,14 @@ const loop = GameLoop({
 
     people.forEach(p => p.render());
   },
+});
+
+onKey('space', (e) => {
+  if (loop.isStopped) {
+    loop.start();
+  } else {
+    loop.stop();
+  }
 });
 
 setTimeout(() => {

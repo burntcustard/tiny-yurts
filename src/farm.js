@@ -282,8 +282,8 @@ export class Farm extends Structure {
 
     this.warnCircle.setAttribute('stroke-dashoffset', dashoffset);
 
-    if (this.numOverflowIssues > maxOverflow) {
-      // lose
+    if (numOverflowIssues === maxOverflow) {
+      this.isAlive = false;
     }
   }
 }
