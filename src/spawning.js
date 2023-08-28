@@ -199,8 +199,8 @@ export const spawnNewObjects = (updateCount) => {
     });
     console.log(`spawned goat farm at ${randomPosition.x}, ${randomPosition.y}`);
     const newGoatFarm = new GoatFarm({
-      width: 2,
-      height: 3,
+      width,
+      height,
       x: randomPosition.x,
       y: randomPosition.y,
       relativePathPoints,

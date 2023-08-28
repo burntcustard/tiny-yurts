@@ -11,7 +11,7 @@ export class GoatFarm extends Farm {
       fenceColor: colors.goat,
     });
 
-    this.needyness = 150;
+    this.needyness = 200;
     this.type = 'goat';
 
     goatFarms.push(this);

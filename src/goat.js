@@ -40,7 +40,6 @@ export class Goat extends Animal {
     goat.appendChild(body);
 
     const shadow = createSvgElement('rect');
-    shadow.setAttribute('fill', colors.shadow);
     shadow.setAttribute('width', this.width);
     shadow.setAttribute('height', this.height);
     shadow.setAttribute('rx', this.roundness);
