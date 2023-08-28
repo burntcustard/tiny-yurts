@@ -15,24 +15,33 @@ const fenceLineThickness = 1;
 
 export class Farm extends Structure {
   constructor(properties) {
-    const { x, y } = properties;
+    const { x, y, relativePathPoints } = properties;
     super(properties);
+    this.demand = 0;
+    this.totalUpdates = 0;
     this.circumference = this.width * gridCellSize * 2 + this.height * gridCellSize * 2;
     this.numIssues = 0;
     this.assignedPeople = [];
-    this.cells = [];
+    this.points = [];
 
     for (let w = 0; w < this.width; w++) {
       for (let h = 0; h < this.height; h++) {
-        this.cells.push({ x: this.x + w, y: this.y + h });
+        this.points.push({ x: this.x + w, y: this.y + h });
       }
     }
 
     setTimeout(() => {
+      // TODO: Make pathPoints a required variable?
       this.startPath = new Path({
         points: [
-          { x: x + 2, y: y + 1 },
-          { x: x + 2, y: y + 2 },
+          {
+            x: this.x + relativePathPoints?.[0]?.x,
+            y: this.y + relativePathPoints?.[0]?.y,
+          },
+          {
+            x: this.x + relativePathPoints?.[1]?.x,
+            y: this.y + relativePathPoints?.[1]?.y
+          },
         ],
       });
 
@@ -108,7 +117,7 @@ export class Farm extends Structure {
             x: atHomePeopleOfSameType[i].parent.x,
             y: atHomePeopleOfSameType[i].parent.y
           },
-          to: this.cells,
+          to: this.points,
         });
 
         if (!bestRoute

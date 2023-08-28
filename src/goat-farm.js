@@ -1,24 +1,27 @@
 import { Goat } from './goat';
 import { Farm } from './farm';
+import { colors } from './colors';
 
 export const goatFarms = [];
 
 export class GoatFarm extends Farm {
   constructor(properties) {
-    super(properties);
+    super({
+      ...properties,
+      fenceColor: colors.goat,
+    });
 
-    this.demand = 9900;
-
+    this.needyness = 150;
     this.type = 'goat';
+
     goatFarms.push(this);
 
+    setTimeout(() => this.addAnimal({}), 2000);
     setTimeout(() => this.addAnimal({}), 3000);
-    setTimeout(() => this.addAnimal({}), 4000);
-    setTimeout(() => this.addAnimal({ isBaby: (goatFarms.length - 1) % 2 }), 5000);
+    setTimeout(() => this.addAnimal({ isBaby: (goatFarms.length - 1) % 2 }), 4000);
 
-    setTimeout(() => {
-      this.upgrade();
-    }, 20000);
+    this.appearing = true;
+    setTimeout(() => this.appearing = false, 3000);
   }
 
   upgrade() {
@@ -44,10 +47,5 @@ export class GoatFarm extends Farm {
 
   update() {
     super.update();
-
-    // So 3 ox = 2 demand per update, 5 ox = 2 demand per update,
-    // so upgrading doubles the demand(?)
-    this.demand += this.children.filter(c => !c.isBaby).length - 1;
-    this.numIssues = Math.floor(this.demand / 5000);
   }
 }

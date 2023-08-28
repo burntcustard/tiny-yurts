@@ -241,7 +241,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
 
           setTimeout(() => {
             newPathData.svgElement.setAttribute('d', `M${newPathData.M}L${newPathData.L}`);
-          }, 10);
+          }, 20);
         }
 
         if (!noShadow) {
@@ -259,7 +259,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
         setTimeout(() => {
           newPathData.svgElement.removeAttribute('stroke-width');
           newPathData.svgElement.setAttribute('opacity', 1);
-        }, 10);
+        }, 20);
       }
     }
   });

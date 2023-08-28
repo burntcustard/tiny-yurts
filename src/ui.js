@@ -1,5 +1,5 @@
 import { createSvgElement } from './svg';
-import { emojiOx } from './emoji-ox';
+import { emojiOx } from './ox-emoji';
 
 export const oxCounterWrapper = document.createElement('div');
 export const oxCounter = document.createElement('div');

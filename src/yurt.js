@@ -36,11 +36,17 @@ export class Yurt extends Structure {
       // ],
     });
 
+    this.points = [{
+      x: this.x,
+      y: this.y,
+    }]
+
     this.type = properties.type;
     yurts.push(this);
 
     // Which way is the yurt facing (randomly up/down/left/right to start)
     // TODO: Less disguisting way to determine initial direction
+    // TODO: Disallow spawning facing into another yurt cell
     const facingInt = Math.floor(Math.random() * 4);
     if (facingInt < 0.25) {
       this.facing = { x: 0, y: -1 }
@@ -110,15 +116,14 @@ export class Yurt extends Structure {
     // Redraw
     drawPaths({ changedCells: [{ x: this.x, y: this.y, fixed: true }, { x, y }], fadeout: true });
 
-    const pathInPathData = pathsData.find(p => p.path === this.startPath);
-
-    if (pathInPathData) {
-      pathInPathData.svgElement.setAttribute('stroke-width', 0);
-
-      setTimeout(() => {
-        pathInPathData.svgElement.removeAttribute('stroke-width');
-      }, 100);
-    }
+    // I think this slowed down the drawing of the path slightly but seems not needed
+    // const pathInPathData = pathsData.find(p => p.path === this.startPath);
+    // if (pathInPathData) {
+    //   pathInPathData.svgElement.setAttribute('stroke-width', 0);
+    //   setTimeout(() => {
+    //     pathInPathData.svgElement.removeAttribute('stroke-width');
+    //   }, 100);
+    // }
 
     setTimeout(() => {
       this.oldStartPath.remove();

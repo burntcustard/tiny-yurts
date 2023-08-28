@@ -3,38 +3,18 @@ import { svgElement, gridSvgWidth, gridSvgHeight, gridWidth, gridHeight, boardOf
 import { gridCellSize } from './grid';
 import { Yurt } from './yurt';
 import { initPointer } from './pointer';
-import { OxFarm } from './ox-farm';
+import { OxFarm, oxFarms } from './ox-farm';
+import { GoatFarm, goatFarms } from './goat-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import { initUi } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
-import { gridPointerHandler } from './grid';
+import { spawnNewObjects } from './spawning';
 
 init(null, { contextless: true });
 initKeys();
-const { pathTilesCountElement, timeButtonHand, oxCounter, goatCounter, gameoverScreen } = initUi();
-
-setTimeout(() => {
-  const testYurt = new Yurt({ x: 9, y: 7, type: 'ox' });
-  testYurt.addToSvg();
-}, 0);
-
-setTimeout(() => {
-  const testYurt2 = new Yurt({ x: 8, y: 5, type: 'ox' });
-  testYurt2.addToSvg();
-}, 500);
-
-setTimeout(() => {
-  const testYurt3 = new Yurt({ x: 10, y: 5, type: 'ox' });
-  testYurt3.addToSvg();
-}, 500);
-
-let testOxFarm;
-
-setTimeout(() => {
-  testOxFarm = new OxFarm({ width: 3, height: 2, x: 5, y: 8 });
-}, 1000);
+const { pathTilesCountElement, timeButtonHand, gameoverScreen } = initUi();
 
 initPointer();
 
@@ -48,6 +28,8 @@ const loop = GameLoop({
     updateCount++;
     totalUpdateCount++;
 
+    spawnNewObjects(totalUpdateCount);
+
     timeButtonHand.style.transform = `rotate(${totalUpdateCount}deg)`;
 
     // if (totalUpdateCount > 200) return;
@@ -58,9 +40,10 @@ const loop = GameLoop({
       case 0:
         break;
       case 1:
-        testOxFarm.update();
+        oxFarms.forEach(farm => farm.update());
         break;
       case 2:
+        goatFarms.forEach(farm => farm.update());
         break;
       case 3:
         break;
@@ -71,14 +54,12 @@ const loop = GameLoop({
     farms.forEach(f => {
       if (!f.isAlive) {
         loop.stop();
-        console.log('gridSvgWidth', gridSvgWidth);
         const farmPxPosition = svgPxToDisplayPx(
           f.x - gridWidth / 2 - boardOffsetX + f.width / 2,
           f.y - gridHeight / 2 - boardOffsetY + f.height / 2,
         );
         svgElement.style.transition = 'transform 2s ease-out .5s';
         svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
-        console.log('gameover from main');
 
         gameoverScreen.style.backdropFilter = 'blur(8px)';
         gameoverScreen.style.background = '#fffb';
@@ -100,9 +81,10 @@ const loop = GameLoop({
         // pathTilesCountElement.style.borderColor = inventory.paths && inventory.paths > 0 ? '' : 'red';
         break;
       case 1:
-        testOxFarm.render();
+        oxFarms.forEach(farm => farm.render());
         break;
       case 2:
+        goatFarms.forEach(farm => farm.render());
         break;
       case 3:
         break;
@@ -123,4 +105,4 @@ onKey('space', (e) => {
 
 setTimeout(() => {
   loop.start();
-}, 3000);
+}, 1000);

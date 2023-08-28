@@ -11,9 +11,7 @@ export class OxFarm extends Farm {
       fenceColor: colors.ox,
     });
 
-    this.needyness = 50; // 400 is good, tweaking for testing
-    this.demand = 0;
-    this.totalUpdates = 0;
+    this.needyness = 150;
     this.type = 'ox';
 
     oxFarms.push(this);
@@ -53,12 +51,6 @@ export class OxFarm extends Farm {
 
   update() {
     super.update();
-
-    this.totalUpdates++;
-
-    if (this.totalUpdates > 10000) {
-      this.upgrade();
-    }
     // So 3 ox = 2 demand per update, 5 ox = 2 demand per update,
     // so upgrading doubles the demand(?)
   }

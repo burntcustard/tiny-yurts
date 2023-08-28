@@ -39,23 +39,6 @@ export class Goat extends Animal {
     body.setAttribute('rx', this.roundness);
     goat.appendChild(body);
 
-    // const horns = createSvgElement('path');
-    // // horns.setAttribute('transform', `translate(${x},${y}) rotate(${radToDeg(this.rotation)})`);
-    // horns.setAttribute('fill', 'none');
-    // horns.setAttribute('stroke', colors.oxHorn);
-    // horns.setAttribute('width', this.width);
-    // horns.setAttribute('height', this.height);
-    // horns.setAttribute('d', 'M0 2Q0 1 1 1 Q2 1 2 2');
-    // horns.setAttribute('transform', 'translate(-0.2 .6)');
-    // horns.setAttribute('stroke-width', 0.4);
-    // if (this.isBaby) {
-    //   horns.style.transition = 'all 1s';
-    //   horns.style.willChange = 'opacity';
-    //   horns.style.opacity = 0;
-    // }
-    // this.svgHorns = horns;
-    // ox.appendChild(horns);
-
     const shadow = createSvgElement('rect');
     shadow.setAttribute('fill', colors.shadow);
     shadow.setAttribute('width', this.width);

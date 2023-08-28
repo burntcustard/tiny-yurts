@@ -25,8 +25,6 @@ export const getBoardCell = (x, y) => {
 export const svgPxToDisplayPx = (x, y) => {
   const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;
 
-  console.log('cellSizePx', cellSizePx);
-
   return {
     x: (boardOffsetX + x) * cellSizePx,
     y: (boardOffsetY + y) * cellSizePx,
