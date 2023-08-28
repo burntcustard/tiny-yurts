@@ -4,6 +4,7 @@ import { animalLayer, animalShadowLayer } from './layers';
 import { colors } from './colors';
 import { createSvgElement } from './svg';
 import { gridCellSize } from './grid';
+import { goatCounter, goatCounterWrapper } from './ui';
 
 export const goats = [];
 
@@ -52,8 +53,12 @@ export class Goat extends Animal {
 
     this.render();
 
+    goatCounterWrapper.style.width = '96px';
+    goatCounterWrapper.style.opacity = '1';
+
     setTimeout(() => {
       this.scale = 1;
+      goatCounter.innerText = goats.length;
     }, 500);
 
     setTimeout(() => {

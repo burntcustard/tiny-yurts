@@ -69,7 +69,7 @@ export class Ox extends Animal {
 
     this.render();
 
-    oxCounterWrapper.style.width = '80px';
+    oxCounterWrapper.style.width = '96px';
     oxCounterWrapper.style.opacity = '1';
 
     setTimeout(() => {

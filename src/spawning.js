@@ -37,11 +37,6 @@ export const getRandomPosition = ({
       y > position.y - minDistance
     ) continue;
 
-    // 13 < 12+1.5+2=15.5 true
-    // 13 > 12+1.5-2=11.5 true
-    //  4 < 5+1+2=8 true
-    //  4 > 5+1-2=4 false
-
     // Check if too far away from position
     if (
       x > position.x + maxDistance ||
@@ -162,14 +157,14 @@ export const spawnNewObjects = (updateCount) => {
   }
 
   if (updateCount === 1500) {
-    const farm1 = farms[0];
+    const yurt1 = yurts[0];
     const randomPosition = getRandomPosition({
       position: {
-        x: farm1.x + farm1.width / 2 - 0.5,
-        y: farm1.y + farm1.height / 2 - 0.5,
+        x: yurt1.x + yurt1.width / 2 - 0.5,
+        y: yurt1.y + yurt1.height / 2 - 0.5,
       },
-      minDistance: 3,
-      maxDistance: 5,
+      minDistance: 1,
+      maxDistance: 2,
     });
     const newYurt = new Yurt({
       x: randomPosition.x,
@@ -243,9 +238,42 @@ export const spawnNewObjects = (updateCount) => {
     return;
   }
 
-  // if (updateCount % 1000 === 0) {
-  //   console.log('spawning new yurt');
-  //   const newYurt = new Yurt({ x: 12, y: 7, type: 'ox' });
-  //   newYurt.addToSvg();
-  // }
+  if (updateCount > 4000 && updateCount % 1250 === 0) {
+    const { width, height, relativePathPoints } = getRandomFarmProps();
+
+    const randomPosition = getRandomPosition({
+      width,
+      height,
+      extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
+    });
+
+    if (Math.random() > 0.5) {
+      const newGoatFarm = new GoatFarm({
+        width,
+        height,
+        x: randomPosition.x,
+        y: randomPosition.y,
+        relativePathPoints,
+      });
+    } else {
+      const newOxFarm = new OxFarm({
+        width,
+        height,
+        x: randomPosition.x,
+        y: randomPosition.y,
+        relativePathPoints,
+      });
+    }
+    return;
+  }
+
+  if (updateCount > 4000 && (updateCount % 1500 === 0 || updateCount % 1750 === 0)) {
+    const randomPosition = getRandomPosition({});
+    const newYurt = new Yurt({
+      x: randomPosition.x,
+      y: randomPosition.y,
+      type: Math.random() > 0.5 ? 'goat' : 'ox',
+    });
+    return;
+  }
 }

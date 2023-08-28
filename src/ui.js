@@ -104,23 +104,23 @@ export const initUi = () => {
   counters.style.cssText = 'display:flex;'
   header.append(counters);
 
-  oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:1;opacity:1;transition:width 1s,opacity 1s 1s';
+  oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
   oxCounterWrapper.append(emojiOx, oxCounter);
   counters.append(oxCounterWrapper);
 
-  goatCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:1;opacity:1;transition:width 1s,opacity 1s 1s';
+  goatCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
   goatCounterWrapper.append(emojiGoat, goatCounter);
   counters.append(goatCounterWrapper);
 
   const timeButton = document.createElement('button');
-  timeButton.style.width = '48px';
-  timeButton.style.height = '48px';
+  timeButton.style.width = '64px';
+  timeButton.style.height = '64px';
   const timeButtonSvg = createSvgElement('svg');
   timeButtonSvg.setAttribute('stroke-linejoin', 'round');
   timeButtonSvg.setAttribute('stroke-linecap', 'round');
   timeButtonSvg.setAttribute('viewBox', '0 0 16 16');
-  timeButtonSvg.style.width = '48px';
-  timeButtonSvg.style.height = '48px';
+  timeButtonSvg.style.width = '64px';
+  timeButtonSvg.style.height = '64px';
   timeButtonSvg.style.background = '#443';
   timeButtonSvg.style.borderRadius = '50%';
 
@@ -192,5 +192,5 @@ export const initUi = () => {
 
   document.body.append(gameoverScreen);
 
-  return { pathTilesCountElement, timeButtonHand, oxCounter, goatCounter, gameoverScreen };
+  return { pathTilesCountElement, timeButtonHand, oxCounter, oxCounterWrapper, goatCounter, goatCounterWrapper, gameoverScreen };
 }
