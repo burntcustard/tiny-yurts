@@ -158,7 +158,6 @@ export const spawnNewObjects = (updateCount) => {
       y: randomPosition.y,
       type: 'ox'
     });
-    newYurt.addToSvg();
     return;
   }
 
@@ -172,13 +171,11 @@ export const spawnNewObjects = (updateCount) => {
       minDistance: 3,
       maxDistance: 5,
     });
-    console.log(`spawned yurt at ${randomPosition.x}, ${randomPosition.y}`);
     const newYurt = new Yurt({
       x: randomPosition.x,
       y: randomPosition.y,
       type: 'ox'
     });
-    newYurt.addToSvg();
     return;
   }
 
@@ -224,7 +221,6 @@ export const spawnNewObjects = (updateCount) => {
       y: randomPosition.y,
       type: 'goat'
     });
-    newYurt.addToSvg();
     return;
   }
 
@@ -244,7 +240,6 @@ export const spawnNewObjects = (updateCount) => {
       y: randomPosition.y,
       type: 'goat'
     });
-    newYurt.addToSvg();
     return;
   }
 

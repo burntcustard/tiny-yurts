@@ -11,17 +11,18 @@ import { initUi } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
 import { spawnNewObjects } from './spawning';
-
-init(null, { contextless: true });
-initKeys();
-const { pathTilesCountElement, timeButtonHand, gameoverScreen } = initUi();
-
-initPointer();
+import { demoColors } from './demo-colors';
 
 let updateCount = 0;
 let renderCount = 0;
-
 let totalUpdateCount = 0;
+
+const { pathTilesCountElement, timeButtonHand, gameoverScreen } = initUi();
+init(null, { contextless: true });
+initKeys();
+initPointer();
+
+demoColors();
 
 const loop = GameLoop({
   update() {

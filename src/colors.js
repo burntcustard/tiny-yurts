@@ -3,11 +3,10 @@ export const colors = {
   grass:  '#8a5',
   base:   '#794',
   yurt:   '#fff',
-  path:   '#dca', // #cb9
-  fence:  '#975',
+  path:   '#dca', // previously #cb9
   ox:     '#b75',
   oxHorn: '#dee',
-  goat:   '#abb',
+  goat:   '#abb', // previously #abb
   black:  '#000',
   ui:     '#443',
   red:    '#e31',

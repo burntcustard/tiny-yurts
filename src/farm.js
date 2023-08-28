@@ -49,7 +49,6 @@ export class Farm extends Structure {
     }, 1500)
 
     farms.push(this);
-
     this.addToSvg();
   }
 

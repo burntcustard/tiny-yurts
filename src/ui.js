@@ -1,8 +1,13 @@
 import { createSvgElement } from './svg';
 import { emojiOx } from './ox-emoji';
 
+import { emojiGoat } from './goat-emoji';
+
 export const oxCounterWrapper = document.createElement('div');
 export const oxCounter = document.createElement('div');
+
+export const goatCounterWrapper = document.createElement('div');
+export const goatCounter = document.createElement('div');
 
 export const initUi = () => {
   // TODO: Move elsewhre and minify
@@ -99,18 +104,12 @@ export const initUi = () => {
   counters.style.cssText = 'display:flex;'
   header.append(counters);
 
-  oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
+  oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:1;opacity:1;transition:width 1s,opacity 1s 1s';
   oxCounterWrapper.append(emojiOx, oxCounter);
   counters.append(oxCounterWrapper);
 
-  // TODO: Move & export goat & other animal stuff
-  const goatCounterWrapper = document.createElement('div');
-  goatCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
-  const goatCounterLogo = document.createElement('span');
-  goatCounterLogo.style.fontSize = '26px';
-  goatCounterLogo.innerText = '🐐';
-  const goatCounter = document.createElement('span');
-  goatCounterWrapper.append(goatCounterLogo, goatCounter);
+  goatCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:1;opacity:1;transition:width 1s,opacity 1s 1s';
+  goatCounterWrapper.append(emojiGoat, goatCounter);
   counters.append(goatCounterWrapper);
 
   const timeButton = document.createElement('button');

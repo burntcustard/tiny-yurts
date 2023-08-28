@@ -84,7 +84,7 @@ const addYurtAndPersonShadowLayer = () => {
   shadowLayer.setAttribute('stroke-linecap', 'round');
   shadowLayer.setAttribute('fill', 'none');
   shadowLayer.setAttribute('stroke', colors.black);
-  shadowLayer.setAttribute('opacity', shadowOpacity);
+  shadowLayer.setAttribute('opacity', 0.2);
   svgElement.appendChild(shadowLayer);
   return shadowLayer;
 };

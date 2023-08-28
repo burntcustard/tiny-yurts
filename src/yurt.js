@@ -42,7 +42,6 @@ export class Yurt extends Structure {
     }]
 
     this.type = properties.type;
-    yurts.push(this);
 
     // Which way is the yurt facing (randomly up/down/left/right to start)
     // TODO: Less disguisting way to determine initial direction
@@ -77,6 +76,9 @@ export class Yurt extends Structure {
       this.children.push(new Person({ x: this.x, y: this.y, parent: this }));
       this.children.forEach(p => p.addToSvg());
     }, 2000);
+
+    yurts.push(this);
+    this.addToSvg();
   }
 
   rotateTo(x, y) {
@@ -167,7 +169,7 @@ export class Yurt extends Structure {
     this.shadow.style.willChange = 'd';
     this.shadow.style.transition = 'd.6s';
     yurtAndPersonShadowLayer.appendChild(this.shadow);
-    setTimeout(() => this.shadow.style.opacity = 1, 800);
+    setTimeout(() => this.shadow.style.opacity = 0.8, 800);
     setTimeout(() => this.shadow.setAttribute('d', 'M0 0l2 2'), 900);
     setTimeout(() => this.shadow.style.willChange = '', 1600);
 
