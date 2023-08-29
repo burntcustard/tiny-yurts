@@ -20,7 +20,7 @@ export const yurts = [];
 
 export class Yurt extends Structure {
   constructor(properties) {
-    const { x, y } = properties;
+    const { x, y, facing } = properties;
 
     super({
       ...properties,
@@ -39,23 +39,10 @@ export class Yurt extends Structure {
     this.points = [{
       x: this.x,
       y: this.y,
-    }]
+    }];
 
     this.type = properties.type;
-
-    // Which way is the yurt facing (randomly up/down/left/right to start)
-    // TODO: Less disguisting way to determine initial direction
-    // TODO: Disallow spawning facing into another yurt cell
-    const facingInt = Math.floor(Math.random() * 4);
-    if (facingInt < 0.25) {
-      this.facing = { x: 0, y: -1 }
-    } else if (facingInt < 0.5) {
-      this.facing = { x: 1, y: 0 }
-    } else if (facingInt < 0.75) {
-      this.facing = { x: 0, y: 1 }
-    } else {
-      this.facing = { x: -1, y: 0 }
-    }
+    this.facing = facing;
 
     setTimeout(() => {
       this.startPath = new Path({
@@ -128,7 +115,8 @@ export class Yurt extends Structure {
     // }
 
     setTimeout(() => {
-      this.oldStartPath.remove();
+      // TODO: Figure it out if ? is necessary. Not having it it caused a crash once
+      this.oldStartPath?.remove();
     }, 400);
   }
 

@@ -12,15 +12,18 @@ const getGridData = () => {
   }
 
   paths.forEach(path => {
-    gridData
-      .find(d => d.x === path.points[0].x && d.y === path.points[0].y)
-      .neighbors
-      .push({ x: path.points[1].x, y: path.points[1].y });
+    // TODO: See why or how this fails?
+    if (gridData) {
+      gridData
+        .find(d => d.x === path.points[0].x && d.y === path.points[0].y)
+        .neighbors
+        .push({ x: path.points[1].x, y: path.points[1].y });
 
-    gridData
-      .find(d => d.x === path.points[1].x && d.y === path.points[1].y)
-      .neighbors
-      .push({ x: path.points[0].x, y: path.points[0].y });
+      gridData
+        .find(d => d.x === path.points[1].x && d.y === path.points[1].y)
+        .neighbors
+        .push({ x: path.points[0].x, y: path.points[0].y });
+    }
   });
 
   return gridData;
