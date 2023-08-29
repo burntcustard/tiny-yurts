@@ -17,6 +17,7 @@ export class Goat extends Animal {
       height: 1.5,
       roundness: 0.6,
       color: colors.goat,
+      isBaby: properties.isBaby ? 4000 : false,
     });
 
     goats.push(this);
@@ -67,14 +68,14 @@ export class Goat extends Animal {
       shadow.style.willChange = '';
       shadow.style.transition = '';
     }, 1500);
-
-    setTimeout(() => {
-      this.isBaby = false;
-    }, 60000);
   }
 
   update() {
     this.advance();
+
+    if (this.isBaby) {
+      this.isBaby--;
+    }
 
     // Maybe pick a new target location
     if (Math.random() > 0.96) {

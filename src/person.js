@@ -80,7 +80,7 @@ export class Person extends GameObjectClass {
 
       // After this many updates, go home
       // TODO: Make sensible number, show some sort of animation
-      if (this.atFarm > 60) {
+      if (this.atFarm > 80) {
 
         // Go back home. If no route is found, errrr dunno?
         const route = findRoute({
@@ -205,11 +205,11 @@ export class Person extends GameObjectClass {
 
         const newNextDistanceBetween = otherPerson.position.distance(this.position.add(this.velocity));
 
-        if (nextDistanceBetween < slowyDistance && this.velocity.length() > 0.05) {
+        if (nextDistanceBetween < slowyDistance && this.velocity.length() > 0.06) {
           if (newNextDistanceBetween < distanceBetween) {
             if (nextDistanceBetween < avoidanceDistance) {
-              this.dx *= 0.87;
-              this.dy *= 0.87;
+              this.dx *= 0.86;
+              this.dy *= 0.86;
             } else {
               this.dx *= 0.89;
               this.dy *= 0.89;

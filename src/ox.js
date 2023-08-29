@@ -17,6 +17,7 @@ export class Ox extends Animal {
       height: 2.5,
       roundness: 0.6,
       color: colors.ox,
+      isBaby: properties.isBaby ? 5000 : false,
     });
 
     oxen.push(this);
@@ -85,15 +86,19 @@ export class Ox extends Animal {
       shadow.style.willChange = '';
       shadow.style.transition = '';
     }, 1500);
-
-    setTimeout(() => {
-      this.isBaby = false;
-      this.svgHorns.style.opacity = 1;
-    }, 60000);
   }
 
   update() {
     this.advance();
+
+    if (this.isBaby === 1) {
+      this.svgHorns.style.opacity = 1;
+    }
+
+    if (this.isBaby) {
+      this.isBaby--;
+      console.log(this.isBaby);
+    }
 
     // Maybe pick a new target location
     if (Math.random() > 0.99) {

@@ -75,7 +75,7 @@ export class Farm extends Structure {
         warnedAnimals[Math.floor(Math.random() * warnedAnimals.length)].hideWarn();
       }
 
-      if (notWarnedAnimals.length && this.numIssues > this.children.length - notWarnedAnimals.length) {
+      if (notWarnedAnimals.length && this.numIssues > adults.length - notWarnedAnimals.length) {
         notWarnedAnimals[Math.floor(Math.random() * notWarnedAnimals.length)].showWarn();
       }
     }
@@ -86,7 +86,7 @@ export class Farm extends Structure {
     if (this.appearing) return;
 
     this.numIssues = Math.floor(this.demand / this.needyness);
-    this.demand += this.children.filter(c => !c.isBaby).length - 1;
+    this.demand += this.children.length - 1;
 
     if (this.hasWarn) {
       this.updateWarn();
@@ -94,9 +94,7 @@ export class Farm extends Structure {
 
     this.assignWarn();
 
-    this.children.forEach((animal, i) => {
-      animal.update();
-    });
+    this.children.forEach((animal) => animal.update());
 
     for (let i = 0; i < this.numIssues; i++) {
       if (this.assignedPeople.length >= this.numIssues) return;
@@ -147,9 +145,7 @@ export class Farm extends Structure {
   }
 
   render() {
-    this.children.forEach(animal => {
-      animal.render();
-    });
+    this.children.forEach(animal => animal.render());
   }
 
   addToSvg() {
@@ -284,7 +280,7 @@ export class Farm extends Structure {
 
   updateWarn() {
     const fullCircle = 12.56; // Math.PI * 4ish
-    const maxOverflow = this.children.length + 1;
+    const maxOverflow = this.children.filter(c => !c.isBaby).length + 1;
     const numOverflowIssues = this.numIssues - maxOverflow + 1;
     const dashoffset = fullCircle - (fullCircle / maxOverflow * numOverflowIssues);
 

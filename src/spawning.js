@@ -164,6 +164,9 @@ export const spawnNewObjects = (updateCount) => {
       y: randomPosition.y,
       relativePathPoints,
     });
+    setTimeout(() => {
+      newOxFarm.upgrade();
+    }, 5000);
     return;
   }
 
@@ -197,7 +200,7 @@ export const spawnNewObjects = (updateCount) => {
   }
 
   // if (updateCount === 1500) {
-  if (updateCount > 1000 && updateCount % 80 === 0) {
+  if (updateCount === 1000) {
     const { facing } = getRandomYurtProps();
     const yurt1 = yurts[0];
 
@@ -208,8 +211,8 @@ export const spawnNewObjects = (updateCount) => {
         width: 1,
         height: 1,
       },
-      minDistance: 2,
-      maxDistance: 2,
+      minDistance: 1,
+      maxDistance: 1,
       extra: facing,
     });
 
@@ -217,7 +220,7 @@ export const spawnNewObjects = (updateCount) => {
       const newYurt = new Yurt({
         x: randomPosition.x,
         y: randomPosition.y,
-        type: 'goat',
+        type: 'ox',
         facing,
       });
     }
