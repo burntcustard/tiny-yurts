@@ -27,6 +27,7 @@ export const scaledGridLineThickness = 0.5;
 export const gridLineThickness = scaledGridLineThickness / 2;
 
 export const svgContainerElement = document.createElement('div');
+svgContainerElement.style.overflow = 'hidden';
 svgContainerElement.style.position = 'absolute';
 svgContainerElement.style.width = '100dvw';
 svgContainerElement.style.height = '100dvh';
