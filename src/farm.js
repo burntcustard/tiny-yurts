@@ -46,7 +46,7 @@ export class Farm extends Structure {
       });
 
       drawPaths({});
-    }, 1500)
+    }, 1500); // Right now this means can't stop path overlap within 1.5s of spawning
 
     farms.push(this);
     this.addToSvg();
@@ -280,8 +280,9 @@ export class Farm extends Structure {
 
   updateWarn() {
     const fullCircle = 12.56; // Math.PI * 4ish
-    const maxOverflow = this.children.filter(c => !c.isBaby).length + 1;
-    const numOverflowIssues = this.numIssues - maxOverflow + 1;
+    const adults = this.children.filter(c => !c.isBaby);
+    const maxOverflow = adults.length * 2;
+    const numOverflowIssues = this.numIssues - adults.length;
     const dashoffset = fullCircle - (fullCircle / maxOverflow * numOverflowIssues);
 
     this.warnCircle.setAttribute('stroke-dashoffset', dashoffset);

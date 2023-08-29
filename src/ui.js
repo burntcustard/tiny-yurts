@@ -64,6 +64,8 @@ export const initUi = () => {
       right: 0;
       width: 20px;
       height: 20px;
+      padding-right: 0.5px;
+      padding-bottom: 0.5px;
       border-radius: 50%;
       background: #eee;
       border: 4px solid #443;
@@ -165,14 +167,14 @@ export const initUi = () => {
   pathTilesButtonInner.style.width = '48px'
   pathTilesButtonInner.style.borderRadius = '12px';
   const pathTilesCountElement = document.createElement('div');
-  pathTilesCountElement.style.paddingBottom = '0.5px'; // TODO: Uses too many bytes?
   pathTilesButton.append(pathTilesCountElement);
-  const deleteButton = document.createElement('button');
-  const deleteButtonInner = document.createElement('div');
-  deleteButton.style.transform = 'scale(.7)';
-  deleteButton.append(deleteButtonInner);
-  const otherButton = document.createElement('button');
-  buildBar.append(deleteButton, pathTilesButton, otherButton);
+  // const deleteButton = document.createElement('button');
+  // const deleteButtonInner = document.createElement('div');
+  // deleteButton.style.transform = 'scale(.7)';
+  // deleteButton.append(deleteButtonInner);
+  // const otherButton = document.createElement('button');
+  // buildBar.append(deleteButton, pathTilesButton, otherButton);
+  buildBar.append(pathTilesButton);
   uiContainer.append(header, buildBar);
 
   // TODO: Move to different file?

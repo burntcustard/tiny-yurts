@@ -97,7 +97,6 @@ export class Ox extends Animal {
 
     if (this.isBaby) {
       this.isBaby--;
-      console.log(this.isBaby);
     }
 
     // Maybe pick a new target location

@@ -25,21 +25,12 @@ export class OxFarm extends Farm {
   }
 
   upgrade() {
-    const parent1 = this.children.at(-1);
-    const parent2 = this.children.at(-2);
-    const parent3 = this.children.at(-3);
-    parent1.showLove();
-    setTimeout(() => parent2.showLove(), 1000);
-    setTimeout(() => parent3.showLove(), 2000);
-
-    setTimeout(() => {
-      parent1.hideLove();
-      parent2.hideLove();
-      parent3.hideLove();
-    }, 7000);
-
-    setTimeout(() => this.addAnimal({ isBaby: true }), 8000);
-    setTimeout(() => this.addAnimal({ isBaby: true }), 9000);
+    const adults = this.children.filter(c => !c.isBaby);
+    for (let i = 0; i < this.children.filter(c => !c.isBaby).length; i++) {
+      setTimeout(() => this.children.filter(c => !c.isBaby)[i].showLove(), i * 1000);
+      setTimeout(() => this.children.filter(c => !c.isBaby)[i].hideLove(), 7000);
+      if (i) setTimeout(() => this.addAnimal({ isBaby: true }), i * 1000 + 7000);
+    }
   }
 
   addAnimal({ isBaby = false }) {
