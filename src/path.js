@@ -215,7 +215,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
     if (!newPathData.svgElement) {
       newPathData.svgElement = createSvgElement('path');
       newPathData.svgElement.setAttribute('d', newPathData.d);
-      newPathData.svgElement.style.transition = 'all.4s';
+      newPathData.svgElement.style.transition = 'all.4s, opacity.2s';
       pathLayer.appendChild(newPathData.svgElement);
 
       // Only transition "new new" single paths

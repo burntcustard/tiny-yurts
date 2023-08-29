@@ -25,12 +25,19 @@ export class OxFarm extends Farm {
   }
 
   upgrade() {
-    const adults = this.children.filter(c => !c.isBaby);
+    // Cannot upgrade if there are 5 or more ox already
+    if (this.children.length >= 5) {
+      return false;
+    }
+
+    // 3 parents 2 babies each upgrade
     for (let i = 0; i < this.children.filter(c => !c.isBaby).length; i++) {
       setTimeout(() => this.children.filter(c => !c.isBaby)[i].showLove(), i * 1000);
       setTimeout(() => this.children.filter(c => !c.isBaby)[i].hideLove(), 7000);
       if (i) setTimeout(() => this.addAnimal({ isBaby: true }), i * 1000 + 7000);
     }
+
+    return true;
   }
 
   addAnimal({ isBaby = false }) {

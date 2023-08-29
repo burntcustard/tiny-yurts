@@ -55,6 +55,7 @@ const handlePointerdown = (event) => {
     const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
     if (yurtInStartCell) {
       yurtInStartCell.lift();
+      gridPointerLayer.style.cursor = 'grabbing';
     } else {
       pathDragIndicator.setAttribute('d', `M0 0l0 0`);
       pathDragIndicatorWrapper.setAttribute('transform', `translate(${toSvgCoord(cellX)} ${toSvgCoord(cellY)})`);
@@ -91,9 +92,14 @@ const handleHazardPointerup = () => {
 
 const handlePointerup = (event) => {
   event.stopPropagation();
+  const rect = gridPointerLayer.getBoundingClientRect();
+  const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
   const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
+  const yurtInEndCell = yurtInCell(cellX, cellY);
 
-  if (!yurtInStartCell) {
+  if (yurtInEndCell) {
+    gridPointerLayer.style.cursor = 'grab';
+  } else {
     gridPointerLayer.style.cursor = 'cell';
   }
 
@@ -105,7 +111,9 @@ const handlePointerup = (event) => {
   pathDragIndicator.style.opacity = 0;
   pathDragIndicator.style.scale = 0;
 
-  if (yurtInStartCell) yurtInStartCell.place();
+  if (yurtInStartCell) {
+    yurtInStartCell.place();
+  }
 
   dragStartCell = {};
   isDragging = false;
@@ -131,8 +139,10 @@ const handlePointermove = (event) => {
   const yurtInEndCell = yurtInCell(cellX, cellY);
 
   // Assign cursor
-  if ((yurtInStartCell && event.buttons === 1) || yurtInEndCell) {
-    gridPointerLayer.style.cursor = 'move';
+  if (yurtInEndCell && event.buttons !== 1) {
+    gridPointerLayer.style.cursor = 'grab';
+  } else if (event.buttons === 1 && ((yurtInStartCell && yurtInEndCell) || yurtInStartCell && !yurtInEndCell)) {
+    gridPointerLayer.style.cursor = 'grabbing';
   } else {
     if (!samePathInBothCell(dragStartCell.x, dragStartCell.y, cellX, cellY)) {
       gridPointerLayer.style.cursor = 'cell';
@@ -191,19 +201,23 @@ const handlePointermove = (event) => {
     to: { x: cellX, y: cellY },
   })) return;
 
-  if (yurtInStartCell) {
+  if (yurtInStartCell && !yurtInEndCell) {
     yurtInStartCell.rotateTo(cellX, cellY);
     dragStartCell = { x: cellX, y: cellY };
     yurtInStartCell.place();
     // pathDragIndicator.setAttribute('d', `M0 0L0 0`);
     pathDragIndicator.style.transition = '';
     return;
-  } if (yurtInEndCell) {
-    // You can't drag through yurt because it was causing too many weird bugs
+  } if (yurtInEndCell && !yurtInStartCell) {
     yurtInEndCell.rotateTo(dragStartCell.x, dragStartCell.y);
+    // You can't drag through yurt because it was causing too many weird bugs
     dragStartCell = {};
     isDragging = false;
     yurtInEndCell.place();
+    return;
+  }
+
+  if (yurtInStartCell && yurtInEndCell) {
     return;
   }
 

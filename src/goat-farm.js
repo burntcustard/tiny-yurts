@@ -25,17 +25,19 @@ export class GoatFarm extends Farm {
   }
 
   upgrade() {
-    const parent1 = this.children.at(-1);
-    const parent2 = this.children.at(-2);
-    parent1.showLove();
-    setTimeout(() => parent2.showLove(), 1000);
+    // Cannot upgrade if there are 5 or more ox already
+    if (this.children.length >= 7) {
+      return false;
+    }
 
-    setTimeout(() => {
-      parent1.hideLove();
-      parent2.hideLove();
-    }, 8000);
+    // 2 parents and 1 baby each upgrade
+    for (let i = 0; i < 2; i++) {
+      setTimeout(() => this.children.filter(c => !c.isBaby)[i].showLove(), i * 1000);
+      setTimeout(() => this.children.filter(c => !c.isBaby)[i].hideLove(), 7000);
+      if (i) setTimeout(() => this.addAnimal({ isBaby: true }), i * 1000 + 7000);
+    }
 
-    setTimeout(() => this.addAnimal({ isBaby: true }), 10000);
+    return true;
   }
 
   addAnimal({ isBaby = false }) {
