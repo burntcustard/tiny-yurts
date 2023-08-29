@@ -199,8 +199,7 @@ export const spawnNewObjects = (updateCount) => {
     return;
   }
 
-  // if (updateCount === 1500) {
-  if (updateCount === 1000) {
+  if (updateCount === 1025) {
     const { facing } = getRandomYurtProps();
     const yurt1 = yurts[0];
 
