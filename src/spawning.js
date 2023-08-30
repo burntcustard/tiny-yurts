@@ -28,9 +28,9 @@ export const getRandomPosition = ({
     numAttempts++;
     // +1 and -1 are to prevent spawning right on the edge of the board
     const minX = Math.max(boardOffsetX, anchor.x - maxDistance);
-    const maxX = Math.min(boardOffsetX + boardWidth - w, anchor.x + anchor.width + maxDistance);
+    const maxX = Math.min(boardOffsetX + boardWidth - w + 1, anchor.x + anchor.width + maxDistance);
     const minY = Math.max(boardOffsetY, anchor.y - maxDistance);
-    const maxY = Math.min(boardOffsetY + boardHeight - h, anchor.y + anchor.height + maxDistance);
+    const maxY = Math.min(boardOffsetY + boardHeight - h + 1, anchor.y + anchor.height + maxDistance);
 
     const x = Math.floor(minX + (Math.random() * (maxX - minX)));
     const y = Math.floor(minY + (Math.random() * (maxY - minY)));
@@ -158,9 +158,9 @@ let updateRandomness3 = 0;
 
 export const spawnNewObjects = (updateCount) => {
   if (updateCount % 3500 === 0) {
-    updateRandomness1 = Math.floor(Math.random() * 100);
-    updateRandomness2 = Math.floor(Math.random() * 100);
-    updateRandomness3 = Math.floor(Math.random() * 100);
+    updateRandomness1 = Math.floor(Math.random() * 200);
+    updateRandomness2 = Math.floor(Math.random() * 200);
+    updateRandomness3 = Math.floor(Math.random() * 200);
   }
   // console.log(updateCount);
 
@@ -174,12 +174,12 @@ export const spawnNewObjects = (updateCount) => {
       anchor: farms[farms.length - 1], // if undefined randomPosition will use default
       maxDistance: farms.length ? farms.length * 2 : 1,
       minDistance: farms.length ? 2 : 0,
-      maxNumAttempts: 14,
+      maxNumAttempts: 12,
       extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
     });
 
     // Can't find a position, so instead try to upgrade a farm instead
-    if (!randomPosition || (farms.length && Math.random() > 0.9)) {
+    if (!randomPosition) {
       let upgraded;
 
       const shuffledFarms = farms
