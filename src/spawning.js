@@ -116,7 +116,7 @@ export const getRandomPosition = ({
     return ({ x, y });
   }
 
-  console.log('didnt manage to find somewhere boo');
+  // console.log('didnt manage to find somewhere boo');
   return null; // TODO: See if removing saves bytes
 };
 

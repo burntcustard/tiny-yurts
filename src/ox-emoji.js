@@ -1,4 +1,4 @@
-import { createSvgElement } from './svg';
+import { createSvgElement } from './svg-utils';
 import { colors } from './colors';
 
 export const emojiOx = createSvgElement('svg');

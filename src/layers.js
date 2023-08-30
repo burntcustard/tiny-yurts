@@ -1,7 +1,8 @@
 import { addGridToSvg, gridLineThickness } from './grid';
 import {
-  svgElement, createSvgElement, boardOffsetX, boardOffsetY, boardSvgWidth, boardSvgHeight, gridCellSize,
+  svgElement, boardOffsetX, boardOffsetY, boardSvgWidth, boardSvgHeight, gridCellSize,
 } from './svg';
+import { createSvgElement } from './svg-utils';
 import { colors, shadowOpacity } from './colors';
 
 const addAnimalShadowLayer = () => {

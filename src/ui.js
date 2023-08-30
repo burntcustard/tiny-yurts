@@ -1,6 +1,5 @@
-import { createSvgElement } from './svg';
+import { createSvgElement } from './svg-utils';
 import { emojiOx } from './ox-emoji';
-
 import { emojiGoat } from './goat-emoji';
 
 export const oxCounterWrapper = document.createElement('div');

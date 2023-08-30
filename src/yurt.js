@@ -1,9 +1,10 @@
-import { createSvgElement, gridCellSize } from './svg';
+import { createSvgElement } from './svg-utils';
+import { gridCellSize } from './svg';
 import { Structure } from './structure';
 import {
   baseLayer, yurtLayer, yurtAndPersonShadowLayer,
 } from './layers';
-import { Path, drawPaths, pathsData } from './path';
+import { Path, drawPaths, getPathsData } from './path';
 import { colors } from './colors';
 import { Person } from './person';
 
@@ -76,7 +77,7 @@ export class Yurt extends Structure {
       y: y - this.y,
     };
 
-    const oldPathsInPathData = pathsData.filter((p) => p.path === this.startPath
+    const oldPathsInPathData = getPathsData().filter((p) => p.path === this.startPath
       || p.path1 === this.startPath
       || p.path2 === this.startPath);
 

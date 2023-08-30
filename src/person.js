@@ -1,5 +1,6 @@
 import { GameObjectClass, Vector } from 'kontra';
-import { createSvgElement, gridCellSize } from './svg';
+import { createSvgElement } from './svg-utils';
+import { gridCellSize } from './svg';
 import { colors } from './colors';
 import { personLayer, yurtAndPersonShadowLayer } from './layers';
 import { findRoute } from './find-route';
@@ -132,7 +133,8 @@ export class Person extends GameObjectClass {
               } else {
                 this.atFarm = 1;
                 this.farmToVisit.demand -= this.farmToVisit.needyness;
-                this.farmToVisit.assignedPeople.splice(this.farmToVisit.assignedPeople.indexOf(this), 1);
+                this.farmToVisit.assignedPeople
+                  .splice(this.farmToVisit.assignedPeople.indexOf(this), 1);
                 // this.farmToVisit.hideWarn();
                 // this.animalToVisit.hasPerson = false;
               }
@@ -183,7 +185,10 @@ export class Person extends GameObjectClass {
     // Is currently travelling?
     // could check velocity instead?
     if (this.route?.length > 1) {
-      people.filter((otherPerson) => otherPerson !== this && !otherPerson.atHome).forEach((otherPerson) => {
+      const potentialCollisionPeople = people
+        .filter((otherPerson) => otherPerson !== this && !otherPerson.atHome);
+
+      potentialCollisionPeople.forEach((otherPerson) => {
         const distanceBetween = otherPerson.position.distance(this.position);
         const nextDistanceBetween = otherPerson.position.distance(this.position.add(this.velocity));
 
@@ -193,13 +198,14 @@ export class Person extends GameObjectClass {
             const vectorBetweenPeople = this.position.subtract(otherPerson.position);
             const normalBetweenPeople = vectorBetweenPeople.normalize();
             const turnLeftVector = rotateVector(normalBetweenPeople, (Math.PI / 2));
-            // const turnLeftVectorScaled = turnLeftVector.scale((avoidanceDistance - distanceBetween) * turnyness);
             const turnLeftVectorScaled = turnLeftVector.scale(turnyness);
             this.velocity.set(combineVectors(this.velocity, turnLeftVectorScaled));
           }
         }
 
-        const newNextDistanceBetween = otherPerson.position.distance(this.position.add(this.velocity));
+        const newNextDistanceBetween = otherPerson.position.distance(
+          this.position.add(this.velocity),
+        );
 
         if (nextDistanceBetween < slowyDistance && this.velocity.length() > 0.06) {
           if (newNextDistanceBetween < distanceBetween) {

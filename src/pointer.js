@@ -1,6 +1,7 @@
 import { Vector } from 'kontra';
+import { createSvgElement } from './svg-utils';
 import {
-  createSvgElement, svgHazardLines, svgHazardLinesRed, svgContainerElement, gridCellSize,
+  svgHazardLines, svgHazardLinesRed, svgContainerElement, gridCellSize,
 } from './svg';
 import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';

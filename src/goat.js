@@ -2,7 +2,8 @@ import { angleToTarget, radToDeg, Vector } from 'kontra';
 import { Animal } from './animal';
 import { animalLayer, animalShadowLayer } from './layers';
 import { colors } from './colors';
-import { createSvgElement, gridCellSize } from './svg';
+import { gridCellSize } from './svg';
+import { createSvgElement } from './svg-utils';
 import { goatCounter, goatCounterWrapper } from './ui';
 
 export const goats = [];

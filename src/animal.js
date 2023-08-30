@@ -1,5 +1,6 @@
 import { GameObjectClass } from 'kontra';
-import { createSvgElement, gridCellSize } from './svg';
+import { gridCellSize } from './svg';
+import { createSvgElement } from './svg-utils';
 import { pinLayer } from './layers';
 
 const padding = 3;

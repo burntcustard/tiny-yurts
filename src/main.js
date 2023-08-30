@@ -1,5 +1,5 @@
 import {
-  init, initKeys, onKey, offKey, GameLoop, keyPressed,
+  init, initKeys, onKey, GameLoop,
 } from 'kontra';
 import {
   svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY,
@@ -38,7 +38,8 @@ const loop = GameLoop({
     // if (totalUpdateCount > 200) return;
 
     // Some things happen 15 times/s instead of 60.
-    // E.g. because movement handled with CSS transitions will be done at browser refresh rate anyway
+    // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
+    /* eslint-disable default-case */
     switch (updateCount % 4) {
       case 0:
         break;
@@ -77,11 +78,11 @@ const loop = GameLoop({
     renderCount++;
 
     // Some things happen 15 times/s instead of 60.
-    // E.g. because movement handled with CSS transitions will be done at browser refresh rate anyway
+    // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
     switch (renderCount % 4) {
       case 0:
         pathTilesCountElement.innerText = inventory.paths;
-        // pathTilesCountElement.style.borderColor = inventory.paths && inventory.paths > 0 ? '' : 'red';
+        // TODO: Highlight in some way if 0 paths left
         break;
       case 1:
         oxFarms.forEach((farm) => farm.render());

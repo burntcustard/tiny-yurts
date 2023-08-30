@@ -44,20 +44,22 @@ const breadthFirstSearch = (gridData, from, to) => {
 
     if (node === undefined) {
       // Not sure how nodes could be undefined but fine?
-      return;
+      return false; // TODO: See if returning nothing (void) saves space
     }
 
     if (to.find((t) => node.x === t.x && node.y === t.y)) {
       return path.concat(node);
     }
 
-    const hasVisited = visited.some((visitedNode) => visitedNode.x === node.x && visitedNode.y === node.y);
+    const hasVisited = visited
+      .some((visitedNode) => visitedNode.x === node.x && visitedNode.y === node.y);
 
     if (!hasVisited) {
       visited.push(node);
 
       node.neighbors.forEach((neighbor) => {
-        const hasVisitedNeighbor = visited.some((visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y);
+        const hasVisitedNeighbor = visited
+          .some((visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y);
 
         if (!hasVisitedNeighbor) {
           queue.push({

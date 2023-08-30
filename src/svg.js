@@ -1,6 +1,5 @@
 import { colors } from './colors';
-
-export const createSvgElement = (tag) => document.createElementNS('http://www.w3.org/2000/svg', tag);
+import { createSvgElement } from './svg-utils';
 
 export const gridCellSize = 8; // Width & height of a cell, in SVG px
 

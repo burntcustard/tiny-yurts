@@ -1,10 +1,8 @@
 import {
   svgElement, boardOffsetX, boardOffsetY, boardSvgWidth, boardSvgHeight, gridCellSize,
 } from './svg';
+import { createSvgElement } from './svg-utils';
 import { colors } from './colors';
-
-// Importing this doesn't work?
-const createSvgElement = (tag) => document.createElementNS('http://www.w3.org/2000/svg', tag);
 
 export const scaledGridLineThickness = 1;
 export const gridLineThickness = scaledGridLineThickness / 2;

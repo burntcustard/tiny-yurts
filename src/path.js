@@ -1,26 +1,18 @@
+// We pass refs to pathData in forEach, for now it's easier to reassign props directly
+/* eslint-disable no-param-reassign */
 import { GameObjectClass } from 'kontra';
 import { pathLayer, pathShadowLayer } from './layers';
-import { createSvgElement, gridCellSize } from './svg';
-
-/**
- * Yurts each need to have...
- * - types - Ox is brown, goat is grey, etc.
- * - number of people currently inside?
- * - people belonging to the yurt?
- * - x and y coordinate in the grid
- */
+import { gridCellSize } from './svg';
+import { createSvgElement } from './svg-utils';
 
 const toSvgCoord = (c) => gridCellSize / 2 + c * gridCellSize;
 
 export const paths = [];
-
 export const pathSvgWidth = 3;
-
-export let connections = [];
-
-export let pathsData = [];
-
-export let recentlyRemoved = [];
+let connections = [];
+let pathsData = [];
+let recentlyRemoved = [];
+export const getPathsData = () => pathsData;
 
 export const drawPaths = ({ fadeout, noShadow }) => {
   // only care about paths in or next to changedCell

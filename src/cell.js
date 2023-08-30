@@ -6,7 +6,6 @@ import { gridPointerLayer } from './layers';
 export const getGridCell = (x, y) => {
   const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;
 
-  // console.log(`The gridPointerLayer is ${Math.round(gridPointerLayer.getBoundingClientRect().width)}px wide, and the board is ${gridWidth} cells wide. You clicked at ${x}, ${y}, which must be in cell: ${Math.floor(x / cellSizePx)}, ${Math.floor(y / cellSizePx)}`);
   return {
     x: Math.floor(x / cellSizePx),
     y: Math.floor(y / cellSizePx),
@@ -16,7 +15,6 @@ export const getGridCell = (x, y) => {
 export const getBoardCell = (x, y) => {
   const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;
 
-  // console.log(`The gridPointerLayer is ${Math.round(gridPointerLayer.getBoundingClientRect().width)}px wide, and the board is ${gridWidth} cells wide. You clicked at ${x}, ${y}, which must be in cell: ${Math.floor(x / cellSizePx)}, ${Math.floor(y / cellSizePx)}`);
   return {
     x: boardOffsetX + Math.floor(x / cellSizePx),
     y: boardOffsetY + Math.floor(y / cellSizePx),
@@ -63,4 +61,6 @@ export const isPastHalfwayInto = ({ pointer, from, to }) => {
   if (bottom && left) return xDiff + -yDiff < -cellSizePx * 2 + fuzzyness;
   if (yMid && left) return xDiff < -cellSizePx + fuzzyness;
   if (top && left) return xDiff + yDiff < -cellSizePx * 2 + fuzzyness;
+
+  return false; // TODO: Maybe remove or swap to void to save space
 };

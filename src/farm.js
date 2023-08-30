@@ -1,5 +1,6 @@
 import { Structure } from './structure';
-import { createSvgElement, gridCellSize } from './svg';
+import { gridCellSize } from './svg';
+import { createSvgElement } from './svg-utils';
 import {
   gridBlockLayer, fenceLayer, fenceShadowLayer, pinLayer,
 } from './layers';
@@ -17,7 +18,7 @@ const fenceLineThickness = 1;
 
 export class Farm extends Structure {
   constructor(properties) {
-    const { x, y, relativePathPoints } = properties;
+    const { relativePathPoints } = properties;
     super(properties);
     this.demand = 0;
     this.totalUpdates = 0;
@@ -37,12 +38,12 @@ export class Farm extends Structure {
       this.startPath = new Path({
         points: [
           {
-            x: this.x + relativePathPoints?.[0]?.x,
-            y: this.y + relativePathPoints?.[0]?.y,
+            x: this.x + relativePathPoints[0].x,
+            y: this.y + relativePathPoints[0].y,
           },
           {
-            x: this.x + relativePathPoints?.[1]?.x,
-            y: this.y + relativePathPoints?.[1]?.y,
+            x: this.x + relativePathPoints[1].x,
+            y: this.y + relativePathPoints[1].y,
           },
         ],
       });
@@ -101,7 +102,8 @@ export class Farm extends Structure {
     for (let i = 0; i < this.numIssues; i++) {
       if (this.assignedPeople.length >= this.numIssues) return;
       // Find someone people sitting around doing nothing
-      const atHomePeopleOfSameType = people.filter((person) => person.atHome && person.type === this.type);
+      const atHomePeopleOfSameType = people
+        .filter((person) => person.atHome && person.type === this.type);
 
       if (atHomePeopleOfSameType.length === 0) return;
 
@@ -110,20 +112,20 @@ export class Farm extends Structure {
 
       let bestRoute = null;
 
-      for (let i = 0; i < atHomePeopleOfSameType.length; i++) {
+      for (let j = 0; j < atHomePeopleOfSameType.length; j++) {
         const thisPersonsRoute = findRoute({
           from: {
-            x: atHomePeopleOfSameType[i].parent.x,
-            y: atHomePeopleOfSameType[i].parent.y,
+            x: atHomePeopleOfSameType[j].parent.x,
+            y: atHomePeopleOfSameType[j].parent.y,
           },
           to: this.points,
         });
 
         if (!bestRoute
-          || thisPersonsRoute && thisPersonsRoute.length < bestRoute.length
+          || (thisPersonsRoute && thisPersonsRoute.length < bestRoute.length)
         ) {
           bestRoute = thisPersonsRoute;
-          closestPerson = atHomePeopleOfSameType[i];
+          closestPerson = atHomePeopleOfSameType[j];
         }
       }
 
@@ -133,15 +135,7 @@ export class Farm extends Structure {
         closestPerson.route = bestRoute;
         closestPerson.atHome = false; // Leave home!
         this.assignedPeople.push(closestPerson);
-        // animal.hasPerson = closestPerson;
         closestPerson.farmToVisit = this;
-        // console.log('bestRoute');
-        // console.log(bestRoute);
-      } else {
-        // console.log('no route found');
-
-        // There's an animal that has no people of the same type waiting around at home that can come help
-        // ... try again next update? (15 times/s)
       }
     }
   }
@@ -286,7 +280,7 @@ export class Farm extends Structure {
     const adults = this.children.filter((c) => !c.isBaby);
     const maxOverflow = adults.length * 2;
     const numOverflowIssues = this.numIssues - adults.length;
-    const dashoffset = fullCircle - (fullCircle / maxOverflow * numOverflowIssues);
+    const dashoffset = fullCircle - ((fullCircle / maxOverflow) * numOverflowIssues);
 
     this.warnCircle.setAttribute('stroke-dashoffset', dashoffset);
 
