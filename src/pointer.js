@@ -45,8 +45,6 @@ const handlePointerdown = (event) => {
   const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
 
   if (event.buttons === 1) {
-    if (farmInCell(cellX, cellY)) return;
-
     gridRect.style.opacity = 1;
     svgHazardLines.style.opacity = 0.9;
 
