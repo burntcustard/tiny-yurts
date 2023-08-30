@@ -1,9 +1,8 @@
-import { angleToTarget, radToDeg, Vector,  } from 'kontra';
+import { angleToTarget, radToDeg, Vector } from 'kontra';
 import { Animal } from './animal';
 import { animalLayer, animalShadowLayer } from './layers';
 import { colors } from './colors';
-import { createSvgElement } from './svg';
-import { gridCellSize } from './grid';
+import { createSvgElement, gridCellSize } from './svg';
 import { oxCounter, oxCounterWrapper } from './ui';
 
 export const oxen = [];
@@ -105,8 +104,6 @@ export class Ox extends Animal {
     }
 
     if (this.target) {
-      const x = this.parent.x * gridCellSize + this.x - this.width / 2;
-      const y = this.parent.y * gridCellSize + this.y - this.height / 2;
       const angle = angleToTarget(this, this.target);
       const angleDiff = angle - this.rotation;
       const targetVector = Vector(this.target);
@@ -120,7 +117,7 @@ export class Ox extends Animal {
         const newPosX = this.x + normalized.x * 0.05;
         const newPosY = this.y + normalized.y * 0.05;
         // Check if new pos is not too close to other ox
-        const tooCloseToOtherOxes = this.parent.children.some(o => {
+        const tooCloseToOtherOxes = this.parent.children.some((o) => {
           if (this === o) return false;
           const otherOxVector = Vector(o);
           const oldDistToOtherOx = otherOxVector.distance({ x: this.x, y: this.y });

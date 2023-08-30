@@ -22,7 +22,10 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'no-continue': 'off',
+    'no-new': 'off', // GameObjects assign themselves to appropriate lists so are not thrown away
     'no-plusplus': 'off',
+    'no-return-assign': 'off',
     'import/prefer-default-export': 'off',
   },
 };

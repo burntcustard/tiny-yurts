@@ -32,8 +32,8 @@ export class GoatFarm extends Farm {
 
     // 2 parents and 1 baby each upgrade
     for (let i = 0; i < 2; i++) {
-      setTimeout(() => this.children.filter(c => !c.isBaby)[i].showLove(), i * 1000);
-      setTimeout(() => this.children.filter(c => !c.isBaby)[i].hideLove(), 7000);
+      setTimeout(() => this.children.filter((c) => !c.isBaby)[i].showLove(), i * 1000);
+      setTimeout(() => this.children.filter((c) => !c.isBaby)[i].hideLove(), 7000);
       if (i) setTimeout(() => this.addAnimal({ isBaby: true }), i * 1000 + 7000);
     }
 

@@ -1,5 +1,7 @@
-import { addGridToSvg, gridCellSize, gridLineThickness } from './grid';
-import { svgElement, createSvgElement, boardOffsetX, boardOffsetY, boardWidth, boardHeight, boardSvgWidth, boardSvgHeight } from './svg';
+import { addGridToSvg, gridLineThickness } from './grid';
+import {
+  svgElement, createSvgElement, boardOffsetX, boardOffsetY, boardSvgWidth, boardSvgHeight, gridCellSize,
+} from './svg';
 import { colors, shadowOpacity } from './colors';
 
 const addAnimalShadowLayer = () => {
@@ -49,7 +51,7 @@ const addBaseLayer = () => {
   baseLayer.setAttribute('fill', colors.base);
   svgElement.appendChild(baseLayer);
   return baseLayer;
-}
+};
 
 const addPathShadowLayer = () => {
   const pathShadowLayer = createSvgElement('g');
@@ -77,7 +79,7 @@ const addPersonLayer = () => {
   personLayer.setAttribute('fill', 'none');
   svgElement.appendChild(personLayer);
   return personLayer;
-}
+};
 
 const addYurtAndPersonShadowLayer = () => {
   const shadowLayer = createSvgElement('g');
@@ -97,20 +99,12 @@ const addYurtLayer = () => {
   return yurtLayer;
 };
 
-const addYurtDecorationLayer = (color) => {
-  const yurtDecorationLayer = createSvgElement('g');
-  yurtDecorationLayer.setAttribute('fill', 'none');
-  yurtDecorationLayer.setAttribute('stroke', color);
-  svgElement.appendChild(yurtDecorationLayer);
-  return yurtDecorationLayer;
-};
-
 const addPinLayer = () => {
   const pinLayer = createSvgElement('g');
   pinLayer.setAttribute('stroke-linecap', 'round');
   svgElement.appendChild(pinLayer);
   return pinLayer;
-}
+};
 
 const addGridPointerLayer = () => {
   const gridPointerLayer = createSvgElement('rect');
@@ -123,41 +117,39 @@ const addGridPointerLayer = () => {
   gridPointerLayer.style.pointerEvents = 'all';
   svgElement.appendChild(gridPointerLayer);
   return gridPointerLayer;
-}
+};
 
 // Order is important here, because it determines stacking in the SVG
-export const layers = {
-  grid: addGridToSvg(),
-  gridBlock: addGridBlockLayer(),
-  base: addBaseLayer(),
-  pathShadows: addPathShadowLayer(),
-  paths: addPathLayer(),
-  animalShadows: addAnimalShadowLayer(),
-  yurtAndPersonShadows: addYurtAndPersonShadowLayer(),
-  animals: addAnimalLayer(),
+const layers = {
+  gridLayer: addGridToSvg(),
+  gridBlockLayer: addGridBlockLayer(),
+  baseLayer: addBaseLayer(),
+  pathShadowLayer: addPathShadowLayer(),
+  pathLayer: addPathLayer(),
+  animalShadowLayer: addAnimalShadowLayer(),
+  yurtAndPersonShadowLayer: addYurtAndPersonShadowLayer(),
+  animalLayer: addAnimalLayer(),
   personLayer: addPersonLayer(),
-  fenceShadows: addFenceShadowLayer(),
-  fences: addFenceLayer(),
-  yurts: addYurtLayer(),
-  yurtDecorationLayers: {
-    'ox': addYurtDecorationLayer(colors.ox),
-    'goat': addYurtDecorationLayer(colors.goat),
-  },
+  fenceShadowLayer: addFenceShadowLayer(),
+  fenceLayer: addFenceLayer(),
+  yurtLayer: addYurtLayer(),
   pinLayer: addPinLayer(),
   gridPointerLayer: addGridPointerLayer(),
 };
 
-export const { yurtDecorationLayers } = layers;
-export const animalLayer = layers.animals;
-export const animalShadowLayer = layers.animalShadows;
-export const baseLayer = layers.base;
-export const fenceLayer = layers.fences;
-export const fenceShadowLayer = layers.fenceShadows;
-export const gridBlockLayer = layers.gridBlock;
-export const pathLayer = layers.paths;
-export const pathShadowLayer = layers.pathShadows;
-export const personLayer = layers.personLayer;
-export const pinLayer = layers.pinLayer;
-export const gridPointerLayer = layers.gridPointerLayer;
-export const yurtLayer = layers.yurts;
-export const yurtAndPersonShadowLayer = layers.yurtAndPersonShadows;
+export const {
+  animalLayer,
+  animalShadowLayer,
+  baseLayer,
+  fenceLayer,
+  fenceShadowLayer,
+  gridBlockLayer,
+  gridLayer,
+  gridPointerLayer,
+  pathLayer,
+  pathShadowLayer,
+  personLayer,
+  pinLayer,
+  yurtAndPersonShadowLayer,
+  yurtLayer,
+} = layers;

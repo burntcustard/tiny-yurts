@@ -1,9 +1,8 @@
-import { createSvgElement } from './svg';
+import { createSvgElement, gridCellSize } from './svg';
 import { Structure } from './structure';
 import {
-  baseLayer, yurtDecorationLayers, yurtLayer, yurtAndPersonShadowLayer,
+  baseLayer, yurtLayer, yurtAndPersonShadowLayer,
 } from './layers';
-import { gridCellSize, gridLineThickness } from './grid';
 import { Path, drawPaths, pathsData } from './path';
 import { colors } from './colors';
 import { Person } from './person';
@@ -52,16 +51,19 @@ export class Yurt extends Structure {
         ],
       });
 
-      drawPaths({ changedCells: [
-        { x, y, fixed: true },
-        { x: x + this.facing.x, y: y + this.facing.y },
-      ], noShadow: true});
-    }, 1000)
+      drawPaths({
+        changedCells: [
+          { x, y, fixed: true },
+          { x: x + this.facing.x, y: y + this.facing.y },
+        ],
+        noShadow: true,
+      });
+    }, 1000);
 
     setTimeout(() => {
       this.children.push(new Person({ x: this.x, y: this.y, parent: this }));
       this.children.push(new Person({ x: this.x, y: this.y, parent: this }));
-      this.children.forEach(p => p.addToSvg());
+      this.children.forEach((p) => p.addToSvg());
     }, 2000);
 
     yurts.push(this);
@@ -74,13 +76,11 @@ export class Yurt extends Structure {
       y: y - this.y,
     };
 
-    const oldPathsInPathData = pathsData.filter(p =>
-      p.path === this.startPath ||
-      p.path1 === this.startPath ||
-      p.path2 === this.startPath
-    );
+    const oldPathsInPathData = pathsData.filter((p) => p.path === this.startPath
+      || p.path1 === this.startPath
+      || p.path2 === this.startPath);
 
-    oldPathsInPathData.forEach(p => {
+    oldPathsInPathData.forEach((p) => {
       p.svgElement.setAttribute('stroke-width', 0);
       p.svgElement.setAttribute('opacity', 0);
 
@@ -126,7 +126,7 @@ export class Yurt extends Structure {
 
     const baseShadow = createSvgElement('circle');
     baseShadow.setAttribute('fill', colors.shade);
-    baseShadow.setAttribute('r', 0)
+    baseShadow.setAttribute('r', 0);
     baseShadow.setAttribute('stroke', 'none');
     baseShadow.setAttribute('transform', `translate(${x},${y})`);
     baseShadow.style.willChange = 'r, opacity';

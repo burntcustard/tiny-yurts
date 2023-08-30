@@ -1,6 +1,5 @@
 import { GameObjectClass, Vector } from 'kontra';
-import { gridCellSize } from './grid';
-import { createSvgElement } from './svg';
+import { createSvgElement, gridCellSize } from './svg';
 import { colors } from './colors';
 import { personLayer, yurtAndPersonShadowLayer } from './layers';
 import { findRoute } from './find-route';
@@ -31,8 +30,8 @@ export class Person extends GameObjectClass {
   }
 
   addToSvg() {
-    const x = this.x;
-    const y = this.y;
+    const { x } = this;
+    const { y } = this;
 
     const person = createSvgElement('path');
     person.setAttribute('d', 'M0 0l0 0');
@@ -57,8 +56,8 @@ export class Person extends GameObjectClass {
   render() {
     if (!this.svgElement) return;
 
-    const x = this.x;
-    const y = this.y;
+    const { x } = this;
+    const { y } = this;
 
     this.svgElement.setAttribute('transform', `translate(${x},${y})`);
     this.shadowElement.setAttribute('transform', `translate(${x},${y})`);
@@ -81,7 +80,6 @@ export class Person extends GameObjectClass {
       // After this many updates, go home
       // TODO: Make sensible number, show some sort of animation
       if (this.atFarm > 80) {
-
         // Go back home. If no route is found, errrr dunno?
         const route = findRoute({
           from: {
@@ -141,14 +139,12 @@ export class Person extends GameObjectClass {
               this.hasDestination = false;
               return;
             }
-          } else {
-            if (
-              Math.abs(this.x - firstRoutePoint.x) < closeEnough
+          } else if (
+            Math.abs(this.x - firstRoutePoint.x) < closeEnough
               && Math.abs(this.y - firstRoutePoint.y) < closeEnough
-            ) {
-              this.route.shift();
-              return;
-            }
+          ) {
+            this.route.shift();
+            return;
           }
 
           // Apply a max speed
@@ -187,7 +183,7 @@ export class Person extends GameObjectClass {
     // Is currently travelling?
     // could check velocity instead?
     if (this.route?.length > 1) {
-      people.filter(otherPerson => otherPerson !== this && !otherPerson.atHome).forEach(otherPerson => {
+      people.filter((otherPerson) => otherPerson !== this && !otherPerson.atHome).forEach((otherPerson) => {
         const distanceBetween = otherPerson.position.distance(this.position);
         const nextDistanceBetween = otherPerson.position.distance(this.position.add(this.velocity));
 

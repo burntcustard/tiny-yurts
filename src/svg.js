@@ -1,22 +1,22 @@
 import { colors } from './colors';
 
-import { gridCellSize } from './grid';
-
 export const createSvgElement = (tag) => document.createElementNS('http://www.w3.org/2000/svg', tag);
 
-// The offset of the buildable area inside the game board
+export const gridCellSize = 8; // Width & height of a cell, in SVG px
+
+// Offset of the buildable area inside the game board
 // (this could change at the start of the game before zooming out?)
 export const boardOffsetX = 3;
 export const boardOffsetY = 2;
 
-// The number of cells making up the width and height of the game board, only including buildable area
+// Number of cells making up the width and height of the game board, only including buildable area
 export const boardWidth = 20;
 export const boardHeight = 10;
 
 export const boardSvgWidth = boardWidth * gridCellSize;
 export const boardSvgHeight = boardHeight * gridCellSize;
 
-// The number of cells making up the width and height of the game board, including non-buildable area
+// Number of cells making up the width and height of the game board, including non-buildable area
 export const gridWidth = boardOffsetX + boardWidth + boardOffsetX;
 export const gridHeight = boardOffsetY + boardHeight + boardOffsetY;
 
@@ -49,7 +49,7 @@ export const svgHazardLinesRed = document.createElement('div');
 svgHazardLinesRed.style.position = 'absolute';
 svgHazardLinesRed.style.width = '100dvw';
 svgHazardLinesRed.style.height = '100dvh';
-svgHazardLinesRed.style.background = `repeating-linear-gradient(-55deg, currentColor 0 12px,#0000 0 24px)`;
+svgHazardLinesRed.style.background = 'repeating-linear-gradient(-55deg, currentColor 0 12px,#0000 0 24px)';
 svgHazardLinesRed.style.color = colors.gridRed;
 svgHazardLinesRed.style.opacity = 0;
 svgHazardLinesRed.style.willChange = 'opacity';

@@ -10,4 +10,6 @@ export const weightedRandom = (weights) => {
       return i;
     }
   }
+
+  return null; // TODO: See if returning null increases filesize
 };

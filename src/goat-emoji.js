@@ -1,5 +1,5 @@
-import { createSvgElement } from "./svg"
-import { colors } from "./colors";
+import { createSvgElement } from './svg';
+import { colors } from './colors';
 
 export const emojiGoat = createSvgElement('svg');
 emojiGoat.setAttribute('viewBox', '0 0 20 20');

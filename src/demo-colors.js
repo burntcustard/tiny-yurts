@@ -1,4 +1,4 @@
-import { colors } from "./colors";
+import { colors } from './colors';
 
 export const demoColors = () => {
   const colorTestContainer = document.createElement('svg');
@@ -11,4 +11,4 @@ export const demoColors = () => {
     dot.style.background = value;
     colorTestContainer.append(dot);
   }
-}
+};

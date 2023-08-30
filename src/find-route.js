@@ -11,24 +11,23 @@ const getGridData = () => {
     }
   }
 
-  paths.forEach(path => {
+  paths.forEach((path) => {
     // TODO: See why or how this fails?
     if (gridData) {
       gridData
-        .find(d => d.x === path.points[0].x && d.y === path.points[0].y)
+        .find((d) => d.x === path.points[0].x && d.y === path.points[0].y)
         .neighbors
         .push({ x: path.points[1].x, y: path.points[1].y });
 
       gridData
-        .find(d => d.x === path.points[1].x && d.y === path.points[1].y)
+        .find((d) => d.x === path.points[1].x && d.y === path.points[1].y)
         .neighbors
         .push({ x: path.points[0].x, y: path.points[0].y });
     }
   });
 
   return gridData;
-}
-
+};
 
 const breadthFirstSearch = (gridData, from, to) => {
   const queue = [{ node: from, path: [] }];
@@ -52,21 +51,17 @@ const breadthFirstSearch = (gridData, from, to) => {
       return path.concat(node);
     }
 
-    const hasVisited = visited.some(visitedNode =>
-      visitedNode.x === node.x && visitedNode.y === node.y
-    );
+    const hasVisited = visited.some((visitedNode) => visitedNode.x === node.x && visitedNode.y === node.y);
 
     if (!hasVisited) {
       visited.push(node);
 
       node.neighbors.forEach((neighbor) => {
-        const hasVisitedNeighbor = visited.some(visitedNode =>
-          visitedNode.x === neighbor.x && visitedNode.y === neighbor.y
-        );
+        const hasVisitedNeighbor = visited.some((visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y);
 
         if (!hasVisitedNeighbor) {
           queue.push({
-            node: gridData.find(c => c.x === neighbor.x && c.y === neighbor.y),
+            node: gridData.find((c) => c.x === neighbor.x && c.y === neighbor.y),
             path: path.concat(node),
           });
         }
@@ -75,14 +70,14 @@ const breadthFirstSearch = (gridData, from, to) => {
   }
 
   return null; // Can't get there at all!
-}
+};
 
 export const findRoute = ({ from, to }) => {
   const gridData = getGridData();
 
   // Convert from and to to actual grid nodes
-  const fromNode = gridData.find(c => c.x === from.x && c.y === from.y);
-  const toNodes = gridData.filter((c) => to.find(f => c.x === f.x && c.y === f.y));
+  const fromNode = gridData.find((c) => c.x === from.x && c.y === from.y);
+  const toNodes = gridData.filter((c) => to.find((f) => c.x === f.x && c.y === f.y));
 
   // console.log('fromNode');
   // console.log(fromNode);

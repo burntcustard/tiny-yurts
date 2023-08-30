@@ -1,12 +1,10 @@
 import { GameObjectClass } from 'kontra';
-import { gridCellSize } from './grid';
-import { createSvgElement } from './svg';
+import { createSvgElement, gridCellSize } from './svg';
 import { pinLayer } from './layers';
 
 const padding = 3;
 
-const getRandom = (range) =>
-  padding + (Math.random() * (range * gridCellSize - padding * 2));
+const getRandom = (range) => padding + (Math.random() * (range * gridCellSize - padding * 2));
 
 export class Animal extends GameObjectClass {
   constructor(properties) {

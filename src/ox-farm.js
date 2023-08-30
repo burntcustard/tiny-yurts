@@ -31,9 +31,9 @@ export class OxFarm extends Farm {
     }
 
     // 3 parents 2 babies each upgrade
-    for (let i = 0; i < this.children.filter(c => !c.isBaby).length; i++) {
-      setTimeout(() => this.children.filter(c => !c.isBaby)[i].showLove(), i * 1000);
-      setTimeout(() => this.children.filter(c => !c.isBaby)[i].hideLove(), 7000);
+    for (let i = 0; i < this.children.filter((c) => !c.isBaby).length; i++) {
+      setTimeout(() => this.children.filter((c) => !c.isBaby)[i].showLove(), i * 1000);
+      setTimeout(() => this.children.filter((c) => !c.isBaby)[i].hideLove(), 7000);
       if (i) setTimeout(() => this.addAnimal({ isBaby: true }), i * 1000 + 7000);
     }
 

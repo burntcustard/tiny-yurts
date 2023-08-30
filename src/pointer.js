@@ -1,30 +1,27 @@
 import { Vector } from 'kontra';
-import { createSvgElement, svgElement } from './svg';
+import {
+  createSvgElement, svgHazardLines, svgHazardLinesRed, svgContainerElement, gridCellSize,
+} from './svg';
 import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';
-import { isPastHalfwayInto, getGridCell, getBoardCell, pointerPxToSvgPx } from './cell';
-import { farms } from './farm';
+import { isPastHalfwayInto, getBoardCell } from './cell';
 import { yurts } from './yurt';
-import { gridCellSize, gridRect, gridRectRed } from './grid';
+import { gridRect, gridRectRed } from './grid';
 import { gridPointerLayer, pathShadowLayer } from './layers';
-import { svgHazardLines, svgHazardLinesRed, svgContainerElement } from './svg';
 import { removePath } from './remove-path';
-import { colors } from './colors';
 
 let dragStartCell = {};
 let isDragging = false;
 
 const yurtInCell = (x, y) => yurts.find((yurt) => yurt.x === x && yurt.y === y);
-const farmInCell = (x, y) => farms.find((farm) => farm.x === x && farm.y === y);
+
 const samePathInBothCell = (x0, y0, x1, y1) => paths.find((path) => (
   (
     (path.points[0].x === x0 && path.points[0].y === y0)
-    &&
-    (path.points[1].x === x1 && path.points[1].y === y1)
+    && (path.points[1].x === x1 && path.points[1].y === y1)
   ) || (
     (path.points[1].x === x0 && path.points[1].y === y0)
-    &&
-    (path.points[0].x === x1 && path.points[0].y === y1)
+    && (path.points[0].x === x1 && path.points[0].y === y1)
   )
 ));
 
@@ -55,7 +52,7 @@ const handlePointerdown = (event) => {
       yurtInStartCell.lift();
       gridPointerLayer.style.cursor = 'grabbing';
     } else {
-      pathDragIndicator.setAttribute('d', `M0 0l0 0`);
+      pathDragIndicator.setAttribute('d', 'M0 0l0 0');
       pathDragIndicatorWrapper.setAttribute('transform', `translate(${toSvgCoord(cellX)} ${toSvgCoord(cellY)})`);
       pathDragIndicator.style.opacity = 1;
       pathDragIndicator.style.scale = 1.3;
@@ -72,7 +69,7 @@ const handlePointerdown = (event) => {
 const handleHazardPointerdown = () => {
   gridRectRed.style.opacity = 0.9;
   svgHazardLinesRed.style.opacity = 0.9;
-}
+};
 
 const handleHazardPointermove = (event) => {
   if (event.buttons !== 1) return;
@@ -81,12 +78,12 @@ const handleHazardPointermove = (event) => {
   svgHazardLinesRed.style.opacity = 0.9;
   gridRect.style.opacity = 0;
   svgHazardLines.style.opacity = 0;
-}
+};
 
 const handleHazardPointerup = () => {
   gridRectRed.style.opacity = 0;
   svgHazardLinesRed.style.opacity = 0;
-}
+};
 
 const handlePointerup = (event) => {
   event.stopPropagation();
@@ -115,7 +112,7 @@ const handlePointerup = (event) => {
 
   dragStartCell = {};
   isDragging = false;
-}
+};
 
 const handlePointermove = (event) => {
   // Do not trigger hazard area pointermove
@@ -139,12 +136,13 @@ const handlePointermove = (event) => {
   // Assign cursor
   if (yurtInEndCell && event.buttons !== 1) {
     gridPointerLayer.style.cursor = 'grab';
-  } else if (event.buttons === 1 && ((yurtInStartCell && yurtInEndCell) || yurtInStartCell && !yurtInEndCell)) {
+  } else if (
+    event.buttons === 1
+    && ((yurtInStartCell && yurtInEndCell) || (yurtInStartCell && !yurtInEndCell))
+  ) {
     gridPointerLayer.style.cursor = 'grabbing';
-  } else {
-    if (!samePathInBothCell(dragStartCell.x, dragStartCell.y, cellX, cellY)) {
-      gridPointerLayer.style.cursor = 'cell';
-    }
+  } else if (!samePathInBothCell(dragStartCell.x, dragStartCell.y, cellX, cellY)) {
+    gridPointerLayer.style.cursor = 'cell';
   }
 
   // Is left click being held down? If not, we don't care
@@ -163,7 +161,7 @@ const handlePointermove = (event) => {
 
   const dragStartSvgPx = new Vector({
     x: toSvgCoord(dragStartCell.x),
-    y: toSvgCoord(dragStartCell.y)
+    y: toSvgCoord(dragStartCell.y),
   });
 
   const L = `${toSvgCoord(xDiff / 2 - 0.5)} ${toSvgCoord(yDiff / 2 - 0.5)}`;
@@ -178,7 +176,7 @@ const handlePointermove = (event) => {
     || Math.abs(xDiff) > 1
     || Math.abs(yDiff) > 1
   ) {
-    pathDragIndicator.setAttribute('d', `M0 0L0 0`);
+    pathDragIndicator.setAttribute('d', 'M0 0L0 0');
     return;
   }
 
@@ -232,11 +230,23 @@ const handlePointermove = (event) => {
     return;
   }
 
-  const newPath = new Path({ points: [{ x: dragStartCell.x, y: dragStartCell.y }, { x: cellX, y: cellY }] });
+  const newPath = new Path({
+    points: [
+      { x: dragStartCell.x, y: dragStartCell.y },
+      { x: cellX, y: cellY },
+    ],
+  });
 
   inventory.paths--;
 
-  drawPaths({ changedCells: [{ x: dragStartCell.x, y: dragStartCell.y }, { x: cellX, y: cellY }], newPath });
+  drawPaths({
+    changedCells:
+    [
+      { x: dragStartCell.x, y: dragStartCell.y },
+      { x: cellX, y: cellY },
+    ],
+    newPath,
+  });
 
   dragStartCell = { x: cellX, y: cellY };
   pathDragIndicator.style.transition = '';

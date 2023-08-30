@@ -103,7 +103,7 @@ export const initUi = () => {
   `;
 
   const counters = document.createElement('div');
-  counters.style.cssText = 'display:flex;'
+  counters.style.cssText = 'display:flex;';
   header.append(counters);
 
   oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
@@ -127,7 +127,7 @@ export const initUi = () => {
   timeButtonSvg.style.borderRadius = '50%';
 
   for (let i = 75; i < 350; i += 25) {
-    let dot = createSvgElement('path');
+    const dot = createSvgElement('path');
     dot.setAttribute('fill', 'none');
     dot.setAttribute('stroke', '#fff');
     dot.setAttribute('transform-origin', 'center');
@@ -164,7 +164,7 @@ export const initUi = () => {
   pathTilesSvg.append(pathTilesPath);
   pathTilesButtonInner.style.transform = 'rotate(-45deg)';
   pathTilesSvg.style.transform = 'rotate(45deg)';
-  pathTilesButtonInner.style.width = '48px'
+  pathTilesButtonInner.style.width = '48px';
   pathTilesButtonInner.style.borderRadius = '12px';
   const pathTilesCountElement = document.createElement('div');
   pathTilesButton.append(pathTilesCountElement);
@@ -194,5 +194,13 @@ export const initUi = () => {
 
   document.body.append(gameoverScreen);
 
-  return { pathTilesCountElement, timeButtonHand, oxCounter, oxCounterWrapper, goatCounter, goatCounterWrapper, gameoverScreen };
-}
+  return {
+    pathTilesCountElement,
+    timeButtonHand,
+    oxCounter,
+    oxCounterWrapper,
+    goatCounter,
+    goatCounterWrapper,
+    gameoverScreen,
+  };
+};

@@ -1,7 +1,6 @@
 import { GameObjectClass } from 'kontra';
 import { pathLayer, pathShadowLayer } from './layers';
-import { createSvgElement } from './svg';
-import { gridCellSize } from './grid';
+import { createSvgElement, gridCellSize } from './svg';
 
 /**
  * Yurts each need to have...
@@ -199,13 +198,13 @@ export const drawPaths = ({ fadeout, noShadow }) => {
       if (!newPathsData.find((newPathData2) => oldPathData.d === newPathData2.d)) {
         if (oldPathData.path) {
           // if (changedPaths.includes(oldPathData.path)) {
-            if (fadeout && oldPathData.path && oldPathData.path.points[0].fixed) {
-              setInterval(() => {
-                oldPathData.svgElement.remove();
-              }, 500);
-            } else {
+          if (fadeout && oldPathData.path && oldPathData.path.points[0].fixed) {
+            setInterval(() => {
               oldPathData.svgElement.remove();
-            }
+            }, 500);
+          } else {
+            oldPathData.svgElement.remove();
+          }
           // }
         }
       }
@@ -251,7 +250,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
 
           // After transition complete, we don't need the shadow anymore
           setTimeout(() => {
-            newPathData.svgElementShadow?.remove()
+            newPathData.svgElementShadow?.remove();
             newPathData.svgElement.style.willChange = '';
           }, 500);
         }

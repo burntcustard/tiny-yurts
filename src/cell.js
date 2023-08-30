@@ -1,5 +1,6 @@
-import { svgElement, gridWidth, boardWidth, boardOffsetX, boardOffsetY } from './svg';
-import { gridRect, gridCellSize } from './grid';
+import {
+  boardWidth, boardOffsetX, boardOffsetY, gridCellSize,
+} from './svg';
 import { gridPointerLayer } from './layers';
 
 export const getGridCell = (x, y) => {
@@ -9,8 +10,8 @@ export const getGridCell = (x, y) => {
   return {
     x: Math.floor(x / cellSizePx),
     y: Math.floor(y / cellSizePx),
-  }
-}
+  };
+};
 
 export const getBoardCell = (x, y) => {
   const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;
@@ -19,8 +20,8 @@ export const getBoardCell = (x, y) => {
   return {
     x: boardOffsetX + Math.floor(x / cellSizePx),
     y: boardOffsetY + Math.floor(y / cellSizePx),
-  }
-}
+  };
+};
 
 export const svgPxToDisplayPx = (x, y) => {
   const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;
@@ -29,7 +30,7 @@ export const svgPxToDisplayPx = (x, y) => {
     x: (boardOffsetX + x) * cellSizePx,
     y: (boardOffsetY + y) * cellSizePx,
   };
-}
+};
 
 export const pointerPxToSvgPx = (x, y) => {
   const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;
@@ -54,12 +55,12 @@ export const isPastHalfwayInto = ({ pointer, from, to }) => {
   const xMid = to.x === from.x;
   const yMid = to.y === from.y;
 
-  if (   top && xMid ) return          yDiff < -cellSizePx + fuzzyness;
-  if (   top && right) return xDiff -  yDiff >  cellSizePx * 2 - fuzzyness;
-  if (  yMid && right) return xDiff          >  cellSizePx - fuzzyness;
-  if (bottom && right) return xDiff +  yDiff >  cellSizePx * 2 - fuzzyness;
-  if (bottom && xMid ) return          yDiff >  cellSizePx - fuzzyness;
-  if (bottom && left ) return xDiff + -yDiff < -cellSizePx * 2 + fuzzyness;
-  if (  yMid && left ) return xDiff          < -cellSizePx + fuzzyness;
-  if (   top && left ) return xDiff +  yDiff < -cellSizePx * 2 + fuzzyness;
-}
+  if (top && xMid) return yDiff < -cellSizePx + fuzzyness;
+  if (top && right) return xDiff - yDiff > cellSizePx * 2 - fuzzyness;
+  if (yMid && right) return xDiff > cellSizePx - fuzzyness;
+  if (bottom && right) return xDiff + yDiff > cellSizePx * 2 - fuzzyness;
+  if (bottom && xMid) return yDiff > cellSizePx - fuzzyness;
+  if (bottom && left) return xDiff + -yDiff < -cellSizePx * 2 + fuzzyness;
+  if (yMid && left) return xDiff < -cellSizePx + fuzzyness;
+  if (top && left) return xDiff + yDiff < -cellSizePx * 2 + fuzzyness;
+};

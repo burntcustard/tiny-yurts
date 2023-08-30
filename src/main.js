@@ -1,10 +1,12 @@
-import { init, initKeys, keyMap, onKey, offKey, GameLoop, keyPressed } from 'kontra';
-import { svgElement, gridSvgWidth, gridSvgHeight, gridWidth, gridHeight, boardOffsetX, boardOffsetY } from './svg';
-import { gridCellSize } from './grid';
-import { Yurt } from './yurt';
+import {
+  init, initKeys, onKey, offKey, GameLoop, keyPressed,
+} from 'kontra';
+import {
+  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY,
+} from './svg';
 import { initPointer } from './pointer';
-import { OxFarm, oxFarms } from './ox-farm';
-import { GoatFarm, goatFarms } from './goat-farm';
+import { oxFarms } from './ox-farm';
+import { goatFarms } from './goat-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import { initUi } from './ui';
@@ -41,10 +43,10 @@ const loop = GameLoop({
       case 0:
         break;
       case 1:
-        oxFarms.forEach(farm => farm.update());
+        oxFarms.forEach((farm) => farm.update());
         break;
       case 2:
-        goatFarms.forEach(farm => farm.update());
+        goatFarms.forEach((farm) => farm.update());
         break;
       case 3:
         break;
@@ -52,7 +54,7 @@ const loop = GameLoop({
 
     if (updateCount >= 60) updateCount = 0;
 
-    farms.forEach(f => {
+    farms.forEach((f) => {
       if (!f.isAlive) {
         loop.stop();
         const farmPxPosition = svgPxToDisplayPx(
@@ -69,7 +71,7 @@ const loop = GameLoop({
       }
     });
 
-    people.forEach(p => p.update());
+    people.forEach((p) => p.update());
   },
   render() {
     renderCount++;
@@ -82,21 +84,21 @@ const loop = GameLoop({
         // pathTilesCountElement.style.borderColor = inventory.paths && inventory.paths > 0 ? '' : 'red';
         break;
       case 1:
-        oxFarms.forEach(farm => farm.render());
+        oxFarms.forEach((farm) => farm.render());
         break;
       case 2:
-        goatFarms.forEach(farm => farm.render());
+        goatFarms.forEach((farm) => farm.render());
         break;
       case 3:
         break;
     }
     if (renderCount >= 60) renderCount = 0;
 
-    people.forEach(p => p.render());
+    people.forEach((p) => p.render());
   },
 });
 
-onKey('space', (e) => {
+onKey('space', () => {
   if (loop.isStopped) {
     loop.start();
   } else {

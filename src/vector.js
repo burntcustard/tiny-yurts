@@ -1,4 +1,4 @@
-import { Vector } from "kontra";
+import { Vector } from 'kontra';
 
 /**
  * Extra vector maths, to work alongside the Vector Kontra.js object

@@ -1,7 +1,9 @@
 import { Structure } from './structure';
-import { createSvgElement } from './svg';
-import { gridBlockLayer, fenceLayer, fenceShadowLayer, pinLayer } from './layers';
-import { gridCellSize, gridLineThickness } from './grid';
+import { createSvgElement, gridCellSize } from './svg';
+import {
+  gridBlockLayer, fenceLayer, fenceShadowLayer, pinLayer,
+} from './layers';
+import { gridLineThickness } from './grid';
 import { Path, drawPaths } from './path';
 import { colors } from './colors';
 import { people } from './person';
@@ -40,7 +42,7 @@ export class Farm extends Structure {
           },
           {
             x: this.x + relativePathPoints?.[1]?.x,
-            y: this.y + relativePathPoints?.[1]?.y
+            y: this.y + relativePathPoints?.[1]?.y,
           },
         ],
       });
@@ -58,15 +60,15 @@ export class Farm extends Structure {
   }
 
   assignWarn() {
-    const adults = this.children.filter(c => !c.isBaby);
-    const notWarnedAnimals = adults.filter(c => !c.hasWarn);
-    const warnedAnimals = adults.filter(c => c.hasWarn);
+    const adults = this.children.filter((c) => !c.isBaby);
+    const notWarnedAnimals = adults.filter((c) => !c.hasWarn);
+    const warnedAnimals = adults.filter((c) => c.hasWarn);
 
     if (this.hasWarn) {
       if (this.numIssues <= adults.length) {
         this.hideWarn();
       } else {
-        this.children.forEach(c => c.hideWarn());
+        this.children.forEach((c) => c.hideWarn());
       }
     } else {
       this.toggleWarn(this.numIssues > adults.length);
@@ -112,7 +114,7 @@ export class Farm extends Structure {
         const thisPersonsRoute = findRoute({
           from: {
             x: atHomePeopleOfSameType[i].parent.x,
-            y: atHomePeopleOfSameType[i].parent.y
+            y: atHomePeopleOfSameType[i].parent.y,
           },
           to: this.points,
         });
@@ -145,7 +147,7 @@ export class Farm extends Structure {
   }
 
   render() {
-    this.children.forEach(animal => animal.render());
+    this.children.forEach((animal) => animal.render());
   }
 
   addToSvg() {
@@ -281,7 +283,7 @@ export class Farm extends Structure {
 
   updateWarn() {
     const fullCircle = 12.56; // Math.PI * 4ish
-    const adults = this.children.filter(c => !c.isBaby);
+    const adults = this.children.filter((c) => !c.isBaby);
     const maxOverflow = adults.length * 2;
     const numOverflowIssues = this.numIssues - adults.length;
     const dashoffset = fullCircle - (fullCircle / maxOverflow * numOverflowIssues);
