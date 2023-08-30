@@ -4,11 +4,12 @@ import { paths } from './path';
 import { OxFarm } from './ox-farm';
 import { GoatFarm, goatFarms } from './goat-farm';
 import { boardOffsetX, boardOffsetY, boardWidth, boardHeight } from './svg';
+import { weightedRandom } from './weighted-random';
 
 // Figure out what to spawn depending on totalUpdates & current score
 
 const farmTypes = ['ox', 'goat']; // TODO: fish, crops, horses(?)
-const currentFarmTypes = [];
+const spawningLoopLength = 3000;
 
 export const getRandomPosition = ({
   width = 1,
@@ -126,9 +127,29 @@ const getRandomNewType = () => farms.length < farmTypes.length
   ? farmTypes[farms.length]
   : farmTypes.at(Math.random() * farmTypes.length);
 
-const getRandomExistingType = () => farms.length > 2
-  ? farms.at(Math.random() * farms.lenth).type
-  : farmTypes[farms.length - 1];
+const getRandomExistingType = () => {
+  if (farms.length < farmTypes.length) {
+    return farmTypes[farms.length - 1];
+  }
+
+  let yurtTypeCounts = {};
+  yurts.forEach(yurt => {
+    yurtTypeCounts[yurt.type] = yurtTypeCounts[yurt.type] ? yurtTypeCounts[yurt.type] + 1 : 1; // If undefined, is false so 0
+  });
+
+
+  let farmTypeCounts = {};
+  farms.forEach(farm => {
+    farmTypeCounts[farm.type] = farmTypeCounts[farm.type] ? farmTypeCounts[farm.type] + 1 : 1; // If undefined, is false so 0
+  });
+
+  const weights = [];
+  Object.keys(farmTypeCounts).forEach(type => {
+    weights.push(farmTypeCounts[type] / yurtTypeCounts[type]);
+  });
+
+  return Object.keys(farmTypeCounts)[weightedRandom(weights)];
+}
 
 const getRandomYurtProps = () => {
   // Which way is the yurt facing (randomly up/down/left/right to start)
@@ -155,48 +176,53 @@ const getRandomYurtProps = () => {
 let updateRandomness1 = 0;
 let updateRandomness2 = 0;
 let updateRandomness3 = 0;
+let updateRandomness4 = 0;
+let updateRandomness5 = 0;
 
 export const spawnNewObjects = (updateCount) => {
-  if (updateCount % 3500 === 0) {
+  let upgradedThisLoop = false;
+
+  if (updateCount % spawningLoopLength === 0) {
     updateRandomness1 = Math.floor(Math.random() * 200);
     updateRandomness2 = Math.floor(Math.random() * 200);
     updateRandomness3 = Math.floor(Math.random() * 200);
+    updateRandomness4 = Math.floor(Math.random() * 200);
+    updateRandomness5 = Math.floor(Math.random() * 200);
   }
   // console.log(updateCount);
 
   // Spawn the first farm, early on, near the center
-  if (updateCount % 3500 === 100 + updateRandomness1) {
+  if (updateCount % spawningLoopLength === 100 + (farms.length ? updateRandomness1 : 0)) {
     const { width, height, relativePathPoints } = getRandomFarmProps();
+    const type = getRandomNewType();
 
     const randomPosition = getRandomPosition({
       width,
       height,
-      anchor: farms[farms.length - 1], // if undefined randomPosition will use default
+      anchor: farms.length > 1 // So for the 3rd farm...
+        ? yurts.filter(y => y.type === type).at(Math.random() * yurts.length)
+        : farms[farms.length - 1], // if undefined randomPosition will use default
       maxDistance: farms.length ? farms.length * 2 : 1,
       minDistance: farms.length ? 2 : 0,
-      maxNumAttempts: 12,
+      maxNumAttempts: 14,
       extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
     });
 
     // Can't find a position, so instead try to upgrade a farm instead
     if (!randomPosition) {
-      let upgraded;
-
       const shuffledFarms = farms
         .map(value => ({ value, sort: Math.random() }))
         .sort((a, b) => a.sort - b.sort)
         .map(({ value }) => value);
 
-      for (let i = 0; i < shuffledFarms.length && !upgraded; i++) {
+      for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
         if (shuffledFarms[i].upgrade()) {
-          upgraded = true;
+          upgradedThisLoop = true;
         }
       }
 
       return;
     }
-
-    const type = getRandomNewType();
 
     if (type === 'ox') {
       const newOxFarm = new OxFarm({
@@ -220,7 +246,7 @@ export const spawnNewObjects = (updateCount) => {
   }
 
   // Spawn the first yurt really soon after
-  if (updateCount % 3500 === 500 + updateRandomness2) {
+  if (updateCount % spawningLoopLength === 500 + updateRandomness2) {
     const { facing } = getRandomYurtProps();
     const farm = farms.length > 2
       ? farms.at(Math.random() * farms.length)
@@ -249,7 +275,7 @@ export const spawnNewObjects = (updateCount) => {
     return;
   }
 
-  if (updateCount % 3500 === 1500 + updateRandomness3) {
+  if (updateCount % spawningLoopLength === 1500 + updateRandomness3) {
     const { facing } = getRandomYurtProps();
     const type = getRandomExistingType();
     const sameTypeYurts = yurts.filter(y => y.type === type);
@@ -279,7 +305,37 @@ export const spawnNewObjects = (updateCount) => {
     return;
   }
 
-  // if (updateCount % 3500 === 2500 && yurts.length < farms.length * 2) {
+  if (updateCount % spawningLoopLength === 2000 + updateRandomness4 && upgradedThisLoop) {
+    upgradedThisLoop = false;
+
+    const shuffledFarms = farms
+      .map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+    for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
+      if (shuffledFarms[i].upgrade()) {
+        upgradedThisLoop = true;
+      }
+    }
+  }
+
+  if (updateCount % spawningLoopLength === 2500 + updateRandomness4 && upgradedThisLoop) {
+    upgradedThisLoop = false;
+
+    const shuffledFarms = farms
+      .map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+    for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
+      if (shuffledFarms[i].upgrade()) {
+        upgradedThisLoop = true;
+      }
+    }
+  }
+
+  // if (updateCount % spawningLoopLength === 2500 && yurts.length < farms.length * 2) {
   //   const { facing } = getRandomYurtProps();
   //   const farm = farms.length > 2
   //     ? farms.at(Math.random() * farms.length - 1)
@@ -334,7 +390,7 @@ export const spawnNewObjects = (updateCount) => {
   //   return;
   // }
 
-  // if (updateCount === 3500) {
+  // if (updateCount === spawningLoopLength) {
   //   const farm1 = goatFarms[0];
   //   const randomPosition = getRandomPosition({
   //     anchor: {
@@ -353,7 +409,7 @@ export const spawnNewObjects = (updateCount) => {
   //   return;
   // }
 
-  // if (updateCount === 3500) {
+  // if (updateCount === spawningLoopLength) {
   //   const farm1 = goatFarms[0];
   //   const randomPosition = getRandomPosition({
   //     anchor: {
@@ -372,7 +428,7 @@ export const spawnNewObjects = (updateCount) => {
   //   return;
   // }
 
-  // if (updateCount > 3500 && updateCount % 1250 === 0) {
+  // if (updateCount > spawningLoopLength && updateCount % 1250 === 0) {
   //   const { width, height, relativePathPoints } = getRandomFarmProps();
 
   //   const randomPosition = getRandomPosition({
@@ -401,7 +457,7 @@ export const spawnNewObjects = (updateCount) => {
   //   return;
   // }
 
-  // if (updateCount > 3500 && (updateCount % 1500 === 0 || updateCount % 1750 === 0)) {
+  // if (updateCount > spawningLoopLength && (updateCount % 1500 === 0 || updateCount % 1750 === 0)) {
   //   const randomPosition = getRandomPosition({});
   //   const newYurt = new Yurt({
   //     x: randomPosition.x,

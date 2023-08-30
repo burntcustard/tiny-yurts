@@ -105,7 +105,6 @@ export class Animal extends GameObjectClass {
   }
 
   showWarn() {
-    if (this.hasWarn) return;
     this.hasWarn = true;
     this.warnSvg.style.opacity = 1;
     this.loveSvg.style.opacity = 0;
@@ -113,10 +112,10 @@ export class Animal extends GameObjectClass {
   }
 
   hideWarn() {
-    if (!this.hasWarn) return;
     this.hasWarn = false;
-    this.warnSvg.style.opacity = 0;
+    this.loveSvg.style.opacity = this.hasLove ? 1 : 0;
     this.pinSvg.style.opacity = this.hasLove ? 1 : 0;
+    this.warnSvg.style.opacity = 0;
   }
 
   toggleWarn(toggle) {

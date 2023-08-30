@@ -149,8 +149,8 @@ export class Farm extends Structure {
   }
 
   addToSvg() {
-    const x = this.x * gridCellSize + fenceLineThickness / 2;
-    const y = this.y * gridCellSize + fenceLineThickness / 2;
+    const x = this.x * gridCellSize + fenceLineThickness / 2 + gridLineThickness / 2;
+    const y = this.y * gridCellSize + fenceLineThickness / 2 + gridLineThickness / 2;
     const svgWidth = gridCellSize * this.width - fenceLineThickness - gridLineThickness;
     const svgHeight = gridCellSize * this.height - fenceLineThickness - gridLineThickness;
 
@@ -208,11 +208,11 @@ export class Farm extends Structure {
     this.pinSvg.style.transform = `scale(0) translate(${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px)`;
     pinLayer.appendChild(this.pinSvg);
 
-    const pinBubble = createSvgElement('path');
-    pinBubble.setAttribute('fill', '#fff');
-    pinBubble.setAttribute('d', 'm6 6-2-2a3 3 0 1 1 4 0Z');
-    pinBubble.setAttribute('transform', 'translate(-9 -9) scale(1.5)');
-    this.pinSvg.appendChild(pinBubble);
+    this.pinBubble = createSvgElement('path');
+    this.pinBubble.setAttribute('fill', '#fff');
+    this.pinBubble.setAttribute('d', 'm6 6-2-2a3 3 0 1 1 4 0Z');
+    this.pinBubble.setAttribute('transform', 'translate(-9 -9) scale(1.5)');
+    this.pinSvg.appendChild(this.pinBubble);
 
     this.warnCircleBg = createSvgElement('circle');
     this.warnCircleBg.setAttribute('fill', 'none');
@@ -252,6 +252,7 @@ export class Farm extends Structure {
     this.warnCircle.style.transition = 'stroke-dashoffset.4s.8s';
     this.pinSvg.style.transform = `translate(${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px) scale(1)`;
     this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1)';
+
     setTimeout(() => {
       this.warnCircle.style.transition = 'stroke-dashoffset.4s';
     }, 1000);
@@ -286,6 +287,20 @@ export class Farm extends Structure {
     const dashoffset = fullCircle - (fullCircle / maxOverflow * numOverflowIssues);
 
     this.warnCircle.setAttribute('stroke-dashoffset', dashoffset);
+
+    if (this.prevNumOverflowIssues < numOverflowIssues) {
+      const x = this.x * gridCellSize + fenceLineThickness / 2;
+      const y = this.y * gridCellSize + fenceLineThickness / 2;
+      const svgWidth = gridCellSize * this.width - fenceLineThickness - gridLineThickness;
+      const svgHeight = gridCellSize * this.height - fenceLineThickness - gridLineThickness;
+      this.pinSvg.style.transform = `translate(${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px) scale(1.2)`;
+
+      setTimeout(() => {
+        this.pinSvg.style.transform = `translate(${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px) scale(1)`;
+      }, 200);
+    }
+
+    this.prevNumOverflowIssues = numOverflowIssues;
 
     if (numOverflowIssues === maxOverflow) {
       this.isAlive = false;

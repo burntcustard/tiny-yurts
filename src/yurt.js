@@ -3,7 +3,7 @@ import { Structure } from './structure';
 import {
   baseLayer, yurtDecorationLayers, yurtLayer, yurtAndPersonShadowLayer,
 } from './layers';
-import { gridCellSize } from './grid';
+import { gridCellSize, gridLineThickness } from './grid';
 import { Path, drawPaths, pathsData } from './path';
 import { colors } from './colors';
 import { Person } from './person';
