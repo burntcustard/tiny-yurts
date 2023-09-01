@@ -2,6 +2,8 @@ import { emojiGoat } from './goat-emoji';
 import { emojiOx } from './ox-emoji';
 import { goats } from './goat';
 import { oxen } from './ox';
+import { animals } from './animal';
+import { yurts } from './yurt';
 import { colors } from './colors';
 
 const gameoverWrapper = document.createElement('div');
@@ -41,7 +43,7 @@ export const initGameover = () => {
   restartButton.style.cssText = menuButton.style.cssText = 'margin-top:48px;padding:0 20px;font-size:32px;height:56px;border-radius:48px;background:#fff;width:unset;aspect-ratio:unset';
   menuButton.style.marginTop = '16px';
   restartButton.innerText = 'Restart';
-  menuButton.innerText = 'Main menu';
+  menuButton.innerText = 'Menu';
   gameoverButtons.append(restartButton, menuButton);
 
   gameoverWrapper.append(gameoverHeader, gameoverText1, gameoverText2, gameoverText3, gameoverButtons);
@@ -61,18 +63,16 @@ export const showGameover = () => {
   oxEmojiWrapper.append(oxEmoji, `×${oxen.length}`);
 
   const goatEmojiWrapper = document.createElement('div');
-  goatEmojiWrapper.style.cssText = `display:inline-flex;padding:4px 10px;background:${colors.ui};color:#fff;border-radius:24px;opacity:0;transition:opacity 1s 7s;`;
+  goatEmojiWrapper.style.cssText = `display:inline-flex;padding:4px 10px;background:${colors.ui};color:#fff;border-radius:24px;opacity:0;transition:opacity 1s 6.5s;`;
   const goatEmoji = emojiGoat();
   goatEmoji.style.width = '24px';
   goatEmoji.style.height = '24px';
   goatEmoji.style.transform = 'translate(0, 2px)';
   goatEmojiWrapper.append(goatEmoji, `×${goats.length}`);
 
-  gameoverTotal.innerText = `${oxen.length + goats.length}`;
-
   gameoverText1.append('Too few people could reach this farm in time.');
 
-  gameoverText2.append('Score: ', gameoverTotal);
+  gameoverText2.append(`${yurts.length * 2} people and ${animals.length} animals lived in your camp.`);
 
   gameoverText3.append(oxEmojiWrapper, ' ' , goatEmojiWrapper);
 

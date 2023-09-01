@@ -3,6 +3,7 @@ import { gridCellSize } from './svg';
 import { createSvgElement } from './svg-utils';
 import { pinLayer } from './layers';
 
+export const animals = [];
 const padding = 3;
 
 const getRandom = (range) => padding + (Math.random() * (range * gridCellSize - padding * 2));
@@ -55,6 +56,8 @@ export class Animal extends GameObjectClass {
     this.loveSvg.setAttribute('transform', 'scale(.3) translate(-6 -13)');
     this.loveSvg.style.opacity = 0;
     this.pinSvg.appendChild(this.loveSvg);
+
+    animals.push(this);
   }
 
   render() {
