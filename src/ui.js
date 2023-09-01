@@ -106,11 +106,17 @@ export const initUi = () => {
   header.append(counters);
 
   oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
-  oxCounterWrapper.append(emojiOx, oxCounter);
+  const oxCounterEmoji = emojiOx();
+  oxCounterEmoji.style.width = '48px';
+  oxCounterEmoji.style.height = '48px';
+  oxCounterWrapper.append(oxCounterEmoji, oxCounter);
   counters.append(oxCounterWrapper);
 
   goatCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
-  goatCounterWrapper.append(emojiGoat, goatCounter);
+  const goatCounterEmoji = emojiGoat();
+  goatCounterEmoji.style.width = '48px';
+  goatCounterEmoji.style.height = '48px';
+  goatCounterWrapper.append(goatCounterEmoji, goatCounter);
   counters.append(goatCounterWrapper);
 
   const timeButton = document.createElement('button');
@@ -176,23 +182,6 @@ export const initUi = () => {
   buildBar.append(pathTilesButton);
   uiContainer.append(header, buildBar);
 
-  // TODO: Move to different file?
-  const gameoverScreen = document.createElement('div');
-  gameoverScreen.style.cssText = 'position:absolute;inset:0;padding:10dvw;display:grid;align-content:center';
-  gameoverScreen.style.pointerEvents = 'none';
-  gameoverScreen.style.background = '#fff0';
-  gameoverScreen.style.backdropFilter = 'blur(0)';
-  gameoverScreen.style.opacity = 0;
-  gameoverScreen.style.transition = 'background 2s 1s, backdrop-filter 2s 1s, opacity 2s 1s';
-
-  const gameoverScreenHeader = document.createElement('h1');
-  gameoverScreenHeader.innerText = 'Game Over';
-  const gameoverScreenText = document.createElement('p');
-  gameoverScreenText.innerText = 'You scored ... ???';
-  gameoverScreen.append(gameoverScreenHeader, gameoverScreenText);
-
-  document.body.append(gameoverScreen);
-
   return {
     pathTilesCountElement,
     timeButtonHand,
@@ -200,6 +189,5 @@ export const initUi = () => {
     oxCounterWrapper,
     goatCounter,
     goatCounterWrapper,
-    gameoverScreen,
   };
 };

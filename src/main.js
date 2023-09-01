@@ -14,12 +14,14 @@ import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
 import { spawnNewObjects } from './spawning';
 import { demoColors } from './demo-colors';
+import { initGameover, showGameover } from './gameover';
 
 let updateCount = 0;
 let renderCount = 0;
 let totalUpdateCount = 0;
 
-const { pathTilesCountElement, timeButtonHand, gameoverScreen } = initUi();
+const { pathTilesCountElement, timeButtonHand, gameoverScreen, gameoverScreenBackground, gameoverScreenHeader, gameoverScreenText } = initUi();
+initGameover();
 init(null, { contextless: true });
 initKeys();
 initPointer();
@@ -65,10 +67,7 @@ const loop = GameLoop({
         svgElement.style.transition = 'transform 2s ease-out .5s';
         svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
 
-        gameoverScreen.style.backdropFilter = 'blur(8px)';
-        gameoverScreen.style.background = '#fffb';
-        gameoverScreen.style.opacity = 0.9;
-        // TODO: White over the top fuzzy screen with restart button
+        showGameover();
       }
     });
 

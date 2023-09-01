@@ -196,12 +196,13 @@ export class Farm extends Structure {
     }, 1000);
 
     this.pinSvg = createSvgElement('g');
+    this.pinSvg.translate = `${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px`;
     this.pinSvg.style.willChange = 'opacity, transform';
     this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1)';
     this.pinSvg.style.transformOrigin = 'bottom';
     this.pinSvg.style.transformBox = 'fill-box';
     this.pinSvg.style.opacity = 0;
-    this.pinSvg.style.transform = `scale(0) translate(${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px)`;
+    this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(0)`;
     pinLayer.appendChild(this.pinSvg);
 
     this.pinBubble = createSvgElement('path');
@@ -238,15 +239,10 @@ export class Farm extends Structure {
   }
 
   showWarn() {
-    const x = this.x * gridCellSize + fenceLineThickness / 2;
-    const y = this.y * gridCellSize + fenceLineThickness / 2;
-    const svgWidth = gridCellSize * this.width - fenceLineThickness - gridLineThickness;
-    const svgHeight = gridCellSize * this.height - fenceLineThickness - gridLineThickness;
-
     this.hasWarn = true;
     this.pinSvg.style.opacity = 1;
     this.warnCircle.style.transition = 'stroke-dashoffset.4s.8s';
-    this.pinSvg.style.transform = `translate(${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px) scale(1)`;
+    this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(1)`;
     this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1)';
 
     setTimeout(() => {
@@ -255,15 +251,10 @@ export class Farm extends Structure {
   }
 
   hideWarn() {
-    const x = this.x * gridCellSize + fenceLineThickness / 2;
-    const y = this.y * gridCellSize + fenceLineThickness / 2;
-    const svgWidth = gridCellSize * this.width - fenceLineThickness - gridLineThickness;
-    const svgHeight = gridCellSize * this.height - fenceLineThickness - gridLineThickness;
-
     this.hasWarn = false;
     this.pinSvg.style.opacity = 0;
     this.warnCircle.style.transition = 'stroke-dashoffset.3s';
-    this.pinSvg.style.transform = `translate(${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px) scale(0)`;
+    this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(0)`;
     this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1) .4s';
   }
 
@@ -285,14 +276,10 @@ export class Farm extends Structure {
     this.warnCircle.setAttribute('stroke-dashoffset', dashoffset);
 
     if (this.prevNumOverflowIssues < numOverflowIssues) {
-      const x = this.x * gridCellSize + fenceLineThickness / 2;
-      const y = this.y * gridCellSize + fenceLineThickness / 2;
-      const svgWidth = gridCellSize * this.width - fenceLineThickness - gridLineThickness;
-      const svgHeight = gridCellSize * this.height - fenceLineThickness - gridLineThickness;
-      this.pinSvg.style.transform = `translate(${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px) scale(1.2)`;
+      this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(1.2)`;
 
       setTimeout(() => {
-        this.pinSvg.style.transform = `translate(${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px) scale(1)`;
+        this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(1)`;
       }, 200);
     }
 

@@ -162,7 +162,13 @@ const getRandomExistingType = () => {
     weights.push(farmTypeCounts[type] / yurtTypeCounts[type]);
   });
 
-  return Object.keys(farmTypeCounts)[weightedRandom(weights)];
+  console.log('Spawning new yurt with type weighting of:');
+  console.log(weights);
+
+  const newType = Object.keys(farmTypeCounts)[weightedRandom(weights)]
+  console.log('Type chosen:', newType);
+
+  return newType;
 };
 
 const getRandomYurtProps = () => {
