@@ -14,14 +14,43 @@ import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
 import { spawnNewObjects } from './spawning';
 import { demoColors } from './demo-colors';
-import { initGameover, showGameover } from './gameover';
+import { initGameover, showGameover, hideGameover } from './gameover';
+import { animals } from './animal';
+import { oxen } from './ox';
+import { goats } from './goat';
+import { yurts } from './yurt';
+import { paths } from './path';
+import { clearLayers } from './layers';
 
 let updateCount = 0;
 let renderCount = 0;
 let totalUpdateCount = 0;
 
-const { pathTilesCountElement, timeButtonHand, gameoverScreen, gameoverScreenBackground, gameoverScreenHeader, gameoverScreenText } = initUi();
-initGameover();
+const startNewGame = () => {
+  goatFarms.length = 0;
+  oxFarms.length = 0;
+  people.length = 0;
+  farms.length = 0;
+  animals.length = 0;
+  oxen.length = 0;
+  goats.length = 0;
+  yurts.length = 0;
+  paths.length = 0;
+  updateCount = 0;
+  renderCount = 0;
+  totalUpdateCount = 0;
+  clearLayers();
+  hideGameover();
+  svgElement.style.transform = '';
+  inventory.paths = 16;
+
+  setTimeout(() => {
+    loop.start();
+  }, 2000);
+}
+
+const { pathTilesCountElement, timeButtonHand } = initUi();
+initGameover(startNewGame);
 init(null, { contextless: true });
 initKeys();
 initPointer();
@@ -36,8 +65,6 @@ const loop = GameLoop({
     spawnNewObjects(totalUpdateCount);
 
     timeButtonHand.style.transform = `rotate(${totalUpdateCount}deg)`;
-
-    // if (totalUpdateCount > 200) return;
 
     // Some things happen 15 times/s instead of 60.
     // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
@@ -67,7 +94,7 @@ const loop = GameLoop({
         svgElement.style.transition = 'transform 2s ease-out .5s';
         svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
 
-        showGameover();
+        showGameover(startNewGame);
       }
     });
 

@@ -44,7 +44,6 @@ export const initUi = () => {
       font-weight: 700;
       font-family: system-ui;
       font-size: 14px;
-      pointer-events: all;
     }
     button > div {
       display: grid;

@@ -154,3 +154,18 @@ export const {
   yurtAndPersonShadowLayer,
   yurtLayer,
 } = layers;
+
+export const clearLayers = () => {
+  animalLayer.innerHTML = '';
+  animalShadowLayer.innerHTML = '';
+  baseLayer.innerHTML = '';
+  fenceLayer.innerHTML = '';
+  fenceShadowLayer.innerHTML = '';
+  gridBlockLayer.innerHTML = '';
+  pathLayer.innerHTML = '';
+  pathShadowLayer.innerHTML = '';
+  personLayer.innerHTML = '';
+  pinLayer.innerHTML = '';
+  yurtAndPersonShadowLayer.innerHTML = '';
+  yurtLayer.innerHTML = '';
+};

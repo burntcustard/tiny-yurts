@@ -92,8 +92,10 @@ export class Yurt extends Structure {
 
     // this.startPath.points[1] = { x: this.x, y: this.y };
     // console.log(this.startPath.points[1]);
-    this.oldStartPath = this.startPath;
-    this.oldStartPath.noConnect = true;
+    if (this.startPath) {
+      this.oldStartPath = this.startPath;
+      this.oldStartPath.noConnect = true;
+    }
 
     // Add the new path
     this.startPath = new Path({

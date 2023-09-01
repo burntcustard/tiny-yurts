@@ -14,8 +14,12 @@ const gameoverText2 = document.createElement('div');
 const gameoverText3 = document.createElement('div');
 const gameoverTotal = document.createElement('span');
 const gameoverButtons = document.createElement('div');
+const oxEmojiWrapper = document.createElement('div');
+const oxEmoji = emojiOx();
+const goatEmojiWrapper = document.createElement('div');
+const goatEmoji = emojiGoat();
 
-export const initGameover = () => {
+export const initGameover = (startNewGame) => {
   gameoverWrapper.style.cssText = 'position:absolute;inset:0;padding:10dvw;pointer-events:none;opacity:0;transition:opacity 2s';
 
   // This has to be a sibling element, behind the gameoverScreen, not a child of it,
@@ -28,10 +32,20 @@ export const initGameover = () => {
   gameoverHeader.innerText = 'Game Over';
 
   gameoverText1.style.cssText = 'margin-top:48px;font-size:24px;opacity:0;transition:opacity 1s 3s;';
+  gameoverText1.innerText = 'Too few people could tend to this farm in time.';
 
   gameoverText2.style.cssText = 'margin-top:16px;font-size:24px;opacity:0;transition:opacity 1s 4s;';
 
-  gameoverText3.style.cssText = 'margin-top:16px;font-size:24px;opacity:0;transition:opacity 1s 6s;';
+  // 24px margin-top counteracts the underline in gameoverText2
+  gameoverText3.style.cssText = 'margin-top:24px;font-size:24px;opacity:0;transition:opacity 1s 6s;';
+
+  oxEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 10px;line-height:24px;color:#fff;border-radius:24px;opacity:0;transition:opacity 1s 6s;background:${colors.ui}`;
+  oxEmoji.style.width = '24px';
+  oxEmoji.style.height = '24px';
+
+  goatEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 10px;line-height:24px;color:#fff;border-radius:24px;opacity:0;transition:opacity 1s 6.5s;background:${colors.ui}`;
+  goatEmoji.style.width = '24px';
+  goatEmoji.style.height = '24px';
 
   gameoverTotal.style.cssText = 'font-size:32px;opacity:0;transition:opacity 1s 5s';
 
@@ -44,6 +58,9 @@ export const initGameover = () => {
   menuButton.style.marginTop = '16px';
   restartButton.innerText = 'Restart';
   menuButton.innerText = 'Menu';
+  restartButton.addEventListener('click', () => {
+    startNewGame();
+  });
   gameoverButtons.append(restartButton, menuButton);
 
   gameoverWrapper.append(gameoverHeader, gameoverText1, gameoverText2, gameoverText3, gameoverButtons);
@@ -52,28 +69,21 @@ export const initGameover = () => {
 }
 
 export const showGameover = () => {
-  gameoverBackground.style.willChange = 'backdrop-filter, opacity, background';
-
-  const oxEmojiWrapper = document.createElement('div');
-  oxEmojiWrapper.style.cssText = `display:inline-flex;padding:4px 10px;background:${colors.ui};color:#fff;border-radius:24px;opacity:0;transition:opacity 1s 6s;`;
-  const oxEmoji = emojiOx();
-  oxEmoji.style.width = '24px';
-  oxEmoji.style.height = '24px';
-  oxEmoji.style.transform = 'translate(0, 2px)';
+  oxEmojiWrapper.innerHTML = '';
   oxEmojiWrapper.append(oxEmoji, `×${oxen.length}`);
-
-  const goatEmojiWrapper = document.createElement('div');
-  goatEmojiWrapper.style.cssText = `display:inline-flex;padding:4px 10px;background:${colors.ui};color:#fff;border-radius:24px;opacity:0;transition:opacity 1s 6.5s;`;
-  const goatEmoji = emojiGoat();
-  goatEmoji.style.width = '24px';
-  goatEmoji.style.height = '24px';
-  goatEmoji.style.transform = 'translate(0, 2px)';
+  goatEmojiWrapper.innerHTML = '';
   goatEmojiWrapper.append(goatEmoji, `×${goats.length}`);
 
-  gameoverText1.append('Too few people could reach this farm in time.');
+  const peopleCount = document.createElement('u');
+  peopleCount.innerText = `${yurts.length * 2} settlers`;
 
-  gameoverText2.append(`${yurts.length * 2} people and ${animals.length} animals lived in your camp.`);
+  const animalsCount = document.createElement('u');
+  animalsCount.innerText = `${animals.length} animals`;
 
+  gameoverText2.innerHTML = '';
+  gameoverText2.append(peopleCount, ' and ', animalsCount, ' lived in your camp.');
+
+  gameoverText3.innerHTML = '';
   gameoverText3.append(oxEmojiWrapper, ' ' , goatEmojiWrapper);
 
   setTimeout(() => {
@@ -91,4 +101,22 @@ export const showGameover = () => {
     gameoverTotal.style.opacity = 1;
     gameoverButtons.style.opacity = 1;
   });
-}
+};
+
+export const hideGameover = () => {
+  setTimeout(() => {
+    gameoverWrapper.style.pointerEvents = 'none';
+    gameoverWrapper.style.opacity = 0;
+    gameoverBackground.style.backdropFilter = 'blur(0)';
+    gameoverBackground.style.background = '#fff0';
+    gameoverBackground.style.opacity = 0;
+    gameoverHeader.style.opacity = 0;
+    gameoverText1.style.opacity = 0;
+    gameoverText2.style.opacity = 0;
+    gameoverText3.style.opacity = 0;
+    oxEmojiWrapper.style.opacity = 0;
+    goatEmojiWrapper.style.opacity = 0;
+    gameoverTotal.style.opacity = 0;
+    gameoverButtons.style.opacity = 0;
+  });
+};
