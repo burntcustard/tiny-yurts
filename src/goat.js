@@ -70,11 +70,13 @@ export class Goat extends Animal {
     }, 1500);
   }
 
-  update() {
+  update(gameStarted) {
     this.advance();
 
-    if (this.isBaby) {
-      this.isBaby--;
+    if (gameStarted) {
+      if (this.isBaby) {
+        this.isBaby--;
+      }
     }
 
     // Maybe pick a new target location

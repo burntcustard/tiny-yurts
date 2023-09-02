@@ -2,7 +2,7 @@ import {
   init, initKeys, onKey, GameLoop,
 } from 'kontra';
 import {
-  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY,
+  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY, boardSvgWidth
 } from './svg';
 import { initPointer } from './pointer';
 import { oxFarms } from './ox-farm';
@@ -21,50 +21,104 @@ import { goats } from './goat';
 import { yurts } from './yurt';
 import { paths } from './path';
 import { clearLayers } from './layers';
+import { initMenu, showMenu, hideMenu } from './menu';
 
 let updateCount = 0;
 let renderCount = 0;
 let totalUpdateCount = 0;
 
 const startNewGame = () => {
-  goatFarms.length = 0;
-  oxFarms.length = 0;
-  people.length = 0;
-  farms.length = 0;
-  animals.length = 0;
-  oxen.length = 0;
-  goats.length = 0;
-  yurts.length = 0;
-  paths.length = 0;
-  updateCount = 0;
-  renderCount = 0;
-  totalUpdateCount = 0;
-  clearLayers();
-  hideGameover();
-  svgElement.style.transform = '';
-  inventory.paths = 16;
+  svgElement.style.transition = 'transform 2s';
+  svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
 
   setTimeout(() => {
-    loop.start();
-  }, 2000);
+    goatFarms.length = 0;
+    oxFarms.length = 0;
+    people.length = 0;
+    farms.length = 0;
+    animals.length = 0;
+    oxen.length = 0;
+    goats.length = 0;
+    yurts.length = 0;
+    paths.length = 0;
+    updateCount = 0;
+    renderCount = 0;
+    totalUpdateCount = 0;
+    clearLayers();
+    hideGameover();
+    svgElement.style.transform = '';
+    inventory.paths = 16;
+
+    setTimeout(() => {
+      // spawnNewObjects(totalUpdateCount, gameStarted, 2000);
+      loop.start();
+    }, 1000);
+  }, 1000);
+}
+
+let gameStarted = false;
+
+const gameoverToMenu = () => {
+  gameStarted = false;
+  svgElement.style.transition = 'transform 2s';
+  svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
+
+  setTimeout(() => {
+    goatFarms.length = 0;
+    oxFarms.length = 0;
+    people.length = 0;
+    farms.length = 0;
+    animals.length = 0;
+    oxen.length = 0;
+    goats.length = 0;
+    yurts.length = 0;
+    paths.length = 0;
+    updateCount = 0;
+    renderCount = 0;
+    totalUpdateCount = 0;
+    clearLayers();
+    hideGameover();
+    svgElement.style.transform = '';
+    inventory.paths = 16;
+
+    setTimeout(() => {
+      spawnNewObjects(totalUpdateCount, gameStarted, 2000);
+      showMenu(farms[0], true);
+      loop.start();
+    }, 1000);
+  }, 1000);
 }
 
 const { pathTilesCountElement, timeButtonHand } = initUi();
-initGameover(startNewGame);
+initGameover(startNewGame, gameoverToMenu);
 init(null, { contextless: true });
 initKeys();
 initPointer();
 
+const startGame = () => {
+  svgElement.style.transition = 'transform 2s';
+  svgElement.style.transform = `rotate(0) scale(1) translate(0, 0)`;
+  hideMenu();
+  gameStarted = true;
+  updateCount = totalUpdateCount = 1;
+};
+
 demoColors();
+
+initMenu(startGame);
+spawnNewObjects(totalUpdateCount, 2500);
+showMenu(farms[0], true);
 
 const loop = GameLoop({
   update() {
+    if (gameStarted) {
+      spawnNewObjects(totalUpdateCount, gameStarted);
+
+      timeButtonHand.style.transform = `rotate(${totalUpdateCount}deg)`;
+    }
+
     updateCount++;
     totalUpdateCount++;
-
-    spawnNewObjects(totalUpdateCount);
-
-    timeButtonHand.style.transform = `rotate(${totalUpdateCount}deg)`;
 
     // Some things happen 15 times/s instead of 60.
     // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
@@ -73,10 +127,10 @@ const loop = GameLoop({
       case 0:
         break;
       case 1:
-        oxFarms.forEach((farm) => farm.update());
+        oxFarms.forEach((farm) => farm.update(gameStarted));
         break;
       case 2:
-        goatFarms.forEach((farm) => farm.update());
+        goatFarms.forEach((farm) => farm.update(gameStarted));
         break;
       case 3:
         break;

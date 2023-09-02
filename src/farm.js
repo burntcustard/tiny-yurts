@@ -20,6 +20,7 @@ export class Farm extends Structure {
   constructor(properties) {
     const { relativePathPoints } = properties;
     super(properties);
+    this.delay = this.delay ?? 0;
     this.demand = 0;
     this.totalUpdates = 0;
     this.circumference = this.width * gridCellSize * 2 + this.height * gridCellSize * 2;
@@ -49,10 +50,12 @@ export class Farm extends Structure {
       });
 
       drawPaths({});
-    }, 1500); // Right now this means can't stop path overlap within 1.5s of spawning
+    }, 1500 + properties.delay); // Right now this means can't stop path overlap within 1.5s of spawning
 
     farms.push(this);
-    this.addToSvg();
+    setTimeout(() => {
+      this.addToSvg();
+    }, properties.delay);
   }
 
   addAnimal(animal) {
@@ -74,7 +77,7 @@ export class Farm extends Structure {
     } else {
       this.toggleWarn(this.numIssues > adults.length);
 
-      if (this.numIssues < warnedAnimals.length) {
+      if (warnedAnimals.length && this.numIssues < warnedAnimals.length) {
         warnedAnimals[Math.floor(Math.random() * warnedAnimals.length)].hideWarn();
       }
 
@@ -84,20 +87,22 @@ export class Farm extends Structure {
     }
   }
 
-  update() {
+  update(gameStarted) {
     // Don't actually update while the farm is transitioning-in
     if (this.appearing) return;
 
-    this.numIssues = Math.floor(this.demand / this.needyness);
-    this.demand += this.children.length - 1;
+    if (gameStarted) {
+      this.numIssues = Math.floor(this.demand / this.needyness);
+      this.demand += this.children.length - 1;
 
-    if (this.hasWarn) {
-      this.updateWarn();
+      if (this.hasWarn) {
+        this.updateWarn();
+      }
+
+      this.assignWarn();
     }
 
-    this.assignWarn();
-
-    this.children.forEach((animal) => animal.update());
+    this.children.forEach((animal) => animal.update(gameStarted));
 
     for (let i = 0; i < this.numIssues; i++) {
       if (this.assignedPeople.length >= this.numIssues) return;

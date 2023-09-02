@@ -88,15 +88,17 @@ export class Ox extends Animal {
     }, 1500);
   }
 
-  update() {
+  update(gameStarted) {
     this.advance();
 
-    if (this.isBaby === 1) {
-      this.svgHorns.style.opacity = 1;
-    }
+    if (gameStarted) {
+      if (this.isBaby === 1) {
+        this.svgHorns.style.opacity = 1;
+      }
 
-    if (this.isBaby) {
-      this.isBaby--;
+      if (this.isBaby) {
+        this.isBaby--;
+      }
     }
 
     // Maybe pick a new target location

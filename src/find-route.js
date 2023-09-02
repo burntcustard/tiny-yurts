@@ -1,6 +1,8 @@
 import { paths } from './path';
 import { gridWidth, gridHeight } from './svg';
 
+// TODO: Prefer straight x/y over diagonals because they are actually shorter distance
+
 const getGridData = () => {
   // This should be cached somewhere, maybe a second after a grid piece is placed
   const gridData = [];

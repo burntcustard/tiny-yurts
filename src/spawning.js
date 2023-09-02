@@ -193,13 +193,14 @@ const getRandomYurtProps = () => {
   });
 };
 
+let firstFarmSpawned = false;
 let updateRandomness1 = 0;
 let updateRandomness2 = 0;
 let updateRandomness3 = 0;
 let updateRandomness4 = 0;
 let updateRandomness5 = 0;
 
-export const spawnNewObjects = (updateCount) => {
+export const spawnNewObjects = (updateCount, delay) => {
   let upgradedThisLoop = false;
 
   if (updateCount % spawningLoopLength === 0) {
@@ -212,7 +213,12 @@ export const spawnNewObjects = (updateCount) => {
   // console.log(updateCount);
 
   // Spawn the first farm, early on, near the center
-  if (updateCount % spawningLoopLength === 100 + (farms.length ? updateRandomness1 : 0)) {
+  if (
+    (updateCount === 0)
+    ||
+    (updateCount > 1000 && updateCount % spawningLoopLength === 0 + (farms.length ? updateRandomness1 : 0))
+  ) {
+    firstFarmSpawned = true;
     const { width, height, relativePathPoints } = getRandomFarmProps();
     const type = getRandomNewType();
 
@@ -251,6 +257,7 @@ export const spawnNewObjects = (updateCount) => {
         x: randomPosition.x,
         y: randomPosition.y,
         relativePathPoints,
+        delay,
       });
       return;
     } if (type === 'goat') {
@@ -260,6 +267,7 @@ export const spawnNewObjects = (updateCount) => {
         x: randomPosition.x,
         y: randomPosition.y,
         relativePathPoints,
+        delay, // TODO: See if having this in every new farm call saves bytes
       });
       return;
     }
@@ -300,6 +308,8 @@ export const spawnNewObjects = (updateCount) => {
     const type = getRandomExistingType();
     const sameTypeYurts = yurts.filter((y) => y.type === type);
     const friendYurt = sameTypeYurts.at(Math.random() * sameTypeYurts.length);
+
+    if (!friendYurt) return; // Silent skip if somehow 1st yurt didnt exist
 
     const randomPosition = getRandomPosition({
       anchor: {
