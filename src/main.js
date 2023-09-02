@@ -14,13 +14,14 @@ import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
 import { spawnNewObjects } from './spawning';
 import { demoColors } from './demo-colors';
-import { initGameover, showGameover, hideGameover } from './gameover';
 import { animals } from './animal';
 import { oxen } from './ox';
 import { goats } from './goat';
 import { yurts } from './yurt';
 import { paths } from './path';
 import { clearLayers } from './layers';
+import { initMenuBackground } from './menu-background';
+import { initGameover, showGameover, hideGameover } from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
 
 let updateCount = 0;
@@ -93,13 +94,14 @@ const gameoverToMenu = () => {
 
     setTimeout(() => {
       spawnNewObjects(totalUpdateCount, gameStarted, 2000);
-      showMenu(farms[0], true);
+      showMenu(farms[0]);
       loop.start();
-    }, 1000);
+    }, 750);
   }, 500);
 }
 
-const { pathTilesCountElement, timeButtonHand } = initUi();
+const { pathTilesCountElement, pathTilesButton, timeButtonHand, timeButton } = initUi();
+initMenuBackground();
 initGameover(startNewGame, gameoverToMenu);
 init(null, { contextless: true });
 initKeys();
@@ -123,6 +125,14 @@ const loop = GameLoop({
   update() {
     if (gameStarted) {
       spawnNewObjects(totalUpdateCount, gameStarted);
+
+      if (totalUpdateCount === 500) {
+        timeButton.style.opacity = 1;
+      }
+
+      if (totalUpdateCount === 400) {
+        pathTilesButton.style.opacity = 1;
+      }
 
       timeButtonHand.style.transform = `rotate(${totalUpdateCount}deg)`;
     }

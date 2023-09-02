@@ -1,6 +1,7 @@
 import { createSvgElement } from './svg-utils';
 import { emojiOx } from './ox-emoji';
 import { emojiGoat } from './goat-emoji';
+import { colors } from './colors';
 
 export const oxCounterWrapper = document.createElement('div');
 export const oxCounter = document.createElement('div');
@@ -17,6 +18,7 @@ export const initUi = () => {
       font-size: 20px;
       font-weight: 700;
       color: #443;
+      margin: 0;
     }
     header {
       display: flex;
@@ -36,8 +38,8 @@ export const initUi = () => {
       position:relative;
       display: grid;
       place-items: center;
-      width: 56px;
-      aspect-ratio: 1;
+      // width: 56px;
+      // aspect-ratio: 1;
       border: none;
       padding: 0;
       background: 0;
@@ -80,12 +82,24 @@ export const initUi = () => {
       color: #443;
       border: 4px solid #443;
     }
+    button.menu {
+      padding: 0 20px;
+      font-size: 32px;
+      height: 56px;
+      border-radius: 48px;
+      background :#fff;
+      box-shadow: 0 0 0 1px ${colors.shade};
+      transition: all .2s;
+    }
+    button.menu:hover {
+      box-shadow: 4px 4px 0 1px ${colors.shade};
+    }
+    button.menu:active {
+      box-shadow: 0 0 0 1px ${colors.shade};
+      transform: scale(.95);
+    }
   `.trim();
   document.head.appendChild(styles);
-
-  document.body.style.cssText = `
-    margin: 0;
-  `;
 
   // Add HTML UI elements (?)
   const uiContainer = document.createElement('div');
@@ -119,15 +133,18 @@ export const initUi = () => {
   counters.append(goatCounterWrapper);
 
   const timeButton = document.createElement('button');
-  timeButton.style.width = '64px';
-  timeButton.style.height = '64px';
   const timeButtonSvg = createSvgElement('svg');
   timeButtonSvg.setAttribute('stroke-linejoin', 'round');
   timeButtonSvg.setAttribute('stroke-linecap', 'round');
   timeButtonSvg.setAttribute('viewBox', '0 0 16 16');
+  timeButton.style.width = '64px';  timeButton.style.width = '64px';
+
+  timeButton.style.height = '64px';
+  timeButton.style.opacity = 0;
+  timeButton.style.transition = 'opacity 1s';
   timeButtonSvg.style.width = '64px';
   timeButtonSvg.style.height = '64px';
-  timeButtonSvg.style.background = '#443';
+  timeButtonSvg.style.background = colors.ui;
   timeButtonSvg.style.borderRadius = '50%';
 
   for (let i = 75; i < 350; i += 25) {
@@ -151,6 +168,8 @@ export const initUi = () => {
   header.append(menuButton, timeButton);
   const buildBar = document.createElement('footer');
   const pathTilesButton = document.createElement('button');
+  pathTilesButton.style.opacity = 0;
+  pathTilesButton.style.transition = 'opacity 1s';
   const pathTilesButtonInner = document.createElement('div');
   const pathTilesSvg = createSvgElement('svg');
   pathTilesSvg.setAttribute('viewBox', '0 0 18 18');
@@ -162,7 +181,7 @@ export const initUi = () => {
   pathTilesPath.setAttribute('stroke-linejoin', 'round');
   pathTilesPath.setAttribute('stroke-linecap', 'round');
   pathTilesPath.setAttribute('stroke-width', 2);
-  pathTilesPath.setAttribute('d', 'M11 1h-3 q-2 0 -2 2t2 2h4q2 0 2 2t-2 2h-6q-2 0-2 2t2 2h4q2 0 2 2t-2 2h-3');
+  pathTilesPath.setAttribute('d', 'M11 1h-3q-2 0-2 2t2 2h4q2 0 2 2t-2 2h-6q-2 0-2 2t2 2h4q2 0 2 2t-2 2h-3');
   pathTilesButton.append(pathTilesButtonInner);
   pathTilesButtonInner.append(pathTilesSvg);
   pathTilesSvg.append(pathTilesPath);
@@ -172,17 +191,13 @@ export const initUi = () => {
   pathTilesButtonInner.style.borderRadius = '12px';
   const pathTilesCountElement = document.createElement('div');
   pathTilesButton.append(pathTilesCountElement);
-  // const deleteButton = document.createElement('button');
-  // const deleteButtonInner = document.createElement('div');
-  // deleteButton.style.transform = 'scale(.7)';
-  // deleteButton.append(deleteButtonInner);
-  // const otherButton = document.createElement('button');
-  // buildBar.append(deleteButton, pathTilesButton, otherButton);
   buildBar.append(pathTilesButton);
   uiContainer.append(header, buildBar);
 
   return {
     pathTilesCountElement,
+    pathTilesButton,
+    timeButton,
     timeButtonHand,
     oxCounter,
     oxCounterWrapper,
