@@ -11,7 +11,7 @@ import { weightedRandom } from './weighted-random';
 // Figure out what to spawn depending on totalUpdates & current score
 
 const farmTypes = ['ox', 'goat']; // TODO: fish, crops, horses(?)
-const spawningLoopLength = 3000;
+const spawningLoopLength = 2500;
 
 export const getRandomPosition = ({
   width = 1,
@@ -28,7 +28,7 @@ export const getRandomPosition = ({
 
   while (numAttempts < maxNumAttempts) {
     numAttempts++;
-    // +1 and -1 are to prevent spawning right on the edge of the board
+
     const minX = Math.max(
       boardOffsetX,
       anchor.x - maxDistance,
@@ -57,7 +57,18 @@ export const getRandomPosition = ({
       && y > anchor.y - minDistance
     ) continue;
 
-    // // Check if too far away from position
+    // Extra bit of path is off the edge of the game board
+    if (
+      x + extra.x < boardOffsetX
+      || x + extra.x > boardWidth - width
+      || y + extra.y < boardOffsetY
+      || y + extra.y > boardHeight - height
+    ) {
+      continue;
+    }
+
+    // Check if too far away from position
+    // Not needed because we no longer spam the whole map looking for spawns
     // if (
     //   x > anchor.x + maxDistance ||
     //   x < anchor.x - maxDistance ||
@@ -193,7 +204,6 @@ const getRandomYurtProps = () => {
   });
 };
 
-let firstFarmSpawned = false;
 let updateRandomness1 = 0;
 let updateRandomness2 = 0;
 let updateRandomness3 = 0;
@@ -218,7 +228,6 @@ export const spawnNewObjects = (updateCount, delay) => {
     ||
     (updateCount > 1000 && updateCount % spawningLoopLength === 0 + (farms.length ? updateRandomness1 : 0))
   ) {
-    firstFarmSpawned = true;
     const { width, height, relativePathPoints } = getRandomFarmProps();
     const type = getRandomNewType();
 
@@ -303,7 +312,22 @@ export const spawnNewObjects = (updateCount, delay) => {
     return;
   }
 
-  if (updateCount % spawningLoopLength === 1500 + updateRandomness3) {
+  if (updateCount % spawningLoopLength === 1000 + updateRandomness3 && updateCount > 4000) {
+    upgradedThisLoop = false;
+
+    const shuffledFarms = farms
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+    for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
+      if (shuffledFarms[i].upgrade()) {
+        upgradedThisLoop = true;
+      }
+    }
+  }
+
+  if (updateCount % spawningLoopLength === 1500 + updateRandomness4) {
     const { facing } = getRandomYurtProps();
     const type = getRandomExistingType();
     const sameTypeYurts = yurts.filter((y) => y.type === type);
@@ -335,22 +359,7 @@ export const spawnNewObjects = (updateCount, delay) => {
     return;
   }
 
-  if (updateCount % spawningLoopLength === 2000 + updateRandomness4 && upgradedThisLoop) {
-    upgradedThisLoop = false;
-
-    const shuffledFarms = farms
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
-
-    for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
-      if (shuffledFarms[i].upgrade()) {
-        upgradedThisLoop = true;
-      }
-    }
-  }
-
-  if (updateCount % spawningLoopLength === 2500 + updateRandomness5 && upgradedThisLoop) {
+  if (updateCount % spawningLoopLength === 2000 + updateRandomness5 && updateCount > 8000) {
     upgradedThisLoop = false;
 
     const shuffledFarms = farms

@@ -2,14 +2,14 @@ import {
   init, initKeys, onKey, GameLoop,
 } from 'kontra';
 import {
-  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY, boardSvgWidth
+  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY
 } from './svg';
 import { initPointer } from './pointer';
 import { oxFarms } from './ox-farm';
 import { goatFarms } from './goat-farm';
 import { people } from './person';
 import { inventory } from './inventory';
-import { initUi } from './ui';
+import { initUi, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
 import { spawnNewObjects } from './spawning';
@@ -30,6 +30,11 @@ let totalUpdateCount = 0;
 const startNewGame = () => {
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
+
+  oxCounterWrapper.style.width = 0;
+  goatCounterWrapper.style.width = 0;
+  oxCounter.innerText = 0;
+  goatCounter.innerText = 0;
 
   setTimeout(() => {
     goatFarms.length = 0;
@@ -63,6 +68,11 @@ const gameoverToMenu = () => {
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
 
+  oxCounterWrapper.style.width = 0;
+  goatCounterWrapper.style.width = 0;
+  oxCounter.innerText = 0;
+  goatCounter.innerText = 0;
+
   setTimeout(() => {
     goatFarms.length = 0;
     oxFarms.length = 0;
@@ -86,7 +96,7 @@ const gameoverToMenu = () => {
       showMenu(farms[0], true);
       loop.start();
     }, 1000);
-  }, 1000);
+  }, 500);
 }
 
 const { pathTilesCountElement, timeButtonHand } = initUi();
@@ -148,6 +158,8 @@ const loop = GameLoop({
         svgElement.style.transition = 'transform 2s ease-out .5s';
         svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
 
+        oxCounterWrapper.style.opacity = 0;
+        goatCounterWrapper.style.opacity = 0;
         showGameover(startNewGame);
       }
     });

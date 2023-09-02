@@ -11,7 +11,7 @@ export class OxFarm extends Farm {
       fenceColor: colors.ox,
     });
 
-    this.needyness = 150;
+    this.needyness = 220;
     this.type = 'ox';
 
     oxFarms.push(this);
