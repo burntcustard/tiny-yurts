@@ -1,6 +1,7 @@
 /* eslint-disable key-spacing */
 export const colors = {
   grass:  '#8a5',
+  leaf:   '#ac6',
   base:   '#794',
   yurt:   '#fff',
   path:   '#dca', // previously #cb9

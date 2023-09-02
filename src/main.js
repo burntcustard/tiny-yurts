@@ -23,10 +23,20 @@ import { clearLayers } from './layers';
 import { initMenuBackground } from './menu-background';
 import { initGameover, showGameover, hideGameover } from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
+// import { Tree, trees } from './tree';
 
 let updateCount = 0;
 let renderCount = 0;
 let totalUpdateCount = 0;
+
+// const spawnTrees = () => {
+//   for (let i = 0; i < 9; i++) {
+//     new Tree({
+//       x: Math.floor(Math.random() * gridWidth),
+//       y: Math.floor(Math.random() * gridHeight),
+//     });
+//   }
+// };
 
 const startNewGame = () => {
   svgElement.style.transition = 'transform 2s';
@@ -118,7 +128,9 @@ const startGame = () => {
 demoColors();
 
 initMenu(startGame);
+// spawnTrees();
 spawnNewObjects(totalUpdateCount, 2500);
+
 showMenu(farms[0], true);
 
 const loop = GameLoop({
