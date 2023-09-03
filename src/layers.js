@@ -1,4 +1,4 @@
-import { addGridToSvg, gridLineThickness } from './grid';
+import { addGridBackgroundToSvg, addGridToSvg, gridLineThickness } from './grid';
 import {
   svgElement, boardOffsetX, boardOffsetY, boardSvgWidth, boardSvgHeight, gridCellSize,
 } from './svg';
@@ -82,6 +82,12 @@ const addPersonLayer = () => {
   return personLayer;
 };
 
+const addPondLayer = () => {
+  const pondLayer = createSvgElement('g');
+  svgElement.appendChild(pondLayer);
+  return pondLayer;
+};
+
 const addYurtAndPersonShadowLayer = () => {
   const shadowLayer = createSvgElement('g');
   shadowLayer.setAttribute('stroke-linecap', 'round');
@@ -122,6 +128,8 @@ const addGridPointerLayer = () => {
 
 // Order is important here, because it determines stacking in the SVG
 const layers = {
+  gridBackgroundLayer: addGridBackgroundToSvg(),
+  pondLayer: addPondLayer(),
   gridLayer: addGridToSvg(),
   gridBlockLayer: addGridBlockLayer(),
   baseLayer: addBaseLayer(),
@@ -151,6 +159,7 @@ export const {
   pathShadowLayer,
   personLayer,
   pinLayer,
+  pondLayer,
   yurtAndPersonShadowLayer,
   yurtLayer,
 } = layers;
@@ -166,6 +175,7 @@ export const clearLayers = () => {
   pathShadowLayer.innerHTML = '';
   personLayer.innerHTML = '';
   pinLayer.innerHTML = '';
+  pondLayer.innerHTML = '';
   yurtAndPersonShadowLayer.innerHTML = '';
   yurtLayer.innerHTML = '';
 };

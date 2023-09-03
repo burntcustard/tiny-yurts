@@ -10,11 +10,13 @@ import { yurts } from './yurt';
 import { gridRect, gridRectRed } from './grid';
 import { gridPointerLayer, pathShadowLayer } from './layers';
 import { removePath } from './remove-path';
+import { ponds } from './pond';
 
 let dragStartCell = {};
 let isDragging = false;
 
 const yurtInCell = (x, y) => yurts.find((yurt) => yurt.x === x && yurt.y === y);
+const pondInCell = (x, y) => ponds.find((pond) => pond.points.find((p) => p.x === x && p.y === y));
 
 const samePathInBothCell = (x0, y0, x1, y1) => paths.find((path) => (
   (
@@ -48,6 +50,9 @@ const handlePointerdown = (event) => {
 
     isDragging = true;
     dragStartCell = { x: cellX, y: cellY };
+    const pondInStartCell = pondInCell(dragStartCell.x, dragStartCell.y);
+    if (pondInStartCell) return;
+
     const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
     if (yurtInStartCell) {
       yurtInStartCell.lift();
@@ -133,6 +138,11 @@ const handlePointermove = (event) => {
 
   const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
   const yurtInEndCell = yurtInCell(cellX, cellY);
+  const pondInStartCell = pondInCell(cellX, cellY);
+  if (pondInStartCell) {
+    gridPointerLayer.style.cursor = 'not-allowed';
+    return;
+  }
 
   // Assign cursor
   if (yurtInEndCell && event.buttons !== 1) {

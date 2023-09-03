@@ -155,18 +155,20 @@ export class Farm extends Structure {
     const svgWidth = gridCellSize * this.width - fenceLineThickness - gridLineThickness;
     const svgHeight = gridCellSize * this.height - fenceLineThickness - gridLineThickness;
 
-    const gridBlock = createSvgElement('rect');
-    gridBlock.setAttribute('width', svgWidth);
-    gridBlock.setAttribute('height', svgHeight);
-    gridBlock.setAttribute('rx', roundness);
-    gridBlock.setAttribute('transform', `translate(${x},${y})`);
-    gridBlock.style.opacity = 0;
-    gridBlock.style.transition = 'opacity.8s';
-    gridBlock.style.willChange = 'opacity';
-    gridBlock.setAttribute('fill', colors.grass);
-    gridBlockLayer.appendChild(gridBlock);
-    setTimeout(() => gridBlock.style.opacity = 1, 1000);
-    setTimeout(() => gridBlock.style.willChange = '', 2000);
+    if (this.type !== 'fish') {
+      const gridBlock = createSvgElement('rect');
+      gridBlock.setAttribute('width', svgWidth);
+      gridBlock.setAttribute('height', svgHeight);
+      gridBlock.setAttribute('rx', roundness);
+      gridBlock.setAttribute('transform', `translate(${x},${y})`);
+      gridBlock.style.opacity = 0;
+      gridBlock.style.transition = 'opacity.8s';
+      gridBlock.style.willChange = 'opacity';
+      gridBlock.setAttribute('fill', colors.grass);
+      gridBlockLayer.appendChild(gridBlock);
+      setTimeout(() => gridBlock.style.opacity = 1, 1000);
+      setTimeout(() => gridBlock.style.willChange = '', 2000);
+    }
 
     const fence = createSvgElement('rect');
     fence.setAttribute('width', svgWidth);

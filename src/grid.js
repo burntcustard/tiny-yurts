@@ -11,13 +11,18 @@ export const gridRect = createSvgElement('rect');
 export const gridRectRed = createSvgElement('rect');
 export const gridPointerHandler = createSvgElement('rect');
 
-export const addGridToSvg = () => {
-  // The entire games grid, including non-buildable area off the board
+export const addGridBackgroundToSvg = () => {
   const gridRectBackground = createSvgElement('rect');
   gridRectBackground.setAttribute('fill', colors.grass);
   gridRectBackground.setAttribute('width', `${boardSvgWidth + gridLineThickness}px`);
   gridRectBackground.setAttribute('height', `${boardSvgHeight + gridLineThickness}px`);
   gridRectBackground.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness / 2} ${boardOffsetY * gridCellSize - gridLineThickness / 2})`);
+
+  svgElement.append(gridRectBackground);
+}
+
+export const addGridToSvg = () => {
+  // The entire games grid, including non-buildable area off the board
 
   const defs = createSvgElement('defs');
   svgElement.appendChild(defs);
@@ -62,7 +67,7 @@ export const addGridToSvg = () => {
   gridRectRed.style.willChange = 'opacity';
   gridRectRed.style.transition = 'opacity.3s';
 
-  svgElement.append(gridRectBackground, gridRect, gridRectRed);
+  svgElement.append(gridRect, gridRectRed);
 };
 
 export const gridToSvgCoords = (object) => ({

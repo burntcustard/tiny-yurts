@@ -17,14 +17,13 @@ import { demoColors } from './demo-colors';
 import { animals } from './animal';
 import { oxen } from './ox';
 import { goats } from './goat';
+import { ponds } from './pond';
 import { yurts } from './yurt';
 import { paths } from './path';
 import { clearLayers } from './layers';
 import { initMenuBackground } from './menu-background';
 import { initGameover, showGameover, hideGameover } from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
-import { createSvgElement } from './svg-utils';
-import { hull } from './hull';
 // import { Tree, trees } from './tree';
 
 let updateCount = 0;
@@ -39,59 +38,6 @@ let totalUpdateCount = 0;
 //     });
 //   }
 // };
-
-const spawnPond = () => {
-  let pondPoints = [];
-
-  const pondWidth = 5;
-  const pondHeight = 3;
-  let skipping = false;
-
-  for (let y = -pondHeight / 2; y <= pondHeight / 2; y++) {
-    for (let x = -pondWidth / 2; x <= pondWidth / 2; x++) {
-      if (pondWidth / 2 - Math.abs(x) + Math.random() > Math.abs(y)) {
-        pondPoints.push({ x, y });
-        // skipping = true;
-        // continue;
-      }
-
-    }
-  }
-
-  const pondLocation = {
-    x: Math.floor(boardOffsetX + Math.random() * boardWidth),
-    y: Math.floor(boardOffsetY + Math.random() * boardHeight),
-  };
-
-  pondPoints = pondPoints.map((p) => ({
-    x: p.x + pondLocation.x,
-    y: p.y + pondLocation.y,
-  }));
-
-  console.log(pondPoints);
-
-  const outline = hull(pondPoints);
-
-  const pondSvg = createSvgElement('path');
-  pondSvg.setAttribute('fill', '#7ae');
-  const d = outline.reduce((acc, curr) => {
-    const x = curr.x * gridCellSize;
-    const y = curr.y * gridCellSize;
-
-    // const pondDot = createSvgElement('circle');
-    // pondDot.style.transform = `translate(${x}px,${y}px)`;
-    // pondDot.setAttribute('r', 1);
-    // pondDot.setAttribute('fill', 'red');
-    // svgElement.append(pondDot);
-
-    return `${acc} ${x} ${y}`;
-  }, `M${outline[0].x * gridCellSize} ${outline[0].y * gridCellSize}L`);
-  pondSvg.setAttribute('d', d + 'Z');
-  pondSvg.setAttribute('stroke-width', 8);
-  pondSvg.setAttribute('stroke-linejoin', 'round');
-  pondSvg.setAttribute('stroke', '#7ae');
-  svgElement.append(pondSvg);
-};
 
 const startNewGame = () => {
   svgElement.style.transition = 'transform 2s';
@@ -112,6 +58,7 @@ const startNewGame = () => {
     goats.length = 0;
     yurts.length = 0;
     paths.length = 0;
+    ponds.length - 0;
     updateCount = 0;
     renderCount = 0;
     totalUpdateCount = 0;
@@ -149,6 +96,7 @@ const gameoverToMenu = () => {
     goats.length = 0;
     yurts.length = 0;
     paths.length = 0;
+    ponds.length = 0;
     updateCount = 0;
     renderCount = 0;
     totalUpdateCount = 0;
@@ -184,7 +132,6 @@ demoColors();
 
 initMenu(startGame);
 // spawnTrees();
-spawnPond();
 spawnNewObjects(totalUpdateCount, 2500);
 
 showMenu(farms[0], true);

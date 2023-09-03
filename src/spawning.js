@@ -1,12 +1,17 @@
 import { Yurt, yurts } from './yurt';
 import { farms } from './farm';
 import { paths } from './path';
+import { ponds } from './pond';
 import { OxFarm } from './ox-farm';
 import { GoatFarm } from './goat-farm';
 import {
-  boardOffsetX, boardOffsetY, boardWidth, boardHeight,
+  boardOffsetX, boardOffsetY, boardWidth, boardHeight, gridCellSize, gridHeight, gridWidth
 } from './svg';
 import { weightedRandom } from './weighted-random';
+import { spawnPond } from './pond';
+import { FishFarm } from './fish-farm';
+import { createSvgElement } from './svg-utils';
+import { pinLayer, yurtLayer } from './layers';
 
 // Figure out what to spawn depending on totalUpdates & current score
 
@@ -17,7 +22,7 @@ export const getRandomPosition = ({
   width = 1,
   height = 1,
   anchor = {
-    x: boardWidth / 2 + 0.5, y: boardHeight / 2 + 0.5, width: 1, height: 1,
+    x: gridWidth / 2 - 0.5, y: gridHeight / 2 - 0.5, width: 1, height: 1,
   },
   minDistance = 0,
   maxDistance = 99,
@@ -31,19 +36,19 @@ export const getRandomPosition = ({
 
     const minX = Math.max(
       boardOffsetX,
-      anchor.x - maxDistance,
+      anchor.x - maxDistance - width / 2,
     );
     const maxX = Math.min(
       boardOffsetX + boardWidth - width + 1,
-      anchor.x + anchor.width + maxDistance,
+      anchor.x + anchor.width + maxDistance - width / 2 + 0.5,
     );
     const minY = Math.max(
       boardOffsetY,
-      anchor.y - maxDistance,
+      anchor.y - maxDistance - height / 2,
     );
     const maxY = Math.min(
-      boardOffsetY + boardHeight - height + 1,
-      anchor.y + anchor.height + maxDistance,
+      boardOffsetY + boardHeight - height / 2,
+      anchor.y + anchor.height + maxDistance - width / 2 + 0.5,
     );
 
     const x = Math.floor(minX + (Math.random() * (maxX - minX)));
@@ -64,7 +69,7 @@ export const getRandomPosition = ({
       || y + extra.y < boardOffsetY
       || y + extra.y > boardHeight - height
     ) {
-      continue;
+      // continue;
     }
 
     // Check if too far away from position
@@ -75,6 +80,18 @@ export const getRandomPosition = ({
     //   y > anchor.y + maxDistance ||
     //   y < anchor.y - maxDistance
     // ) continue;
+
+    // TODO: Allow spawning of some things on ponds?
+    const pondObstruction = ponds.some((pond) => pond.avoidancePoints.some((pondCell) => {
+      for (let w = 0; w < width; w++) {
+        for (let h = 0; h < height; h++) {
+          if (x + w === pondCell.x && y + h === pondCell.y) return true;
+        }
+      }
+
+      return false; // TODO: See if removing saves bytes
+    }));
+    if (pondObstruction) continue;
 
     const farmObstruction = farms.some((farm) => farm.points.some((farmCell) => {
       for (let w = 0; w < width; w++) {
@@ -212,6 +229,7 @@ let updateRandomness5 = 0;
 
 export const spawnNewObjects = (updateCount, delay) => {
   let upgradedThisLoop = false;
+  let yurtFailed = false;
 
   if (updateCount % spawningLoopLength === 0) {
     updateRandomness1 = Math.floor(Math.random() * 200);
@@ -221,6 +239,155 @@ export const spawnNewObjects = (updateCount, delay) => {
     updateRandomness5 = Math.floor(Math.random() * 200);
   }
   // console.log(updateCount);
+
+  if (updateCount === 0) {
+    // const anchor = {
+    //   x: gridWidth / 2 - 0.5,
+    //   y: gridHeight / 2 - 0.5,
+    // };
+    // const anchorTestSvg = createSvgElement('circle');
+    // anchorTestSvg.setAttribute('r', 2);
+    // anchorTestSvg.setAttribute('fill', 'blue');
+    // anchorTestSvg.style.transform = `translate(${gridCellSize / 2 + anchor.x * gridCellSize}px,${gridCellSize / 2 + anchor.y * gridCellSize}px)`;
+    // pinLayer.appendChild(anchorTestSvg);
+
+    // for (let i = 0; i < 80; i++) {
+    //   const randomPosition = getRandomPosition({
+    //     width: 1,
+    //     height: 1,
+    //     minDistance: 1,
+    //     maxDistance: 2,
+    //     maxNumAttempts: 16,
+    //   });
+    //   if (randomPosition) {
+    //     const x = gridCellSize / 2 + randomPosition.x * gridCellSize;
+    //     const y = gridCellSize / 2 + randomPosition.y * gridCellSize;
+
+    //     const testSvg = createSvgElement('circle');
+    //     testSvg.setAttribute('r', 2);
+    //     testSvg.setAttribute('fill', 'white');
+    //     testSvg.style.transform = `translate(${x}px,${y}px)`;
+    //     yurtLayer.appendChild(testSvg);
+    //   }
+    // }
+
+    // for (let i = 0; i < 80; i++) {
+    //   const randomPosition = getRandomPosition({
+    //     width: 1,
+    //     height: 1,
+    //     minDistance: 4,
+    //     maxNumAttempts: 16,
+    //   });
+    //   if (randomPosition) {
+    //     const x = gridCellSize / 2 + randomPosition.x * gridCellSize;
+    //     const y = gridCellSize / 2 + randomPosition.y * gridCellSize;
+
+    //     const testSvg = createSvgElement('circle');
+    //     testSvg.setAttribute('r', 2);
+    //     testSvg.setAttribute('fill', 'red');
+    //     testSvg.style.transform = `translate(${x}px,${y}px)`;
+    //     yurtLayer.appendChild(testSvg);
+    //   }
+    // }
+  }
+
+  if (updateCount === 0) {
+    if (Math.random() > 0.5) {
+      const width = 6;
+      const height = 4;
+
+      const randomPosition = getRandomPosition({
+        width,
+        height,
+        minDistance: 4,
+        maxNumAttempts: 16,
+      });
+
+      spawnPond({
+        width,
+        height,
+        x: randomPosition.x,
+        y: randomPosition.y,
+      });
+    } else {
+      const randomPosition1 = getRandomPosition({
+        width: 4,
+        height: 4,
+        minDistance: 4,
+        maxNumAttempts: 16,
+      });
+
+      if (randomPosition1) {
+        spawnPond({
+          width: 4,
+          height: 4,
+          x: randomPosition1.x,
+          y: randomPosition1.y,
+        });
+      }
+
+      const randomPosition2 = getRandomPosition({
+        width: 3,
+        height: 2,
+        minDistance: 4,
+        maxNumAttempts: 16,
+      });
+
+      if (randomPosition2) {
+        spawnPond({
+          width: 3,
+          height: 2,
+          x: randomPosition2.x,
+          y: randomPosition2.y,
+        });
+      }
+
+      const randomPosition3 = getRandomPosition({
+        width: 3,
+        height: 2,
+        minDistance: 4,
+        maxNumAttempts: 16,
+      });
+
+      if (randomPosition3) {
+        spawnPond({
+          width: 3,
+          height: 2,
+          x: randomPosition3.x,
+          y: randomPosition3.y,
+        });
+      }
+    }
+
+    // Find 4x4 water
+    const bigPond = ponds.find((pond) => pond.width >= 4 && pond.height >= 4);
+
+    // bigPond.points.forEach((point) => {
+    //   if (
+    //     !bigPond.points.some((p) => p.x === point.x && p.y === point.y)
+    //   ) {
+
+    //   }
+    // });
+    const portrait = Math.random() > 0.5;
+    const randWidthHeight = { w: 2, h: 2 };
+    const randPathPosX1 = Math.floor(Math.random() * randWidthHeight.w);
+    const randPathPosY1 = Math.floor(Math.random() * randWidthHeight.h);
+    const randPathPosX2 = portrait ? randPathPosX1 * 3 - 1 : randPathPosX1;
+    const randPathPosY2 = portrait ? randPathPosY1 : randPathPosY1 * 3 - 1;
+
+    const x = bigPond.x + bigPond.width / 2 - 1;
+    const y = bigPond.y + bigPond.height / 2 - 1;
+    // Attempt to spawn a fish farm for fun
+    const testFishFarm = new FishFarm({
+      x,
+      y,
+      relativePathPoints: [
+        { x: randPathPosX1, y: randPathPosY1 },
+        { x: randPathPosX2, y: randPathPosY2 },
+      ],
+    });
+  }
 
   // Spawn the first farm, early on, near the center
   if (
@@ -239,7 +406,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         : farms[farms.length - 1], // if undefined randomPosition will use default
       maxDistance: farms.length ? farms.length * 2 : 1,
       minDistance: farms.length ? 2 : 0,
-      maxNumAttempts: 14,
+      maxNumAttempts: 16,
       extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
     });
 
@@ -297,6 +464,38 @@ export const spawnNewObjects = (updateCount, delay) => {
       },
       minDistance: 3,
       maxDistance: 2 + farms.length,
+      extra: facing,
+    });
+
+    if (randomPosition) {
+      new Yurt({
+        x: randomPosition.x,
+        y: randomPosition.y,
+        type: farm.type,
+        facing,
+      });
+    } else {
+      yurtFailed = true;
+    }
+
+    return;
+  }
+
+  // If the first yurt spawn attempt failed, try again ~400ms later
+  if (updateCount % spawningLoopLength === 600 + updateRandomness2 && yurtFailed) {
+    const { facing } = getRandomYurtProps();
+    const farm = farms.length > 2
+      ? farms.at(Math.random() * farms.length)
+      : farms[farms.length - 1];
+    const randomPosition = getRandomPosition({
+      anchor: {
+        x: farm.x,
+        y: farm.y,
+        width: farm.width,
+        height: farm.height,
+      },
+      minDistance: 3,
+      maxDistance: 3 + farms.length,
       extra: facing,
     });
 
