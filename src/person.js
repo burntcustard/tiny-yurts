@@ -5,6 +5,7 @@ import { colors } from './colors';
 import { personLayer, yurtAndPersonShadowLayer } from './layers';
 import { findRoute } from './find-route';
 import { rotateVector, combineVectors } from './vector';
+import { shuffle } from './shuffle';
 
 export const people = [];
 
@@ -78,9 +79,21 @@ export class Person extends GameObjectClass {
       // Go back home... soon!
       this.atFarm++;
 
+      // if (this.farmToVisit.type === 'fish') {
+      //   console.log(this.atFarm);
+      // }
+
+      if (this.atFarm === 2 && this.farmToVisit.type === 'fish') {
+        shuffle(this.farmToVisit.children).forEach((fish, i) => setTimeout(() => fish.svgBody.style.fill = colors.fish, i * 250));
+      }
+
       // After this many updates, go home
       // TODO: Make sensible number, show some sort of animation
       if (this.atFarm > 80) {
+        if (this.farmToVisit.type === 'fish') {
+          shuffle(this.farmToVisit.children).forEach((fish, i) => setTimeout(() => fish.svgBody.style.fill = colors.shade2, 1000 + i * 1000));
+        }
+
         // Go back home. If no route is found, errrr dunno?
         const route = findRoute({
           from: {

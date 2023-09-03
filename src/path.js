@@ -4,6 +4,7 @@ import { GameObjectClass } from 'kontra';
 import { pathLayer, pathShadowLayer } from './layers';
 import { gridCellSize } from './svg';
 import { createSvgElement } from './svg-utils';
+import { colors } from './colors';
 
 const toSvgCoord = (c) => gridCellSize / 2 + c * gridCellSize;
 
@@ -207,6 +208,26 @@ export const drawPaths = ({ fadeout, noShadow }) => {
       newPathData.svgElement = createSvgElement('path');
       newPathData.svgElement.setAttribute('d', newPathData.d);
       newPathData.svgElement.style.transition = 'all.4s, opacity.2s';
+
+      console.log(newPathData.path?.points[0].stone
+        || newPathData.path?.points[1].stone
+        || newPathData.path1?.points[0].stone
+        || newPathData.path1?.points[1].stone
+        || newPathData.path2?.points[0].stone
+        || newPathData.path2?.points[1].stone);
+      if (newPathData.path?.points[0].stone
+        || newPathData.path?.points[1].stone
+        || newPathData.path1?.points[0].stone
+        || newPathData.path1?.points[1].stone
+        || newPathData.path2?.points[0].stone
+        || newPathData.path2?.points[1].stone) {
+        console.log('drawing stone path');
+        newPathData.svgElement.style.strokeDasharray = '0 3px';
+        newPathData.svgElement.style.strokeWidth = '2px';
+        newPathData.svgElement.style.stroke = '#bbb';
+        newPathData.svgElement.style.filter = `drop-shadow(.3px .3px ${colors.shade2})`;
+      }
+
       pathLayer.appendChild(newPathData.svgElement);
 
       // Only transition "new new" single paths

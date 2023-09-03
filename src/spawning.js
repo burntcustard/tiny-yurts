@@ -9,9 +9,8 @@ import {
 } from './svg';
 import { weightedRandom } from './weighted-random';
 import { spawnPond } from './pond';
-import { FishFarm } from './fish-farm';
-import { createSvgElement } from './svg-utils';
-import { pinLayer, yurtLayer } from './layers';
+import { FishFarm, fishFarms } from './fish-farm';
+import { shuffle } from './shuffle';
 
 // Figure out what to spawn depending on totalUpdates & current score
 
@@ -176,12 +175,12 @@ const getRandomExistingType = () => {
   }
 
   const yurtTypeCounts = {};
-  yurts.forEach((yurt) => {
+  yurts.filter((y) => y.type !== 'fish').forEach((yurt) => {
     yurtTypeCounts[yurt.type] = yurtTypeCounts[yurt.type] ? yurtTypeCounts[yurt.type] + 1 : 1;
   });
 
   const farmTypeCounts = {};
-  farms.forEach((farm) => {
+  farms.filter((y) => y.type !== 'fish').forEach((farm) => {
     farmTypeCounts[farm.type] = farmTypeCounts[farm.type] ? farmTypeCounts[farm.type] + 1 : 1;
   });
 
@@ -190,11 +189,13 @@ const getRandomExistingType = () => {
     weights.push(farmTypeCounts[type] / yurtTypeCounts[type]);
   });
 
-  console.log('Spawning new yurt with type weighting of:');
-  console.log(weights);
+  // console.log('Spawning new yurt with type weighting of:');
+  // console.log(weights);
+
+  console.log(farmTypeCounts);
 
   const newType = Object.keys(farmTypeCounts)[weightedRandom(weights)]
-  console.log('Type chosen:', newType);
+  // console.log('Type chosen:', newType);
 
   return newType;
 };
@@ -299,7 +300,7 @@ export const spawnNewObjects = (updateCount, delay) => {
       const randomPosition = getRandomPosition({
         width,
         height,
-        minDistance: 4,
+        minDistance: 5,
         maxNumAttempts: 16,
       });
 
@@ -313,7 +314,7 @@ export const spawnNewObjects = (updateCount, delay) => {
       const randomPosition1 = getRandomPosition({
         width: 4,
         height: 4,
-        minDistance: 4,
+        minDistance: 5,
         maxNumAttempts: 16,
       });
 
@@ -329,7 +330,7 @@ export const spawnNewObjects = (updateCount, delay) => {
       const randomPosition2 = getRandomPosition({
         width: 3,
         height: 2,
-        minDistance: 4,
+        minDistance: 5,
         maxNumAttempts: 16,
       });
 
@@ -345,7 +346,7 @@ export const spawnNewObjects = (updateCount, delay) => {
       const randomPosition3 = getRandomPosition({
         width: 3,
         height: 2,
-        minDistance: 4,
+        minDistance: 5,
         maxNumAttempts: 16,
       });
 
@@ -358,35 +359,6 @@ export const spawnNewObjects = (updateCount, delay) => {
         });
       }
     }
-
-    // Find 4x4 water
-    const bigPond = ponds.find((pond) => pond.width >= 4 && pond.height >= 4);
-
-    // bigPond.points.forEach((point) => {
-    //   if (
-    //     !bigPond.points.some((p) => p.x === point.x && p.y === point.y)
-    //   ) {
-
-    //   }
-    // });
-    const portrait = Math.random() > 0.5;
-    const randWidthHeight = { w: 2, h: 2 };
-    const randPathPosX1 = Math.floor(Math.random() * randWidthHeight.w);
-    const randPathPosY1 = Math.floor(Math.random() * randWidthHeight.h);
-    const randPathPosX2 = portrait ? randPathPosX1 * 3 - 1 : randPathPosX1;
-    const randPathPosY2 = portrait ? randPathPosY1 : randPathPosY1 * 3 - 1;
-
-    const x = bigPond.x + bigPond.width / 2 - 1;
-    const y = bigPond.y + bigPond.height / 2 - 1;
-    // Attempt to spawn a fish farm for fun
-    const testFishFarm = new FishFarm({
-      x,
-      y,
-      relativePathPoints: [
-        { x: randPathPosX1, y: randPathPosY1 },
-        { x: randPathPosX2, y: randPathPosY2 },
-      ],
-    });
   }
 
   // Spawn the first farm, early on, near the center
@@ -395,66 +367,97 @@ export const spawnNewObjects = (updateCount, delay) => {
     ||
     (updateCount > 1000 && updateCount % spawningLoopLength === 0 + (farms.length ? updateRandomness1 : 0))
   ) {
-    const { width, height, relativePathPoints } = getRandomFarmProps();
-    const type = getRandomNewType();
+    if (updateCount > 1000 && !fishFarms.length) {
+      // Find 4x4 water
+      const bigPond = ponds.find((pond) => pond.width >= 4 && pond.height >= 4);
 
-    const randomPosition = getRandomPosition({
-      width,
-      height,
-      anchor: farms.length > 1 // So for the 3rd farm...
-        ? yurts.filter((y) => y.type === type).at(Math.random() * yurts.length)
-        : farms[farms.length - 1], // if undefined randomPosition will use default
-      maxDistance: farms.length ? farms.length * 2 : 1,
-      minDistance: farms.length ? 2 : 0,
-      maxNumAttempts: 16,
-      extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
-    });
+      // bigPond.points.forEach((point) => {
+      //   if (
+      //     !bigPond.points.some((p) => p.x === point.x && p.y === point.y)
+      //   ) {
 
-    // Can't find a position, so instead try to upgrade a farm instead
-    if (!randomPosition) {
-      const shuffledFarms = farms
-        .map((value) => ({ value, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
+      //   }
+      // });
+      const pathPosX1 = bigPond.x < gridWidth / 2 ? 1 : 0;
+      const pathPosX2 = bigPond.x < gridWidth / 2 ? 2 : -1;
+      const pathPosX3 = bigPond.x < gridWidth / 2 ? 3 : -2;
+      const pathPosY1 = bigPond.y < gridHeight / 2 ? 1 : 0;
 
-      for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
-        if (shuffledFarms[i].upgrade()) {
-          upgradedThisLoop = true;
+      const x = bigPond.x + bigPond.width / 2 - 1;
+      const y = bigPond.y + bigPond.height / 2 - 1;
+
+      new FishFarm({
+        x,
+        y,
+        relativePathPoints: [
+          { x: pathPosX1, y: pathPosY1, fixed: true, stone: true },
+          { x: bigPond.width > 4 ? pathPosX3 : pathPosX2, y: pathPosY1, fixed: true, stone: true },
+        ],
+      });
+    } else {
+      const { width, height, relativePathPoints } = getRandomFarmProps();
+      const type = getRandomNewType();
+
+      const randomPosition = getRandomPosition({
+        width,
+        height,
+        anchor: farms.length > 1 // So for the 3rd farm...
+          ? yurts.filter((y) => y.type === type).at(Math.random() * yurts.length)
+          : farms[farms.length - 1], // if undefined randomPosition will use default
+        maxDistance: farms.length ? farms.length * 2 : 1,
+        minDistance: farms.length ? 2 : 0,
+        maxNumAttempts: 16,
+        extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
+      });
+
+      // Can't find a position, so instead try to upgrade a farm instead
+      if (!randomPosition) {
+        const shuffledFarms = farms
+          .map((value) => ({ value, sort: Math.random() }))
+          .sort((a, b) => a.sort - b.sort)
+          .map(({ value }) => value);
+
+        for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
+          if (shuffledFarms[i].upgrade()) {
+            upgradedThisLoop = true;
+          }
         }
+
+        return;
       }
 
-      return;
-    }
-
-    if (type === 'ox') {
-      new OxFarm({
-        width,
-        height,
-        x: randomPosition.x,
-        y: randomPosition.y,
-        relativePathPoints,
-        delay,
-      });
-      return;
-    } if (type === 'goat') {
-      new GoatFarm({
-        width,
-        height,
-        x: randomPosition.x,
-        y: randomPosition.y,
-        relativePathPoints,
-        delay, // TODO: See if having this in every new farm call saves bytes
-      });
-      return;
+      if (type === 'ox') {
+        new OxFarm({
+          width,
+          height,
+          x: randomPosition.x,
+          y: randomPosition.y,
+          relativePathPoints,
+          delay,
+        });
+        return;
+      } if (type === 'goat') {
+        new GoatFarm({
+          width,
+          height,
+          x: randomPosition.x,
+          y: randomPosition.y,
+          relativePathPoints,
+          delay, // TODO: See if having this in every new farm call saves bytes
+        });
+        return;
+      }
     }
   }
 
   // Spawn the first yurt really soon after
   if (updateCount % spawningLoopLength === 500 + updateRandomness2) {
     const { facing } = getRandomYurtProps();
-    const farm = farms.length > 2
-      ? farms.at(Math.random() * farms.length)
-      : farms[farms.length - 1];
+    const farm = (farms.filter((f) => f.type === 'fish').length && yurts.filter((y) => y.type === 'fish').length < 2)
+      ? farms.find((f) => f.type === 'fish')
+      : farms.length > 2
+        ? farms.at(Math.random() * farms.length)
+        : farms[farms.length - 1];
     const randomPosition = getRandomPosition({
       anchor: {
         x: farm.x,
@@ -487,6 +490,7 @@ export const spawnNewObjects = (updateCount, delay) => {
     const farm = farms.length > 2
       ? farms.at(Math.random() * farms.length)
       : farms[farms.length - 1];
+    // console.log('trying to spawn a yurt of type:', farm.type);
     const randomPosition = getRandomPosition({
       anchor: {
         x: farm.x,
@@ -514,10 +518,7 @@ export const spawnNewObjects = (updateCount, delay) => {
   if (updateCount % spawningLoopLength === 1000 + updateRandomness3 && updateCount > 4000) {
     upgradedThisLoop = false;
 
-    const shuffledFarms = farms
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
+    const shuffledFarms = shuffle(farms);
 
     for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
       if (shuffledFarms[i].upgrade()) {

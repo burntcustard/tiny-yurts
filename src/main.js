@@ -7,6 +7,7 @@ import {
 import { initPointer } from './pointer';
 import { oxFarms } from './ox-farm';
 import { goatFarms } from './goat-farm';
+import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import { initUi, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper } from './ui';
@@ -168,6 +169,7 @@ const loop = GameLoop({
         goatFarms.forEach((farm) => farm.update(gameStarted));
         break;
       case 3:
+        fishFarms.forEach((farm) => farm.update(gameStarted));
         break;
     }
 
@@ -208,6 +210,7 @@ const loop = GameLoop({
         goatFarms.forEach((farm) => farm.render());
         break;
       case 3:
+        fishFarms.forEach((farm) => farm.render());
         break;
     }
     if (renderCount >= 60) renderCount = 0;

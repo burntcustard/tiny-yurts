@@ -9,6 +9,9 @@ export const oxCounter = document.createElement('div');
 export const goatCounterWrapper = document.createElement('div');
 export const goatCounter = document.createElement('div');
 
+export const fishCounterWrapper = document.createElement('div');
+export const fishCounter = document.createElement('div');
+
 export const initUi = () => {
   // TODO: Move elsewhre and minify
   const styles = document.createElement('style');
@@ -131,6 +134,13 @@ export const initUi = () => {
   goatCounterEmoji.style.height = '48px';
   goatCounterWrapper.append(goatCounterEmoji, goatCounter);
   counters.append(goatCounterWrapper);
+
+  fishCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
+  const fishCounterEmoji = emojiGoat();
+  fishCounterEmoji.style.width = '48px';
+  fishCounterEmoji.style.height = '48px';
+  fishCounterWrapper.append(fishCounterEmoji, fishCounter);
+  counters.append(fishCounterWrapper);
 
   const timeButton = document.createElement('button');
   const timeButtonSvg = createSvgElement('svg');

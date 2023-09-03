@@ -8,11 +8,13 @@ export const colors = {
   ox:     '#b75',
   oxHorn: '#dee',
   goat:   '#abb', // previously #abb
+  fish:   '#f80',
   black:  '#000',
   ui:     '#443',
   red:    '#e31',
   grid:   '#0001',
   shade:  '#0001',
+  shade2: '#0002',
   gridRed:'#f002',
 };
 
