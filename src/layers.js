@@ -31,6 +31,17 @@ const addFenceShadowLayer = () => {
   return fenceShadowLayer;
 };
 
+// const addRockShadowLayer = () => {
+//   const rockShadowLayer = createSvgElement('g');
+//   rockShadowLayer.setAttribute('stroke-linecap', 'round');
+//   rockShadowLayer.setAttribute('fill', 'none');
+//   rockShadowLayer.setAttribute('stroke', colors.black);
+//   rockShadowLayer.setAttribute('opacity', shadowOpacity);
+//   rockShadowLayer.setAttribute('transform', 'translate(.3,.3)');
+//   svgElement.appendChild(rockShadowLayer);
+//   return rockShadowLayer;
+// };
+
 const addGridBlockLayer = () => {
   const gridBlockLayer = createSvgElement('g');
   gridBlockLayer.setAttribute('fill', 'none');
@@ -134,6 +145,7 @@ const layers = {
   gridBlockLayer: addGridBlockLayer(),
   baseLayer: addBaseLayer(),
   pathShadowLayer: addPathShadowLayer(),
+  // rockShadowLayer: addRockShadowLayer(),
   pathLayer: addPathLayer(),
   animalShadowLayer: addAnimalShadowLayer(),
   yurtAndPersonShadowLayer: addYurtAndPersonShadowLayer(),
@@ -160,6 +172,7 @@ export const {
   personLayer,
   pinLayer,
   pondLayer,
+  // rockShadowLayer,
   yurtAndPersonShadowLayer,
   yurtLayer,
 } = layers;
@@ -176,6 +189,7 @@ export const clearLayers = () => {
   personLayer.innerHTML = '';
   pinLayer.innerHTML = '';
   pondLayer.innerHTML = '';
+  // rockShadowLayer.innerHTML = '';
   yurtAndPersonShadowLayer.innerHTML = '';
   yurtLayer.innerHTML = '';
 };

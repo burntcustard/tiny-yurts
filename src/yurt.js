@@ -20,29 +20,14 @@ export const yurts = [];
 
 export class Yurt extends Structure {
   constructor(properties) {
-    const { x, y, facing } = properties;
+    const { x, y } = properties;
 
-    super({
-      ...properties,
-      // connections: [
-      //   { from: { x, y }, to: { x: x    , y: y - 1}, object: null },
-      //   { from: { x, y }, to: { x: x + 1, y: y - 1}, object: null },
-      //   { from: { x, y }, to: { x: x + 1, y: y    }, object: null },
-      //   { from: { x, y }, to: { x: x + 1, y: y + 1}, object: null },
-      //   { from: { x, y }, to: { x: x    , y: y + 1}, object: null },
-      //   { from: { x, y }, to: { x: x - 1, y: y + 1}, object: null },
-      //   { from: { x, y }, to: { x: x - 1, y: y    }, object: null },
-      //   { from: { x, y }, to: { x: x - 1, y: y - 1}, object: null },
-      // ],
-    });
+    super(properties);
 
     this.points = [{
       x: this.x,
       y: this.y,
     }];
-
-    this.type = properties.type;
-    this.facing = facing;
 
     setTimeout(() => {
       this.startPath = new Path({
@@ -169,7 +154,7 @@ export class Yurt extends Structure {
     this.decoration.setAttribute('r', 1);
     this.decoration.setAttribute('stroke-dasharray', 6.3); // Math.PI * 2 + a bit
     this.decoration.setAttribute('stroke-dashoffset', 6.3);
-    this.decoration.setAttribute('stroke', colors[this.type]);
+    this.decoration.setAttribute('stroke', this.type);
     this.decoration.style.willChange = 'stroke-dashoffset';
     this.decoration.style.transition = 'stroke-dashoffset .5s';
 

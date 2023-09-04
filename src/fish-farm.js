@@ -15,7 +15,7 @@ export class FishFarm extends Farm {
     });
 
     this.needyness = 1000;
-    this.type = 'fish';
+    this.type = colors.fish;
 
     fishFarms.push(this);
 

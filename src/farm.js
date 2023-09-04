@@ -159,7 +159,7 @@ export class Farm extends Structure {
     const svgWidth = gridCellSize * this.width - fenceLineThickness - gridLineThickness;
     const svgHeight = gridCellSize * this.height - fenceLineThickness - gridLineThickness;
 
-    if (this.type !== 'fish') {
+    if (this.type !== colors.fish) {
       const gridBlock = createSvgElement('rect');
       gridBlock.setAttribute('width', svgWidth);
       gridBlock.setAttribute('height', svgHeight);

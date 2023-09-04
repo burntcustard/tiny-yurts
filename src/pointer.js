@@ -17,6 +17,7 @@ let isDragging = false;
 
 const yurtInCell = (x, y) => yurts.find((yurt) => yurt.x === x && yurt.y === y);
 const pondInCell = (x, y) => ponds.find((pond) => pond.points.find((p) => p.x === x && p.y === y));
+const pondPathInCell = (x, y) => paths.find((path) => path.points[1].x === x && path.points[1].y === y && path.points[1].stone);
 
 const samePathInBothCell = (x0, y0, x1, y1) => paths.find((path) => (
   (
@@ -48,10 +49,12 @@ const handlePointerdown = (event) => {
     gridRect.style.opacity = 1;
     svgHazardLines.style.opacity = 0.9;
 
+    const pondInStartCell = pondInCell(cellX, cellY);
+    const pondPathInStartCell = pondPathInCell(cellX, cellY);
+    if (pondInStartCell && !pondPathInStartCell) return;
+
     isDragging = true;
     dragStartCell = { x: cellX, y: cellY };
-    const pondInStartCell = pondInCell(dragStartCell.x, dragStartCell.y);
-    if (pondInStartCell) return;
 
     const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
     if (yurtInStartCell) {
@@ -97,8 +100,12 @@ const handlePointerup = (event) => {
   const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
   const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
   const yurtInEndCell = yurtInCell(cellX, cellY);
+  const pondInStartCell = pondInCell(cellX, cellY);
+  const pondPathInStartCell = pondPathInCell(cellX, cellY);
 
-  if (yurtInEndCell) {
+  if (pondInStartCell && !pondPathInStartCell) {
+    gridPointerLayer.style.cursor = 'not-allowed';
+  } else if (yurtInEndCell) {
     gridPointerLayer.style.cursor = 'grab';
   } else {
     gridPointerLayer.style.cursor = 'cell';
@@ -139,7 +146,8 @@ const handlePointermove = (event) => {
   const yurtInStartCell = yurtInCell(dragStartCell.x, dragStartCell.y);
   const yurtInEndCell = yurtInCell(cellX, cellY);
   const pondInStartCell = pondInCell(cellX, cellY);
-  if (pondInStartCell) {
+  const pondPathInStartCell = pondPathInCell(cellX, cellY);
+  if (pondInStartCell && !pondPathInStartCell) {
     gridPointerLayer.style.cursor = 'not-allowed';
     return;
   }

@@ -129,7 +129,7 @@ const startGame = () => {
   updateCount = totalUpdateCount = 1;
 };
 
-demoColors();
+// demoColors();
 
 initMenu(startGame);
 // spawnTrees();

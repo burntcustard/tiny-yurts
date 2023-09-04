@@ -36,20 +36,15 @@ export class Person extends GameObjectClass {
     const { y } = this;
 
     const person = createSvgElement('path');
-    person.setAttribute('d', 'M0 0l0 0');
+    person.setAttribute('d', 'M0 0 0 0');
     person.setAttribute('transform', `translate(${x},${y})`);
-    person.setAttribute('stroke', colors[this.type]);
-    // const person = createSvgElement('circle');
-    // person.setAttribute('r', 0.5);
-    // person.setAttribute('stroke', colors.ui);
-    // person.setAttribute('stroke-width', 0.2);
-    // person.setAttribute('fill', colors[this.type]);
+    person.setAttribute('stroke', this.type);
     personLayer.appendChild(person);
     this.svgElement = person;
 
     const shadow = createSvgElement('path');
     shadow.setAttribute('stroke-width', 1.2);
-    shadow.setAttribute('d', 'M0 0l.3 .3');
+    shadow.setAttribute('d', 'M0 0 .3 .3');
     shadow.setAttribute('transform', `translate(${x},${y})`);
     yurtAndPersonShadowLayer.appendChild(shadow);
     this.shadowElement = shadow;
@@ -79,18 +74,14 @@ export class Person extends GameObjectClass {
       // Go back home... soon!
       this.atFarm++;
 
-      // if (this.farmToVisit.type === 'fish') {
-      //   console.log(this.atFarm);
-      // }
-
-      if (this.atFarm === 2 && this.farmToVisit.type === 'fish') {
+      if (this.atFarm === 2 && this.farmToVisit.type === colors.fish) {
         shuffle(this.farmToVisit.children).forEach((fish, i) => setTimeout(() => fish.svgBody.style.fill = colors.fish, i * 250));
       }
 
       // After this many updates, go home
       // TODO: Make sensible number, show some sort of animation
       if (this.atFarm > 80) {
-        if (this.farmToVisit.type === 'fish') {
+        if (this.farmToVisit.type === colors.fish) {
           shuffle(this.farmToVisit.children).forEach((fish, i) => setTimeout(() => fish.svgBody.style.fill = colors.shade2, 1000 + i * 1000));
         }
 
@@ -132,7 +123,7 @@ export class Person extends GameObjectClass {
           );
 
           const closeEnough = 2;
-          const closeEnoughDestination = 1.5;
+          const closeEnoughDestination = 1;
 
           if (this.route.length === 1) {
             if (

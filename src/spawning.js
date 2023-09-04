@@ -11,10 +11,11 @@ import { weightedRandom } from './weighted-random';
 import { spawnPond } from './pond';
 import { FishFarm, fishFarms } from './fish-farm';
 import { shuffle } from './shuffle';
+import { colors } from './colors';
 
 // Figure out what to spawn depending on totalUpdates & current score
 
-const farmTypes = ['ox', 'goat']; // TODO: fish, crops, horses(?)
+const farmTypes = [colors.ox, colors.goat]; // TODO: fish, crops, horses(?)
 const spawningLoopLength = 2500;
 
 export const getRandomPosition = ({
@@ -47,7 +48,7 @@ export const getRandomPosition = ({
     );
     const maxY = Math.min(
       boardOffsetY + boardHeight - height / 2,
-      anchor.y + anchor.height + maxDistance - width / 2 + 0.5,
+      anchor.y + anchor.height + maxDistance - height / 2 + 0.5,
     );
 
     const x = Math.floor(minX + (Math.random() * (maxX - minX)));
@@ -68,7 +69,7 @@ export const getRandomPosition = ({
       || y + extra.y < boardOffsetY
       || y + extra.y > boardHeight - height
     ) {
-      // continue;
+      continue;
     }
 
     // Check if too far away from position
@@ -175,12 +176,12 @@ const getRandomExistingType = () => {
   }
 
   const yurtTypeCounts = {};
-  yurts.filter((y) => y.type !== 'fish').forEach((yurt) => {
+  yurts.filter((y) => y.type !== colors.fish).forEach((yurt) => {
     yurtTypeCounts[yurt.type] = yurtTypeCounts[yurt.type] ? yurtTypeCounts[yurt.type] + 1 : 1;
   });
 
   const farmTypeCounts = {};
-  farms.filter((y) => y.type !== 'fish').forEach((farm) => {
+  farms.filter((y) => y.type !== colors.fish).forEach((farm) => {
     farmTypeCounts[farm.type] = farmTypeCounts[farm.type] ? farmTypeCounts[farm.type] + 1 : 1;
   });
 
@@ -192,7 +193,7 @@ const getRandomExistingType = () => {
   // console.log('Spawning new yurt with type weighting of:');
   // console.log(weights);
 
-  console.log(farmTypeCounts);
+  // console.log(farmTypeCounts);
 
   const newType = Object.keys(farmTypeCounts)[weightedRandom(weights)]
   // console.log('Type chosen:', newType);
@@ -367,7 +368,7 @@ export const spawnNewObjects = (updateCount, delay) => {
     ||
     (updateCount > 1000 && updateCount % spawningLoopLength === 0 + (farms.length ? updateRandomness1 : 0))
   ) {
-    if (updateCount > 1000 && !fishFarms.length) {
+    if (updateCount > 10000 && !fishFarms.length) {
       // Find 4x4 water
       const bigPond = ponds.find((pond) => pond.width >= 4 && pond.height >= 4);
 
@@ -426,7 +427,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         return;
       }
 
-      if (type === 'ox') {
+      if (type === colors.ox) {
         new OxFarm({
           width,
           height,
@@ -436,7 +437,7 @@ export const spawnNewObjects = (updateCount, delay) => {
           delay,
         });
         return;
-      } if (type === 'goat') {
+      } if (type === colors.goat) {
         new GoatFarm({
           width,
           height,
@@ -453,8 +454,8 @@ export const spawnNewObjects = (updateCount, delay) => {
   // Spawn the first yurt really soon after
   if (updateCount % spawningLoopLength === 500 + updateRandomness2) {
     const { facing } = getRandomYurtProps();
-    const farm = (farms.filter((f) => f.type === 'fish').length && yurts.filter((y) => y.type === 'fish').length < 2)
-      ? farms.find((f) => f.type === 'fish')
+    const farm = (farms.filter((f) => f.type === colors.fish).length && yurts.filter((y) => y.type === colors.fish).length < 2)
+      ? farms.find((f) => f.type === colors.fish)
       : farms.length > 2
         ? farms.at(Math.random() * farms.length)
         : farms[farms.length - 1];
@@ -487,9 +488,11 @@ export const spawnNewObjects = (updateCount, delay) => {
   // If the first yurt spawn attempt failed, try again ~400ms later
   if (updateCount % spawningLoopLength === 600 + updateRandomness2 && yurtFailed) {
     const { facing } = getRandomYurtProps();
-    const farm = farms.length > 2
-      ? farms.at(Math.random() * farms.length)
-      : farms[farms.length - 1];
+    const farm = (farms.filter((f) => f.type === colors.fish).length && yurts.filter((y) => y.type === colors.fish).length < 2)
+      ? farms.find((f) => f.type === colors.fish)
+      : farms.length > 2
+        ? farms.at(Math.random() * farms.length)
+        : farms[farms.length - 1];
     // console.log('trying to spawn a yurt of type:', farm.type);
     const randomPosition = getRandomPosition({
       anchor: {

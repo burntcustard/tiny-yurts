@@ -1,4 +1,9 @@
 /* eslint-disable key-spacing */
+
+/**
+ * The colors list is also used as a farm type enum, for example instead of:
+ * `if (farm.type === 'goat')`, do `if (farm.type === colors.goat)`
+ */
 export const colors = {
   grass:  '#8a5',
   leaf:   '#ac6',

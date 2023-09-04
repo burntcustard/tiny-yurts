@@ -12,7 +12,7 @@ export class GoatFarm extends Farm {
     });
 
     this.needyness = 230;
-    this.type = 'goat';
+    this.type = colors.goat;
 
     goatFarms.push(this);
 

@@ -12,7 +12,7 @@ export class OxFarm extends Farm {
     });
 
     this.needyness = 220;
-    this.type = 'ox';
+    this.type = colors.ox;
 
     oxFarms.push(this);
 

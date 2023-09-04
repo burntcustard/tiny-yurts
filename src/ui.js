@@ -1,6 +1,7 @@
 import { createSvgElement } from './svg-utils';
 import { emojiOx } from './ox-emoji';
 import { emojiGoat } from './goat-emoji';
+import { emojiFish } from './fish-emoji';
 import { colors } from './colors';
 
 export const oxCounterWrapper = document.createElement('div');
@@ -18,7 +19,6 @@ export const initUi = () => {
   styles.innerText = `
     body {
       font-family: system-ui;
-      font-size: 20px;
       font-weight: 700;
       color: #443;
       margin: 0;
@@ -35,14 +35,12 @@ export const initUi = () => {
       display: flex;
       gap: 20px;
       align-self: end;
-      justify-content:center;
+      justify-content: center;
     }
     button {
       position:relative;
       display: grid;
       place-items: center;
-      // width: 56px;
-      // aspect-ratio: 1;
       border: none;
       padding: 0;
       background: 0;
@@ -136,7 +134,7 @@ export const initUi = () => {
   counters.append(goatCounterWrapper);
 
   fishCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
-  const fishCounterEmoji = emojiGoat();
+  const fishCounterEmoji = emojiFish();
   fishCounterEmoji.style.width = '48px';
   fishCounterEmoji.style.height = '48px';
   fishCounterWrapper.append(fishCounterEmoji, fishCounter);
