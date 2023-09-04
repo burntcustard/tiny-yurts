@@ -1,14 +1,13 @@
 import { Yurt, yurts } from './yurt';
 import { farms } from './farm';
 import { paths } from './path';
-import { ponds } from './pond';
+import { ponds, spawnPond } from './pond';
 import { OxFarm } from './ox-farm';
 import { GoatFarm } from './goat-farm';
 import {
-  boardOffsetX, boardOffsetY, boardWidth, boardHeight, gridCellSize, gridHeight, gridWidth
+  boardOffsetX, boardOffsetY, boardWidth, boardHeight, gridCellSize, gridHeight, gridWidth,
 } from './svg';
 import { weightedRandom } from './weighted-random';
-import { spawnPond } from './pond';
 import { FishFarm, fishFarms } from './fish-farm';
 import { shuffle } from './shuffle';
 import { colors } from './colors';
@@ -16,7 +15,7 @@ import { createSvgElement } from './svg-utils';
 import { pinLayer, yurtLayer } from './layers';
 
 const farmTypes = [colors.ox, colors.goat]; // TODO: fish, crops, horses(?)
-const spawningLoopLength = 2500;
+const spawningLoopLength = 3000;
 
 export const getRandomPosition = ({
   width = 1,
@@ -31,21 +30,38 @@ export const getRandomPosition = ({
 }) => {
   let numAttempts = 0;
 
-  let anchorTestSvg;
-  if (anchor.width > 0 && anchor.height > 0) {
-    // Anchors that have width and height are cyan squares
-    anchorTestSvg = createSvgElement('rect');
-    anchorTestSvg.setAttribute('width', anchor.width * gridCellSize);
-    anchorTestSvg.setAttribute('height', anchor.height * gridCellSize);
-    anchorTestSvg.setAttribute('fill', '#0ff9');
-  } else {
-    // Anchors which are just points are yellow dots
-    anchorTestSvg = createSvgElement('circle');
-    anchorTestSvg.setAttribute('r', 2);
-    anchorTestSvg.setAttribute('fill', '#ff09');
-  }
-  anchorTestSvg.style.transform = `translate(${anchor.x * gridCellSize}px,${anchor.y * gridCellSize}px)`;
-  pinLayer.appendChild(anchorTestSvg);
+  // let anchorTestSvg;
+  // if (anchor.width > 0 && anchor.height > 0) {
+  //   // Anchors that have width and height are cyan squares
+  //   anchorTestSvg = createSvgElement('rect');
+  //   anchorTestSvg.setAttribute('width', anchor.width * gridCellSize);
+  //   anchorTestSvg.setAttribute('height', anchor.height * gridCellSize);
+  //   anchorTestSvg.setAttribute('fill', '#0ff9');
+  // } else {
+  //   // Anchors which are just points are yellow dots
+  //   anchorTestSvg = createSvgElement('circle');
+  //   anchorTestSvg.setAttribute('r', 2);
+  //   anchorTestSvg.setAttribute('fill', '#ff09');
+  // }
+  // anchorTestSvg.style.transform = `
+  //   translate(${anchor.x * gridCellSize}px,${anchor.y * gridCellSize}px)
+  // `;
+  // pinLayer.appendChild(anchorTestSvg);
+  // setTimeout(() => anchorTestSvg.style.opacity = 0, 5000);
+  // let minDistSvg = createSvgElement('rect');
+  // minDistSvg.setAttribute(
+  //   'width',
+  //   (minDistance + width + minDistance) * gridCellSize
+  // );
+  // minDistSvg.setAttribute(
+  //   'height',
+  //   (minDistance + height + minDistance) * gridCellSize
+  // );
+  // minDistSvg.setAttribute('stroke', '#f005');
+  // minDistSvg.setAttribute('fill', 'none');
+  // minDistSvg.style.transform = `translate(${(anchor.x - minDistance) * gridCellSize}px,${(anchor.y - minDistance) * gridCellSize}px)`;
+  // pinLayer.appendChild(minDistSvg);
+  // setTimeout(() => minDistSvg.style.opacity = 0, 5000);
 
   while (numAttempts < maxNumAttempts) {
     numAttempts++;
@@ -81,21 +97,12 @@ export const getRandomPosition = ({
     // Extra bit of path is off the edge of the game board
     if (
       x + extra.x < boardOffsetX
-      || x + extra.x > boardWidth - width
+      || x + extra.x > boardOffsetX + boardWidth - 1
       || y + extra.y < boardOffsetY
-      || y + extra.y > boardHeight - height
+      || y + extra.y > boardOffsetY + boardHeight - 1
     ) {
-      // continue;
+      continue;
     }
-
-    // Check if too far away from position
-    // Not needed because we no longer spam the whole map looking for spawns
-    // if (
-    //   x > anchor.x + maxDistance ||
-    //   x < anchor.x - maxDistance ||
-    //   y > anchor.y + maxDistance ||
-    //   y < anchor.y - maxDistance
-    // ) continue;
 
     // TODO: Allow spawning of some things on ponds?
     const pondObstruction = ponds.some((pond) => pond.avoidancePoints.some((pondCell) => {
@@ -211,7 +218,7 @@ const getRandomExistingType = () => {
 
   // console.log(farmTypeCounts);
 
-  const newType = Object.keys(farmTypeCounts)[weightedRandom(weights)]
+  const newType = Object.keys(farmTypeCounts)[weightedRandom(weights)];
   // console.log('Type chosen:', newType);
 
   return newType;
@@ -256,54 +263,38 @@ export const spawnNewObjects = (updateCount, delay) => {
     updateRandomness4 = Math.floor(Math.random() * 200);
     updateRandomness5 = Math.floor(Math.random() * 200);
   }
-  // console.log(updateCount);
 
   if (updateCount === 0) {
-    for (let i = 0; i < 99; i++) {
-      const width = 1;
-      const height = 1;
-      const randomPosition = getRandomPosition({
-        width,
-        height,
-        // anchor: {
-        //   x: 14,
-        //   y: 7,
-        //   width: 2,
-        //   height: 2,
-        // },
-        minDistance: 2,
-        maxDistance: 3,
-        maxNumAttempts: 16,
-      });
-      if (randomPosition) {
-        const x = randomPosition.x * gridCellSize;
-        const y = randomPosition.y * gridCellSize;
-
-        const testSvg = createSvgElement('rect');
-        testSvg.setAttribute('width', 8 * width);
-        testSvg.setAttribute('height', 8 * height);
-        testSvg.setAttribute('stroke', '#f005');
-        testSvg.setAttribute('fill', '#fff5');
-        testSvg.style.transform = `translate(${x}px,${y}px)`;
-        yurtLayer.appendChild(testSvg);
-      }
-    }
-
-    // for (let i = 0; i < 80; i++) {
+    // for (let i = 0; i < 99; i++) {
+    //   const width = 0;
+    //   const height = 0;
     //   const randomPosition = getRandomPosition({
-    //     width: 1,
-    //     height: 1,
-    //     minDistance: 4,
+    //     width,
+    //     height,
+    //     anchor: {
+    //       x: 14,
+    //       y: 6,
+    //       width: 3,
+    //       height: 2,
+    //     },
+    //     minDistance: 2,
+    //     maxDistance: 3,
     //     maxNumAttempts: 16,
     //   });
     //   if (randomPosition) {
-    //     const x = gridCellSize / 2 + randomPosition.x * gridCellSize;
-    //     const y = gridCellSize / 2 + randomPosition.y * gridCellSize;
+    //     const x = randomPosition.x * gridCellSize;
+    //     const y = randomPosition.y * gridCellSize;
 
     //     const testSvg = createSvgElement('circle');
-    //     testSvg.setAttribute('r', 2);
-    //     testSvg.setAttribute('fill', 'red');
-    //     testSvg.style.transform = `translate(${x}px,${y}px)`;
+    //     testSvg.style.transform = `translate(${x + gridCellSize / 2}px,${y + gridCellSize / 2}px)`;
+    //     testSvg.setAttribute('r', 1);
+
+    //     // const testSvg = createSvgElement('rect');
+    //     // testSvg.setAttribute('width', 8 * width);
+    //     // testSvg.setAttribute('height', 8 * height);
+    //     // testSvg.setAttribute('stroke', '#f005');
+    //     testSvg.setAttribute('fill', '#fff5');
+    //     // testSvg.style.transform = `translate(${x}px,${y}px)`;
     //     yurtLayer.appendChild(testSvg);
     //   }
     // }
@@ -316,7 +307,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         width,
         height,
         minDistance: 5,
-        maxNumAttempts: 16,
+        maxNumAttempts: 32, // This could take a while, but it's required
       });
 
       if (randomPosition) {
@@ -381,8 +372,7 @@ export const spawnNewObjects = (updateCount, delay) => {
   // Spawn the first farm, early on, near the center
   if (
     (updateCount === 0)
-    ||
-    (updateCount > 1000 && updateCount % spawningLoopLength === 0 + (farms.length ? updateRandomness1 : 0))
+    || (updateCount > 1000 && updateCount % spawningLoopLength === 0 + (farms.length ? updateRandomness1 : 0))
   ) {
     if (updateCount > 10000 && !fishFarms.length) {
       // Find 4x4 water
@@ -407,8 +397,12 @@ export const spawnNewObjects = (updateCount, delay) => {
         x,
         y,
         relativePathPoints: [
-          { x: pathPosX1, y: pathPosY1, fixed: true, stone: true },
-          { x: bigPond.width > 4 ? pathPosX3 : pathPosX2, y: pathPosY1, fixed: true, stone: true },
+          {
+            x: pathPosX1, y: pathPosY1, fixed: true, stone: true,
+          },
+          {
+            x: bigPond.width > 4 ? pathPosX3 : pathPosX2, y: pathPosY1, fixed: true, stone: true,
+          },
         ],
       });
     } else {
@@ -421,18 +415,17 @@ export const spawnNewObjects = (updateCount, delay) => {
         anchor: farms.length > 1 // So for the 3rd farm...
           ? yurts.filter((y) => y.type === type).at(Math.random() * yurts.length)
           : farms[farms.length - 1], // if undefined randomPosition will use default
-        maxDistance: farms.length ? farms.length * 2 : 1,
+        maxDistance: farms.length + 2,
         minDistance: farms.length ? 2 : 0,
-        maxNumAttempts: 16,
+        // We _need_ this to work on 1st loop otherwise the menu breaks.
+        // Setting to 32 is sometimes slow, but it's pretty reliable, and small
+        maxNumAttempts: updateCount === 0 ? 32 : 8,
         extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
       });
 
       // Can't find a position, so instead try to upgrade a farm instead
       if (!randomPosition) {
-        const shuffledFarms = farms
-          .map((value) => ({ value, sort: Math.random() }))
-          .sort((a, b) => a.sort - b.sort)
-          .map(({ value }) => value);
+        const shuffledFarms = shuffle(farms);
 
         for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
           if (shuffledFarms[i].upgrade()) {
@@ -470,11 +463,13 @@ export const spawnNewObjects = (updateCount, delay) => {
   // Spawn the first yurt really soon after
   if (updateCount % spawningLoopLength === 500 + updateRandomness2) {
     const { facing } = getRandomYurtProps();
+
     const farm = (farms.filter((f) => f.type === colors.fish).length && yurts.filter((y) => y.type === colors.fish).length < 2)
       ? farms.find((f) => f.type === colors.fish)
       : farms.length > 2
         ? farms.at(Math.random() * farms.length)
         : farms[farms.length - 1];
+
     const randomPosition = getRandomPosition({
       anchor: {
         x: farm.x,
@@ -504,7 +499,10 @@ export const spawnNewObjects = (updateCount, delay) => {
   // If the first yurt spawn attempt failed, try again ~400ms later
   if (updateCount % spawningLoopLength === 600 + updateRandomness2 && yurtFailed) {
     const { facing } = getRandomYurtProps();
-    const farm = (farms.filter((f) => f.type === colors.fish).length && yurts.filter((y) => y.type === colors.fish).length < 2)
+    const farm = (
+      farms.filter((f) => f.type === colors.fish).length
+      && yurts.filter((y) => y.type === colors.fish).length < 2
+    )
       ? farms.find((f) => f.type === colors.fish)
       : farms.length > 2
         ? farms.at(Math.random() * farms.length)
@@ -532,18 +530,6 @@ export const spawnNewObjects = (updateCount, delay) => {
     }
 
     return;
-  }
-
-  if (updateCount % spawningLoopLength === 1000 + updateRandomness3 && updateCount > 4000) {
-    upgradedThisLoop = false;
-
-    const shuffledFarms = shuffle(farms);
-
-    for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
-      if (shuffledFarms[i].upgrade()) {
-        upgradedThisLoop = true;
-      }
-    }
   }
 
   if (updateCount % spawningLoopLength === 1500 + updateRandomness4) {
@@ -578,18 +564,57 @@ export const spawnNewObjects = (updateCount, delay) => {
     return;
   }
 
-  if (updateCount % spawningLoopLength === 2000 + updateRandomness5 && updateCount > 8000) {
-    upgradedThisLoop = false;
+  if (updateCount % spawningLoopLength === 2500 + updateRandomness5 && updateCount > 10000) {
+    const { width, height, relativePathPoints } = getRandomFarmProps();
+    const type = getRandomNewType();
 
-    const shuffledFarms = farms
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
+    const randomPosition = getRandomPosition({
+      width,
+      height,
+      anchor: farms.length > 1 // So for the 3rd farm...
+        ? yurts.filter((y) => y.type === type).at(Math.random() * yurts.length)
+        : farms[farms.length - 1], // if undefined randomPosition will use default
+      maxDistance: farms.length + 2,
+      minDistance: farms.length ? 2 : 0,
+      // We _need_ this to work on 1st loop otherwise the menu breaks.
+      // Setting to 32 is sometimes slow, but it's pretty reliable, and small
+      maxNumAttempts: updateCount === 0 ? 32 : 8,
+      extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
+    });
 
-    for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
-      if (shuffledFarms[i].upgrade()) {
-        upgradedThisLoop = true;
+    // Can't find a position, so instead try to upgrade a farm instead
+    if (!randomPosition) {
+      const shuffledFarms = shuffle(farms);
+
+      for (let i = 0; i < shuffledFarms.length && !upgradedThisLoop; i++) {
+        if (shuffledFarms[i].upgrade()) {
+          upgradedThisLoop = true;
+        }
       }
+
+      return;
+    }
+
+    if (type === colors.ox) {
+      new OxFarm({
+        width,
+        height,
+        x: randomPosition.x,
+        y: randomPosition.y,
+        relativePathPoints,
+        delay,
+      });
+      return;
+    } if (type === colors.goat) {
+      new GoatFarm({
+        width,
+        height,
+        x: randomPosition.x,
+        y: randomPosition.y,
+        relativePathPoints,
+        delay, // TODO: See if having this in every new farm call saves bytes
+      });
+      return;
     }
   }
 };

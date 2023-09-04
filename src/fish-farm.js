@@ -14,7 +14,7 @@ export class FishFarm extends Farm {
       height: 2,
     });
 
-    this.needyness = 1000;
+    this.needyness = 1300;
     this.type = colors.fish;
 
     fishFarms.push(this);
@@ -31,22 +31,23 @@ export class FishFarm extends Farm {
   }
 
   upgrade() {
-    // Fish farms cannot upgrade?
-    return false;
+    // Cannot upgrade if there are 9 or more fish already
+    if (this.children.length >= 9) {
+      return false;
+    }
 
-    // Cannot upgrade if there are 5 or more ox already
-    // if (this.children.length >= 5) {
-    //   return false;
-    // }
+    // 2 parents
+    for (let i = 0; i < 2; i++) {
+      setTimeout(() => this.children[i].showLove(), i * 1000);
+      setTimeout(() => this.children[i].hideLove(), 7000);
+    }
 
-    // // 3 parents 2 babies each upgrade
-    // for (let i = 0; i < this.children.filter((c) => !c.isBaby).length; i++) {
-    //   setTimeout(() => this.children.filter((c) => !c.isBaby)[i].showLove(), i * 1000);
-    //   setTimeout(() => this.children.filter((c) => !c.isBaby)[i].hideLove(), 7000);
-    //   if (i) setTimeout(() => this.addAnimal({ isBaby: true }), i * 1000 + 7000);
-    // }
+    //  new fish each upgrade
+    for (let i = 0; i < 4; i++) {
+      setTimeout(() => this.addAnimal({}), i * 1000 + 7000);
+    }
 
-    // return true;
+    return true;
   }
 
   addAnimal({ isBaby = false }) {

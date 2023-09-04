@@ -1,9 +1,7 @@
 import { createSvgElement } from './svg-utils';
 import { gridCellSize } from './svg';
 import { Structure } from './structure';
-import {
-  baseLayer, yurtLayer, yurtAndPersonShadowLayer,
-} from './layers';
+import { yurtLayer, yurtAndPersonShadowLayer } from './layers';
 import { colors } from './colors';
 
 export const trees = [];
@@ -18,7 +16,7 @@ export const trees = [];
 
 export class Tree extends Structure {
   constructor(properties) {
-    super({...properties});
+    super({ ...properties });
 
     this.points = [{
       x: this.x,
@@ -49,7 +47,7 @@ export class Tree extends Structure {
       const size = Math.random() / 2 + 1;
 
       const circle = createSvgElement('circle');
-      circle.style.transform = `translate(${xOffset}px, ${yOffset}px)`
+      circle.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
       circle.setAttribute('fill', colors.leaf);
       circle.style.transition = 'r.4s';
       setTimeout(() => circle.setAttribute('r', size), 400 * i);
@@ -61,7 +59,7 @@ export class Tree extends Structure {
       shadow.setAttribute('rx', size * 1.2);
       shadow.setAttribute('ry', size * 0.9);
       shadow.style.opacity = 0.6;
-      shadow.style.transform = `translate(${xOffset+size*0.7}px,${yOffset+size*0.7}px) rotate(45deg)`;
+      shadow.style.transform = `translate(${xOffset + size * 0.7}px,${yOffset + size * 0.7}px) rotate(45deg)`;
       shadow.setAttribute('fill', colors.black);
       this.shadowGroup.append(shadow);
     }

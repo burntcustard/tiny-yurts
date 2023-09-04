@@ -1,7 +1,7 @@
 import { angleToTarget, radToDeg, Vector } from 'kontra';
 import { Animal } from './animal';
 // Should fish have shadows?
-import { animalLayer, animalShadowLayer } from './layers';
+import { animalLayer } from './layers';
 import { colors } from './colors';
 import { gridCellSize } from './svg';
 import { createSvgElement } from './svg-utils';
@@ -59,7 +59,7 @@ export class Fish extends Animal {
 
     setTimeout(() => {
       this.svgBody.setAttribute('fill', colors.shade2);
-    }, 3000);
+    }, 4000);
   }
 
   update(gameStarted) {

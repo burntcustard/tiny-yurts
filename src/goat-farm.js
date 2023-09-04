@@ -11,7 +11,7 @@ export class GoatFarm extends Farm {
       fenceColor: colors.goat,
     });
 
-    this.needyness = 230;
+    this.needyness = 240;
     this.type = colors.goat;
 
     goatFarms.push(this);
@@ -25,7 +25,7 @@ export class GoatFarm extends Farm {
   }
 
   upgrade() {
-    // Cannot upgrade if there are 5 or more ox already
+    // Cannot upgrade if there are 7 or more goats already
     if (this.children.length >= 7) {
       return false;
     }

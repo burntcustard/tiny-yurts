@@ -33,4 +33,4 @@ export const emojiGoat = () => {
   emojiGoat.append(horn1, horn2, beard, body, eye);
 
   return emojiGoat;
-}
+};

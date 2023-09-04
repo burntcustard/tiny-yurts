@@ -17,7 +17,8 @@ let isDragging = false;
 
 const yurtInCell = (x, y) => yurts.find((yurt) => yurt.x === x && yurt.y === y);
 const pondInCell = (x, y) => ponds.find((pond) => pond.points.find((p) => p.x === x && p.y === y));
-const pondPathInCell = (x, y) => paths.find((path) => path.points[1].x === x && path.points[1].y === y && path.points[1].stone);
+const pondPathInCell = (x, y) => paths
+  .find((path) => path.points[1].x === x && path.points[1].y === y && path.points[1].stone);
 
 const samePathInBothCell = (x0, y0, x1, y1) => paths.find((path) => (
   (

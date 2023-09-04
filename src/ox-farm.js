@@ -11,7 +11,7 @@ export class OxFarm extends Farm {
       fenceColor: colors.ox,
     });
 
-    this.needyness = 220;
+    this.needyness = 225;
     this.type = colors.ox;
 
     oxFarms.push(this);
@@ -25,7 +25,7 @@ export class OxFarm extends Farm {
   }
 
   upgrade() {
-    // Cannot upgrade if there are 5 or more ox already
+    // Cannot upgrade if there are 5 or more oxen already
     if (this.children.length >= 5) {
       return false;
     }

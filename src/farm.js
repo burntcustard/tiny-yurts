@@ -54,7 +54,7 @@ export class Farm extends Structure {
       });
 
       drawPaths({});
-    }, 1500 + properties.delay); // Right now this means can't stop path overlap within 1.5s of spawning
+    }, 1500 + properties.delay); // Can't prevent path overlap soon after spawning due to this
 
     farms.push(this);
     setTimeout(() => {

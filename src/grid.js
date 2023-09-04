@@ -19,7 +19,7 @@ export const addGridBackgroundToSvg = () => {
   gridRectBackground.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness / 2} ${boardOffsetY * gridCellSize - gridLineThickness / 2})`);
 
   svgElement.append(gridRectBackground);
-}
+};
 
 export const addGridToSvg = () => {
   // The entire games grid, including non-buildable area off the board

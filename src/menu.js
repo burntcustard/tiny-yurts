@@ -1,4 +1,6 @@
-import { svgElement, boardOffsetX, boardOffsetY, gridWidth, gridHeight } from './svg';
+import {
+  svgElement, boardOffsetX, boardOffsetY, gridWidth, gridHeight,
+} from './svg';
 import { svgPxToDisplayPx } from './cell';
 import { menuBackground } from './menu-background';
 
@@ -71,9 +73,9 @@ export const showMenu = (focus, firstTime) => {
 export const hideMenu = () => {
   menuWrapper.style.pointerEvents = 'none';
 
-  menuBackground.style.transition =     'opacity 1s.5s';
-  menuHeader.style.transition =         'opacity.3s.3s';
-  menuText1.style.transition =          'opacity.3s.2s';
+  menuBackground.style.transition = 'opacity 1s.5s';
+  menuHeader.style.transition = 'opacity.3s.3s';
+  menuText1.style.transition = 'opacity.3s.2s';
   startButtonWrapper.style.transition = 'opacity.3s.1s';
 
   menuBackground.style.opacity = 0;

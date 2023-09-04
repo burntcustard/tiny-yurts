@@ -2,7 +2,7 @@ import {
   init, initKeys, onKey, GameLoop,
 } from 'kontra';
 import {
-  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY, gridCellSize, boardWidth, boardHeight
+  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY, gridCellSize, boardWidth, boardHeight,
 } from './svg';
 import { initPointer } from './pointer';
 import { oxFarms } from './ox-farm';
@@ -10,7 +10,9 @@ import { goatFarms } from './goat-farm';
 import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
-import { initUi, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper } from './ui';
+import {
+  initUi, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper,
+} from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
 import { spawnNewObjects } from './spawning';
@@ -46,8 +48,10 @@ const startNewGame = () => {
 
   oxCounterWrapper.style.width = 0;
   goatCounterWrapper.style.width = 0;
+  fishCounterWrapper.style.width = 0;
   oxCounter.innerText = 0;
   goatCounter.innerText = 0;
+  fishCounter.innerText = 0;
 
   setTimeout(() => {
     goatFarms.length = 0;
@@ -59,7 +63,7 @@ const startNewGame = () => {
     goats.length = 0;
     yurts.length = 0;
     paths.length = 0;
-    ponds.length - 0;
+    ponds.length = 0;
     updateCount = 0;
     renderCount = 0;
     totalUpdateCount = 0;
@@ -73,7 +77,7 @@ const startNewGame = () => {
       loop.start();
     }, 1000);
   }, 1000);
-}
+};
 
 let gameStarted = false;
 
@@ -84,8 +88,10 @@ const gameoverToMenu = () => {
 
   oxCounterWrapper.style.width = 0;
   goatCounterWrapper.style.width = 0;
+  fishCounterWrapper.style.width = 0;
   oxCounter.innerText = 0;
   goatCounter.innerText = 0;
+  fishCounter.innerText = 0;
 
   setTimeout(() => {
     goatFarms.length = 0;
@@ -112,9 +118,11 @@ const gameoverToMenu = () => {
       loop.start();
     }, 750);
   }, 500);
-}
+};
 
-const { pathTilesCountElement, pathTilesButton, timeButtonHand, timeButton } = initUi();
+const {
+  pathTilesCountElement, pathTilesButton, timeButtonHand, timeButton,
+} = initUi();
 initMenuBackground();
 initGameover(startNewGame, gameoverToMenu);
 init(null, { contextless: true });
@@ -123,7 +131,7 @@ initPointer();
 
 const startGame = () => {
   svgElement.style.transition = 'transform 2s';
-  svgElement.style.transform = `rotate(0) scale(1) translate(0, 0)`;
+  svgElement.style.transform = 'rotate(0) scale(1) translate(0, 0)';
   hideMenu();
   gameStarted = true;
   updateCount = totalUpdateCount = 1;
@@ -187,6 +195,7 @@ const loop = GameLoop({
 
         oxCounterWrapper.style.opacity = 0;
         goatCounterWrapper.style.opacity = 0;
+        fishCounterWrapper.style.opacity = 0;
         showGameover(startNewGame);
       }
     });

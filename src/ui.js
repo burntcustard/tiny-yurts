@@ -145,8 +145,7 @@ export const initUi = () => {
   timeButtonSvg.setAttribute('stroke-linejoin', 'round');
   timeButtonSvg.setAttribute('stroke-linecap', 'round');
   timeButtonSvg.setAttribute('viewBox', '0 0 16 16');
-  timeButton.style.width = '64px';  timeButton.style.width = '64px';
-
+  timeButton.style.width = '64px';
   timeButton.style.height = '64px';
   timeButton.style.opacity = 0;
   timeButton.style.transition = 'opacity 1s';

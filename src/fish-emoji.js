@@ -23,4 +23,4 @@ export const emojiFish = () => {
   emojiFish.append(fins, body, eye);
 
   return emojiFish;
-}
+};

@@ -50,12 +50,12 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
   fishEmoji.style.width = '24px';
   fishEmoji.style.height = '24px';
 
-
   menuButtonWrapper.style.opacity = 0;
   restartButtonWrapper.style.opacity = 0;
   menuButtonWrapper.append(menuButton);
   restartButtonWrapper.append(restartButton);
-  restartButton.className = menuButton.className = 'menu';
+  restartButton.className = 'menu';
+  menuButton.className = 'menu';
   restartButton.innerText = 'Restart';
   menuButton.innerText = 'Menu';
 
@@ -66,22 +66,28 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
   gameoverButtons.append(restartButtonWrapper, menuButtonWrapper);
   gameoverButtons.style.cssText = 'display:grid;gap:16px;margin-top:48px';
 
-  gameoverWrapper.append(gameoverHeader, gameoverText1, gameoverText2, gameoverText3, gameoverButtons);
+  gameoverWrapper.append(
+    gameoverHeader,
+    gameoverText1,
+    gameoverText2,
+    gameoverText3,
+    gameoverButtons,
+  );
 
   document.body.append(gameoverWrapper);
-}
+};
 
 export const showGameover = () => {
   menuBackground.style.clipPath = 'polygon(0 0,100% 0, 100% 100%, 0 100%)';
-  menuBackground.style.transition =       'opacity 2s 1s';
-  gameoverHeader.style.transition =       'opacity 1s 2s';
-  gameoverText1.style.transition =        'opacity 1s 2s';
-  gameoverText2.style.transition =        'opacity 1s 3s';
-  oxEmojiWrapper.style.transition =       'opacity 1s 3.2s';
-  goatEmojiWrapper.style.transition =     'opacity 1s 3.6s';
-  fishEmojiWrapper.style.transition =     'opacity 1s 3.8s';
+  menuBackground.style.transition = 'opacity 2s 1s';
+  gameoverHeader.style.transition = 'opacity 1s 2s';
+  gameoverText1.style.transition = 'opacity 1s 2s';
+  gameoverText2.style.transition = 'opacity 1s 3s';
+  oxEmojiWrapper.style.transition = 'opacity 1s 3.2s';
+  goatEmojiWrapper.style.transition = 'opacity 1s 3.6s';
+  fishEmojiWrapper.style.transition = 'opacity 1s 3.8s';
   restartButtonWrapper.style.transition = 'opacity 1s 5s';
-  menuButtonWrapper.style.transition =    'opacity 1s 5.2s';
+  menuButtonWrapper.style.transition = 'opacity 1s 5.2s';
 
   oxEmojiWrapper.innerHTML = '';
   oxEmojiWrapper.append(oxEmoji, `×${oxen.length}`);
@@ -100,7 +106,7 @@ export const showGameover = () => {
   gameoverText2.append(peopleCount, ' and ', animalsCount, ' lived in your camp.');
 
   gameoverText3.innerHTML = '';
-  gameoverText3.append(oxEmojiWrapper, ' ' , goatEmojiWrapper, ' ', fishEmojiWrapper);
+  gameoverText3.append(oxEmojiWrapper, ' ', goatEmojiWrapper, ' ', fishEmojiWrapper);
 
   setTimeout(() => {
     gameoverWrapper.style.pointerEvents = '';
@@ -118,16 +124,16 @@ export const showGameover = () => {
 };
 
 export const hideGameover = () => {
-  gameoverWrapper.style.transition =      'opacity 1s 2s';
-  menuBackground.style.transition =       'opacity 1s 1s';
-  gameoverHeader.style.transition =       'opacity.3s.6s';
-  gameoverText1.style.transition =        'opacity.3s.5s';
-  gameoverText2.style.transition =        'opacity.3s.4s';
-  oxEmojiWrapper.style.transition =       'opacity.3s.3s';
-  goatEmojiWrapper.style.transition =     'opacity.3s.2s';
-  fishEmojiWrapper.style.transition =     'opacity.3s.2s';
+  gameoverWrapper.style.transition = 'opacity 1s 2s';
+  menuBackground.style.transition = 'opacity 1s 1s';
+  gameoverHeader.style.transition = 'opacity.3s.6s';
+  gameoverText1.style.transition = 'opacity.3s.5s';
+  gameoverText2.style.transition = 'opacity.3s.4s';
+  oxEmojiWrapper.style.transition = 'opacity.3s.3s';
+  goatEmojiWrapper.style.transition = 'opacity.3s.2s';
+  fishEmojiWrapper.style.transition = 'opacity.3s.2s';
   restartButtonWrapper.style.transition = 'opacity.3s.1s';
-  menuButtonWrapper.style.transition =    'opacity.3s 0s';
+  menuButtonWrapper.style.transition = 'opacity.3s 0s';
 
   gameoverWrapper.style.pointerEvents = 'none';
   gameoverWrapper.style.opacity = 0;
