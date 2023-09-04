@@ -4,6 +4,8 @@ import { emojiGoat } from './goat-emoji';
 import { emojiFish } from './fish-emoji';
 import { colors } from './colors';
 
+export const counters = document.createElement('div');
+
 export const oxCounterWrapper = document.createElement('div');
 export const oxCounter = document.createElement('div');
 
@@ -46,32 +48,26 @@ export const initUi = () => {
       background: 0;
       font-weight: 700;
       font-family: system-ui;
-      font-size: 14px;
     }
     button > div {
       display: grid;
       place-items: center;
-      width: 56px;
-      aspect-ratio: 1;
       background: #443f;
       border-radius: 50%;
       transition: all.3s;
-      overflow: hidden;
       color: #fffe;
-      backdrop-filter: blur(4px);
     }
     button div + div {
       position: absolute;
       right: 0;
-      width: 20px;
-      height: 20px;
-      padding-right: 0.5px;
-      padding-bottom: 0.5px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background: #eee;
       border: 4px solid #443;
       transform: translateX(50%);
       color: #443;
+      font-size: 16px;
     }
     button:hover div {
       border-color: #443b;
@@ -115,8 +111,7 @@ export const initUi = () => {
     justify-self: start;
   `;
 
-  const counters = document.createElement('div');
-  counters.style.cssText = 'display:flex;';
+  counters.style.cssText = 'display:flex;opacity:0;';
   header.append(counters);
 
   oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
@@ -180,8 +175,8 @@ export const initUi = () => {
   const pathTilesButtonInner = document.createElement('div');
   const pathTilesSvg = createSvgElement('svg');
   pathTilesSvg.setAttribute('viewBox', '0 0 18 18');
-  pathTilesSvg.style.width = '36px';
-  pathTilesSvg.style.height = '36px';
+  pathTilesSvg.style.width = '54px';
+  pathTilesSvg.style.height = '54px';
   const pathTilesPath = createSvgElement('path');
   pathTilesPath.setAttribute('fill', 'none');
   pathTilesPath.setAttribute('stroke', 'currentColor');
@@ -194,8 +189,9 @@ export const initUi = () => {
   pathTilesSvg.append(pathTilesPath);
   pathTilesButtonInner.style.transform = 'rotate(-45deg)';
   pathTilesSvg.style.transform = 'rotate(45deg)';
-  pathTilesButtonInner.style.width = '48px';
-  pathTilesButtonInner.style.borderRadius = '12px';
+  pathTilesButtonInner.style.width = '64px';
+  pathTilesButtonInner.style.height = '64px';
+  pathTilesButtonInner.style.borderRadius = '16px';
   const pathTilesCountElement = document.createElement('div');
   pathTilesButton.append(pathTilesCountElement);
   buildBar.append(pathTilesButton);

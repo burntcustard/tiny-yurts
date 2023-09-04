@@ -11,7 +11,7 @@ import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import {
-  initUi, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper,
+  initUi, counters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper,
 } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
@@ -132,6 +132,7 @@ initPointer();
 const startGame = () => {
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = 'rotate(0) scale(1) translate(0, 0)';
+  counters.style.opacity = 1;
   hideMenu();
   gameStarted = true;
   updateCount = totalUpdateCount = 1;
