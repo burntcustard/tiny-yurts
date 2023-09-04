@@ -37,6 +37,15 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
     .replace('</body>', html.match(reScript)[0] + '</body')
     .replace(html.match(reScript)[0], '');
 
+  // This could be used to find-replace stuff post-terser pre-regpack
+  let code = scriptCode;
+  console.log(`\nJS pre custom replace: ${new Blob([code]).size}B`);
+  // code = code
+  //   // .replace(/upgrade/g, '_upgrade')
+  //   .replace(/createElement\("([^"]+)"\)/g, 'createElement`$1`');
+
+  console.log(`JS post custom replace: ${new Blob([code]).size}B`);
+
   const packer = new Packer([{
     data: scriptCode,
     type: 'js',
@@ -67,6 +76,34 @@ function replaceHtml(html) {
     .replace('<meta charset=UTF-8>', '')
     .replace('"width=device-width,initial-scale=1"', 'width=device-width,initial-scale=1')
     .replace(/ lang=[^>]*/, '');
+}
+
+const fileRegex = /\.js$/
+
+function customReplacement(src) {
+  // console.log(src);
+
+  const replaced = src
+    .replace(/upgrade/g, '_upgrade')
+    .replace(/type/g, '_type')
+    .replace(/parent/g, '_parent')
+    .replace(/update/g, '_update')
+
+  return replaced;
+}
+
+export function viteJs13kPre() {
+  return {
+    enforce: 'pre',
+    transform(src, id) {
+      if (fileRegex.test(id)) {
+        return {
+          code: customReplacement(src),
+          map: null
+        }
+      }
+    }
+  }
 }
 
 export function viteJs13k() {

@@ -1,11 +1,12 @@
 import { defineConfig } from 'vite';
-import { viteJs13k } from './plugins/vite-js13k'
+import { viteJs13k, viteJs13kPre } from './plugins/vite-js13k'
 
 export default defineConfig({
   server: {
     port: 3000
   },
   plugins: [
+    viteJs13kPre(),
     viteJs13k(),
   ],
   build: {
@@ -19,7 +20,7 @@ export default defineConfig({
         unsafe_comps: true,
         unsafe_math: true,
       },
-      mangle: { properties: { keep_quoted: true }},
+      mangle: { properties: { keep_quoted: false }},
       module: true,
     },
     assetsInlineLimit: 0,
