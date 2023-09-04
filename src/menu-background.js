@@ -2,7 +2,7 @@ export const menuBackground = document.createElement('div');
 
 // This has to be a sibling element, behind the gameoverScreen, not a child of it,
 // so that the backdrop-filter can transition properly
-menuBackground.style.cssText = 'position:absolute;inset:0;pointer-events:none;background:#fffb;backdrop-filter:blur(8px);';
+menuBackground.style.cssText = 'backdrop-filter:blur(8px);position:absolute;inset:0;pointer-events:none;background:#fffb;';
 
 export const initMenuBackground = () => {
   document.body.append(menuBackground);
