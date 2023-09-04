@@ -12,8 +12,8 @@ import { spawnPond } from './pond';
 import { FishFarm, fishFarms } from './fish-farm';
 import { shuffle } from './shuffle';
 import { colors } from './colors';
-
-// Figure out what to spawn depending on totalUpdates & current score
+import { createSvgElement } from './svg-utils';
+import { pinLayer, yurtLayer } from './layers';
 
 const farmTypes = [colors.ox, colors.goat]; // TODO: fish, crops, horses(?)
 const spawningLoopLength = 2500;
@@ -22,7 +22,7 @@ export const getRandomPosition = ({
   width = 1,
   height = 1,
   anchor = {
-    x: gridWidth / 2 - 0.5, y: gridHeight / 2 - 0.5, width: 1, height: 1,
+    x: gridWidth / 2, y: gridHeight / 2, width: 0, height: 0,
   },
   minDistance = 0,
   maxDistance = 99,
@@ -31,24 +31,40 @@ export const getRandomPosition = ({
 }) => {
   let numAttempts = 0;
 
+  let anchorTestSvg;
+  if (anchor.width > 0 && anchor.height > 0) {
+    // Anchors that have width and height are cyan squares
+    anchorTestSvg = createSvgElement('rect');
+    anchorTestSvg.setAttribute('width', anchor.width * gridCellSize);
+    anchorTestSvg.setAttribute('height', anchor.height * gridCellSize);
+    anchorTestSvg.setAttribute('fill', '#0ff9');
+  } else {
+    // Anchors which are just points are yellow dots
+    anchorTestSvg = createSvgElement('circle');
+    anchorTestSvg.setAttribute('r', 2);
+    anchorTestSvg.setAttribute('fill', '#ff09');
+  }
+  anchorTestSvg.style.transform = `translate(${anchor.x * gridCellSize}px,${anchor.y * gridCellSize}px)`;
+  pinLayer.appendChild(anchorTestSvg);
+
   while (numAttempts < maxNumAttempts) {
     numAttempts++;
 
     const minX = Math.max(
       boardOffsetX,
-      anchor.x - maxDistance - width / 2,
+      anchor.x - maxDistance,
     );
     const maxX = Math.min(
       boardOffsetX + boardWidth - width + 1,
-      anchor.x + anchor.width + maxDistance - width / 2 + 0.5,
+      anchor.x + anchor.width + maxDistance - width + 1,
     );
     const minY = Math.max(
       boardOffsetY,
-      anchor.y - maxDistance - height / 2,
+      anchor.y - maxDistance,
     );
     const maxY = Math.min(
-      boardOffsetY + boardHeight - height / 2,
-      anchor.y + anchor.height + maxDistance - height / 2 + 0.5,
+      boardOffsetY + boardHeight - height + 1,
+      anchor.y + anchor.height + maxDistance - height + 1,
     );
 
     const x = Math.floor(minX + (Math.random() * (maxX - minX)));
@@ -57,9 +73,9 @@ export const getRandomPosition = ({
     // Check if too close to position
     if (
       x < anchor.x + anchor.width + minDistance - 1
-      && x > anchor.x - minDistance
+      && x > anchor.x - minDistance - width + 1
       && y < anchor.y + anchor.height + minDistance - 1
-      && y > anchor.y - minDistance
+      && y > anchor.y - minDistance - height + 1
     ) continue;
 
     // Extra bit of path is off the edge of the game board
@@ -69,7 +85,7 @@ export const getRandomPosition = ({
       || y + extra.y < boardOffsetY
       || y + extra.y > boardHeight - height
     ) {
-      continue;
+      // continue;
     }
 
     // Check if too far away from position
@@ -243,35 +259,35 @@ export const spawnNewObjects = (updateCount, delay) => {
   // console.log(updateCount);
 
   if (updateCount === 0) {
-    // const anchor = {
-    //   x: gridWidth / 2 - 0.5,
-    //   y: gridHeight / 2 - 0.5,
-    // };
-    // const anchorTestSvg = createSvgElement('circle');
-    // anchorTestSvg.setAttribute('r', 2);
-    // anchorTestSvg.setAttribute('fill', 'blue');
-    // anchorTestSvg.style.transform = `translate(${gridCellSize / 2 + anchor.x * gridCellSize}px,${gridCellSize / 2 + anchor.y * gridCellSize}px)`;
-    // pinLayer.appendChild(anchorTestSvg);
+    for (let i = 0; i < 99; i++) {
+      const width = 1;
+      const height = 1;
+      const randomPosition = getRandomPosition({
+        width,
+        height,
+        // anchor: {
+        //   x: 14,
+        //   y: 7,
+        //   width: 2,
+        //   height: 2,
+        // },
+        minDistance: 2,
+        maxDistance: 3,
+        maxNumAttempts: 16,
+      });
+      if (randomPosition) {
+        const x = randomPosition.x * gridCellSize;
+        const y = randomPosition.y * gridCellSize;
 
-    // for (let i = 0; i < 80; i++) {
-    //   const randomPosition = getRandomPosition({
-    //     width: 1,
-    //     height: 1,
-    //     minDistance: 1,
-    //     maxDistance: 2,
-    //     maxNumAttempts: 16,
-    //   });
-    //   if (randomPosition) {
-    //     const x = gridCellSize / 2 + randomPosition.x * gridCellSize;
-    //     const y = gridCellSize / 2 + randomPosition.y * gridCellSize;
-
-    //     const testSvg = createSvgElement('circle');
-    //     testSvg.setAttribute('r', 2);
-    //     testSvg.setAttribute('fill', 'white');
-    //     testSvg.style.transform = `translate(${x}px,${y}px)`;
-    //     yurtLayer.appendChild(testSvg);
-    //   }
-    // }
+        const testSvg = createSvgElement('rect');
+        testSvg.setAttribute('width', 8 * width);
+        testSvg.setAttribute('height', 8 * height);
+        testSvg.setAttribute('stroke', '#f005');
+        testSvg.setAttribute('fill', '#fff5');
+        testSvg.style.transform = `translate(${x}px,${y}px)`;
+        yurtLayer.appendChild(testSvg);
+      }
+    }
 
     // for (let i = 0; i < 80; i++) {
     //   const randomPosition = getRandomPosition({
@@ -291,9 +307,7 @@ export const spawnNewObjects = (updateCount, delay) => {
     //     yurtLayer.appendChild(testSvg);
     //   }
     // }
-  }
 
-  if (updateCount === 0) {
     if (Math.random() > 0.5) {
       const width = 6;
       const height = 4;
@@ -305,12 +319,14 @@ export const spawnNewObjects = (updateCount, delay) => {
         maxNumAttempts: 16,
       });
 
-      spawnPond({
-        width,
-        height,
-        x: randomPosition.x,
-        y: randomPosition.y,
-      });
+      if (randomPosition) {
+        spawnPond({
+          width,
+          height,
+          x: randomPosition.x,
+          y: randomPosition.y,
+        });
+      }
     } else {
       const randomPosition1 = getRandomPosition({
         width: 4,

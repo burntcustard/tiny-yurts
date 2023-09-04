@@ -87,7 +87,7 @@ function customReplacement(src) {
     .replace(/upgrade/g, '_upgrade')
     .replace(/type/g, '_type')
     .replace(/parent/g, '_parent')
-    .replace(/update/g, '_update')
+    // .replace(/update/g, '_update')
 
   return replaced;
 }
