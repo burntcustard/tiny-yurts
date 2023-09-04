@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint 'src/*.js'",
-    "lint:fix": "eslint 'src/*.js' --fix"
+    "lint:fix": "eslint 'src/*.js' --fix",
+    "deploy":"git subtree push --prefix dist origin gh-pages"
   },
   "repository": {
     "type": "git",
