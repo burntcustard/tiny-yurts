@@ -138,8 +138,8 @@ export class Yurt extends Structure {
     setTimeout(() => this.circle.style.willChange = '', 900);
 
     this.shadow = createSvgElement('path');
-    this.shadow.setAttribute('d', 'M0 0l0 0');
-    this.shadow.setAttribute('stroke-width', '6');
+    this.shadow.setAttribute('d', 'M0 0 0 0');
+    this.shadow.setAttribute('stroke-width', 6);
     this.shadow.style.transform = `translate(${x}px,${y}px)`;
     this.shadow.style.opacity = 0;
     this.shadow.style.willChange = 'd';

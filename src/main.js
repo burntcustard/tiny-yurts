@@ -11,7 +11,7 @@ import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import {
-  initUi, counters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper,
+  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth,
 } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
@@ -27,6 +27,7 @@ import { clearLayers } from './layers';
 import { initMenuBackground } from './menu-background';
 import { initGameover, showGameover, hideGameover } from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
+import { colors } from './colors';
 // import { Tree, trees } from './tree';
 
 let updateCount = 0;
@@ -49,6 +50,9 @@ const startNewGame = () => {
   oxCounterWrapper.style.width = 0;
   goatCounterWrapper.style.width = 0;
   fishCounterWrapper.style.width = 0;
+  oxCounterWrapper.style.opacity = 0;
+  goatCounterWrapper.style.opacity = 0;
+  fishCounterWrapper.style.opacity = 0;
   oxCounter.innerText = 0;
   goatCounter.innerText = 0;
   fishCounter.innerText = 0;
@@ -89,6 +93,9 @@ const gameoverToMenu = () => {
   oxCounterWrapper.style.width = 0;
   goatCounterWrapper.style.width = 0;
   fishCounterWrapper.style.width = 0;
+  oxCounterWrapper.style.opacity = 0;
+  goatCounterWrapper.style.opacity = 0;
+  fishCounterWrapper.style.opacity = 0;
   oxCounter.innerText = 0;
   goatCounter.innerText = 0;
   fishCounter.innerText = 0;
@@ -120,9 +127,7 @@ const gameoverToMenu = () => {
   }, 500);
 };
 
-const {
-  pathTilesCountElement, pathTilesButton, timeButtonHand, timeButton,
-} = initUi();
+initUi();
 initMenuBackground();
 initGameover(startNewGame, gameoverToMenu);
 init(null, { contextless: true });
@@ -132,14 +137,13 @@ initPointer();
 const startGame = () => {
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = 'rotate(0) scale(1) translate(0, 0)';
-  counters.style.opacity = 1;
+  scoreCounters.style.opacity = 1;
   hideMenu();
   gameStarted = true;
   updateCount = totalUpdateCount = 1;
 };
 
 // demoColors();
-
 initMenu(startGame);
 // spawnTrees();
 spawnNewObjects(totalUpdateCount, 2500);
@@ -151,15 +155,30 @@ const loop = GameLoop({
     if (gameStarted) {
       spawnNewObjects(totalUpdateCount, gameStarted);
 
-      if (totalUpdateCount === 500) {
-        timeButton.style.opacity = 1;
+      if (totalUpdateCount === 150) {
+        clock.style.opacity = 1;
       }
 
-      if (totalUpdateCount === 400) {
-        pathTilesButton.style.opacity = 1;
+      if (totalUpdateCount === 100) {
+        pathTilesIndicator.style.opacity = 1;
       }
 
-      timeButtonHand.style.transform = `rotate(${totalUpdateCount}deg)`;
+      // Updating this at 60FPS is a bit much but rotates are usually on the GPU anyway
+      clockHand.style.transform = `rotate(${totalUpdateCount / 2}deg)`;
+      switch (Math.floor(totalUpdateCount / 720 % 12)) {
+        case 0: clockMonth.innerText = 'Jan'; break;
+        case 1: clockMonth.innerText = 'Feb'; break;
+        case 2: clockMonth.innerText = 'Mar'; break;
+        case 3: clockMonth.innerText = 'Apr'; break;
+        case 4: clockMonth.innerText = 'May'; break;
+        case 5: clockMonth.innerText = 'Jun'; break;
+        case 6: clockMonth.innerText = 'Jul'; break;
+        case 7: clockMonth.innerText = 'Aug'; break;
+        case 8: clockMonth.innerText = 'Sep'; break;
+        case 9: clockMonth.innerText = 'Oct'; break;
+        case 10: clockMonth.innerText = 'Nov'; break;
+        case 11: clockMonth.innerText = 'Dec'; break;
+      }
     }
 
     updateCount++;
@@ -210,7 +229,14 @@ const loop = GameLoop({
     // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
     switch (renderCount % 4) {
       case 0:
-        pathTilesCountElement.innerText = inventory.paths;
+        pathTilesIndicatorCount.innerText = inventory.paths;
+        if (inventory.paths === 0) {
+          pathTilesIndicatorCount.style.background = colors.red;
+          pathTilesIndicatorCount.style.color = '#fff';
+        } else {
+          pathTilesIndicatorCount.style.background = '#eee';
+          pathTilesIndicatorCount.style.color = colors.ui;
+        }
         // TODO: Highlight in some way if 0 paths left
         break;
       case 1:
@@ -232,8 +258,10 @@ const loop = GameLoop({
 onKey('space', () => {
   if (loop.isStopped) {
     loop.start();
+    clock.style.background = colors.ui;
   } else {
     loop.stop();
+    clock.style.background = colors.red;
   }
 });
 

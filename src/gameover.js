@@ -8,7 +8,7 @@ import { animals } from './animal';
 import { yurts } from './yurt';
 import { colors } from './colors';
 import { menuBackground } from './menu-background';
-import { counters } from './ui';
+import { scoreCounters } from './ui';
 
 const gameoverWrapper = document.createElement('div');
 const gameoverHeader = document.createElement('div');
@@ -109,7 +109,7 @@ export const showGameover = () => {
   gameoverText3.innerHTML = '';
   gameoverText3.append(oxEmojiWrapper, ' ', goatEmojiWrapper, ' ', fishEmojiWrapper);
 
-  counters.style.opacity = 0;
+  scoreCounters.style.opacity = 0;
 
   setTimeout(() => {
     gameoverWrapper.style.pointerEvents = '';

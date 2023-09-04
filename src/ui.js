@@ -4,16 +4,23 @@ import { emojiGoat } from './goat-emoji';
 import { emojiFish } from './fish-emoji';
 import { colors } from './colors';
 
-export const counters = document.createElement('div');
-
+// Animal score counters (for incrementing) and their wrappers (for show/hiding)
 export const oxCounterWrapper = document.createElement('div');
 export const oxCounter = document.createElement('div');
-
 export const goatCounterWrapper = document.createElement('div');
 export const goatCounter = document.createElement('div');
-
 export const fishCounterWrapper = document.createElement('div');
 export const fishCounter = document.createElement('div');
+
+// New things to export:
+export const scoreCounters = document.createElement('div');
+export const clock = document.createElement('div');
+export const clockMonth = document.createElement('div');
+export const pathTilesIndicator = document.createElement('div');
+export const pathTilesIndicatorCount = document.createElement('div');
+
+// Odd one out because can't put divs in an svg
+export const clockHand = createSvgElement('path');
 
 export const initUi = () => {
   // TODO: Move elsewhre and minify
@@ -25,186 +32,150 @@ export const initUi = () => {
       color: #443;
       margin: 0;
     }
-    header {
-      display: flex;
-      justify-content:space-between;
-      align-items: start;
-    }
-    header button {
-      place-self: start;
-    }
-    footer {
-      display: flex;
-      gap: 20px;
-      align-self: end;
-      justify-content: center;
-    }
     button {
-      position:relative;
-      display: grid;
-      place-items: center;
-      border: none;
-      padding: 0;
-      background: 0;
       font-weight: 700;
       font-family: system-ui;
-    }
-    button > div {
-      display: grid;
-      place-items: center;
-      background: #443f;
-      border-radius: 50%;
-      transition: all.3s;
-      color: #fffe;
-    }
-    button div + div {
-      position: absolute;
-      right: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #eee;
-      border: 4px solid #443;
-      transform: translateX(50%);
-      color: #443;
-      font-size: 16px;
-    }
-    button:hover div {
-      border-color: #443b;
-      background: #443b;
-      color: #fff;
-    }
-    button:hover div + div {
-      background: #fff;
-      color: #443;
-      border: 4px solid #443;
-    }
-    button.menu {
+      border: none;
       padding: 0 20px;
       font-size: 32px;
       height: 56px;
       border-radius: 48px;
-      background :#fff;
+      background: #fff;
       box-shadow: 0 0 0 1px ${colors.shade};
       transition: all .2s;
     }
-    button.menu:hover {
+    button:hover {
       box-shadow: 4px 4px 0 1px ${colors.shade};
     }
-    button.menu:active {
+    button:active {
       box-shadow: 0 0 0 1px ${colors.shade};
       transform: scale(.95);
     }
-  `.trim();
+  `;
   document.head.appendChild(styles);
 
   // Add HTML UI elements (?)
   const uiContainer = document.createElement('div');
-  uiContainer.style.cssText = 'position:absolute;inset:0;display:grid;padding:12px;pointer-events:none;';
+  uiContainer.style.cssText = 'position:absolute;inset:0;display:grid;overflow:hidden;pointer-events:none;';
   document.body.append(uiContainer);
 
-  const header = document.createElement('header');
+  scoreCounters.style.cssText = 'display:flex;position:absolute;top:16px;left:16px;';
+  scoreCounters.style.trasition = 'opacity 1s';
+  scoreCounters.style.opacity = 0;
 
-  const menuButton = document.createElement('button');
-  menuButton.style.cssText = `
-    align-self: start;
-    justify-self: start;
-  `;
-
-  counters.style.cssText = 'display:flex;opacity:0;';
-  header.append(counters);
-
-  oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
+  oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s';
   const oxCounterEmoji = emojiOx();
+  oxCounterWrapper.style.width = 0;
+  oxCounterWrapper.style.opacity = 0;
   oxCounterEmoji.style.width = '48px';
   oxCounterEmoji.style.height = '48px';
   oxCounterWrapper.append(oxCounterEmoji, oxCounter);
-  counters.append(oxCounterWrapper);
 
-  goatCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
+  goatCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s';
   const goatCounterEmoji = emojiGoat();
+  goatCounterWrapper.style.width = 0;
+  goatCounterWrapper.style.opacity = 0;
   goatCounterEmoji.style.width = '48px';
   goatCounterEmoji.style.height = '48px';
   goatCounterWrapper.append(goatCounterEmoji, goatCounter);
-  counters.append(goatCounterWrapper);
 
-  fishCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;pointer-events:all;width:0;opacity:0;transition:width 1s,opacity 1s 1s';
+  fishCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s';
   const fishCounterEmoji = emojiFish();
+  fishCounterWrapper.style.width = 0;
+  fishCounterWrapper.style.opacity = 0;
   fishCounterEmoji.style.width = '48px';
   fishCounterEmoji.style.height = '48px';
   fishCounterWrapper.append(fishCounterEmoji, fishCounter);
-  counters.append(fishCounterWrapper);
 
-  const timeButton = document.createElement('button');
-  const timeButtonSvg = createSvgElement('svg');
-  timeButtonSvg.setAttribute('stroke-linejoin', 'round');
-  timeButtonSvg.setAttribute('stroke-linecap', 'round');
-  timeButtonSvg.setAttribute('viewBox', '0 0 16 16');
-  timeButton.style.width = '64px';
-  timeButton.style.height = '64px';
-  timeButton.style.opacity = 0;
-  timeButton.style.transition = 'opacity 1s';
-  timeButtonSvg.style.width = '64px';
-  timeButtonSvg.style.height = '64px';
-  timeButtonSvg.style.background = colors.ui;
-  timeButtonSvg.style.borderRadius = '50%';
+  scoreCounters.append(oxCounterWrapper, goatCounterWrapper, fishCounterWrapper);
+
+  clock.style.cssText = `
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: grid;
+    place-items: center;
+    border-radius: 64px;
+    background: ${colors.ui}
+  `;
+  clock.style.width = '80px';
+  clock.style.height = '80px';
+  clock.style.opacity = 0;
+  clock.style.transition = 'opacity 1s';
+
+  const clockSvg = createSvgElement('svg');
+  clockSvg.setAttribute('stroke-linejoin', 'round');
+  clockSvg.setAttribute('stroke-linecap', 'round');
+  clockSvg.setAttribute('viewBox', '0 0 16 16');
+  clockSvg.style.width = '80px';
+  clockSvg.style.height = '80px';
 
   for (let i = 75; i < 350; i += 25) {
     const dot = createSvgElement('path');
     dot.setAttribute('fill', 'none');
-    dot.setAttribute('stroke', '#fff');
+    dot.setAttribute('stroke', '#eee');
     dot.setAttribute('transform-origin', 'center');
     dot.setAttribute('d', 'm8 14.5v0');
     dot.style.transform = `rotate(${i}grad)`;
-    timeButtonSvg.append(dot);
+    clockSvg.append(dot);
   }
 
-  const timeButtonHand = createSvgElement('path');
-  timeButtonHand.setAttribute('stroke', '#fff');
-  timeButtonHand.setAttribute('transform-origin', 'center');
-  timeButtonHand.setAttribute('d', 'm8 4v4');
-  timeButtonSvg.append(timeButtonHand);
+  clockHand.setAttribute('stroke', '#eee');
+  clockHand.setAttribute('transform-origin', 'center');
+  clockHand.setAttribute('d', 'm8 4v4');
+  clockSvg.append(clockHand);
 
-  timeButton.append(timeButtonSvg);
+  clockMonth.style.cssText = 'position:absolute;bottom:8px;font-size:16px;color:#eee';
+  clockMonth.innerText = 'Feb'; // Temp until made dynamic
 
-  header.append(menuButton, timeButton);
-  const buildBar = document.createElement('footer');
-  const pathTilesButton = document.createElement('button');
-  pathTilesButton.style.opacity = 0;
-  pathTilesButton.style.transition = 'opacity 1s';
-  const pathTilesButtonInner = document.createElement('div');
+  clock.append(clockSvg, clockMonth);
+
+  pathTilesIndicator.style.cssText = `
+    position: absolute;
+    display: grid;
+    place-items: center;
+    place-self: center;
+    bottom: 20px;
+    margin: 0 auto;
+    border-radius: 20px;
+    background: ${colors.ui};
+  `;
+  pathTilesIndicator.style.transform = 'rotate(-45deg)';
+  pathTilesIndicator.style.opacity = 0;
+  pathTilesIndicator.style.transition = 'opacity 1s';
+  pathTilesIndicator.style.width = '72px';
+  pathTilesIndicator.style.height = '72px';
+  pathTilesIndicatorCount.style.cssText = `
+    display: grid;
+    place-items: center;
+    position: absolute;
+    border-radius: 64px;
+    border: 6px solid ${colors.ui};
+    transform: translate(28px,28px) rotate(45deg);
+    font-size: 20px;
+    background: #eee;
+    transition: all.5s;
+  }`;
+  pathTilesIndicatorCount.style.width = '28px';
+  pathTilesIndicatorCount.style.height = '28px';
   const pathTilesSvg = createSvgElement('svg');
   pathTilesSvg.setAttribute('viewBox', '0 0 18 18');
   pathTilesSvg.style.width = '54px';
   pathTilesSvg.style.height = '54px';
-  const pathTilesPath = createSvgElement('path');
-  pathTilesPath.setAttribute('fill', 'none');
-  pathTilesPath.setAttribute('stroke', 'currentColor');
-  pathTilesPath.setAttribute('stroke-linejoin', 'round');
-  pathTilesPath.setAttribute('stroke-linecap', 'round');
-  pathTilesPath.setAttribute('stroke-width', 2);
-  pathTilesPath.setAttribute('d', 'M11 1h-3q-2 0-2 2t2 2h4q2 0 2 2t-2 2h-6q-2 0-2 2t2 2h4q2 0 2 2t-2 2h-3');
-  pathTilesButton.append(pathTilesButtonInner);
-  pathTilesButtonInner.append(pathTilesSvg);
-  pathTilesSvg.append(pathTilesPath);
-  pathTilesButtonInner.style.transform = 'rotate(-45deg)';
   pathTilesSvg.style.transform = 'rotate(45deg)';
-  pathTilesButtonInner.style.width = '64px';
-  pathTilesButtonInner.style.height = '64px';
-  pathTilesButtonInner.style.borderRadius = '16px';
-  const pathTilesCountElement = document.createElement('div');
-  pathTilesButton.append(pathTilesCountElement);
-  buildBar.append(pathTilesButton);
-  uiContainer.append(header, buildBar);
+  const pathTilesSvgPath = createSvgElement('path');
+  pathTilesSvgPath.setAttribute('fill', 'none');
+  pathTilesSvgPath.setAttribute('stroke', '#eee');
+  // pathTilesPath.setAttribute('stroke-linejoin', 'round');
+  pathTilesSvgPath.setAttribute('stroke-linecap', 'round');
+  pathTilesSvgPath.setAttribute('stroke-width', 2);
+  pathTilesSvgPath.setAttribute('d', 'M11 1h-3q-2 0-2 2t2 2h4q2 0 2 2t-2 2h-6q-2 0-2 2t2 2h4q2 0 2 2t-2 2h-3');
+  pathTilesSvg.append(pathTilesSvgPath);
+  // pathTilesIndicatorInner.append(pathTilesSvg);
+  // pathTilesIndicatorInner.style.width = '64px';
+  // pathTilesIndicatorInner.style.height = '64px';
+  // pathTilesIndicatorInner.style.borderRadius = '16px'; // The only non-"infinity"?
+  pathTilesIndicator.append(pathTilesSvg, pathTilesIndicatorCount)
 
-  return {
-    pathTilesCountElement,
-    pathTilesButton,
-    timeButton,
-    timeButtonHand,
-    oxCounter,
-    oxCounterWrapper,
-    goatCounter,
-    goatCounterWrapper,
-  };
+  uiContainer.append(scoreCounters, clock, pathTilesIndicator);
 };
