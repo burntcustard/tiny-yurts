@@ -11,6 +11,7 @@ import { gridRect, gridRectRed } from './grid';
 import { gridPointerLayer, pathShadowLayer } from './layers';
 import { removePath } from './remove-path';
 import { ponds } from './pond';
+import { pathTilesIndicator, pathTilesIndicatorCount } from './ui';
 
 let dragStartCell = {};
 let isDragging = false;
@@ -239,6 +240,10 @@ const handlePointermove = (event) => {
 
   // No paths check is done after yurt shenanigans
   if (inventory.paths <= 0) {
+    pathTilesIndicator.style.scale = 1.1;
+    setTimeout(() => {
+      pathTilesIndicator.style.scale = 1;
+    }, 300);
     pathDragIndicator.style.opacity = 0;
     dragStartCell = {};
     isDragging = false;
@@ -258,6 +263,7 @@ const handlePointermove = (event) => {
   });
 
   inventory.paths--;
+  pathTilesIndicatorCount.innerText = inventory.paths;
 
   drawPaths({
     changedCells:

@@ -1,5 +1,6 @@
 import { drawPaths, paths } from './path';
 import { inventory } from './inventory';
+import { pathTilesIndicatorCount } from './ui';
 
 export const removePath = (x, y) => {
   paths.filter((path) => (
@@ -9,7 +10,10 @@ export const removePath = (x, y) => {
   // Don't remove "fixed" paths i.e. under yurts
     !path.points[0].fixed && !path.points[1].fixed
   )).forEach((pathToRemove) => {
-    inventory.paths++;
+    if (inventory.paths < 99) {
+      inventory.paths++;
+      pathTilesIndicatorCount.innerText = inventory.paths;
+    }
     pathToRemove.remove();
   });
 

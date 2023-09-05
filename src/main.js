@@ -74,7 +74,8 @@ const startNewGame = () => {
     clearLayers();
     hideGameover();
     svgElement.style.transform = '';
-    inventory.paths = 16;
+    inventory.paths = 9;
+    pathTilesIndicatorCount.innerText = inventory.paths
 
     setTimeout(() => {
       // spawnNewObjects(totalUpdateCount, gameStarted, 2000);
@@ -117,7 +118,8 @@ const gameoverToMenu = () => {
     clearLayers();
     hideGameover();
     svgElement.style.transform = '';
-    inventory.paths = 16;
+    inventory.paths = 9;
+    pathTilesIndicatorCount.innerText = inventory.paths;
 
     setTimeout(() => {
       spawnNewObjects(totalUpdateCount, gameStarted, 2000);
@@ -137,6 +139,7 @@ initPointer();
 const startGame = () => {
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = 'rotate(0) scale(1) translate(0, 0)';
+  pathTilesIndicatorCount.innerText = inventory.paths
   scoreCounters.style.opacity = 1;
   hideMenu();
   gameStarted = true;
@@ -151,6 +154,7 @@ spawnNewObjects(totalUpdateCount, 2500);
 showMenu(farms[0], true);
 
 const loop = GameLoop({
+  blur: true, // Still update and render even if the page does not have focus
   update() {
     if (gameStarted) {
       spawnNewObjects(totalUpdateCount, gameStarted);
@@ -161,6 +165,27 @@ const loop = GameLoop({
 
       if (totalUpdateCount === 100) {
         pathTilesIndicator.style.opacity = 1;
+      }
+
+      if (totalUpdateCount % (720 * 12) === 0 && inventory.paths < 99) { // 720
+        pathTilesIndicator.style.scale = 1.1;
+
+        pathTilesIndicatorCount.innerText = '+9';
+
+        setTimeout(() => pathTilesIndicatorCount.innerText = inventory.paths, 1300);
+
+        for (let i = 0; i < 9; i++) {
+          setTimeout(() => {
+            if (inventory.paths < 99) {
+              inventory.paths++;
+              pathTilesIndicatorCount.innerText = inventory.paths;
+            }
+          },  1300 + 100 * i);
+        }
+
+        setTimeout(() => {
+          pathTilesIndicator.style.scale = 1;
+        }, 300);
       }
 
       // Updating this at 60FPS is a bit much but rotates are usually on the GPU anyway
@@ -216,6 +241,9 @@ const loop = GameLoop({
         oxCounterWrapper.style.opacity = 0;
         goatCounterWrapper.style.opacity = 0;
         fishCounterWrapper.style.opacity = 0;
+        clock.style.opacity = 0;
+        pathTilesIndicator.style.opacity = 0;
+
         showGameover(startNewGame);
       }
     });
@@ -229,14 +257,14 @@ const loop = GameLoop({
     // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
     switch (renderCount % 4) {
       case 0:
-        pathTilesIndicatorCount.innerText = inventory.paths;
-        if (inventory.paths === 0) {
-          pathTilesIndicatorCount.style.background = colors.red;
-          pathTilesIndicatorCount.style.color = '#fff';
-        } else {
-          pathTilesIndicatorCount.style.background = '#eee';
-          pathTilesIndicatorCount.style.color = colors.ui;
-        }
+        // pathTilesIndicatorCount.innerText = inventory.paths;
+        // if (inventory.paths === 0) {
+        //   pathTilesIndicatorCount.style.background = colors.red;
+        //   pathTilesIndicatorCount.style.color = '#fff';
+        // } else {
+        //   pathTilesIndicatorCount.style.background = '#eee';
+        //   pathTilesIndicatorCount.style.color = colors.ui;
+        // }
         // TODO: Highlight in some way if 0 paths left
         break;
       case 1:

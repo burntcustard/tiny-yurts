@@ -142,7 +142,7 @@ export const initUi = () => {
   `;
   pathTilesIndicator.style.transform = 'rotate(-45deg)';
   pathTilesIndicator.style.opacity = 0;
-  pathTilesIndicator.style.transition = 'opacity 1s';
+  pathTilesIndicator.style.transition = 'scale.4s cubic-bezier(.5,2,.5,1), opacity 1s';
   pathTilesIndicator.style.width = '72px';
   pathTilesIndicator.style.height = '72px';
   pathTilesIndicatorCount.style.cssText = `

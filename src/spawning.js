@@ -25,7 +25,7 @@ export const getRandomPosition = ({
   },
   minDistance = 0,
   maxDistance = 99,
-  maxNumAttempts = 8, // TODO: Clever ways to not hit this. >8 makes game go sloww
+  maxNumAttempts = 9, // TODO: Clever ways to not hit this. >8 makes game go sloww
   extra = { x: 0, y: 0 }, // relative to x/y
 }) => {
   let numAttempts = 0;
@@ -252,9 +252,12 @@ let updateRandomness3 = 0;
 let updateRandomness4 = 0;
 let updateRandomness5 = 0;
 
+const spawnInfo = {
+  yurtFailed: false,
+};
+
 export const spawnNewObjects = (updateCount, delay) => {
   let upgradedThisLoop = false;
-  let yurtFailed = false;
 
   if (updateCount % spawningLoopLength === 0) {
     updateRandomness1 = Math.floor(Math.random() * 200);
@@ -489,15 +492,16 @@ export const spawnNewObjects = (updateCount, delay) => {
         type: farm.type,
         facing,
       });
+      spawnInfo.yurtFailed = false;
     } else {
-      yurtFailed = true;
+      spawnInfo.yurtFailed = true;
     }
 
     return;
   }
 
   // If the first yurt spawn attempt failed, try again ~400ms later
-  if (updateCount % spawningLoopLength === 600 + updateRandomness2 && yurtFailed) {
+  if (updateCount % spawningLoopLength === 600 + updateRandomness2 && spawnInfo.yurtFailed) {
     const { facing } = getRandomYurtProps();
     const farm = (
       farms.filter((f) => f.type === colors.fish).length
@@ -516,7 +520,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         height: farm.height,
       },
       minDistance: 3,
-      maxDistance: 3 + farms.length,
+      maxDistance: 2 + farms.length,
       extra: facing,
     });
 
@@ -527,12 +531,54 @@ export const spawnNewObjects = (updateCount, delay) => {
         type: farm.type,
         facing,
       });
+      spawnInfo.yurtFailed = false;
+    } else {
+      spawnInfo.yurtFailed = true;
     }
 
     return;
   }
 
-  if (updateCount % spawningLoopLength === 1500 + updateRandomness4) {
+  // If the first yurt re-spawn attempt failed, try AGAIN ~400ms later
+  if (updateCount % spawningLoopLength === 700 + updateRandomness2 && spawnInfo.yurtFailed) {
+    const { facing } = getRandomYurtProps();
+    const farm = (
+      farms.filter((f) => f.type === colors.fish).length
+      && yurts.filter((y) => y.type === colors.fish).length < 2
+    )
+      ? farms.find((f) => f.type === colors.fish)
+      : farms.length > 2
+        ? farms.at(Math.random() * farms.length)
+        : farms[farms.length - 1];
+    // console.log('trying to spawn a yurt of type:', farm.type);
+    const randomPosition = getRandomPosition({
+      anchor: {
+        x: farm.x,
+        y: farm.y,
+        width: farm.width,
+        height: farm.height,
+      },
+      minDistance: 3,
+      maxDistance: 2 + farms.length,
+      extra: facing,
+    });
+
+    if (randomPosition) {
+      new Yurt({
+        x: randomPosition.x,
+        y: randomPosition.y,
+        type: farm.type,
+        facing,
+      });
+      spawnInfo.yurtFailed = false;
+    } else {
+      spawnInfo.yurtFailed = true;
+    }
+
+    return;
+  }
+
+  if (updateCount % spawningLoopLength === 1500 + updateRandomness3) {
     const { facing } = getRandomYurtProps();
     const type = getRandomExistingType();
     const sameTypeYurts = yurts.filter((y) => y.type === type);
@@ -559,6 +605,88 @@ export const spawnNewObjects = (updateCount, delay) => {
         type,
         facing,
       });
+      spawnInfo.yurtFailed = false;
+    } else {
+      spawnInfo.yurtFailed = true;
+      // console.log('2nd yurt failed to spawn')
+    }
+
+    return;
+  }
+
+  // 2nd yurt spawn re-attempt after ~400ms
+  if ((updateCount % spawningLoopLength === 1600 + updateRandomness3) && spawnInfo.yurtFailed) {
+    const { facing } = getRandomYurtProps();
+    const type = getRandomExistingType();
+    const sameTypeYurts = yurts.filter((y) => y.type === type);
+    const friendYurt = sameTypeYurts.at(Math.random() * sameTypeYurts.length);
+
+    // console.log('re-attempt failed yurt2 spawn')
+
+    if (!friendYurt) return; // Silent skip if somehow 1st yurt didnt exist
+
+    const randomPosition = getRandomPosition({
+      anchor: {
+        x: friendYurt.x,
+        y: friendYurt.y,
+        width: 1,
+        height: 1,
+      },
+      minDistance: 1,
+      maxDistance: farms.length,
+      extra: facing,
+    });
+
+    if (randomPosition) {
+      new Yurt({
+        x: randomPosition.x,
+        y: randomPosition.y,
+        type,
+        facing,
+      });
+      spawnInfo.yurtFailed = false;
+    } else {
+      spawnInfo.yurtFailed = true;
+      // console.log('2nd yurt failed to spawn again')
+    }
+
+    return;
+  }
+
+  // 2nd yurt spawn re-re-attempt after ~400ms
+  if ((updateCount % spawningLoopLength === 1600 + updateRandomness3) && spawnInfo.yurtFailed) {
+    const { facing } = getRandomYurtProps();
+    const type = getRandomExistingType();
+    const sameTypeYurts = yurts.filter((y) => y.type === type);
+    const friendYurt = sameTypeYurts.at(Math.random() * sameTypeYurts.length);
+
+    // console.log('re-re-attempt failed yurt2 spawn')
+
+    if (!friendYurt) return; // Silent skip if somehow 1st yurt didnt exist
+
+    const randomPosition = getRandomPosition({
+      anchor: {
+        x: friendYurt.x,
+        y: friendYurt.y,
+        width: 1,
+        height: 1,
+      },
+      minDistance: 1,
+      maxDistance: farms.length,
+      extra: facing,
+    });
+
+    if (randomPosition) {
+      new Yurt({
+        x: randomPosition.x,
+        y: randomPosition.y,
+        type,
+        facing,
+      });
+      spawnInfo.yurtFailed = false;
+    } else {
+      spawnInfo.yurtFailed = true;
+      // console.log('2nd yurt failed to spawn again again')
     }
 
     return;
