@@ -192,7 +192,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
         if (oldPathData.path) {
           // if (changedPaths.includes(oldPathData.path)) {
           if (fadeout && oldPathData.path && oldPathData.path.points[0].fixed) {
-            setInterval(() => {
+            setTimeout(() => {
               oldPathData.svgElement.remove();
             }, 500);
           } else {

@@ -41,7 +41,8 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
   let code = scriptCode;
   console.log(`\nJS size: ${new Blob([code]).size}B (pre-custom-replace)`);
   fs.writeFileSync('dist/raw.js', code);
-  // code = code
+  code = code
+    // .replace(/acceleration/g, '_acceleration')
   //   .replace(/createElement\("([^"]+)"\)/g, 'createElement`$1`')
   //   .replace(/.rotation/g, '._rotation')
   //   .replace(/createElement\("([^"]+)"\)/g, 'createElement`$1`');
@@ -106,6 +107,7 @@ function customReplacement(src) {
     .replace(/upgrade/g, '_upgrade')
     .replace(/type/g, '_type')
     .replace(/parent/g, '_parent')
+    .replace(/points/g, '_points')
       // Replace const with let declartion
     .replaceAll('const ', 'let ')
     // Replace all strict equality comparison with abstract equality comparison
