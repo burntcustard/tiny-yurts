@@ -3,6 +3,9 @@ import htmlMinifier from 'html-minifier';
 import JSZip from 'jszip';
 import fs from 'fs';
 
+import advzip from 'advzip-bin';
+import  { execFile } from 'child_process';
+
 async function zip(content) {
   const jszip = new JSZip();
 
@@ -21,7 +24,6 @@ async function zip(content) {
     jszip.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
       .pipe(fs.createWriteStream('dist/game.zip'))
       .on('finish', () => {
-        console.log(`\nZip size: ${fs.statSync('dist/game.zip').size}B`);
         resolve();
       });
   });
@@ -39,12 +41,13 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
 
   // This could be used to find-replace stuff post-terser pre-regpack
   let code = scriptCode;
-  console.log(`\nJS pre custom replace: ${new Blob([code]).size}B`);
-  // code = code
-  //   // .replace(/upgrade/g, '_upgrade')
+  console.log(`\nJS size: ${new Blob([code]).size}B (pre-custom-replace)`);
+  fs.writeFileSync('dist/raw.js', code);
+  code = code
+    .replace(/upgrade/g, '_upgrade')
   //   .replace(/createElement\("([^"]+)"\)/g, 'createElement`$1`');
-
-  console.log(`JS post custom replace: ${new Blob([code]).size}B`);
+  fs.writeFileSync('dist/raw-replaced.js', code)
+  console.log(`\nJS size: ${new Blob([code]).size}B (post-custom-replace)`);
 
   const packer = new Packer([{
     data: scriptCode,
@@ -135,11 +138,23 @@ export function viteJs13k() {
 
         replacedHtml = replaceHtml(replacedHtml);
         htmlChunk.source = replacedHtml;
-        zip(replacedHtml);
+        await zip(replacedHtml);
       }
       for (const name of bundlesToDelete) {
           delete bundle[name];
       }
+    },
+    closeBundle: () => {
+      console.log(`\nZip size: ${fs.statSync('dist/game.zip').size}B`);
+
+      execFile(advzip, [
+        '--recompress',
+        '--shrink-insane',
+        '--iter=5000',
+        'dist/game.zip'
+      ], (err) => {
+        console.log(`\nZip size: ${fs.statSync('dist/game.zip').size}B (advzip)`);
+      });
     },
   };
 }

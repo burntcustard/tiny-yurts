@@ -27,5 +27,6 @@ export default defineConfig({
     modulePreload: {
       polyfill: false,
     },
+    reportCompressedSize: false,
   },
 });
