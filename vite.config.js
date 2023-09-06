@@ -9,6 +9,8 @@ export default defineConfig({
   plugins: [
     kontra({
       gameObject: {
+        group: true,
+        ttl: true, // TODO: Figure out exactly what this is needed for
         velocity: true,
       },
       vector: {
