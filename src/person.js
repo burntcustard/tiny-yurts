@@ -80,7 +80,12 @@ export class Person extends GameObjectClass {
 
       // After this many updates, go home
       // TODO: Make sensible number, show some sort of animation
-      if ((this.atFarm > 80 && this.originalRoute.length > 2) || this.atFarm > 100) {
+      // originatlRoute.length counts every cell including yurt & farm
+      if (
+        (this.atFarm > 80 && this.originalRoute.length > 3)
+        || (this.atFarm > 100 && this.originalRoute.length > 2)
+        || this.atFarm > 200
+      ) {
         if (this.farmToVisit.type === colors.fish) {
           shuffle(this.farmToVisit.children).forEach((fish, i) => setTimeout(() => fish.svgBody.style.fill = colors.shade2, 1000 + i * 1000));
         }

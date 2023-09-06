@@ -68,17 +68,17 @@ const startNewGame = () => {
     yurts.length = 0;
     paths.length = 0;
     ponds.length = 0;
-    updateCount = 0;
-    renderCount = 0;
-    totalUpdateCount = 0;
+    updateCount = 1;
+    totalUpdateCount = 1;
+    renderCount = 1;
+    inventory.paths = 9;
+    pathTilesIndicatorCount.innerText = inventory.paths;
     clearLayers();
     hideGameover();
     svgElement.style.transform = '';
-    inventory.paths = 9;
-    pathTilesIndicatorCount.innerText = inventory.paths
 
     setTimeout(() => {
-      // spawnNewObjects(totalUpdateCount, gameStarted, 2000);
+      spawnNewObjects(0);
       loop.start();
     }, 1000);
   }, 1000);
@@ -90,6 +90,7 @@ const gameoverToMenu = () => {
   gameStarted = false;
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
+  inventory.paths = 9;
 
   oxCounterWrapper.style.width = 0;
   goatCounterWrapper.style.width = 0;
@@ -118,7 +119,6 @@ const gameoverToMenu = () => {
     clearLayers();
     hideGameover();
     svgElement.style.transform = '';
-    inventory.paths = 9;
     pathTilesIndicatorCount.innerText = inventory.paths;
 
     setTimeout(() => {
@@ -139,7 +139,7 @@ initPointer();
 const startGame = () => {
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = 'rotate(0) scale(1) translate(0, 0)';
-  pathTilesIndicatorCount.innerText = inventory.paths
+  pathTilesIndicatorCount.innerText = inventory.paths;
   scoreCounters.style.opacity = 1;
   hideMenu();
   gameStarted = true;
@@ -159,12 +159,16 @@ const loop = GameLoop({
     if (gameStarted) {
       spawnNewObjects(totalUpdateCount, gameStarted);
 
-      if (totalUpdateCount === 150) {
-        clock.style.opacity = 1;
+      if (totalUpdateCount === 50) {
+        scoreCounters.style.opacity = 1;
       }
 
       if (totalUpdateCount === 100) {
         pathTilesIndicator.style.opacity = 1;
+      }
+
+      if (totalUpdateCount === 150) {
+        clock.style.opacity = 1;
       }
 
       if (totalUpdateCount % (720 * 12) === 0 && inventory.paths < 99) { // 720
