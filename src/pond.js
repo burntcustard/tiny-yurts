@@ -5,11 +5,8 @@ import { gridCellSize } from './svg';
 
 export const ponds = [];
 
-export const spawnPond = ({
-  width, height, x, y,
-}) => {
-  let points = [];
-  const avoidancePoints = [];
+const createPondShape = (width, height) => {
+  const points = [];
 
   for (let h = -height / 2 + 0.5; h <= height / 2 - 0.5; h++) {
     for (let w = -width / 2 + 0.5; w <= width / 2 - 0.5; w++) {
@@ -19,11 +16,28 @@ export const spawnPond = ({
     }
   }
 
+  // If the number of points in the pond is bigger than 2, i.e. it's not
+  // the weird visually broken 1x2 size pond, then return it
+  if (points.length > 2) return points;
+
+  // Else try again to make a nice pond shape
+  createPondShape();
+}
+
+export const spawnPond = ({
+  width, height, x, y,
+}) => {
+  let points = createPondShape(width, height);
+  const avoidancePoints = [];
+
+  // Convert the points into world-space SVG grid points
   points = points.map((p) => ({
     x: x + p.x + Math.floor(width / 2),
     y: y + p.y + Math.floor(height / 2),
   }));
 
+  // The entire width and height, not just the cells taken up by the point,
+  // are to be avoided when generating new points, to avoid corner-y overlaps
   for (let h = 0; h < height; h++) {
     for (let w = 0; w < width; w++) {
       avoidancePoints.push({
