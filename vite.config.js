@@ -1,11 +1,24 @@
 import { defineConfig } from 'vite';
 import { viteJs13k, viteJs13kPre } from './plugins/vite-js13k'
+import kontra from 'rollup-plugin-kontra';
 
 export default defineConfig({
   server: {
     port: 3000
   },
   plugins: [
+    kontra({
+      gameObject: {
+        velocity: true,
+      },
+      vector: {
+        angle: true,
+        distance: true,
+        normalize: true,
+        scale: true,
+        subtract: true,
+      },
+    }),
     viteJs13kPre(),
     viteJs13k(),
   ],

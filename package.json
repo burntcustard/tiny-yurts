@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/burntcustard/tiny-yurts#readme",
   "dependencies": {
-    "kontra": "^9.0.0"
+    "kontra": "^9.0.0",
+    "rollup-plugin-kontra": "^1.0.1"
   },
   "devDependencies": {
     "advzip-bin": "^2.0.0",
