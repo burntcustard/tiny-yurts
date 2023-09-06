@@ -221,7 +221,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
         newPathData.svgElement.style.filter = `drop-shadow(.3px .3px ${colors.shade2})`;
       }
 
-      pathLayer.appendChild(newPathData.svgElement);
+      pathLayer.append(newPathData.svgElement);
 
       // Only transition "new new" single paths
       const pathInSameCellRecentlyRemoved = newPathData.path && recentlyRemoved.some((r) => (
@@ -252,7 +252,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
         if (!noShadow) {
           newPathData.svgElementShadow = createSvgElement('path');
           newPathData.svgElementShadow.setAttribute('d', newPathData.d);
-          pathShadowLayer.appendChild(newPathData.svgElementShadow);
+          pathShadowLayer.append(newPathData.svgElementShadow);
 
           // After transition complete, we don't need the shadow anymore
           setTimeout(() => {

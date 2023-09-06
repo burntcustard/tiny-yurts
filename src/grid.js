@@ -25,20 +25,20 @@ export const addGridToSvg = () => {
   // The entire games grid, including non-buildable area off the board
 
   const defs = createSvgElement('defs');
-  svgElement.appendChild(defs);
+  svgElement.append(defs);
 
   const pattern = createSvgElement('pattern');
   pattern.setAttribute('id', 'grid'); // Required for defs, could maybe be minified
   pattern.setAttribute('width', gridCellSize);
   pattern.setAttribute('height', gridCellSize);
   pattern.setAttribute('patternUnits', 'userSpaceOnUse');
-  defs.appendChild(pattern);
+  defs.append(pattern);
   const gridPath = createSvgElement('path');
   gridPath.setAttribute('d', `M${gridCellSize} 0L0 0 0 ${gridCellSize}`);
   gridPath.setAttribute('fill', 'none');
   gridPath.setAttribute('stroke', colors.grid);
   gridPath.setAttribute('stroke-width', scaledGridLineThickness);
-  pattern.appendChild(gridPath);
+  pattern.append(gridPath);
   gridRect.setAttribute('width', `${boardSvgWidth + gridLineThickness}px`);
   gridRect.setAttribute('height', `${boardSvgHeight + gridLineThickness}px`);
   gridRect.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness / 2} ${boardOffsetY * gridCellSize - gridLineThickness / 2})`);
@@ -52,13 +52,13 @@ export const addGridToSvg = () => {
   patternRed.setAttribute('width', gridCellSize);
   patternRed.setAttribute('height', gridCellSize);
   patternRed.setAttribute('patternUnits', 'userSpaceOnUse');
-  defs.appendChild(patternRed);
+  defs.append(patternRed);
   const gridPathRed = createSvgElement('path');
   gridPathRed.setAttribute('d', `M${gridCellSize} 0L0 0 0 ${gridCellSize}`);
   gridPathRed.setAttribute('fill', 'none');
   gridPathRed.setAttribute('stroke', colors.gridRed);
   gridPathRed.setAttribute('stroke-width', scaledGridLineThickness);
-  patternRed.appendChild(gridPathRed);
+  patternRed.append(gridPathRed);
   gridRectRed.setAttribute('width', `${boardSvgWidth + gridLineThickness}px`);
   gridRectRed.setAttribute('height', `${boardSvgHeight + gridLineThickness}px`);
   gridRectRed.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness / 2} ${boardOffsetY * gridCellSize - gridLineThickness / 2})`);

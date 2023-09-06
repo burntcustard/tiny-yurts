@@ -3,28 +3,29 @@ import { emojiOx } from './ox-emoji';
 import { emojiGoat } from './goat-emoji';
 import { emojiFish } from './fish-emoji';
 import { colors } from './colors';
+import { createElement } from './create-element';
 
 // Animal score counters (for incrementing) and their wrappers (for show/hiding)
-export const oxCounterWrapper = document.createElement('div');
-export const oxCounter = document.createElement('div');
-export const goatCounterWrapper = document.createElement('div');
-export const goatCounter = document.createElement('div');
-export const fishCounterWrapper = document.createElement('div');
-export const fishCounter = document.createElement('div');
+export const oxCounterWrapper = createElement();
+export const oxCounter = createElement();
+export const goatCounterWrapper = createElement();
+export const goatCounter = createElement();
+export const fishCounterWrapper = createElement();
+export const fishCounter = createElement();
 
 // New things to export:
-export const scoreCounters = document.createElement('div');
-export const clock = document.createElement('div');
-export const clockMonth = document.createElement('div');
-export const pathTilesIndicator = document.createElement('div');
-export const pathTilesIndicatorCount = document.createElement('div');
+export const scoreCounters = createElement();
+export const clock = createElement();
+export const clockMonth = createElement();
+export const pathTilesIndicator = createElement();
+export const pathTilesIndicatorCount = createElement();
 
 // Odd one out because can't put divs in an svg
 export const clockHand = createSvgElement('path');
 
 export const initUi = () => {
   // TODO: Move elsewhre and minify
-  const styles = document.createElement('style');
+  const styles = createElement('style');
   styles.innerText = `
     body {
       font-family: system-ui;
@@ -52,10 +53,10 @@ export const initUi = () => {
       transform: scale(.95);
     }
   `;
-  document.head.appendChild(styles);
+  document.head.append(styles);
 
   // Add HTML UI elements (?)
-  const uiContainer = document.createElement('div');
+  const uiContainer = createElement();
   uiContainer.style.cssText = 'position:absolute;inset:0;display:grid;overflow:hidden;pointer-events:none;';
   document.body.append(uiContainer);
 

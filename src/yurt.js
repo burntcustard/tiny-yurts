@@ -120,7 +120,7 @@ export class Yurt extends Structure {
     baseShadow.style.willChange = 'r, opacity';
     baseShadow.style.opacity = 0;
     baseShadow.style.transition = 'all.4s';
-    baseLayer.appendChild(baseShadow);
+    baseLayer.append(baseShadow);
     setTimeout(() => {
       baseShadow.setAttribute('r', 3);
       baseShadow.style.opacity = 1;
@@ -129,7 +129,7 @@ export class Yurt extends Structure {
 
     this.svgGroup = createSvgElement('g');
     this.svgGroup.style.transform = `translate(${x}px,${y}px)`;
-    yurtLayer.appendChild(this.svgGroup);
+    yurtLayer.append(this.svgGroup);
 
     this.circle = createSvgElement('circle');
     this.circle.style.transition = 'r.4s';
@@ -144,7 +144,7 @@ export class Yurt extends Structure {
     this.shadow.style.opacity = 0;
     this.shadow.style.willChange = 'd';
     this.shadow.style.transition = 'd.6s';
-    yurtAndPersonShadowLayer.appendChild(this.shadow);
+    yurtAndPersonShadowLayer.append(this.shadow);
     setTimeout(() => this.shadow.style.opacity = 0.8, 800);
     setTimeout(() => this.shadow.setAttribute('d', 'M0 0l2 2'), 900);
     setTimeout(() => this.shadow.style.willChange = '', 1600);

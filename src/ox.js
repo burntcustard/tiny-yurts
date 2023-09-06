@@ -32,14 +32,14 @@ export class Ox extends Animal {
     ox.style.transition = 'all 1s';
     ox.style.willChange = 'transform';
     this.svgElement = ox;
-    animalLayer.appendChild(ox);
+    animalLayer.append(ox);
 
     const body = createSvgElement('rect');
     body.setAttribute('fill', colors.ox);
     body.setAttribute('width', this.width);
     body.setAttribute('height', this.height);
     body.setAttribute('rx', this.roundness);
-    ox.appendChild(body);
+    ox.append(body);
 
     const horns = createSvgElement('path');
     horns.setAttribute('fill', 'none');
@@ -55,7 +55,7 @@ export class Ox extends Animal {
       horns.style.opacity = 0;
     }
     this.svgHorns = horns;
-    ox.appendChild(horns);
+    ox.append(horns);
 
     const shadow = createSvgElement('rect');
     shadow.setAttribute('width', this.width);
@@ -66,7 +66,7 @@ export class Ox extends Animal {
     shadow.style.transition = 'all 1s';
     shadow.style.willChange = 'transform';
     this.svgShadowElement = shadow;
-    animalShadowLayer.appendChild(shadow);
+    animalShadowLayer.append(shadow);
 
     this.render();
 

@@ -9,22 +9,23 @@ import { yurts } from './yurt';
 import { colors } from './colors';
 import { menuBackground } from './menu-background';
 import { scoreCounters } from './ui';
+import { createElement } from './create-element';
 
-const gameoverWrapper = document.createElement('div');
-const gameoverHeader = document.createElement('div');
-const gameoverText1 = document.createElement('div');
-const gameoverText2 = document.createElement('div');
-const gameoverText3 = document.createElement('div');
-const gameoverButtons = document.createElement('div');
-const restartButtonWrapper = document.createElement('div');
-const restartButton = document.createElement('button');
-const menuButtonWrapper = document.createElement('div');
-const menuButton = document.createElement('button');
-const oxEmojiWrapper = document.createElement('div');
+const gameoverWrapper = createElement();
+const gameoverHeader = createElement();
+const gameoverText1 = createElement();
+const gameoverText2 = createElement();
+const gameoverText3 = createElement();
+const gameoverButtons = createElement();
+const restartButtonWrapper = createElement();
+const restartButton = createElement('button');
+const menuButtonWrapper = createElement();
+const menuButton = createElement('button');
+const oxEmojiWrapper = createElement();
 const oxEmoji = emojiOx();
-const goatEmojiWrapper = document.createElement('div');
+const goatEmojiWrapper = createElement();
 const goatEmoji = emojiGoat();
-const fishEmojiWrapper = document.createElement('div');
+const fishEmojiWrapper = createElement();
 const fishEmoji = emojiFish();
 
 export const initGameover = (startNewGame, gameoverToMenu) => {
@@ -97,10 +98,10 @@ export const showGameover = () => {
   fishEmojiWrapper.innerHTML = '';
   fishEmojiWrapper.append(fishEmoji, `×${fishes.length}`);
 
-  const peopleCount = document.createElement('u');
+  const peopleCount = createElement('u');
   peopleCount.innerText = `${yurts.length * 2} settlers`;
 
-  const animalsCount = document.createElement('u');
+  const animalsCount = createElement('u');
   animalsCount.innerText = `${animals.length} animals`;
 
   gameoverText2.innerHTML = '';

@@ -1,5 +1,6 @@
 import { colors } from './colors';
 import { createSvgElement } from './svg-utils';
+import { createElement } from './create-element';
 
 export const gridCellSize = 8; // Width & height of a cell, in SVG px
 
@@ -25,7 +26,7 @@ export const gridSvgHeight = gridHeight * gridCellSize;
 export const scaledGridLineThickness = 0.5;
 export const gridLineThickness = scaledGridLineThickness / 2;
 
-export const svgContainerElement = document.createElement('div');
+export const svgContainerElement = createElement();
 svgContainerElement.style.overflow = 'hidden';
 svgContainerElement.style.position = 'absolute';
 svgContainerElement.style.width = '100dvw';
@@ -35,7 +36,7 @@ svgContainerElement.style.display = 'grid';
 svgContainerElement.style.placeItems = 'center';
 document.body.append(svgContainerElement);
 
-export const svgHazardLines = document.createElement('div');
+export const svgHazardLines = createElement();
 svgHazardLines.style.position = 'absolute';
 svgHazardLines.style.width = '100dvw';
 svgHazardLines.style.height = '100dvh';
@@ -44,7 +45,7 @@ svgHazardLines.style.opacity = 0;
 svgHazardLines.style.willChange = 'opacity';
 svgHazardLines.style.transition = 'opacity.3s';
 
-export const svgHazardLinesRed = document.createElement('div');
+export const svgHazardLinesRed = createElement();
 svgHazardLinesRed.style.position = 'absolute';
 svgHazardLinesRed.style.width = '100dvw';
 svgHazardLinesRed.style.height = '100dvh';

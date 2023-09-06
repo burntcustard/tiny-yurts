@@ -46,7 +46,7 @@ export const getRandomPosition = ({
   // anchorTestSvg.style.transform = `
   //   translate(${anchor.x * gridCellSize}px,${anchor.y * gridCellSize}px)
   // `;
-  // pinLayer.appendChild(anchorTestSvg);
+  // pinLayer.append(anchorTestSvg);
   // setTimeout(() => anchorTestSvg.style.opacity = 0, 5000);
   // let minDistSvg = createSvgElement('rect');
   // minDistSvg.setAttribute(
@@ -60,7 +60,7 @@ export const getRandomPosition = ({
   // minDistSvg.setAttribute('stroke', '#f005');
   // minDistSvg.setAttribute('fill', 'none');
   // minDistSvg.style.transform = `translate(${(anchor.x - minDistance) * gridCellSize}px,${(anchor.y - minDistance) * gridCellSize}px)`;
-  // pinLayer.appendChild(minDistSvg);
+  // pinLayer.append(minDistSvg);
   // setTimeout(() => minDistSvg.style.opacity = 0, 5000);
 
   while (numAttempts < maxNumAttempts) {
@@ -298,7 +298,7 @@ export const spawnNewObjects = (updateCount, delay) => {
     //     // testSvg.setAttribute('stroke', '#f005');
     //     testSvg.setAttribute('fill', '#fff5');
     //     // testSvg.style.transform = `translate(${x}px,${y}px)`;
-    //     yurtLayer.appendChild(testSvg);
+    //     yurtLayer.append(testSvg);
     //   }
     // }
 

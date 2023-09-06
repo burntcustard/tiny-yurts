@@ -33,13 +33,13 @@ export class Animal extends GameObjectClass {
     this.pinSvg.style.transformOrigin = 'bottom';
     this.pinSvg.style.transformBox = 'fill-box';
     this.pinSvg.style.transform = `translate(${x}px, ${y - this.height / 2}px)`;
-    pinLayer.appendChild(this.pinSvg);
+    pinLayer.append(this.pinSvg);
 
     const pinBubble = createSvgElement('path');
     pinBubble.setAttribute('fill', '#fff');
     pinBubble.setAttribute('d', 'm6 6-2-2a3 3 0 1 1 4 0Z');
     pinBubble.setAttribute('transform', 'scale(.5) translate(-6 -8)');
-    this.pinSvg.appendChild(pinBubble);
+    this.pinSvg.append(pinBubble);
 
     // !
     this.warnSvg = createSvgElement('path');
@@ -47,7 +47,7 @@ export class Animal extends GameObjectClass {
     this.warnSvg.setAttribute('d', 'M3 6L3 6M3 4.5L3 3');
     this.warnSvg.setAttribute('transform', 'scale(.5) translate(-3 -10.4)');
     this.warnSvg.style.opacity = 0;
-    this.pinSvg.appendChild(this.warnSvg);
+    this.pinSvg.append(this.warnSvg);
 
     // ♥
     this.loveSvg = createSvgElement('path');
@@ -55,7 +55,7 @@ export class Animal extends GameObjectClass {
     this.loveSvg.setAttribute('d', 'M6 6L4 4A1 1 0 1 1 6 2 1 1 0 1 1 8 4Z');
     this.loveSvg.setAttribute('transform', 'scale(.3) translate(-6 -13)');
     this.loveSvg.style.opacity = 0;
-    this.pinSvg.appendChild(this.loveSvg);
+    this.pinSvg.append(this.loveSvg);
 
     animals.push(this);
   }
@@ -87,7 +87,7 @@ export class Animal extends GameObjectClass {
     // debug.setAttribute('transform', `translate(${x},${y})`);
     // debug.setAttribute('r', .5);
     // debug.setAttribute('fill', 'red');
-    // pointerLayer.appendChild(debug);
+    // pointerLayer.append(debug);
 
     return randomTarget;
   }

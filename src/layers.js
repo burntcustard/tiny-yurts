@@ -9,14 +9,14 @@ const addAnimalShadowLayer = () => {
   const animalShadowLayer = createSvgElement('g');
   animalShadowLayer.setAttribute('opacity', shadowOpacity);
   animalShadowLayer.setAttribute('transform', 'translate(.3,.3)');
-  svgElement.appendChild(animalShadowLayer);
+  svgElement.append(animalShadowLayer);
   return animalShadowLayer;
 };
 
 const addAnimalLayer = () => {
   const animalLayer = createSvgElement('g');
   animalLayer.setAttribute('stroke-linecap', 'round');
-  svgElement.appendChild(animalLayer);
+  svgElement.append(animalLayer);
   return animalLayer;
 };
 
@@ -27,7 +27,7 @@ const addFenceShadowLayer = () => {
   fenceShadowLayer.setAttribute('stroke', colors.black);
   fenceShadowLayer.setAttribute('opacity', shadowOpacity);
   fenceShadowLayer.setAttribute('transform', 'translate(.5,.5)');
-  svgElement.appendChild(fenceShadowLayer);
+  svgElement.append(fenceShadowLayer);
   return fenceShadowLayer;
 };
 
@@ -38,14 +38,14 @@ const addFenceShadowLayer = () => {
 //   rockShadowLayer.setAttribute('stroke', colors.black);
 //   rockShadowLayer.setAttribute('opacity', shadowOpacity);
 //   rockShadowLayer.setAttribute('transform', 'translate(.3,.3)');
-//   svgElement.appendChild(rockShadowLayer);
+//   svgElement.append(rockShadowLayer);
 //   return rockShadowLayer;
 // };
 
 const addGridBlockLayer = () => {
   const gridBlockLayer = createSvgElement('g');
   gridBlockLayer.setAttribute('fill', 'none');
-  svgElement.appendChild(gridBlockLayer);
+  svgElement.append(gridBlockLayer);
   return gridBlockLayer;
 };
 
@@ -53,7 +53,7 @@ const addFenceLayer = () => {
   const fenceLayer = createSvgElement('g');
   fenceLayer.setAttribute('stroke-linecap', 'round');
   fenceLayer.setAttribute('fill', 'none');
-  svgElement.appendChild(fenceLayer);
+  svgElement.append(fenceLayer);
   return fenceLayer;
 };
 
@@ -61,7 +61,7 @@ const addBaseLayer = () => {
   const baseLayer = createSvgElement('g');
   baseLayer.id = 'baseLayer';
   baseLayer.setAttribute('fill', colors.base);
-  svgElement.appendChild(baseLayer);
+  svgElement.append(baseLayer);
   return baseLayer;
 };
 
@@ -71,7 +71,7 @@ const addPathShadowLayer = () => {
   pathShadowLayer.setAttribute('fill', 'none');
   pathShadowLayer.setAttribute('stroke', colors.base);
   pathShadowLayer.setAttribute('stroke-width', 3);
-  svgElement.appendChild(pathShadowLayer);
+  svgElement.append(pathShadowLayer);
   return pathShadowLayer;
 };
 
@@ -81,7 +81,7 @@ const addPathLayer = () => {
   pathLayer.setAttribute('fill', 'none');
   pathLayer.setAttribute('stroke', colors.path);
   pathLayer.setAttribute('stroke-width', 3);
-  svgElement.appendChild(pathLayer);
+  svgElement.append(pathLayer);
   return pathLayer;
 };
 
@@ -89,13 +89,13 @@ const addPersonLayer = () => {
   const personLayer = createSvgElement('g');
   personLayer.setAttribute('stroke-linecap', 'round');
   personLayer.setAttribute('fill', 'none');
-  svgElement.appendChild(personLayer);
+  svgElement.append(personLayer);
   return personLayer;
 };
 
 const addPondLayer = () => {
   const pondLayer = createSvgElement('g');
-  svgElement.appendChild(pondLayer);
+  svgElement.append(pondLayer);
   return pondLayer;
 };
 
@@ -105,7 +105,7 @@ const addYurtAndPersonShadowLayer = () => {
   shadowLayer.setAttribute('fill', 'none');
   shadowLayer.setAttribute('stroke', colors.black);
   shadowLayer.setAttribute('opacity', 0.2);
-  svgElement.appendChild(shadowLayer);
+  svgElement.append(shadowLayer);
   return shadowLayer;
 };
 
@@ -113,14 +113,14 @@ const addYurtLayer = () => {
   const yurtLayer = createSvgElement('g');
   yurtLayer.setAttribute('stroke-linecap', 'round');
   yurtLayer.setAttribute('fill', colors.yurt);
-  svgElement.appendChild(yurtLayer);
+  svgElement.append(yurtLayer);
   return yurtLayer;
 };
 
 const addPinLayer = () => {
   const pinLayer = createSvgElement('g');
   pinLayer.setAttribute('stroke-linecap', 'round');
-  svgElement.appendChild(pinLayer);
+  svgElement.append(pinLayer);
   return pinLayer;
 };
 
@@ -133,7 +133,7 @@ const addGridPointerLayer = () => {
   gridPointerLayer.setAttribute('stroke-width', 0);
   gridPointerLayer.style.cursor = 'cell';
   gridPointerLayer.style.pointerEvents = 'all';
-  svgElement.appendChild(gridPointerLayer);
+  svgElement.append(gridPointerLayer);
   return gridPointerLayer;
 };
 

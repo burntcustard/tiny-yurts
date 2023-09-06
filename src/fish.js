@@ -32,7 +32,7 @@ export class Fish extends Animal {
     this.svgElement.style.transformBox = 'fill-box';
     this.svgElement.style.transition = 'all 1s';
     this.svgElement.style.willChange = 'transform';
-    animalLayer.appendChild(this.svgElement);
+    animalLayer.append(this.svgElement);
 
     this.svgBody = createSvgElement('rect');
     this.svgBody.setAttribute('fill', colors.fish);
@@ -40,7 +40,7 @@ export class Fish extends Animal {
     this.svgBody.setAttribute('height', this.height);
     this.svgBody.setAttribute('rx', this.roundness);
     this.svgBody.style.transition = 'fill.2s';
-    this.svgElement.appendChild(this.svgBody);
+    this.svgElement.append(this.svgBody);
 
     this.render();
 

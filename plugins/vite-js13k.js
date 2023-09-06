@@ -2,7 +2,6 @@ import { Packer } from 'roadroller';
 import htmlMinifier from 'html-minifier';
 import JSZip from 'jszip';
 import fs from 'fs';
-
 import advzip from 'advzip-bin';
 import  { execFile } from 'child_process';
 
@@ -39,12 +38,12 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
     .replace('</body>', html.match(reScript)[0] + '</body')
     .replace(html.match(reScript)[0], '');
 
-  // This could be used to find-replace stuff post-terser pre-regpack
   let code = scriptCode;
   console.log(`\nJS size: ${new Blob([code]).size}B (pre-custom-replace)`);
   fs.writeFileSync('dist/raw.js', code);
-  code = code
-    .replace(/upgrade/g, '_upgrade')
+  // code = code
+  //   .replace(/createElement\("([^"]+)"\)/g, 'createElement`$1`')
+  //   .replace(/.rotation/g, '._rotation')
   //   .replace(/createElement\("([^"]+)"\)/g, 'createElement`$1`');
   fs.writeFileSync('dist/raw-replaced.js', code)
   console.log(`\nJS size: ${new Blob([code]).size}B (post-custom-replace)`);
@@ -87,9 +86,31 @@ function customReplacement(src) {
   // console.log(src);
 
   const replaced = src
+    // Minify CSS template literals
+    .replace(/`[^`]+`/g, tag => tag
+      .replace(/`\s+/, '`')  // Remove newlines & spaces at start or string
+      .replace(/\n\s+/g, '') // Remove newlines & spaces within values
+      .replace(/:\s+/g, ':')  // Remove spaces in between property & values
+      .replace(/\,\s+/g, ',') // Remove space after commas
+      .replace(/\s{/g, '{') // Remove space in between identifier & opening squigly
+      .replace(/all\s+\./g, 'all.') // Remove space between transition timing & .s
+      .replace(/(%) ([\d$])/g, '$1$2') // Remove space between '100% 50%' in hwb()
+      .replace(/\s\/\s/g, '/') // Remove spaces around `/` in hsl
+      .replace(/;\s+/g, ';') // Remove newlines & spaces after semicolons
+      .replace(/\)\s/g, ')') // Remove spaces after closing brackets
+      .replace(/;}/g, '}') // Remove final semicolons in blocks
+      .replace(/;`/, '`') // Remove final semicolons in cssText
+    )
+    .replace(/M0 0l/g, 'M0 0 ') // Don't need line char, can just use space instead
+    .replace(/M0 0L/g, 'M0 0 ')
     .replace(/upgrade/g, '_upgrade')
     .replace(/type/g, '_type')
     .replace(/parent/g, '_parent')
+      // Replace const with let declartion
+    .replaceAll('const ', 'let ')
+    // Replace all strict equality comparison with abstract equality comparison
+    .replaceAll('===', '==')
+    .replaceAll('!==', '!=')
     // .replace(/update/g, '_update')
 
   return replaced;

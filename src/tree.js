@@ -33,7 +33,7 @@ export class Tree extends Structure {
 
     this.svgGroup = createSvgElement('g');
     this.svgGroup.style.transform = `translate(${x}px,${y}px)`;
-    yurtLayer.appendChild(this.svgGroup);
+    yurtLayer.append(this.svgGroup);
 
     this.shadowGroup = createSvgElement('g');
     this.shadowGroup.style.transform = `translate(${x}px,${y}px)`;
@@ -71,7 +71,7 @@ export class Tree extends Structure {
     // this.shadow.style.opacity = 0;
     // this.shadow.style.willChange = 'd';
     // this.shadow.style.transition = 'd.6s';
-    // yurtAndPersonShadowLayer.appendChild(this.shadow);
+    // yurtAndPersonShadowLayer.append(this.shadow);
     // setTimeout(() => this.shadow.style.opacity = 0.8, 800);
     // setTimeout(() => this.shadow.setAttribute('d', 'M0 0l2 2'), 900);
     // setTimeout(() => this.shadow.style.willChange = '', 1600);

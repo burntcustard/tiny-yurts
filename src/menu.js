@@ -3,13 +3,14 @@ import {
 } from './svg';
 import { svgPxToDisplayPx } from './cell';
 import { menuBackground } from './menu-background';
+import { createElement } from './create-element';
 
-const menuWrapper = document.createElement('div');
-const menuHeader = document.createElement('div');
-const menuText1 = document.createElement('div');
-const menuButtons = document.createElement('div');
-const startButtonWrapper = document.createElement('div');
-const startButton = document.createElement('button');
+const menuWrapper = createElement();
+const menuHeader = createElement();
+const menuText1 = createElement();
+const menuButtons = createElement();
+const startButtonWrapper = createElement();
+const startButton = createElement('button');
 
 export const initMenu = (startGame) => {
   menuWrapper.style.cssText = 'position:absolute;inset:0;padding:10dvw;pointer-events:none;';

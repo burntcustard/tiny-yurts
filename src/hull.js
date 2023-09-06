@@ -50,4 +50,4 @@ export const hull = (points) => {
   } while (p !== leftmost);
 
   return hull;
-};
+}

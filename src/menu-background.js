@@ -1,4 +1,6 @@
-export const menuBackground = document.createElement('div');
+import { createElement } from "./create-element";
+
+export const menuBackground = createElement();
 
 // This has to be a sibling element, behind the gameoverScreen, not a child of it,
 // so that the backdrop-filter can transition properly

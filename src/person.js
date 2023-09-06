@@ -39,14 +39,14 @@ export class Person extends GameObjectClass {
     person.setAttribute('d', 'M0 0 0 0');
     person.setAttribute('transform', `translate(${x},${y})`);
     person.setAttribute('stroke', this.type);
-    personLayer.appendChild(person);
+    personLayer.append(person);
     this.svgElement = person;
 
     const shadow = createSvgElement('path');
     shadow.setAttribute('stroke-width', 1.2);
     shadow.setAttribute('d', 'M0 0 .3 .3');
     shadow.setAttribute('transform', `translate(${x},${y})`);
-    yurtAndPersonShadowLayer.appendChild(shadow);
+    yurtAndPersonShadowLayer.append(shadow);
     this.shadowElement = shadow;
   }
 

@@ -161,15 +161,15 @@ export class Farm extends Structure {
 
     if (this.type !== colors.fish) {
       const gridBlock = createSvgElement('rect');
-      gridBlock.setAttribute('width', svgWidth);
-      gridBlock.setAttribute('height', svgHeight);
+      gridBlock.style.width = svgWidth;
+      gridBlock.style.height = svgHeight;
       gridBlock.setAttribute('rx', roundness);
       gridBlock.setAttribute('transform', `translate(${x},${y})`);
       gridBlock.style.opacity = 0;
       gridBlock.style.transition = 'opacity.8s';
       gridBlock.style.willChange = 'opacity';
       gridBlock.setAttribute('fill', colors.grass);
-      gridBlockLayer.appendChild(gridBlock);
+      gridBlockLayer.append(gridBlock);
       setTimeout(() => gridBlock.style.opacity = 1, 1000);
       setTimeout(() => gridBlock.style.willChange = '', 2000);
     }
@@ -183,7 +183,7 @@ export class Farm extends Structure {
     fence.setAttribute('stroke-dasharray', this.circumference); // Math.PI * 2 + a bit
     fence.setAttribute('stroke-dashoffset', this.circumference);
     fence.style.transition = 'all 1s';
-    fenceLayer.appendChild(fence);
+    fenceLayer.append(fence);
 
     const shadow = createSvgElement('rect');
     // TODO: Landscape and portrait fences? Square or circle fences?
@@ -195,7 +195,7 @@ export class Farm extends Structure {
     shadow.setAttribute('stroke-dasharray', this.circumference); // Math.PI * 2 + a bit
     shadow.setAttribute('stroke-dashoffset', this.circumference);
     shadow.style.transition = 'stroke-dashoffset 1s,transform.5s';
-    fenceShadowLayer.appendChild(shadow);
+    fenceShadowLayer.append(shadow);
 
     setTimeout(() => {
       fence.setAttribute('stroke-dashoffset', 0);
@@ -214,13 +214,13 @@ export class Farm extends Structure {
     this.pinSvg.style.transformBox = 'fill-box';
     this.pinSvg.style.opacity = 0;
     this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(0)`;
-    pinLayer.appendChild(this.pinSvg);
+    pinLayer.append(this.pinSvg);
 
     this.pinBubble = createSvgElement('path');
     this.pinBubble.setAttribute('fill', '#fff');
     this.pinBubble.setAttribute('d', 'm6 6-2-2a3 3 0 1 1 4 0Z');
     this.pinBubble.setAttribute('transform', 'translate(-9 -9) scale(1.5)');
-    this.pinSvg.appendChild(this.pinBubble);
+    this.pinSvg.append(this.pinBubble);
 
     this.warnCircleBg = createSvgElement('circle');
     this.warnCircleBg.setAttribute('fill', 'none');
@@ -230,7 +230,7 @@ export class Farm extends Structure {
     this.warnCircleBg.setAttribute('stroke', colors.ui);
     this.warnCircleBg.setAttribute('opacity', 0.2);
     this.warnCircleBg.setAttribute('transform', 'scale(1.2) translate(0 -5.3)');
-    this.pinSvg.appendChild(this.warnCircleBg);
+    this.pinSvg.append(this.warnCircleBg);
 
     this.warnCircle = createSvgElement('circle');
     this.warnCircle.setAttribute('fill', 'none');
@@ -244,7 +244,7 @@ export class Farm extends Structure {
     this.warnCircle.setAttribute('stroke-dashoffset', 12.56);
     this.warnCircle.style.transition = 'stroke-dashoffset.3s.1s';
     this.warnCircle.setAttribute('transform', 'scale(1.2) translate(0 -5.3) rotate(-90)');
-    this.pinSvg.appendChild(this.warnCircle);
+    this.pinSvg.append(this.warnCircle);
 
     this.pinSvg.style.opacity = 1;
   }
