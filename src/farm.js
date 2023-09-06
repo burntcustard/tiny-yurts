@@ -142,6 +142,7 @@ export class Farm extends Structure {
         closestPerson.destination = bestRoute.at(-1);
         closestPerson.hasDestination = true;
         closestPerson.route = bestRoute;
+        closestPerson.originalRoute = [...bestRoute];
         closestPerson.atHome = false; // Leave home!
         this.assignedPeople.push(closestPerson);
         closestPerson.farmToVisit = this;

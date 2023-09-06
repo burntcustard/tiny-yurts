@@ -80,7 +80,7 @@ export class Person extends GameObjectClass {
 
       // After this many updates, go home
       // TODO: Make sensible number, show some sort of animation
-      if (this.atFarm > 80) {
+      if ((this.atFarm > 80 && this.originalRoute.length > 2) || this.atFarm > 100) {
         if (this.farmToVisit.type === colors.fish) {
           shuffle(this.farmToVisit.children).forEach((fish, i) => setTimeout(() => fish.svgBody.style.fill = colors.shade2, 1000 + i * 1000));
         }
@@ -103,6 +103,7 @@ export class Person extends GameObjectClass {
           this.hasDestination = true;
           this.destination = route.at(-1);
           this.route = route;
+          this.originalRoute = [...route];
         } else {
           // Can't find way home :(
         }
@@ -188,7 +189,7 @@ export class Person extends GameObjectClass {
     const turnyness = 0.1;
     // Is currently travelling?
     // could check velocity instead?
-    if (this.route?.length > 1) {
+    if (this.route?.length > 0) {
       const potentialCollisionPeople = people
         .filter((otherPerson) => otherPerson !== this && !otherPerson.atHome);
 
