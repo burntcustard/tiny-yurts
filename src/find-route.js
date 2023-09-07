@@ -1,6 +1,8 @@
 import { paths } from './path';
 import { gridWidth, gridHeight } from './svg';
 
+const gridData = [];
+
 // TODO: Prefer straight x/y over diagonals because they are actually shorter distance
 
 const getGridData = () => {
@@ -29,6 +31,10 @@ const getGridData = () => {
   });
 
   return gridData;
+};
+
+export const updateGridData = () => {
+  gridData = getGridData();
 };
 
 const breadthFirstSearch = (gridData, from, to) => {
@@ -77,7 +83,7 @@ const breadthFirstSearch = (gridData, from, to) => {
 };
 
 export const findRoute = ({ from, to }) => {
-  const gridData = getGridData();
+  // const gridData = gridDatagetGridData();
 
   // Convert from and to to actual grid nodes
   const fromNode = gridData.find((c) => c.x === from.x && c.y === from.y);

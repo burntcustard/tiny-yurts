@@ -111,6 +111,10 @@ export class Person extends GameObjectClass {
           this.originalRoute = [...route];
         } else {
           // Can't find way home :(
+          // Reset atFarm so that the way home isn't rechecked every single update(!)
+          // adds in some randomness so that if multiple people are stuck,
+          // they don't all try to leave at the exact same time
+          this.atFarm = Math.random() * 40 + 40;
         }
       }
     }

@@ -110,7 +110,7 @@ export class Farm extends Structure {
 
     for (let i = 0; i < this.numIssues; i++) {
       if (this.assignedPeople.length >= this.numIssues) return;
-      // Find someone people sitting around doing nothing
+      // Find someone sitting around doing nothing
       const atHomePeopleOfSameType = people
         .filter((person) => person.atHome && person.type === this.type);
 

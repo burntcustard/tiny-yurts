@@ -28,6 +28,7 @@ import { clearLayers } from './layers';
 import { initMenuBackground } from './menu-background';
 import { initGameover, showGameover, hideGameover } from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
+import { updateGridData } from './find-route';
 import { colors } from './colors';
 // import { Tree, trees } from './tree';
 
@@ -226,6 +227,9 @@ const loop = GameLoop({
     /* eslint-disable default-case */
     switch (updateCount % 4) {
       case 0:
+        // Update path grid data once every 4 updates (15 times per second) instead of
+        // every single time pathfinding is updated which was 6000 time per second(?)
+        updateGridData();
         break;
       case 1:
         oxFarms.forEach((farm) => farm.update(gameStarted));
