@@ -422,7 +422,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         minDistance: farms.length ? 2 : 0,
         // We _need_ this to work on 1st loop otherwise the menu breaks.
         // Setting to 32 is sometimes slow, but it's pretty reliable, and small
-        maxNumAttempts: updateCount === 0 ? 32 : 8,
+        maxNumAttempts: updateCount < 3500 ? 32 : 8,
         extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
       });
 

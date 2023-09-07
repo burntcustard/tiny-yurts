@@ -131,6 +131,12 @@ export class Person extends GameObjectClass {
           const closeEnough = 2;
           const closeEnoughDestination = 1;
 
+          // If a the yurt and farm are adjacent, you don't need to rush...
+          if (this.originalRoute.length < 3) {
+            this.dx *= 0.9;
+            this.dy *= 0.9;
+          }
+
           if (this.route.length === 1) {
             if (
               Math.abs(this.x - firstRoutePoint.x) < closeEnoughDestination

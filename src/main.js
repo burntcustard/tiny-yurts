@@ -20,6 +20,7 @@ import { demoColors } from './demo-colors';
 import { animals } from './animal';
 import { oxen } from './ox';
 import { goats } from './goat';
+import { fishes } from './fish';
 import { ponds } from './pond';
 import { yurts } from './yurt';
 import { paths } from './path';
@@ -66,6 +67,7 @@ const startNewGame = () => {
     animals.length = 0;
     oxen.length = 0;
     goats.length = 0;
+    fishes.length = 0;
     yurts.length = 0;
     paths.length = 0;
     ponds.length = 0;
@@ -111,6 +113,7 @@ const gameoverToMenu = () => {
     animals.length = 0;
     oxen.length = 0;
     goats.length = 0;
+    fishes.length = 0;
     yurts.length = 0;
     paths.length = 0;
     ponds.length = 0;
