@@ -11,7 +11,7 @@ import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import {
-  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth,
+  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath,
 } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
@@ -56,6 +56,7 @@ const startNewGame = () => {
   oxCounter.innerText = 0;
   goatCounter.innerText = 0;
   fishCounter.innerText = 0;
+  pauseButton.style.opacity = 0;
 
   setTimeout(() => {
     goatFarms.length = 0;
@@ -171,6 +172,10 @@ const loop = GameLoop({
         clock.style.opacity = 1;
       }
 
+      if (totalUpdateCount === 250) {
+        pauseButton.style.opacity = 1;
+      }
+
       if (totalUpdateCount % (720 * 12) === 0 && inventory.paths < 99) { // 720
         pathTilesIndicator.style.scale = 1.1;
 
@@ -247,6 +252,7 @@ const loop = GameLoop({
         fishCounterWrapper.style.opacity = 0;
         clock.style.opacity = 0;
         pathTilesIndicator.style.opacity = 0;
+        pauseButton.style.opacity = 0;
 
         showGameover(startNewGame);
       }
@@ -287,15 +293,25 @@ const loop = GameLoop({
   },
 });
 
-onKey('space', () => {
+const togglePause = () => {
   if (loop.isStopped) {
     loop.start();
-    clock.style.background = colors.ui;
+    pauseSvgPath.setAttribute('d', 'M6 6 6 10M10 6 10 8 10 10');
+    pauseSvgPath.style.transform = 'rotate(180deg)';
   } else {
     loop.stop();
-    clock.style.background = colors.red;
+    pauseSvgPath.setAttribute('d', 'M7 6 7 10M7 6 10 8 7 10');
+    pauseSvgPath.style.transform = 'rotate(0)';
   }
+}
+
+pauseButton.addEventListener('click', togglePause);
+onKey('space', () => {
+  togglePause();
+  pauseButton.style.transform = 'scale(.95)';
+  setTimeout(() => pauseButton.style.transform = '', 150);
 });
+
 
 setTimeout(() => {
   loop.start();

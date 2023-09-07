@@ -83,8 +83,8 @@ export class Person extends GameObjectClass {
       // originatlRoute.length counts every cell including yurt & farm
       if (
         (this.atFarm > 80 && this.originalRoute.length > 3)
-        || (this.atFarm > 100 && this.originalRoute.length > 2)
-        || this.atFarm > 200
+        || (this.atFarm > 120 && this.originalRoute.length > 2)
+        || this.atFarm > 160
       ) {
         if (this.farmToVisit.type === colors.fish) {
           shuffle(this.farmToVisit.children).forEach((fish, i) => setTimeout(() => fish.svgBody.style.fill = colors.shade2, 1000 + i * 1000));

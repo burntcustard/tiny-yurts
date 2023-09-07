@@ -21,7 +21,7 @@ const createPondShape = (width, height) => {
   if (points.length > 2) return points;
 
   // Else try again to make a nice pond shape
-  createPondShape();
+  return createPondShape(width, height);
 }
 
 export const spawnPond = ({

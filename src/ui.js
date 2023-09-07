@@ -13,12 +13,16 @@ export const goatCounter = createElement();
 export const fishCounterWrapper = createElement();
 export const fishCounter = createElement();
 
-// New things to export:
 export const scoreCounters = createElement();
+
 export const clock = createElement();
 export const clockMonth = createElement();
+
 export const pathTilesIndicator = createElement();
 export const pathTilesIndicatorCount = createElement();
+
+export const pauseButton = createElement('button');
+export const pauseSvgPath = createSvgElement('path');
 
 // Odd one out because can't put divs in an svg
 export const clockHand = createSvgElement('path');
@@ -176,7 +180,29 @@ export const initUi = () => {
   // pathTilesIndicatorInner.style.width = '64px';
   // pathTilesIndicatorInner.style.height = '64px';
   // pathTilesIndicatorInner.style.borderRadius = '16px'; // The only non-"infinity"?
-  pathTilesIndicator.append(pathTilesSvg, pathTilesIndicatorCount)
+  pathTilesIndicator.append(pathTilesSvg, pathTilesIndicatorCount);
 
-  uiContainer.append(scoreCounters, clock, pathTilesIndicator);
+  const pauseSvg = createSvgElement('svg');
+  pauseSvg.setAttribute('viewBox', '0 0 16 16');
+  pauseSvg.setAttribute('width', 64);
+  pauseSvg.setAttribute('height', 64);
+  pauseSvgPath.setAttribute('fill', colors.ui);
+  pauseSvgPath.setAttribute('stroke', colors.ui);
+  pauseSvgPath.setAttribute('stroke-width', 2);
+  pauseSvgPath.setAttribute('stroke-linecap', 'round');
+  pauseSvgPath.setAttribute('stroke-linejoin', 'round');
+  pauseSvgPath.setAttribute('d', 'M6 6 6 10M10 6 10 8 10 10');
+  pauseSvgPath.style.transition = 'all.2s';
+  pauseSvgPath.style.transformOrigin = 'center';
+  pauseSvgPath.style.transform = 'rotate(180deg)';
+  pauseSvg.append(pauseSvgPath);
+
+  pauseButton.style.cssText = 'position:absolute;top:24px;right:112px;padding:0;pointer-events:all';
+  pauseButton.style.width = '64px';
+  pauseButton.style.height = '64px';
+  pauseButton.style.opacity = 0;
+  pauseButton.style.transition = 'all.2s,opacity 1s';
+  pauseButton.append(pauseSvg);
+
+  uiContainer.append(scoreCounters, clock, pauseButton, pathTilesIndicator);
 };
