@@ -130,8 +130,7 @@ export const initUi = () => {
   clockHand.setAttribute('d', 'm8 4v4');
   clockSvg.append(clockHand);
 
-  clockMonth.style.cssText = 'position:absolute;bottom:8px;font-size:16px;color:#eee';
-  clockMonth.innerText = 'Feb'; // Temp until made dynamic
+  clockMonth.style.cssText = 'position:absolute;bottom:8px;color:#eee';
 
   clock.append(clockSvg, clockMonth);
 
