@@ -113,6 +113,8 @@ function customReplacement(src) {
     // Replace all strict equality comparison with abstract equality comparison
     .replaceAll('===', '==')
     .replaceAll('!==', '!=')
+    // Fix accidentally "minified" highscore text
+    .replaceAll('Highscore:', 'Highscore: ')
     // .replace(/update/g, '_update')
 
   return replaced;

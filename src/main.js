@@ -313,6 +313,7 @@ pauseButton.addEventListener('click', togglePause);
 
 document.addEventListener('keypress', (event) => {
   if (event.key === ' ') {
+    event.preventDefault();
     togglePause();
 
     // Simulate :active styles

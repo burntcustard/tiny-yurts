@@ -32,10 +32,13 @@ export const initUi = () => {
   const styles = createElement('style');
   styles.innerText = `
     body {
+      position: relative;
       font-family: system-ui;
       font-weight: 700;
       color: #443;
       margin: 0;
+      width: 100vw;
+      height: 100vh;
     }
     button {
       font-weight: 700;
@@ -144,6 +147,10 @@ export const initUi = () => {
     border-radius: 20px;
     background: ${colors.ui};
   `;
+  // left: 20px;
+  if (screen.height * 2 < screen.width) {
+    pathTilesIndicator.style.left = '20px';
+  }
   pathTilesIndicator.style.transform = 'rotate(-45deg)';
   pathTilesIndicator.style.opacity = 0;
   pathTilesIndicator.style.transition = 'scale.4s cubic-bezier(.5,2,.5,1), opacity 1s';

@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
+    "dev:host": "vite --host",
     "build": "vite build",
     "lint": "eslint 'src/*.js'",
     "lint:fix": "eslint 'src/*.js' --fix",
