@@ -84,10 +84,10 @@ export const spawnPond = ({
   pondShadeSvg.setAttribute('stroke', '#7bc');
   pondShadeSvg.style.filter = 'blur(2px)';
 
-  const pondSandSvg = createSvgElement('path');
-  pondSandSvg.setAttribute('d', `${d}Z`);
-  pondSandSvg.setAttribute('stroke-width', 6);
-  pondSandSvg.setAttribute('stroke', '#9b6');
+  const pondEdgeSvg = createSvgElement('path');
+  pondEdgeSvg.setAttribute('d', `${d}Z`);
+  pondEdgeSvg.setAttribute('stroke-width', 6);
+  pondEdgeSvg.setAttribute('stroke', '#9b6');
 
-  pondLayer.append(pondSandSvg, pondSvg, pondShadeSvg);
+  pondLayer.append(pondEdgeSvg, pondSvg, pondShadeSvg);
 };
