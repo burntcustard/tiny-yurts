@@ -80,7 +80,6 @@ export const spawnPond = ({
   const pondShadeSvg = createSvgElement('path');
   pondShadeSvg.setAttribute('fill', '#7bc');
   pondShadeSvg.setAttribute('d', `${d}Z`);
-  pondShadeSvg.setAttribute('stroke-width', 1);
   pondShadeSvg.setAttribute('stroke', '#7bc');
   pondShadeSvg.style.filter = 'blur(2px)';
 
