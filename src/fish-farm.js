@@ -9,7 +9,7 @@ export class FishFarm extends Farm {
   constructor(properties) {
     super({
       ...properties,
-      fenceColor: '#fff',
+      fenceColor: '#eee',
       width: 2,
       height: 2,
     });
@@ -24,7 +24,6 @@ export class FishFarm extends Farm {
     setTimeout(() => this.addAnimal({}), 3000 + (properties.delay ?? 0));
     setTimeout(() => this.addAnimal({}), 3500 + (properties.delay ?? 0));
     setTimeout(() => this.addAnimal({}), 4000 + (properties.delay ?? 0));
-    // setTimeout(() => this.addAnimal({ isBaby: (oxFarms.length - 1) % 2 }), 4000 + properties.delay ?? 0);
 
     this.appearing = true;
     setTimeout(() => this.appearing = false, 3000);
@@ -57,8 +56,8 @@ export class FishFarm extends Farm {
     }));
   }
 
-  update(gameStarted) {
-    super.update(gameStarted);
+  update(gameStarted, updateCount) {
+    super.update(gameStarted, updateCount);
     // So 3 ox = 2 demand per update, 5 ox = 2 demand per update,
     // so upgrading doubles the demand(?)
   }

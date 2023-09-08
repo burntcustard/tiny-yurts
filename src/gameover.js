@@ -41,7 +41,12 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
   gameoverText2.style.cssText = 'margin-top:16px;font-size:24px;opacity:0';
 
   // 24px margin-top counteracts the underline in gameoverText2
-  gameoverText3.style.cssText = 'margin-top:24px;font-size:24px;';
+  gameoverText3.style.cssText = `
+    display: flex;
+    gap: 4px;
+    margin-top: 24px;
+    font-size: 24px;
+  `;
 
   oxEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 10px;line-height:24px;color:#fff;border-radius:24px;opacity:0;background:${colors.ui}`;
   goatEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 10px;line-height:24px;color:#fff;border-radius:24px;opacity:0;background:${colors.ui}`;
@@ -104,7 +109,7 @@ export const showGameover = () => {
   goatEmojiWrapper.append(goatEmoji, `×${goats.length}`);
   fishEmojiWrapper.innerHTML = '';
   fishEmojiWrapper.append(fishEmoji, `×${fishes.length}`);
-  scoreWrapper.innerHTML = score;
+  scoreWrapper.innerHTML = `Score:${score}`;
 
   const peopleCount = createElement('u');
   peopleCount.innerText = `${yurts.length * 2} settlers`;
@@ -116,7 +121,15 @@ export const showGameover = () => {
   gameoverText2.append(peopleCount, ' and ', animalsCount, ' lived in your camp.');
 
   gameoverText3.innerHTML = '';
-  gameoverText3.append(oxEmojiWrapper, ' ', goatEmojiWrapper, ' ', fishEmojiWrapper);
+  gameoverText3.append(
+    oxEmojiWrapper,
+    ' ',
+    goatEmojiWrapper,
+    ' ',
+    fishEmojiWrapper,
+    ' ',
+    scoreWrapper,
+  );
 
   scoreCounters.style.opacity = 0;
 
@@ -139,14 +152,15 @@ export const showGameover = () => {
 export const hideGameover = () => {
   gameoverWrapper.style.transition = 'opacity 1s 2s';
   menuBackground.style.transition = 'opacity 1s 1s';
-  gameoverHeader.style.transition = 'opacity.3s.6s';
-  gameoverText1.style.transition = 'opacity.3s.5s';
-  gameoverText2.style.transition = 'opacity.3s.4s';
-  oxEmojiWrapper.style.transition = 'opacity.3s.3s';
-  goatEmojiWrapper.style.transition = 'opacity.3s.2s';
-  fishEmojiWrapper.style.transition = 'opacity.3s.2s';
-  restartButtonWrapper.style.transition = 'opacity.3s.1s';
-  menuButtonWrapper.style.transition = 'opacity.3s 0s';
+  gameoverHeader.style.transition = 'opacity.3s.7s';
+  gameoverText1.style.transition = 'opacity.3s.6s';
+  gameoverText2.style.transition = 'opacity.3s.5s';
+  oxEmojiWrapper.style.transition = 'opacity.3s.4s';
+  goatEmojiWrapper.style.transition = 'opacity.3s.4s';
+  fishEmojiWrapper.style.transition = 'opacity.3s.3s';
+  scoreWrapper.style.transition = 'opacity.3s.3s';
+  restartButtonWrapper.style.transition = 'opacity.3s.2s';
+  menuButtonWrapper.style.transition = 'opacity.3s.1s';
 
   gameoverWrapper.style.pointerEvents = 'none';
   gameoverWrapper.style.opacity = 0;

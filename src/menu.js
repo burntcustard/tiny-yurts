@@ -37,8 +37,12 @@ export const initMenu = (startGame) => {
 
   fullscreenButton.innerText = 'Fullscreen';
   fullscreenButton.addEventListener('click', () => {
-    document.documentElement.requestFullscreen();
-    screen.orientation.lock("landscape");
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+      screen.orientation.lock("landscape");
+    }
   });
   fullscreenButtonWrapper.style.opacity = 0;
 

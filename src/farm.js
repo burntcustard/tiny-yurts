@@ -91,13 +91,14 @@ export class Farm extends Structure {
     }
   }
 
-  update(gameStarted) {
+  update(gameStarted, updateCount) {
     // Don't actually update while the farm is transitioning-in
     if (this.appearing) return;
 
+
     if (gameStarted) {
       this.numIssues = Math.floor(this.demand / this.needyness);
-      this.demand += this.children.length - 1;
+      this.demand += (this.children.length - 1) + updateCount / 100000;
 
       if (this.hasWarn) {
         this.updateWarn();

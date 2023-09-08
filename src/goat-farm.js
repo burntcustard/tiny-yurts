@@ -47,7 +47,7 @@ export class GoatFarm extends Farm {
     }));
   }
 
-  update(gameStarted) {
-    super.update(gameStarted);
+  update(gameStarted, updateCount) {
+    super.update(gameStarted, updateCount);
   }
 }

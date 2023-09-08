@@ -229,13 +229,13 @@ const loop = GameLoop({
         updateGridData();
         break;
       case 1:
-        oxFarms.forEach((farm) => farm.update(gameStarted));
+        oxFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
         break;
       case 2:
-        goatFarms.forEach((farm) => farm.update(gameStarted));
+        goatFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
         break;
       case 3:
-        fishFarms.forEach((farm) => farm.update(gameStarted));
+        fishFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
         break;
     }
 
@@ -313,8 +313,10 @@ pauseButton.addEventListener('click', togglePause);
 
 document.addEventListener('keypress', (event) => {
   if (event.key === ' ') {
-    event.preventDefault();
-    togglePause();
+    // Prevent double-toggling by having the button be focused when pressing space
+    if (event.target !== pauseButton) {
+      togglePause();
+    }
 
     // Simulate :active styles
     pauseButton.style.transform = 'scale(.95)';

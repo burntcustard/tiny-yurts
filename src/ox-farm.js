@@ -47,8 +47,8 @@ export class OxFarm extends Farm {
     }));
   }
 
-  update(gameStarted) {
-    super.update(gameStarted);
+  update(gameStarted, updateCount) {
+    super.update(gameStarted, updateCount);
     // So 3 ox = 2 demand per update, 5 ox = 2 demand per update,
     // so upgrading doubles the demand(?)
   }

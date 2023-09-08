@@ -30,6 +30,7 @@ export const clockHand = createSvgElement('path');
 export const initUi = () => {
   // TODO: Move elsewhre and minify
   const styles = createElement('style');
+  // body has user-select: none; to prevent text being highlighted.
   styles.innerText = `
     body {
       position: relative;
@@ -39,6 +40,7 @@ export const initUi = () => {
       margin: 0;
       width: 100vw;
       height: 100vh;
+      user-select: none;
     }
     button {
       font-weight: 700;
