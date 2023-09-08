@@ -14,8 +14,43 @@ import { colors } from './colors';
 import { createSvgElement } from './svg-utils';
 import { pinLayer, yurtLayer } from './layers';
 
-const farmTypes = [colors.ox, colors.goat]; // TODO: fish, crops, horses(?)
+const farmTypes = [colors.ox, colors.goat];
 const spawningLoopLength = 3000;
+
+const getRandomNewType = () => (farms.length < farmTypes.length
+  ? farmTypes[farms.length]
+  : farmTypes.at(Math.random() * farmTypes.length));
+
+const getRandomExistingType = () => {
+  if (farms.length < farmTypes.length) {
+    return farmTypes[farms.length - 1];
+  }
+
+  const yurtTypeCounts = {};
+  yurts.filter((y) => y.type !== colors.fish).forEach((yurt) => {
+    yurtTypeCounts[yurt.type] = yurtTypeCounts[yurt.type] ? yurtTypeCounts[yurt.type] + 1 : 1;
+  });
+
+  const farmTypeCounts = {};
+  farms.filter((y) => y.type !== colors.fish).forEach((farm) => {
+    farmTypeCounts[farm.type] = farmTypeCounts[farm.type] ? farmTypeCounts[farm.type] + 1 : 1;
+  });
+
+  const weights = [];
+  Object.keys(farmTypeCounts).forEach((type) => {
+    weights.push(farmTypeCounts[type] / yurtTypeCounts[type]);
+  });
+
+  // console.log('Spawning new yurt with type weighting of:');
+  // console.log(weights);
+
+  // console.log(farmTypeCounts);
+
+  const newType = Object.keys(farmTypeCounts)[weightedRandom(weights)];
+  // console.log('Type chosen:', newType);
+
+  return newType;
+};
 
 export const getRandomPosition = ({
   width = 1,
@@ -187,41 +222,6 @@ const getRandomFarmProps = () => {
       { x: randPathPosX2, y: randPathPosY2 },
     ],
   });
-};
-
-const getRandomNewType = () => (farms.length < farmTypes.length
-  ? farmTypes[farms.length]
-  : farmTypes.at(Math.random() * farmTypes.length));
-
-const getRandomExistingType = () => {
-  if (farms.length < farmTypes.length) {
-    return farmTypes[farms.length - 1];
-  }
-
-  const yurtTypeCounts = {};
-  yurts.filter((y) => y.type !== colors.fish).forEach((yurt) => {
-    yurtTypeCounts[yurt.type] = yurtTypeCounts[yurt.type] ? yurtTypeCounts[yurt.type] + 1 : 1;
-  });
-
-  const farmTypeCounts = {};
-  farms.filter((y) => y.type !== colors.fish).forEach((farm) => {
-    farmTypeCounts[farm.type] = farmTypeCounts[farm.type] ? farmTypeCounts[farm.type] + 1 : 1;
-  });
-
-  const weights = [];
-  Object.keys(farmTypeCounts).forEach((type) => {
-    weights.push(farmTypeCounts[type] / yurtTypeCounts[type]);
-  });
-
-  // console.log('Spawning new yurt with type weighting of:');
-  // console.log(weights);
-
-  // console.log(farmTypeCounts);
-
-  const newType = Object.keys(farmTypeCounts)[weightedRandom(weights)];
-  // console.log('Type chosen:', newType);
-
-  return newType;
 };
 
 const getRandomYurtProps = () => {

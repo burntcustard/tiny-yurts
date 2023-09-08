@@ -1,6 +1,4 @@
-import {
-  init, initKeys, onKey, GameLoop,
-} from 'kontra';
+import { init, GameLoop } from 'kontra';
 import {
   svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY, gridCellSize, boardWidth, boardHeight,
 } from './svg';
@@ -138,7 +136,6 @@ initUi();
 initMenuBackground();
 initGameover(startNewGame, gameoverToMenu);
 init(null, { contextless: true });
-initKeys();
 initPointer();
 
 const startGame = () => {
@@ -313,12 +310,16 @@ const togglePause = () => {
 }
 
 pauseButton.addEventListener('click', togglePause);
-onKey('space', () => {
-  togglePause();
-  pauseButton.style.transform = 'scale(.95)';
-  setTimeout(() => pauseButton.style.transform = '', 150);
-});
 
+document.addEventListener('keypress', (event) => {
+  if (event.key === ' ') {
+    togglePause();
+
+    // Simulate :active styles
+    pauseButton.style.transform = 'scale(.95)';
+    setTimeout(() => pauseButton.style.transform = '', 150);
+  }
+});
 
 setTimeout(() => {
   loop.start();
