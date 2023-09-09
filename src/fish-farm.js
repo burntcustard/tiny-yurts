@@ -24,16 +24,18 @@ export class FishFarm extends Farm {
     setTimeout(() => this.addAnimal({}), 3000 + (properties.delay ?? 0));
     setTimeout(() => this.addAnimal({}), 3500 + (properties.delay ?? 0));
     setTimeout(() => this.addAnimal({}), 4000 + (properties.delay ?? 0));
-
+    this.numAnimals = 5;
     this.appearing = true;
     setTimeout(() => this.appearing = false, 3000);
   }
 
   upgrade() {
     // Cannot upgrade if there are 9 or more fish already
-    if (this.children.length >= 9) {
+    if (this.numAnimals >= 9) {
       return false;
     }
+
+    this.numAnimals +=  4;
 
     // 2 parents
     for (let i = 0; i < 2; i++) {

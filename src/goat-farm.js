@@ -19,14 +19,16 @@ export class GoatFarm extends Farm {
     setTimeout(() => this.addAnimal({}), 2000);
     setTimeout(() => this.addAnimal({}), 3000);
     setTimeout(() => this.addAnimal({ isBaby: (goatFarms.length - 1) % 2 }), 4000);
-
+    this.numAnimals = 3;
     this.appearing = true;
     setTimeout(() => this.appearing = false, 3000);
   }
 
   upgrade() {
+    this.numAnimals += 1;
+
     // Cannot upgrade if there are 7 or more goats already
-    if (this.children.length >= 7) {
+    if (this.numAnimals >= 7) {
       return false;
     }
 

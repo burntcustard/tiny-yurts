@@ -32,7 +32,7 @@ export class Ox extends Animal {
     ox.style.transition = 'all 1s';
     ox.style.willChange = 'transform';
     this.svgElement = ox;
-    animalLayer.append(ox);
+    animalLayer.prepend(ox);
 
     const body = createSvgElement('rect');
     body.setAttribute('fill', colors.ox);
@@ -66,7 +66,7 @@ export class Ox extends Animal {
     shadow.style.transition = 'all 1s';
     shadow.style.willChange = 'transform';
     this.svgShadowElement = shadow;
-    animalShadowLayer.append(shadow);
+    animalShadowLayer.prepend(shadow);
 
     this.render();
 

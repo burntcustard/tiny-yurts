@@ -62,6 +62,7 @@ const getRandomExistingType = () => {
 
   // console.log(farmTypeCounts);
 
+  // console.log(farmTypeCounts);
   const newType = Object.keys(farmTypeCounts)[weightedRandom(weights)];
   // console.log('Type chosen:', newType);
 
@@ -429,7 +430,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         minDistance: farms.length ? 2 : 0,
         // We _need_ this to work on 1st loop otherwise the menu breaks.
         // Setting to 32 is sometimes slow, but it's pretty reliable, and small
-        maxNumAttempts: updateCount < 3500 ? 32 : 16,
+        maxNumAttempts: 32,
         extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
       });
 
@@ -590,8 +591,7 @@ export const spawnNewObjects = (updateCount, delay) => {
     const type = getRandomExistingType();
     const sameTypeYurts = yurts.filter((y) => y.type === type);
     const friendYurt = sameTypeYurts.at(Math.random() * sameTypeYurts.length);
-
-    if (!friendYurt) return; // Silent skip if somehow 1st yurt didnt exist
+    // if (!friendYurt) return; // Silent skip if somehow 1st yurt didnt exist
 
     const randomPosition = getRandomPosition({
       anchor: {
@@ -627,10 +627,7 @@ export const spawnNewObjects = (updateCount, delay) => {
     const type = getRandomExistingType();
     const sameTypeYurts = yurts.filter((y) => y.type === type);
     const friendYurt = sameTypeYurts.at(Math.random() * sameTypeYurts.length);
-
-    // console.log('re-attempt failed yurt2 spawn')
-
-    if (!friendYurt) return; // Silent skip if somehow 1st yurt didnt exist
+    // if (!friendYurt) return; // Silent skip if somehow 1st yurt didnt exist
 
     const randomPosition = getRandomPosition({
       anchor: {
@@ -666,10 +663,7 @@ export const spawnNewObjects = (updateCount, delay) => {
     const type = getRandomExistingType();
     const sameTypeYurts = yurts.filter((y) => y.type === type);
     const friendYurt = sameTypeYurts.at(Math.random() * sameTypeYurts.length);
-
-    // console.log('re-re-attempt failed yurt2 spawn')
-
-    if (!friendYurt) return; // Silent skip if somehow 1st yurt didnt exist
+    // if (!friendYurt) return; // Silent skip if somehow 1st yurt didnt exist
 
     const randomPosition = getRandomPosition({
       anchor: {
@@ -700,7 +694,7 @@ export const spawnNewObjects = (updateCount, delay) => {
   }
 
   // Extra farm/upgrade attempt every update, not long before the per-round farm/upgrade
-  if (updateCount % spawningLoopLength === 2500 + updateRandomness5 && updateCount > 30000) {
+  if (updateCount % spawningLoopLength === 2500 + updateRandomness5 && updateCount > 20000) {
     const { width, height, relativePathPoints } = getRandomFarmProps();
     const type = getRandomNewType();
 

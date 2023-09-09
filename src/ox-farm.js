@@ -19,16 +19,18 @@ export class OxFarm extends Farm {
     setTimeout(() => this.addAnimal({}), 2000 + properties.delay ?? 0);
     setTimeout(() => this.addAnimal({}), 3000 + properties.delay ?? 0);
     setTimeout(() => this.addAnimal({ isBaby: (oxFarms.length - 1) % 2 }), 4000 + properties.delay ?? 0);
-
+    this.numAnimals = 3;
     this.appearing = true;
     setTimeout(() => this.appearing = false, 3000);
   }
 
   upgrade() {
     // Cannot upgrade if there are 5 or more oxen already
-    if (this.children.length >= 5) {
+    if (this.numAnimals >= 5) {
       return false;
     }
+
+    this.numAnimals += 2;
 
     // 3 parents 2 babies each upgrade
     for (let i = 0; i < this.children.filter((c) => !c.isBaby).length; i++) {
