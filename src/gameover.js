@@ -56,6 +56,26 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
     font-size: 24px;
   `;
   gameoverText3.style.opacity = 0;
+  if (document.body.scrollHeight < 500) {
+    gameoverText3.style.position = 'absolute';
+    gameoverText3.style.bottom = '10vmin';
+    gameoverText3.style.right = '10vmin';
+  } else {
+    gameoverText3.style.position = '';
+    gameoverText3.style.bottom = '';
+    gameoverText3.style.right = '';
+  }
+  addEventListener('resize', () => {
+    if (document.body.scrollHeight < 500) {
+      gameoverText3.style.position = 'absolute';
+      gameoverText3.style.bottom = '10vmin';
+      gameoverText3.style.right = '10vmin';
+    } else {
+      gameoverText3.style.position = '';
+      gameoverText3.style.bottom = '';
+      gameoverText3.style.right = '';
+    }
+  });
 
   oxEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:24px;background:${colors.ui}`;
   goatEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:24px;background:${colors.ui}`;
@@ -80,8 +100,31 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
   menuButton.addEventListener('click', gameoverToMenu);
 
   gameoverButtons.append(restartButtonWrapper, menuButtonWrapper);
-  gameoverButtons.style.cssText = 'display:grid;gap:16px;margin-top:48px';
-
+  gameoverButtons.style.cssText = 'gap:16px;margin-top:48px';
+  if (document.body.scrollHeight < 500) {
+    gameoverButtons.style.display = 'flex';
+    gameoverButtons.style.position = 'absolute';
+    gameoverButtons.style.bottom = '10vmin';
+    gameoverButtons.style.left = '10vmin';
+  } else {
+    gameoverButtons.style.display = 'grid';
+    gameoverButtons.style.position = '';
+    gameoverButtons.style.bottom = '';
+    gameoverButtons.style.left = '';
+  }
+  addEventListener('resize', () => {
+    if (document.body.scrollHeight < 500) {
+      gameoverButtons.style.display = 'flex';
+      gameoverButtons.style.position = 'absolute';
+      gameoverButtons.style.bottom = '10vmin';
+      gameoverButtons.style.left = '10vmin';
+    } else {
+      gameoverButtons.style.display = 'grid';
+      gameoverButtons.style.position = '';
+      gameoverButtons.style.bottom = '';
+      gameoverButtons.style.left = '';
+    }
+  });
   gameoverWrapper.append(
     gameoverHeader,
     gameoverText1,
@@ -160,13 +203,10 @@ export const hideGameover = () => {
 
   gameoverWrapper.style.transition = 'opacity 1s 2s';
   menuBackground.style.transition = 'opacity 1s 1s';
-  gameoverHeader.style.transition = 'opacity.3s.7s';
-  gameoverText1.style.transition = 'opacity.3s.6s';
-  gameoverText2.style.transition = 'opacity.3s.5s';
-  oxEmojiWrapper.style.transition = 'opacity.3s.4s';
-  goatEmojiWrapper.style.transition = 'opacity.3s.4s';
-  fishEmojiWrapper.style.transition = 'opacity.3s.3s';
-  scoreWrapper.style.transition = 'opacity.3s.3s';
+  gameoverHeader.style.transition = 'opacity.3s.6s';
+  gameoverText1.style.transition = 'opacity.3s.5s';
+  gameoverText2.style.transition = 'opacity.3s.4s';
+  gameoverText3.style.transition = 'opacity.3s.3s';
   restartButtonWrapper.style.transition = 'opacity.3s.2s';
   menuButtonWrapper.style.transition = 'opacity.3s.1s';
 
@@ -178,10 +218,7 @@ export const hideGameover = () => {
   gameoverHeader.style.opacity = 0;
   gameoverText1.style.opacity = 0;
   gameoverText2.style.opacity = 0;
-  oxEmojiWrapper.style.opacity = 0;
-  goatEmojiWrapper.style.opacity = 0;
-  fishEmojiWrapper.style.opacity = 0;
-  scoreWrapper.style.opacity = 0;
+  gameoverText3.style.opacity = 0;
   restartButtonWrapper.style.opacity = 0;
   menuButtonWrapper.style.opacity = 0;
 };

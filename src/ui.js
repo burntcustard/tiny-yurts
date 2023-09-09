@@ -133,14 +133,14 @@ export const initUi = () => {
     dot.setAttribute('fill', 'none');
     dot.setAttribute('stroke', '#eee');
     dot.setAttribute('transform-origin', 'center');
-    dot.setAttribute('d', 'm8 14.5v0');
+    dot.setAttribute('d', 'm8 14.5 0 0');
     dot.style.transform = `rotate(${i}grad)`;
     clockSvg.append(dot);
   }
 
   clockHand.setAttribute('stroke', '#eee');
   clockHand.setAttribute('transform-origin', 'center');
-  clockHand.setAttribute('d', 'm8 4v4');
+  clockHand.setAttribute('d', 'm8 4 0 4');
   clockSvg.append(clockHand);
 
   clockMonth.style.cssText = 'position:absolute;bottom:8px;color:#eee';
@@ -153,14 +153,21 @@ export const initUi = () => {
     place-items: center;
     place-self: center;
     bottom: 20px;
-    margin: 0 auto;
     border-radius: 20px;
     background: ${colors.ui};
   `;
-  // left: 20px;
-  if (screen.height * 2 < screen.width) {
+  if (document.body.scrollHeight < 500) {
     pathTilesIndicator.style.left = '20px';
+  } else {
+    pathTilesIndicator.style.left = '';
   }
+  addEventListener('resize', () => {
+    if (document.body.scrollHeight < 500) {
+      pathTilesIndicator.style.left = '20px';
+    } else {
+      pathTilesIndicator.style.left = '';
+    }
+  });
   pathTilesIndicator.style.transform = 'rotate(-45deg)';
   pathTilesIndicator.style.opacity = 0;
   pathTilesIndicator.style.transition = 'scale.4s cubic-bezier(.5,2,.5,1), opacity 1s';
@@ -213,7 +220,23 @@ export const initUi = () => {
   pauseSvgPath.style.transform = 'rotate(180deg)';
   pauseSvg.append(pauseSvgPath);
 
-  pauseButton.style.cssText = 'position:absolute;top:24px;right:112px;padding:0;pointer-events:all';
+  pauseButton.style.cssText = 'position:absolute;padding:0;pointer-events:all';
+  if (document.body.scrollHeight < 500) {
+    pauseButton.style.top = '108px';
+    pauseButton.style.right = '20px';
+  } else {
+    pauseButton.style.top = '24px';
+    pauseButton.style.right = '112px';
+  }
+  addEventListener('resize', () => {
+    if (document.body.scrollHeight < 500) {
+      pauseButton.style.top = '108px';
+      pauseButton.style.right = '20px';
+    } else {
+      pauseButton.style.top = '24px';
+      pauseButton.style.right = '112px';
+    }
+  });
   pauseButton.style.width = '64px';
   pauseButton.style.height = '64px';
   pauseButton.style.opacity = 0;

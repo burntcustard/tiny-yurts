@@ -181,7 +181,22 @@ const loop = GameLoop({
 
       if (inventory.paths < 9) {
         gridRedToggleButton.style.opacity = 1;
-        gridRedToggleButton.style.right = '72px';
+        if (document.body.scrollHeight < 500) {
+          gridRedToggleButton.style.right = '16px';
+          gridRedToggleButton.style.bottom = '72px';
+        } else {
+          gridRedToggleButton.style.right = '72px';
+          gridRedToggleButton.style.bottom = '16px';
+        }
+        addEventListener('resize', () => {
+          if (document.body.scrollHeight < 500) {
+            gridRedToggleButton.style.right = '16px';
+            gridRedToggleButton.style.bottom = '72px';
+          } else {
+            gridRedToggleButton.style.right = '72px';
+            gridRedToggleButton.style.bottom = '16px';
+          }
+        });
       }
 
       if (totalUpdateCount % (720 * 12) === 0 && inventory.paths < 99) { // 720
