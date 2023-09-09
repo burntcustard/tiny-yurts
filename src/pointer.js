@@ -12,6 +12,7 @@ import { gridPointerLayer, pathShadowLayer } from './layers';
 import { removePath } from './remove-path';
 import { ponds } from './pond';
 import { pathTilesIndicator, pathTilesIndicatorCount } from './ui';
+import { gridShow, gridHide, gridRedShow, gridRedHide, gridRedState } from './grid-toggle';
 
 let dragStartCell = {};
 let isDragging = false;
@@ -47,9 +48,8 @@ const handlePointerdown = (event) => {
   const rect = gridPointerLayer.getBoundingClientRect();
   const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
 
-  if (event.buttons === 1) {
-    gridRect.style.opacity = 1;
-    svgHazardLines.style.opacity = 0.9;
+  if (event.buttons === 1 && !gridRedState.locked) {
+    gridShow();
 
     const pondInStartCell = pondInCell(cellX, cellY);
     const pondPathInStartCell = pondPathInCell(cellX, cellY);
@@ -69,31 +69,25 @@ const handlePointerdown = (event) => {
       pathDragIndicator.style.scale = 1.3;
       pathDragIndicator.style.transition = 'all.2s, scale.4s cubic-bezier(.5,2,.5,1)';
     }
-  } else if (event.buttons === 2) {
-    gridPointerLayer.style.cursor = 'crosshair';
-    gridRectRed.style.opacity = 0.9;
-    svgHazardLinesRed.style.opacity = 0.9;
+  } else if (event.buttons === 2 || gridRedState.locked) {
+    gridRedShow();
     removePath(cellX, cellY);
   }
 };
 
 const handleHazardPointerdown = () => {
-  gridRectRed.style.opacity = 0.9;
-  svgHazardLinesRed.style.opacity = 0.9;
+  gridRedShow();
 };
 
 const handleHazardPointermove = (event) => {
   if (event.buttons !== 1) return;
 
-  gridRectRed.style.opacity = 0.9;
-  svgHazardLinesRed.style.opacity = 0.9;
-  gridRect.style.opacity = 0;
-  svgHazardLines.style.opacity = 0;
+  gridRedShow();
+  gridHide();
 };
 
 const handleHazardPointerup = () => {
-  gridRectRed.style.opacity = 0;
-  svgHazardLinesRed.style.opacity = 0;
+  gridRedHide();
 };
 
 const handlePointerup = (event) => {
@@ -113,10 +107,8 @@ const handlePointerup = (event) => {
     gridPointerLayer.style.cursor = 'cell';
   }
 
-  gridRect.style.opacity = 0;
-  svgHazardLines.style.opacity = 0;
-  gridRectRed.style.opacity = 0;
-  svgHazardLinesRed.style.opacity = 0;
+  gridHide();
+  gridRedHide();
 
   pathDragIndicator.style.opacity = 0;
   pathDragIndicator.style.scale = 0;
@@ -136,10 +128,8 @@ const handlePointermove = (event) => {
   const rect = gridPointerLayer.getBoundingClientRect();
   const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
 
-  if (event.buttons === 2) {
-    gridPointerLayer.style.cursor = 'crosshair';
-    gridRectRed.style.opacity = 0.9;
-    svgHazardLinesRed.style.opacity = 0.9;
+  if (event.buttons === 2 || gridRedState.on) {
+    gridRedShow();
 
     removePath(cellX, cellY);
     return;
@@ -169,11 +159,8 @@ const handlePointermove = (event) => {
   // Is left click being held down? If not, we don't care
   if (event.buttons !== 1) return;
 
-  gridRectRed.style.opacity = 0;
-  svgHazardLinesRed.style.opacity = 0;
-
-  gridRect.style.opacity = 1;
-  svgHazardLines.style.opacity = 0.9;
+  gridRedHide();
+  gridShow();
 
   if (!isDragging) return;
 

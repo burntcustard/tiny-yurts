@@ -9,7 +9,7 @@ import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import {
-  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath,
+  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath, gridToggleButton, gridRedToggleButton
 } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
@@ -27,6 +27,8 @@ import { initMenuBackground } from './menu-background';
 import { initGameover, showGameover, hideGameover } from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
 import { updateGridData } from './find-route';
+import { gridLockToggle, gridRedLockToggle } from './grid-toggle';
+import { gridRect, gridRectRed } from './grid';
 import { colors } from './colors';
 // import { Tree, trees } from './tree';
 
@@ -169,12 +171,17 @@ const loop = GameLoop({
         pathTilesIndicator.style.opacity = 1;
       }
 
-      if (totalUpdateCount === 150) {
+      if (totalUpdateCount === 200) {
         clock.style.opacity = 1;
       }
 
       if (totalUpdateCount === 250) {
         pauseButton.style.opacity = 1;
+      }
+
+      if (inventory.paths < 9) {
+        gridRedToggleButton.style.opacity = 1;
+        gridRedToggleButton.style.right = '72px';
       }
 
       if (totalUpdateCount % (720 * 12) === 0 && inventory.paths < 99) { // 720
@@ -257,6 +264,8 @@ const loop = GameLoop({
         clock.style.opacity = 0;
         pathTilesIndicator.style.opacity = 0;
         pauseButton.style.opacity = 0;
+        gridRedToggleButton.style.opacity = 0;
+        gridRedToggleButton.style.right = '';
 
         showGameover(startNewGame);
       }
@@ -310,6 +319,8 @@ const togglePause = () => {
 }
 
 pauseButton.addEventListener('click', togglePause);
+gridRedToggleButton.addEventListener('click', gridRedLockToggle);
+gridToggleButton.addEventListener('click', gridLockToggle);
 
 document.addEventListener('keypress', (event) => {
   if (event.key === ' ') {

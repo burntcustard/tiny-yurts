@@ -4,6 +4,7 @@ import {
 import { svgPxToDisplayPx } from './cell';
 import { menuBackground } from './menu-background';
 import { createElement } from './create-element';
+import { uiContainer } from './ui';
 
 const menuWrapper = createElement();
 const menuHeader = createElement();
@@ -15,7 +16,14 @@ const fullscreenButtonWrapper = createElement();
 const fullscreenButton = createElement('button');
 
 export const initMenu = (startGame) => {
-  menuWrapper.style.cssText = 'position:absolute;inset:0;padding:10vmin;pointer-events:none;display:flex;flex-direction:column;';
+  menuWrapper.style.cssText = `
+    position: absolute;
+    inset: 0;
+    padding: 10vmin;
+    display: flex;
+    flex-direction: column;
+  `;
+  menuWrapper.style.pointerEvents = 'none';
 
   // This has to be a sibling element, behind the gameoverScreen, not a child of it,
   // so that the backdrop-filter can transition properly
@@ -58,6 +66,7 @@ export const initMenu = (startGame) => {
 };
 
 export const showMenu = (focus, firstTime) => {
+  menuWrapper.style.pointerEvents = '';
   menuBackground.style.clipPath = 'polygon(0 0, calc(20dvw + 400px) 0, calc(20dvw + 350px) 100%, 0 100%)';
   menuBackground.style.transition = 'clip-path 1s, opacity 2s';
   menuHeader.style.transition = 'opacity .5s 1s';
@@ -86,8 +95,7 @@ export const showMenu = (focus, firstTime) => {
   svgElement.style.transition = '';
   svgElement.style.transform = `translate(${xOffset}px, 0) rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
 
-  menuWrapper.style.pointerEvents = '';
-
+  uiContainer.style.zIndex = 1;
   menuBackground.style.opacity = 1;
   menuHeader.style.opacity = 1;
   menuText1.style.opacity = 1;
@@ -97,6 +105,7 @@ export const showMenu = (focus, firstTime) => {
 
 export const hideMenu = () => {
   menuWrapper.style.pointerEvents = 'none';
+  uiContainer.style.zIndex = '';
 
   menuBackground.style.transition = 'opacity 1s.6s';
   menuHeader.style.transition = 'opacity.3s.4s';

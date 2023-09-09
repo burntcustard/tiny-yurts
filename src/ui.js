@@ -5,6 +5,8 @@ import { emojiFish } from './fish-emoji';
 import { colors } from './colors';
 import { createElement } from './create-element';
 
+export const uiContainer = createElement();
+
 // Animal score counters (for incrementing) and their wrappers (for show/hiding)
 export const oxCounterWrapper = createElement();
 export const oxCounter = createElement();
@@ -26,6 +28,13 @@ export const pauseSvgPath = createSvgElement('path');
 
 // Odd one out because can't put divs in an svg
 export const clockHand = createSvgElement('path');
+
+export const gridToggleButton = createElement('button');
+export const gridToggleSvg = createSvgElement('svg');
+export const gridToggleSvgPath = createSvgElement('path');
+export const gridRedToggleButton = createElement('button');
+export const gridRedToggleSvg = createSvgElement('svg');
+export const gridRedToggleSvgPath = createSvgElement('path');
 
 export const initUi = () => {
   // TODO: Move elsewhre and minify
@@ -64,9 +73,8 @@ export const initUi = () => {
   `;
   document.head.append(styles);
 
-  // Add HTML UI elements (?)
-  const uiContainer = createElement();
-  uiContainer.style.cssText = 'position:absolute;inset:0;display:grid;overflow:hidden;pointer-events:none;';
+  uiContainer.style.cssText = 'position:absolute;inset:0;display:grid;overflow:hidden;pointer-events:none';
+  uiContainer.style.zIndex = 1;
   document.body.append(uiContainer);
 
   scoreCounters.style.cssText = 'display:flex;position:absolute;top:16px;left:16px;';
@@ -212,5 +220,48 @@ export const initUi = () => {
   pauseButton.style.transition = 'all.2s,opacity 1s';
   pauseButton.append(pauseSvg);
 
-  uiContainer.append(scoreCounters, clock, pauseButton, pathTilesIndicator);
+  gridRedToggleSvg.setAttribute('viewBox', '0 0 16 16');
+  gridRedToggleSvg.setAttribute('width', 48);
+  gridRedToggleSvg.setAttribute('height', 48);
+  gridRedToggleSvgPath.setAttribute('fill', 'none');
+  gridRedToggleSvgPath.setAttribute('stroke', colors.red);
+  gridRedToggleSvgPath.setAttribute('stroke-width', 2);
+  gridRedToggleSvgPath.setAttribute('stroke-linecap', 'round');
+  gridRedToggleSvgPath.setAttribute('stroke-linejoin', 'round');
+  gridRedToggleSvgPath.setAttribute('d', 'M9 7 7 9M7 7 9 9M4.5 11.5 4.5 4.5 11.5 4.5 11.5 11.5M4.5 11.5 11.5 11.5');
+  gridRedToggleSvgPath.style.transition = 'all.3s';
+  gridRedToggleSvgPath.style.transformOrigin = 'center';
+  gridRedToggleSvgPath.style.transform = 'rotate(180deg)';
+  gridRedToggleSvg.append(gridRedToggleSvgPath);
+  gridRedToggleButton.append(gridRedToggleSvg);
+  gridRedToggleButton.style.cssText = 'position:absolute;bottom:16px;right:16px;padding:0;pointer-events:all;';
+  gridRedToggleButton.style.width = '48px';
+  gridRedToggleButton.style.height = '48px';
+
+  gridToggleSvg.setAttribute('viewBox', '0 0 16 16');
+  gridToggleSvg.setAttribute('width', 48);
+  gridToggleSvg.setAttribute('height', 48);
+  gridToggleSvgPath.setAttribute('fill', 'none');
+  gridToggleSvgPath.setAttribute('stroke', colors.ui);
+  gridToggleSvgPath.setAttribute('stroke-width', 2);
+  gridToggleSvgPath.setAttribute('stroke-linecap', 'round');
+  gridToggleSvgPath.setAttribute('stroke-linejoin', 'round');
+  gridToggleSvgPath.setAttribute('d', 'M6 5 6 11M10 5 10 11M5 6 8 6 11 6M5 10 11 10');
+  gridToggleSvgPath.style.transition = 'all.3s';
+  gridToggleSvgPath.style.transformOrigin = 'center';
+  gridToggleSvgPath.style.transform = 'rotate(180deg)';
+  gridToggleSvg.append(gridToggleSvgPath);
+  gridToggleButton.append(gridToggleSvg);
+  gridToggleButton.style.cssText = 'position:absolute;bottom:16px;right:16px;padding:0;pointer-events:all;';
+  gridToggleButton.style.width = '48px';
+  gridToggleButton.style.height = '48px';
+
+  uiContainer.append(
+    scoreCounters,
+    clock,
+    pauseButton,
+    pathTilesIndicator,
+    gridRedToggleButton,
+    gridToggleButton,
+  );
 };
