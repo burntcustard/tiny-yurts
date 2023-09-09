@@ -97,7 +97,7 @@ export class Farm extends Structure {
 
     if (gameStarted) {
       this.numIssues = Math.floor(this.demand / this.needyness);
-      this.demand += (this.children.length - 1) + ((updateCount * updateCount) / 1e12);
+      this.demand += (this.children.length - 1) + ((updateCount * updateCount) / 1e10);
 
       if (this.hasWarn) {
         this.updateWarn();
