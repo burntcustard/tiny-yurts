@@ -27,7 +27,7 @@ import { initMenuBackground } from './menu-background';
 import { initGameover, showGameover, hideGameover } from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
 import { updateGridData } from './find-route';
-import { gridLockToggle, gridRedLockToggle } from './grid-toggle';
+import { gridLockToggle, gridRedLockToggle, gridRedHide, gridRedState } from './grid-toggle';
 import { gridRect, gridRectRed } from './grid';
 import { colors } from './colors';
 // import { Tree, trees } from './tree';
@@ -281,6 +281,8 @@ const loop = GameLoop({
         pauseButton.style.opacity = 0;
         gridRedToggleButton.style.opacity = 0;
         gridRedToggleButton.style.right = '';
+        gridRedState.on = false;
+        gridRedHide();
 
         showGameover(startNewGame);
       }
