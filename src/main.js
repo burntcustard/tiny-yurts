@@ -144,7 +144,6 @@ const startGame = () => {
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = 'rotate(0) scale(1) translate(0, 0)';
   pathTilesIndicatorCount.innerText = inventory.paths;
-  scoreCounters.style.opacity = 1;
   hideMenu();
   gameStarted = true;
   updateCount = totalUpdateCount = 1;
@@ -163,24 +162,9 @@ const loop = GameLoop({
     if (gameStarted) {
       spawnNewObjects(totalUpdateCount, gameStarted);
 
-      if (totalUpdateCount === 50) {
-        scoreCounters.style.opacity = 1;
-      }
-
-      if (totalUpdateCount === 100) {
-        pathTilesIndicator.style.opacity = 1;
-      }
-
-      if (totalUpdateCount === 200) {
-        clock.style.opacity = 1;
-      }
-
-      if (totalUpdateCount === 250) {
-        pauseButton.style.opacity = 1;
-      }
-
-      if (inventory.paths < 9) {
+      if (totalUpdateCount === 90) {
         gridRedToggleButton.style.opacity = 1;
+
         if (document.body.scrollHeight < 500) {
           gridRedToggleButton.style.right = '16px';
           gridRedToggleButton.style.bottom = '72px';
@@ -188,6 +172,7 @@ const loop = GameLoop({
           gridRedToggleButton.style.right = '72px';
           gridRedToggleButton.style.bottom = '16px';
         }
+
         addEventListener('resize', () => {
           if (document.body.scrollHeight < 500) {
             gridRedToggleButton.style.right = '16px';
@@ -197,6 +182,22 @@ const loop = GameLoop({
             gridRedToggleButton.style.bottom = '16px';
           }
         });
+      }
+
+      if (totalUpdateCount === 120) {
+        scoreCounters.style.opacity = 1;
+      }
+
+      if (totalUpdateCount === 150) {
+        pathTilesIndicator.style.opacity = 1;
+      }
+
+      if (totalUpdateCount === 180) {
+        clock.style.opacity = 1;
+      }
+
+      if (totalUpdateCount === 210) {
+        pauseButton.style.opacity = 1;
       }
 
       if (totalUpdateCount % (720 * 12) === 0 && inventory.paths < 99) { // 720
@@ -282,6 +283,7 @@ const loop = GameLoop({
         gridRedToggleButton.style.opacity = 0;
         gridRedToggleButton.style.right = '';
         gridRedState.on = false;
+        gridRedState.buttonShown = false;
         gridRedHide();
 
         showGameover(startNewGame);
@@ -297,6 +299,7 @@ const loop = GameLoop({
     // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
     switch (renderCount % 4) {
       case 0:
+        // console.log(`Difficulty ramp: ${(totalUpdateCount * totalUpdateCount) / 1e12}`);
         // pathTilesIndicatorCount.innerText = inventory.paths;
         // if (inventory.paths === 0) {
         //   pathTilesIndicatorCount.style.background = colors.red;

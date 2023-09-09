@@ -17,9 +17,25 @@ import { pinLayer, yurtLayer } from './layers';
 const farmTypes = [colors.ox, colors.goat];
 const spawningLoopLength = 3000;
 
-const getRandomNewType = () => (farms.length < farmTypes.length
-  ? farmTypes[farms.length]
-  : farmTypes.at(Math.random() * farmTypes.length));
+const getRandomNewType = () => {
+  if (farms.length < farmTypes.length) {
+    // If you haven't got a goat farm yet, spawn one
+    return farmTypes[farms.length];
+  }
+
+  const goodRatioTypes = farmTypes
+    .filter((t) => {
+      // console.log(t);
+      const yurtsOfThisType = yurts.filter((y) => y.type === t);
+      const farmsOfThisType = farms.filter((f) => f.type === t);
+      // console.log(yurtsOfThisType);
+      // console.log(farmsOfThisType);
+      return yurtsOfThisType.length > farmsOfThisType.length;
+    });
+  // console.log(goodRatioTypes);
+
+  return goodRatioTypes.at(Math.random() * goodRatioTypes.length);
+};
 
 const getRandomExistingType = () => {
   if (farms.length < farmTypes.length) {
@@ -380,19 +396,10 @@ export const spawnNewObjects = (updateCount, delay) => {
     if (updateCount > 10000 && !fishFarms.length) {
       // Find 4x4 water
       const bigPond = ponds.find((pond) => pond.width >= 4 && pond.height >= 4);
-
-      // bigPond.points.forEach((point) => {
-      //   if (
-      //     !bigPond.points.some((p) => p.x === point.x && p.y === point.y)
-      //   ) {
-
-      //   }
-      // });
       const pathPosX1 = bigPond.x < gridWidth / 2 ? 1 : 0;
       const pathPosX2 = bigPond.x < gridWidth / 2 ? 2 : -1;
       const pathPosX3 = bigPond.x < gridWidth / 2 ? 3 : -2;
       const pathPosY1 = bigPond.y < gridHeight / 2 ? 1 : 0;
-
       const x = bigPond.x + bigPond.width / 2 - 1;
       const y = bigPond.y + bigPond.height / 2 - 1;
 
@@ -654,7 +661,7 @@ export const spawnNewObjects = (updateCount, delay) => {
   }
 
   // 2nd yurt spawn re-re-attempt after ~400ms
-  if ((updateCount % spawningLoopLength === 1600 + updateRandomness3) && spawnInfo.yurtFailed) {
+  if ((updateCount % spawningLoopLength === 1700 + updateRandomness3) && spawnInfo.yurtFailed) {
     const { facing } = getRandomYurtProps();
     const type = getRandomExistingType();
     const sameTypeYurts = yurts.filter((y) => y.type === type);
@@ -692,7 +699,8 @@ export const spawnNewObjects = (updateCount, delay) => {
     return;
   }
 
-  if (updateCount % spawningLoopLength === 2500 + updateRandomness5 && updateCount > 10000) {
+  // Extra farm/upgrade attempt every update, not long before the per-round farm/upgrade
+  if (updateCount % spawningLoopLength === 2500 + updateRandomness5 && updateCount > 30000) {
     const { width, height, relativePathPoints } = getRandomFarmProps();
     const type = getRandomNewType();
 
@@ -704,9 +712,6 @@ export const spawnNewObjects = (updateCount, delay) => {
         : farms[farms.length - 1], // if undefined randomPosition will use default
       maxDistance: farms.length + 2,
       minDistance: farms.length ? 2 : 0,
-      // We _need_ this to work on 1st loop otherwise the menu breaks.
-      // Setting to 32 is sometimes slow, but it's pretty reliable, and small
-      maxNumAttempts: updateCount < 3500 ? 32 : 16,
       extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
     });
 

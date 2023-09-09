@@ -61,7 +61,7 @@ export const initUi = () => {
       border-radius: 48px;
       background: #fff;
       box-shadow: 0 0 0 1px ${colors.shade};
-      transition: all .2s;
+      transition: all .2s, bottom .5s, right .5s, opacity 1s;
     }
     button:hover {
       box-shadow: 4px 4px 0 1px ${colors.shade};
@@ -78,7 +78,7 @@ export const initUi = () => {
   document.body.append(uiContainer);
 
   scoreCounters.style.cssText = 'display:flex;position:absolute;top:16px;left:16px;';
-  scoreCounters.style.trasition = 'opacity 1s';
+  scoreCounters.style.transition = 'opacity 1s';
   scoreCounters.style.opacity = 0;
 
   oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s';
@@ -170,7 +170,7 @@ export const initUi = () => {
   });
   pathTilesIndicator.style.transform = 'rotate(-45deg)';
   pathTilesIndicator.style.opacity = 0;
-  pathTilesIndicator.style.transition = 'scale.4s cubic-bezier(.5,2,.5,1), opacity 1s';
+  pathTilesIndicator.style.transition = 'scale.4s cubic-bezier(.5,2,.5,1),opacity 1s';
   pathTilesIndicator.style.width = '72px';
   pathTilesIndicator.style.height = '72px';
   pathTilesIndicatorCount.style.cssText = `
@@ -240,7 +240,6 @@ export const initUi = () => {
   pauseButton.style.width = '64px';
   pauseButton.style.height = '64px';
   pauseButton.style.opacity = 0;
-  pauseButton.style.transition = 'all.2s,opacity 1s';
   pauseButton.append(pauseSvg);
 
   gridRedToggleSvg.setAttribute('viewBox', '0 0 16 16');
@@ -260,6 +259,7 @@ export const initUi = () => {
   gridRedToggleButton.style.cssText = 'position:absolute;bottom:16px;right:16px;padding:0;pointer-events:all;';
   gridRedToggleButton.style.width = '48px';
   gridRedToggleButton.style.height = '48px';
+  gridRedToggleButton.style.opacity = 0;
 
   gridToggleSvg.setAttribute('viewBox', '0 0 16 16');
   gridToggleSvg.setAttribute('width', 48);
