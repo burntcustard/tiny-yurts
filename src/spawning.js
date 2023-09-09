@@ -205,16 +205,36 @@ export const getRandomPosition = ({
         }
       }
 
-      if (
-        (x + extra.x === path.points[0].x && y + extra.y === path.points[0].y)
-        || (x + extra.x === path.points[1].x && y + extra.y === path.points[1].y)
-      ) {
-        return true;
-      }
+      // Paths should not block new farm or yurt paths (extra is always a path
+      // it seems) - so this has been commented out as a simple fix!
+      // if (
+      //   (x + extra.x === path.points[0].x && y + extra.y === path.points[0].y)
+      //   || (x + extra.x === path.points[1].x && y + extra.y === path.points[1].y)
+      // ) {
+      //   return true;
+      // }
 
       return false; // TODO: See if removing saves bytes
     });
     if (pathObstruction) continue;
+
+    // Now we're not checking for path obstructions on 'extra' (newly spawning paths),
+    // we have to check if there's a yurt in the 'extra' cell. This wasn't needed
+    // previously, beause yurts always have paths under them and the path was detected
+    const yurtObstruction = yurts.some((yurt) => {
+      for (let w = 0; w < width; w++) {
+        for (let h = 0; h < height; h++) {
+          if (x + w === yurt.x && y + h === yurt.y) {
+            return true;
+          }
+        }
+      }
+
+      if (x + extra.x === yurt.x && y + extra.y === yurt.y) {
+        return true;
+      }
+    });
+    if (yurtObstruction) continue;
 
     return ({ x, y });
   }
