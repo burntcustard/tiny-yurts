@@ -128,7 +128,7 @@ const handlePointermove = (event) => {
   const rect = gridPointerLayer.getBoundingClientRect();
   const { x: cellX, y: cellY } = getBoardCell(event.x - rect.left, event.y - rect.top);
 
-  if (event.buttons === 2 || gridRedState.on) {
+  if (event.buttons === 2 || (event.buttons === 1 && gridRedState.locked)) {
     gridRedShow();
 
     removePath(cellX, cellY);
