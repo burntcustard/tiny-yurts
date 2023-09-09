@@ -65,9 +65,36 @@ const breadthFirstSearch = (gridData, from, to) => {
     if (!hasVisited) {
       visited.push(node);
 
+      const verticalHorizontalNeighbors = [];
+      const diagonalNeighbors = [];
+
       node.neighbors.forEach((neighbor) => {
-        const hasVisitedNeighbor = visited
-          .some((visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y);
+        if (Math.abs(neighbor.x - node.x) === 1 && neighbor.y === node.y) {
+          verticalHorizontalNeighbors.push(neighbor);
+        } else if (Math.abs(neighbor.y - node.y) === 1 && neighbor.x === node.x) {
+          verticalHorizontalNeighbors.push(neighbor);
+        } else {
+          diagonalNeighbors.push(neighbor);
+        }
+      });
+
+      verticalHorizontalNeighbors.forEach((neighbor) => {
+        const hasVisitedNeighbor = visited.some(
+          (visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y
+        );
+
+        if (!hasVisitedNeighbor) {
+          queue.push({
+            node: gridData.find((c) => c.x === neighbor.x && c.y === neighbor.y),
+            path: path.concat(node),
+          });
+        }
+      });
+
+      diagonalNeighbors.forEach((neighbor) => {
+        const hasVisitedNeighbor = visited.some(
+          (visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y
+        );
 
         if (!hasVisitedNeighbor) {
           queue.push({
