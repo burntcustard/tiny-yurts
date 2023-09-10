@@ -180,7 +180,7 @@ export const initUi = () => {
     border-radius: 64px;
     border: 6px solid ${colors.ui};
     transform: translate(28px,28px) rotate(45deg);
-    font-size: 20px;
+    font-size: 18px;
     background: #eee;
     transition: all.5s;
   }`;

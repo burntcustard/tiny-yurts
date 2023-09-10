@@ -228,8 +228,10 @@ const handlePointermove = (event) => {
   // No paths check is done after yurt shenanigans
   if (inventory.paths <= 0) {
     pathTilesIndicator.style.scale = 1.1;
+    pathTilesIndicatorCount.innerText = '!';
     setTimeout(() => {
       pathTilesIndicator.style.scale = 1;
+      pathTilesIndicatorCount.innerText = inventory.paths;
     }, 300);
     pathDragIndicator.style.opacity = 0;
     dragStartCell = {};

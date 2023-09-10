@@ -75,7 +75,7 @@ const startNewGame = () => {
     updateCount = 1;
     totalUpdateCount = 1;
     renderCount = 1;
-    inventory.paths = 9;
+    inventory.paths = 18;
     pathTilesIndicatorCount.innerText = inventory.paths;
     clearLayers();
     hideGameover();
@@ -94,7 +94,7 @@ const gameoverToMenu = () => {
   gameStarted = false;
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
-  inventory.paths = 9;
+  inventory.paths = 18;
 
   oxCounterWrapper.style.width = 0;
   goatCounterWrapper.style.width = 0;
@@ -281,7 +281,7 @@ const loop = GameLoop({
         pathTilesIndicator.style.opacity = 0;
         pauseButton.style.opacity = 0;
         gridRedToggleButton.style.opacity = 0;
-        gridRedToggleButton.style.right = '';
+        gridRedToggleButton.style.right = '16px';
         gridRedState.on = false;
         gridRedState.buttonShown = false;
         gridRedHide();
@@ -301,7 +301,7 @@ const loop = GameLoop({
       case 0:
         // console.log(`Difficulty ramp: ${(totalUpdateCount * totalUpdateCount) / 1e12}`);
         // pathTilesIndicatorCount.innerText = inventory.paths;
-        // if (inventory.paths === 0) {
+        // if (inventory.paths = 18== 0) {
         //   pathTilesIndicatorCount.style.background = colors.red;
         //   pathTilesIndicatorCount.style.color = '#fff';
         // } else {
