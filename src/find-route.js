@@ -55,6 +55,7 @@ const breadthFirstSearch = (gridData, from, to) => {
       return false; // TODO: See if returning nothing (void) saves space
     }
 
+    // Are we at the end?
     if (to.find((t) => node.x === t.x && node.y === t.y)) {
       return path.concat(node);
     }
@@ -86,7 +87,10 @@ const breadthFirstSearch = (gridData, from, to) => {
         if (!hasVisitedNeighbor) {
           queue.push({
             node: gridData.find((c) => c.x === neighbor.x && c.y === neighbor.y),
-            path: path.concat(node),
+            path: path.concat({
+              ...node,
+              distance: 1,
+            }),
           });
         }
       });
@@ -99,7 +103,10 @@ const breadthFirstSearch = (gridData, from, to) => {
         if (!hasVisitedNeighbor) {
           queue.push({
             node: gridData.find((c) => c.x === neighbor.x && c.y === neighbor.y),
-            path: path.concat(node),
+            path: path.concat({
+              ...node,
+              distance: 1.41,  // Approx Math.sqrt(2)
+            }),
           });
         }
       });

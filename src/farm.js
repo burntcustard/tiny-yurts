@@ -131,11 +131,32 @@ export class Farm extends Structure {
           to: this.points,
         });
 
-        if (!bestRoute
-          || (thisPersonsRoute && thisPersonsRoute.length < bestRoute.length)
-        ) {
+        // If there is no current best route... this is faster than nothing!
+        if (!bestRoute) {
           bestRoute = thisPersonsRoute;
           closestPerson = atHomePeopleOfSameType[j];
+        }
+
+        // If this persons route has fewer nodes, it's probably faster.
+        if (thisPersonsRoute && thisPersonsRoute.length < bestRoute.length) {
+          bestRoute = thisPersonsRoute;
+          closestPerson = atHomePeopleOfSameType[j];
+        }
+
+        // If this persons route has the same number of nodes, but fewer diagonals?
+        // Re-calculating these distances is not particularly costly, because
+        // it's rare that two routes will have the exact same number of nodes
+        if (thisPersonsRoute && thisPersonsRoute.length === bestRoute.length) {
+          // If this person is from the same yurt as the other person don't check
+          if (atHomePeopleOfSameType[j].parent !== closestPerson.parent) {
+            const bestDistance = bestRoute.reduce((acc, curr) => acc + (curr.distance ?? 0), 0);
+            const thisDistance = thisPersonsRoute.reduce((acc, curr) => acc + (curr.distance ?? 0), 0);
+
+            if (thisDistance < bestDistance) {
+              bestRoute = thisPersonsRoute;
+              closestPerson = atHomePeopleOfSameType[j];
+            }
+          }
         }
       }
 
