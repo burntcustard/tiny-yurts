@@ -761,7 +761,6 @@ export const spawnNewObjects = (updateCount, delay) => {
         relativePathPoints,
         delay, // TODO: See if having this in every new farm call saves bytes
       });
-      return;
     }
   }
 };

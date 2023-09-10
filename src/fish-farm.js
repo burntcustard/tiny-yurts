@@ -35,7 +35,7 @@ export class FishFarm extends Farm {
       return false;
     }
 
-    this.numAnimals +=  4;
+    this.numAnimals += 4;
 
     // 2 parents
     for (let i = 0; i < 2; i++) {

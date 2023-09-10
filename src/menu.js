@@ -5,6 +5,7 @@ import { svgPxToDisplayPx } from './cell';
 import { menuBackground } from './menu-background';
 import { createElement } from './create-element';
 import { uiContainer } from './ui';
+import { initAudio, playSound } from './audio';
 
 const menuWrapper = createElement();
 const menuHeader = createElement();
@@ -40,16 +41,26 @@ export const initMenu = (startGame) => {
   }
 
   startButton.innerText = 'Start';
-  startButton.addEventListener('click', startGame);
+  startButton.addEventListener('click', () => {
+    initAudio();
+    playSound(3);
+    startGame();
+  });
   startButtonWrapper.style.opacity = 0;
 
   fullscreenButton.innerText = 'Fullscreen';
   fullscreenButton.addEventListener('click', () => {
+    initAudio();
+    playSound(1);
+
     if (document.fullscreenElement) {
       document.exitFullscreen();
     } else {
       document.documentElement.requestFullscreen();
-      screen.orientation.lock("landscape");
+      // console.log(screen.orientation.lock());
+      // The catch prevents an error on browsers that do not support or do not want
+      // to allow locking to landscape. Could remove, but having an error is risky
+      screen.orientation.lock('landscape').catch(() => {});
     }
   });
   fullscreenButtonWrapper.style.opacity = 0;

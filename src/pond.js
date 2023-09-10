@@ -22,7 +22,7 @@ const createPondShape = (width, height) => {
 
   // Else try again to make a nice pond shape
   return createPondShape(width, height);
-}
+};
 
 export const spawnPond = ({
   width, height, x, y,

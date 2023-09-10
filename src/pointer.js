@@ -1,18 +1,17 @@
 import { Vector } from 'kontra';
 import { createSvgElement } from './svg-utils';
-import {
-  svgHazardLines, svgHazardLinesRed, svgContainerElement, gridCellSize,
-} from './svg';
+import { svgContainerElement, gridCellSize } from './svg';
 import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';
 import { isPastHalfwayInto, getBoardCell } from './cell';
 import { yurts } from './yurt';
-import { gridRect, gridRectRed } from './grid';
 import { gridPointerLayer, pathShadowLayer } from './layers';
 import { removePath } from './remove-path';
 import { ponds } from './pond';
 import { pathTilesIndicator, pathTilesIndicatorCount } from './ui';
-import { gridShow, gridHide, gridRedShow, gridRedHide, gridRedState } from './grid-toggle';
+import {
+  gridShow, gridHide, gridRedShow, gridRedHide, gridRedState,
+} from './grid-toggle';
 
 let dragStartCell = {};
 let isDragging = false;

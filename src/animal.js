@@ -2,6 +2,7 @@ import { GameObjectClass } from 'kontra';
 import { gridCellSize } from './svg';
 import { createSvgElement } from './svg-utils';
 import { pinLayer } from './layers';
+import { playWarnNote } from './audio';
 
 export const animals = [];
 const padding = 3;
@@ -107,6 +108,7 @@ export class Animal extends GameObjectClass {
   }
 
   showWarn() {
+    playWarnNote(this.color);
     this.hasWarn = true;
     this.warnSvg.style.opacity = 1;
     this.loveSvg.style.opacity = 0;

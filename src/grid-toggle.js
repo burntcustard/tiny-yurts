@@ -1,7 +1,7 @@
-import { svgHazardLines, svgHazardLinesRed } from "./svg";
-import { gridRect, gridRectRed } from "./grid";
-import { gridPointerLayer } from "./layers";
-import { gridToggleButton, gridToggleSvgPath, gridRedToggleSvgPath } from "./ui";
+import { svgHazardLines, svgHazardLinesRed } from './svg';
+import { gridRect, gridRectRed } from './grid';
+import { gridPointerLayer } from './layers';
+import { gridToggleButton, gridToggleSvgPath, gridRedToggleSvgPath } from './ui';
 
 let gridLocked = false;
 export const gridRedState = {
@@ -18,7 +18,7 @@ export const gridShow = () => {
     gridToggleSvgPath.setAttribute('d', 'M8 4.5 5 11M8 4.5 11 11M5 11 8 4.5 11 11M6 9.5 10 9.5');
     gridToggleSvgPath.style.transform = 'rotate(0)';
   }
-}
+};
 
 export const gridHide = () => {
   if (!gridLocked) {
@@ -29,7 +29,7 @@ export const gridHide = () => {
     gridToggleSvgPath.setAttribute('d', 'M6 5 6 11M10 5 10 11M5 6 8 6 11 6M5 10 11 10');
     gridToggleSvgPath.style.transform = 'rotate(180deg)';
   }
-}
+};
 
 export const gridLockToggle = () => {
   if (gridLocked) {
@@ -39,7 +39,7 @@ export const gridLockToggle = () => {
     gridShow();
     gridLocked = true;
   }
-}
+};
 
 export const gridRedShow = () => {
   gridPointerLayer.style.cursor = 'crosshair';
@@ -51,7 +51,7 @@ export const gridRedShow = () => {
     gridRedToggleSvgPath.setAttribute('d', 'M8 4.5 5 11M8 4.5 11 11M5 11 8 4.5 8 4.5 11 11M6 9.5 10 9.5');
     gridRedToggleSvgPath.style.transform = 'rotate(0)';
   }
-}
+};
 
 export const gridRedHide = () => {
   if (!gridRedState.locked) {
@@ -62,7 +62,7 @@ export const gridRedHide = () => {
     gridRedToggleSvgPath.setAttribute('d', 'M9 7 7 9M7 7 9 9M4.5 11.5 4.5 4.5 11.5 4.5 11.5 11.5M4.5 11.5 11.5 11.5');
     gridRedToggleSvgPath.style.transform = 'rotate(180deg)';
   }
-}
+};
 
 export const gridRedLockToggle = () => {
   if (gridRedState.locked) {
@@ -72,4 +72,4 @@ export const gridRedLockToggle = () => {
     gridRedShow();
     gridRedState.locked = true;
   }
-}
+};

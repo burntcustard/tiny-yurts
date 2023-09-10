@@ -81,7 +81,7 @@ const breadthFirstSearch = (gridData, from, to) => {
 
       verticalHorizontalNeighbors.forEach((neighbor) => {
         const hasVisitedNeighbor = visited.some(
-          (visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y
+          (visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y,
         );
 
         if (!hasVisitedNeighbor) {
@@ -97,7 +97,7 @@ const breadthFirstSearch = (gridData, from, to) => {
 
       diagonalNeighbors.forEach((neighbor) => {
         const hasVisitedNeighbor = visited.some(
-          (visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y
+          (visitedNode) => visitedNode.x === neighbor.x && visitedNode.y === neighbor.y,
         );
 
         if (!hasVisitedNeighbor) {
@@ -105,7 +105,7 @@ const breadthFirstSearch = (gridData, from, to) => {
             node: gridData.find((c) => c.x === neighbor.x && c.y === neighbor.y),
             path: path.concat({
               ...node,
-              distance: 1.41,  // Approx Math.sqrt(2)
+              distance: 1.41, // Approx Math.sqrt(2)
             }),
           });
         }

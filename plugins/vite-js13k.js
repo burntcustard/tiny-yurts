@@ -105,7 +105,7 @@ function customReplacement(src) {
     .replace(/M0 0l/g, 'M0 0 ') // Don't need line char, can just use space instead
     .replace(/M0 0L/g, 'M0 0 ')
     .replace(/upgrade/g, '_upgrade')
-    .replace(/type/g, '_type')
+    // .replace(/type/g, '_type') // Breaks Web Audio API
     .replace(/parent/g, '_parent')
     .replace(/points/g, '_points')
       // Replace const with let declartion

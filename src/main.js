@@ -9,7 +9,7 @@ import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import {
-  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath, gridToggleButton, gridRedToggleButton
+  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath, gridToggleButton, gridRedToggleButton,
 } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
@@ -27,10 +27,13 @@ import { initMenuBackground } from './menu-background';
 import { initGameover, showGameover, hideGameover } from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
 import { updateGridData } from './find-route';
-import { gridLockToggle, gridRedLockToggle, gridRedHide, gridRedState } from './grid-toggle';
+import {
+  gridLockToggle, gridRedLockToggle, gridRedHide, gridRedState,
+} from './grid-toggle';
 import { gridRect, gridRectRed } from './grid';
 import { colors } from './colors';
 // import { Tree, trees } from './tree';
+import { initAudio, playWarnNote } from './audio';
 
 let updateCount = 0;
 let renderCount = 0;
@@ -213,7 +216,7 @@ const loop = GameLoop({
               inventory.paths++;
               pathTilesIndicatorCount.innerText = inventory.paths;
             }
-          },  1300 + 100 * i);
+          }, 1300 + 100 * i);
         }
 
         setTimeout(() => {
@@ -336,7 +339,7 @@ const togglePause = () => {
     pauseSvgPath.setAttribute('d', 'M7 6 7 10M7 6 10 8 7 10');
     pauseSvgPath.style.transform = 'rotate(0)';
   }
-}
+};
 
 pauseButton.addEventListener('click', togglePause);
 gridRedToggleButton.addEventListener('click', gridRedLockToggle);
@@ -353,6 +356,12 @@ document.addEventListener('keypress', (event) => {
     pauseButton.style.transform = 'scale(.95)';
     setTimeout(() => pauseButton.style.transform = '', 150);
   }
+
+  initAudio();
+
+  if (event.key === 'o') playWarnNote(colors.ox);
+  if (event.key === 'g') playWarnNote(colors.goat);
+  if (event.key === 'f') playWarnNote(colors.fish);
 });
 
 setTimeout(() => {
