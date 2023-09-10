@@ -40,13 +40,13 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
 
   let code = scriptCode;
   console.log(`\nJS size: ${new Blob([code]).size}B (pre-custom-replace)`);
-  fs.writeFileSync('dist/raw.js', code);
+  fs.writeFileSync('dist/minified.js', code);
   code = code
     // .replace(/acceleration/g, '_acceleration')
   //   .replace(/createElement\("([^"]+)"\)/g, 'createElement`$1`')
   //   .replace(/.rotation/g, '._rotation')
   //   .replace(/createElement\("([^"]+)"\)/g, 'createElement`$1`');
-  fs.writeFileSync('dist/raw-replaced.js', code)
+  // fs.writeFileSync('dist/raw-replaced.js', code)
   console.log(`\nJS size: ${new Blob([code]).size}B (post-custom-replace)`);
 
   const packer = new Packer([{
