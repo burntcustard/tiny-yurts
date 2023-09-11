@@ -39,7 +39,7 @@ svgContainerElement.style.height = '100vh';
 document.body.append(svgContainerElement);
 
 export const svgHazardLines = createElement();
-// Inined grid color (#0001 to use fewer bytes)
+// Inined grid color (#0001) to use fewer bytes
 svgHazardLines.style.cssText = `
   position: absolute;
   display: grid;
@@ -52,14 +52,14 @@ svgHazardLines.style.willChange = 'opacity';
 svgHazardLines.style.transition = 'opacity.3s';
 
 export const svgHazardLinesRed = createElement();
+// Inlined gridRed color (#f002) to save a few bytes
 svgHazardLinesRed.style.cssText = `
   position: absolute;
   display: grid;
-  background: repeating-linear-gradient(-55deg, currentColor 0 12px, #0000 0 24px);
+  background: repeating-linear-gradient(-55deg, #f002 0 12px, #0000 0 24px);
 `;
 svgHazardLinesRed.style.width = '100vw';
 svgHazardLinesRed.style.height = '100vh';
-svgHazardLinesRed.style.color = colors.gridRed;
 svgHazardLinesRed.style.opacity = 0;
 svgHazardLinesRed.style.willChange = 'opacity';
 svgHazardLinesRed.style.transition = `opacity .3s`;

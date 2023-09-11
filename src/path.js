@@ -1,7 +1,7 @@
 // We pass refs to pathData in forEach, for now it's easier to reassign props directly
 /* eslint-disable no-param-reassign */
 import { GameObjectClass } from 'kontra';
-import { pathLayer, pathShadowLayer } from './layers';
+import { pathLayer, pathShadowLayer, rockShadowLayer } from './layers';
 import { gridCellSize } from './svg';
 import { createSvgElement } from './svg-utils';
 import { colors } from './colors';
@@ -176,12 +176,14 @@ export const drawPaths = ({ fadeout, noShadow }) => {
       const samePath2 = newPathData.path2 && newPathData.path2 === oldPathData.path2;
       if ((samePath) || (samePath1 && samePath2)) {
         newPathData.svgElement = oldPathData.svgElement;
+        newPathData.svgElementStoneShadow = oldPathData.svgElementStoneShadow;
         newPathData.svgElementShadow = oldPathData.svgElementShadow;
 
         // The two path datas are different, this connection/path aaah needs updating
         if (newPathData.d !== oldPathData.d) {
           oldPathData.d = newPathData.d;
           newPathData.svgElement.setAttribute('d', newPathData.d);
+          newPathData.svgElementStoneShadow?.setAttribute('d', newPathData.d);
         }
       }
     });
@@ -194,9 +196,11 @@ export const drawPaths = ({ fadeout, noShadow }) => {
           if (fadeout && oldPathData.path && oldPathData.path.points[0].fixed) {
             setTimeout(() => {
               oldPathData.svgElement.remove();
+              oldPathData.svgElementStoneShadow?.remove();
             }, 500);
           } else {
             oldPathData.svgElement.remove();
+            oldPathData.svgElementStoneShadow?.remove();
           }
           // }
         }
@@ -207,18 +211,30 @@ export const drawPaths = ({ fadeout, noShadow }) => {
     if (!newPathData.svgElement) {
       newPathData.svgElement = createSvgElement('path');
       newPathData.svgElement.setAttribute('d', newPathData.d);
-      newPathData.svgElement.style.transition = `all.4s, opacity.2s`;
+      newPathData.svgElement.style.transition = `all .4s, opacity .2s`;
 
       if (newPathData.path?.points[0].stone
         || newPathData.path?.points[1].stone
         || newPathData.path1?.points[0].stone
         || newPathData.path1?.points[1].stone
         || newPathData.path2?.points[0].stone
-        || newPathData.path2?.points[1].stone) {
+        || newPathData.path2?.points[1].stone)
+      {
         newPathData.svgElement.style.strokeDasharray = '0 3px';
         newPathData.svgElement.style.strokeWidth = '2px';
         newPathData.svgElement.style.stroke = '#bbb';
-        newPathData.svgElement.style.filter = `drop-shadow(.3px .3px ${colors.shade2})`;
+
+        // Chrome does not support sub-pixel CSS filters, so instead of this, we need another path
+        // newPathData.svgElement.style.filter = `drop-shadow(.3px .3px ${colors.shade2})`;
+
+        newPathData.svgElementStoneShadow = createSvgElement('path');
+        newPathData.svgElementStoneShadow.setAttribute('d', newPathData.d);
+        newPathData.svgElementStoneShadow.style.transition = `all .4s opacity .2s`;
+        newPathData.svgElementStoneShadow.style.strokeDasharray = '0 3px';
+        newPathData.svgElementStoneShadow.style.strokeWidth = '2px';
+        newPathData.svgElementStoneShadow.style.stroke = colors.black;
+
+        rockShadowLayer.append(newPathData.svgElementStoneShadow);
       }
 
       pathLayer.append(newPathData.svgElement);
@@ -290,9 +306,12 @@ export class Path extends GameObjectClass {
       if (p.path === this || p.path1 === this || p.path2 === this) {
         p.svgElement.setAttribute('opacity', 0);
         p.svgElement.setAttribute('stroke-width', 0);
+        p.svgElementStoneShadow?.setAttribute('opacity', 0);
+        p.svgElementStoneShadow?.setAttribute('stroke-width', 0);
 
         setTimeout(() => {
           p.svgElement.remove();
+          p.svgElementStoneShadow?.remove();
         }, 500);
         return false;
       }
