@@ -12,6 +12,7 @@ import { pathTilesIndicator, pathTilesIndicatorCount } from './ui';
 import {
   gridShow, gridHide, gridRedShow, gridRedHide, gridRedState,
 } from './grid-toggle';
+import { playPathPlacementNote } from './audio';
 
 let dragStartCell = {};
 let isDragging = false;
@@ -129,7 +130,6 @@ const handlePointermove = (event) => {
 
   if (event.buttons === 2 || (event.buttons === 1 && gridRedState.locked)) {
     gridRedShow();
-
     removePath(cellX, cellY);
     return;
   }
@@ -207,6 +207,7 @@ const handlePointermove = (event) => {
   if (yurtInStartCell && !yurtInEndCell) {
     yurtInStartCell.rotateTo(cellX, cellY);
     dragStartCell = { x: cellX, y: cellY };
+    playPathPlacementNote();
     yurtInStartCell.place();
     // pathDragIndicator.setAttribute('d', `M0 0L0 0`);
     pathDragIndicator.style.transition = '';
@@ -216,6 +217,7 @@ const handlePointermove = (event) => {
     // You can't drag through yurt because it was causing too many weird bugs
     dragStartCell = {};
     isDragging = false;
+    playPathPlacementNote();
     yurtInEndCell.place();
     return;
   }
@@ -243,6 +245,7 @@ const handlePointermove = (event) => {
     return;
   }
 
+  playPathPlacementNote();
   const newPath = new Path({
     points: [
       { x: dragStartCell.x, y: dragStartCell.y },

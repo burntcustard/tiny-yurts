@@ -9,7 +9,7 @@ import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import {
-  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath, gridToggleButton, gridRedToggleButton,
+  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath, gridToggleButton, gridRedToggleButton, soundToggleSvgPath, soundToggleButton, soundToggleTooltip, soundToggleSvgPathX
 } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
@@ -33,7 +33,7 @@ import {
 import { gridRect, gridRectRed } from './grid';
 import { colors } from './colors';
 // import { Tree, trees } from './tree';
-import { initAudio, playWarnNote } from './audio';
+import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound, playPathDeleteNote } from './audio';
 
 let updateCount = 0;
 let renderCount = 0;
@@ -165,27 +165,9 @@ const loop = GameLoop({
     if (gameStarted) {
       spawnNewObjects(totalUpdateCount, gameStarted);
 
-      if (totalUpdateCount === 90) {
-        gridRedToggleButton.style.opacity = 1;
-
-        if (document.body.scrollHeight < 500) {
-          gridRedToggleButton.style.right = '16px';
-          gridRedToggleButton.style.bottom = '72px';
-        } else {
-          gridRedToggleButton.style.right = '72px';
-          gridRedToggleButton.style.bottom = '16px';
-        }
-
-        addEventListener('resize', () => {
-          if (document.body.scrollHeight < 500) {
-            gridRedToggleButton.style.right = '16px';
-            gridRedToggleButton.style.bottom = '72px';
-          } else {
-            gridRedToggleButton.style.right = '72px';
-            gridRedToggleButton.style.bottom = '16px';
-          }
-        });
-      }
+      // if (totalUpdateCount === 90) {
+      //   gridRedToggleButton.style.opacity = 1;
+      // }
 
       if (totalUpdateCount === 120) {
         scoreCounters.style.opacity = 1;
@@ -341,9 +323,41 @@ const togglePause = () => {
   }
 };
 
+const toggleSound = () => {
+  initAudio();
+
+  if (soundSetings.on) {
+    soundSetings.on = false;
+    localStorage.setItem('Tiny Yurts s', false);
+    soundToggleSvgPathX.setAttribute('d', 'M11 7 Q10 8 9 9M9 7 Q10 8 11 9');
+    soundToggleSvgPathX.style.stroke = colors.red;
+    soundToggleTooltip.innerHTML = 'Sound: <u>Off';
+  } else {
+    soundSetings.on = true;
+    localStorage.setItem('Tiny Yurts s', true);
+    soundToggleSvgPathX.setAttribute('d', 'M10 6 Q12 8 10 10M10 6 Q12 8 10 10');
+    soundToggleSvgPathX.style.stroke = colors.ui;
+    soundToggleTooltip.innerHTML = 'Sound: <u>On';
+  }
+
+  // This returns before playing if soundSettings.on === false
+  playSound(38, 2, 1, 10);
+};
+
+if (soundSetings.on) {
+  soundToggleSvgPathX.setAttribute('d', 'M10 6 Q12 8 10 10M10 6 Q12 8 10 10');
+  soundToggleSvgPathX.style.stroke = colors.ui;
+  soundToggleTooltip.innerHTML = 'Sound: <u>On';
+} else {
+  soundToggleSvgPathX.setAttribute('d', 'M11 7 Q10 8 9 9M9 7 Q10 8 11 9');
+  soundToggleSvgPathX.style.stroke = colors.red;
+  soundToggleTooltip.innerHTML = 'Sound: <u>Off';
+}
+
 pauseButton.addEventListener('click', togglePause);
 gridRedToggleButton.addEventListener('click', gridRedLockToggle);
 gridToggleButton.addEventListener('click', gridLockToggle);
+soundToggleButton.addEventListener('click', toggleSound);
 
 document.addEventListener('keypress', (event) => {
   if (event.key === ' ') {
@@ -362,6 +376,8 @@ document.addEventListener('keypress', (event) => {
   if (event.key === 'o') playWarnNote(colors.ox);
   if (event.key === 'g') playWarnNote(colors.goat);
   if (event.key === 'f') playWarnNote(colors.fish);
+  if (event.key === 'p') playPathPlacementNote();
+  if (event.key === 'r') playPathDeleteNote();
 });
 
 setTimeout(() => {

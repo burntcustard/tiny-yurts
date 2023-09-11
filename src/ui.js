@@ -32,9 +32,18 @@ export const clockHand = createSvgElement('path');
 export const gridToggleButton = createElement('button');
 export const gridToggleSvg = createSvgElement('svg');
 export const gridToggleSvgPath = createSvgElement('path');
+export const gridToggleTooltip = createElement();
+
 export const gridRedToggleButton = createElement('button');
 export const gridRedToggleSvg = createSvgElement('svg');
 export const gridRedToggleSvgPath = createSvgElement('path');
+export const gridRedToggleTooltip = createElement();
+
+export const soundToggleButton = createElement('button');
+export const soundToggleSvg = createSvgElement('svg');
+export const soundToggleSvgPath = createSvgElement('path');
+export const soundToggleSvgPathX = createSvgElement('path');
+export const soundToggleTooltip = createElement();
 
 export const initUi = () => {
   // TODO: Move elsewhre and minify
@@ -250,16 +259,29 @@ export const initUi = () => {
   gridRedToggleSvgPath.setAttribute('stroke-width', 2);
   gridRedToggleSvgPath.setAttribute('stroke-linecap', 'round');
   gridRedToggleSvgPath.setAttribute('stroke-linejoin', 'round');
-  gridRedToggleSvgPath.setAttribute('d', 'M9 7 7 9M7 7 9 9M4.5 11.5 4.5 4.5 11.5 4.5 11.5 11.5M4.5 11.5 11.5 11.5');
   gridRedToggleSvgPath.style.transition = 'all.3s';
   gridRedToggleSvgPath.style.transformOrigin = 'center';
-  gridRedToggleSvgPath.style.transform = 'rotate(180deg)';
   gridRedToggleSvg.append(gridRedToggleSvgPath);
   gridRedToggleButton.append(gridRedToggleSvg);
-  gridRedToggleButton.style.cssText = 'position:absolute;bottom:16px;right:16px;padding:0;pointer-events:all;';
+  gridRedToggleButton.style.cssText = 'position:absolute;bottom:72px;right:16px;padding:0;pointer-events:all;';
   gridRedToggleButton.style.width = '48px';
   gridRedToggleButton.style.height = '48px';
-  gridRedToggleButton.style.opacity = 0;
+  gridRedToggleTooltip.style.cssText = `
+    position: absolute;
+    right: 16px;
+    bottom: 72px;
+    display: flex;
+    align-items: center;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 64px;
+    padding: 0 64px 0 16px;
+    white-space: pre;
+    background: ${colors.ui};
+  `;
+  gridRedToggleTooltip.style.height = '48px';
+  gridRedToggleTooltip.style.width = '96px';
+  gridRedToggleTooltip.style.transition = 'all.5s';
 
   gridToggleSvg.setAttribute('viewBox', '0 0 16 16');
   gridToggleSvg.setAttribute('width', 48);
@@ -269,22 +291,82 @@ export const initUi = () => {
   gridToggleSvgPath.setAttribute('stroke-width', 2);
   gridToggleSvgPath.setAttribute('stroke-linecap', 'round');
   gridToggleSvgPath.setAttribute('stroke-linejoin', 'round');
-  gridToggleSvgPath.setAttribute('d', 'M6 5 6 11M10 5 10 11M5 6 8 6 11 6M5 10 11 10');
   gridToggleSvgPath.style.transition = 'all.3s';
   gridToggleSvgPath.style.transformOrigin = 'center';
-  gridToggleSvgPath.style.transform = 'rotate(180deg)';
   gridToggleSvg.append(gridToggleSvgPath);
   gridToggleButton.append(gridToggleSvg);
   gridToggleButton.style.cssText = 'position:absolute;bottom:16px;right:16px;padding:0;pointer-events:all;';
   gridToggleButton.style.width = '48px';
   gridToggleButton.style.height = '48px';
+  gridToggleTooltip.style.cssText = `
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    display: flex;
+    align-items: center;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 64px;
+    padding: 0 64px 0 16px;
+    white-space: pre;
+    background: ${colors.ui};
+  `;
+  gridToggleTooltip.style.height = '48px';
+  gridToggleTooltip.style.width = '96px';
+  gridToggleTooltip.style.transition = 'all.5s';
+
+  soundToggleSvg.setAttribute('viewBox', '0 0 16 16');
+  soundToggleSvg.setAttribute('width', 48);
+  soundToggleSvg.setAttribute('height', 48);
+  soundToggleSvgPath.setAttribute('fill', 'none');
+  soundToggleSvgPath.setAttribute('stroke', colors.ui);
+  soundToggleSvgPath.setAttribute('stroke-width', 2);
+  soundToggleSvgPath.setAttribute('stroke-linecap', 'round');
+  soundToggleSvgPath.setAttribute('stroke-linejoin', 'round');
+  soundToggleSvgPath.style.transition = 'all.3s';
+  soundToggleSvgPath.style.transformOrigin = 'center';
+  soundToggleSvgPath.style.transform = 'rotate(0)';
+  soundToggleSvgPath.setAttribute('d', 'M9 13 6 10 4 10 4 6 6 6 9 3');
+  soundToggleSvgPathX.setAttribute('fill', 'none');
+  soundToggleSvgPathX.setAttribute('stroke', colors.ui);
+  soundToggleSvgPathX.setAttribute('stroke-width', 2);
+  soundToggleSvgPathX.setAttribute('stroke-linecap', 'round');
+  soundToggleSvgPathX.setAttribute('stroke-linejoin', 'round');
+  soundToggleSvgPathX.style.transition = 'all.3s';
+  soundToggleSvgPathX.style.transformOrigin = 'center';
+  soundToggleSvgPathX.style.transform = 'rotate(0)';
+  soundToggleSvg.append(soundToggleSvgPath, soundToggleSvgPathX);
+  soundToggleButton.append(soundToggleSvg);
+  soundToggleButton.style.cssText = 'position:absolute;bottom:128px;right:16px;padding:0;pointer-events:all;';
+  soundToggleButton.style.width = '48px';
+  soundToggleButton.style.height = '48px';
+  soundToggleTooltip.style.cssText = `
+    position: absolute;
+    right: 16px;
+    bottom: 128px;
+    display: flex;
+    align-items: center;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 64px;
+    padding: 0 64px 0 16px;
+    white-space: pre;
+    background: ${colors.ui};
+  `;
+  soundToggleTooltip.style.height = '48px';
+  soundToggleTooltip.style.width = '96px';
+  soundToggleTooltip.style.transition = 'all.5s';
 
   uiContainer.append(
     scoreCounters,
     clock,
     pauseButton,
     pathTilesIndicator,
+    gridRedToggleTooltip,
     gridRedToggleButton,
+    gridToggleTooltip,
     gridToggleButton,
+    soundToggleTooltip,
+    soundToggleButton,
   );
 };

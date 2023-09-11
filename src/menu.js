@@ -4,7 +4,7 @@ import {
 import { svgPxToDisplayPx } from './cell';
 import { menuBackground } from './menu-background';
 import { createElement } from './create-element';
-import { uiContainer } from './ui';
+import { gridToggleTooltip, gridRedToggleTooltip, soundToggleTooltip, uiContainer } from './ui';
 import { initAudio, playSound } from './audio';
 
 const menuWrapper = createElement();
@@ -130,4 +130,11 @@ export const hideMenu = () => {
   fullscreenButtonWrapper.style.transition = 0;
   menuText1.style.opacity = 0;
   menuHeader.style.opacity = 0;
+
+  soundToggleTooltip.style.opacity = 0;
+  gridRedToggleTooltip.style.opacity = 0;
+  gridToggleTooltip.style.opacity = 0;
+  soundToggleTooltip.style.width = 0;
+  gridRedToggleTooltip.style.width = 0;
+  gridToggleTooltip.style.width = 0;
 };

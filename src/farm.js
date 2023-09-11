@@ -311,8 +311,6 @@ export class Farm extends Structure {
     this.warnCircle.setAttribute('stroke-dashoffset', dashoffset);
 
     if (this.prevNumOverflowIssues < numOverflowIssues) {
-      console.log('trying to play a warning note for a farm thats bleepd');
-      console.log(this.type);
       playWarnNote(this.type);
       this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(1.2)`;
 
