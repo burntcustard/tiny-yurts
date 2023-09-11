@@ -46,7 +46,7 @@ export class Ox extends Animal {
     horns.setAttribute('stroke', colors.oxHorn);
     horns.setAttribute('width', this.width);
     horns.setAttribute('height', this.height);
-    horns.setAttribute('d', 'M0 2Q0 1 1 1 Q2 1 2 2');
+    horns.setAttribute('d', 'M0 2Q0 1 1 1Q2 1 2 2');
     horns.setAttribute('transform', 'translate(-0.2 .6)');
     horns.setAttribute('stroke-width', 0.4);
     if (this.isBaby) {

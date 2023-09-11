@@ -27,45 +27,57 @@ export const scaledGridLineThickness = 0.5;
 export const gridLineThickness = scaledGridLineThickness / 2;
 
 export const svgContainerElement = createElement();
-svgContainerElement.style.overflow = 'hidden';
-svgContainerElement.style.position = 'absolute';
+svgContainerElement.style.cssText = `
+  position: absolute;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: ${colors.grass};
+`;
 svgContainerElement.style.width = '100vw';
 svgContainerElement.style.height = '100vh';
-svgContainerElement.style.backgroundColor = colors.grass;
-svgContainerElement.style.display = 'grid';
-svgContainerElement.style.placeItems = 'center';
 document.body.append(svgContainerElement);
 
 export const svgHazardLines = createElement();
-svgHazardLines.style.position = 'absolute';
+// Inined grid color (#0001 to use fewer bytes)
+svgHazardLines.style.cssText = `
+  position: absolute;
+  display: grid;
+  background: repeating-linear-gradient(-55deg, #0001 0 12px, #0000 0 24px);
+`;
 svgHazardLines.style.width = '100vw';
 svgHazardLines.style.height = '100vh';
-svgHazardLines.style.background = `repeating-linear-gradient(-55deg, ${colors.grid} 0 12px, #0000 0 24px)`;
 svgHazardLines.style.opacity = 0;
 svgHazardLines.style.willChange = 'opacity';
 svgHazardLines.style.transition = 'opacity.3s';
 
 export const svgHazardLinesRed = createElement();
-svgHazardLinesRed.style.position = 'absolute';
+svgHazardLinesRed.style.cssText = `
+  position: absolute;
+  display: grid;
+  background: repeating-linear-gradient(-55deg, currentColor 0 12px, #0000 0 24px);
+`;
 svgHazardLinesRed.style.width = '100vw';
 svgHazardLinesRed.style.height = '100vh';
-svgHazardLinesRed.style.background = `repeating-linear-gradient(-55deg, currentColor 0 12px, #0000 0 24px)`;
 svgHazardLinesRed.style.color = colors.gridRed;
 svgHazardLinesRed.style.opacity = 0;
 svgHazardLinesRed.style.willChange = 'opacity';
-svgHazardLinesRed.style.transition = 'opacity.3s';
+svgHazardLinesRed.style.transition = `opacity .3s`;
 
 svgContainerElement.append(svgHazardLines, svgHazardLinesRed);
 
 // Initial SVG element
 export const svgElement = createSvgElement('svg');
-svgElement.style.position = 'relative';
+// touch-action: none is required to prevent default draggness, probably
+svgElement.style.cssText = `
+  position: relative;
+  display: grid;
+  touch-action: none;
+`;
 svgElement.setAttribute('viewBox', `0 0 ${gridSvgWidth} ${gridSvgHeight}`);
 svgElement.setAttribute('preserveAspectRatio', 'xMidYMid slice');
 svgElement.style.width = '100vw';
 svgElement.style.height = '100vh';
 svgElement.style.maxHeight = '68vw';
 svgElement.style.maxWidth = '200vh';
-svgElement.style.display = 'grid'; // Maybe required, cause of random extra px
-svgElement.style.touchAction = 'none'; // Required to prevent default draggness
 svgContainerElement.append(svgElement);

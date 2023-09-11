@@ -124,9 +124,9 @@ export const initUi = () => {
 
   clock.style.cssText = `
     position: absolute;
+    display: grid;
     top: 16px;
     right: 16px;
-    display: grid;
     place-items: center;
     border-radius: 64px;
     background: ${colors.ui}
@@ -189,9 +189,9 @@ export const initUi = () => {
   pathTilesIndicator.style.width = '72px';
   pathTilesIndicator.style.height = '72px';
   pathTilesIndicatorCount.style.cssText = `
+    position: absolute;
     display: grid;
     place-items: center;
-    position: absolute;
     border-radius: 64px;
     border: 6px solid ${colors.ui};
     transform: translate(28px,28px) rotate(45deg);
@@ -274,8 +274,8 @@ export const initUi = () => {
   gridRedToggleButton.style.height = '48px';
   gridRedToggleTooltip.style.cssText = `
     position: absolute;
-    right: 16px;
     display: flex;
+    right: 16px;
     align-items: center;
     color: #eee;
     font-size: 16px;
@@ -307,8 +307,8 @@ export const initUi = () => {
   gridToggleButton.style.height = '48px';
   gridToggleTooltip.style.cssText = `
     position: absolute;
-    right: 16px;
     display: flex;
+    right: 16px;
     align-items: center;
     color: #eee;
     font-size: 16px;
@@ -350,8 +350,8 @@ export const initUi = () => {
   soundToggleButton.style.height = '48px';
   soundToggleTooltip.style.cssText = `
     position: absolute;
-    right: 16px;
     display: flex;
+    right: 16px;
     align-items: center;
     color: #eee;
     font-size: 16px;

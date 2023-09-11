@@ -367,13 +367,13 @@ const toggleSound = () => {
   if (soundSetings.on) {
     soundSetings.on = false;
     localStorage.setItem('Tiny Yurts s', false);
-    soundToggleSvgPathX.setAttribute('d', 'M11 7 Q10 8 9 9M9 7 Q10 8 11 9');
+    soundToggleSvgPathX.setAttribute('d', 'M11 7Q10 8 9 9M9 7Q10 8 11 9');
     soundToggleSvgPathX.style.stroke = colors.red;
     soundToggleTooltip.innerHTML = 'Sound: <u>Off';
   } else {
     soundSetings.on = true;
     localStorage.setItem('Tiny Yurts s', true);
-    soundToggleSvgPathX.setAttribute('d', 'M10 6 Q12 8 10 10M10 6 Q12 8 10 10');
+    soundToggleSvgPathX.setAttribute('d', 'M10 6Q12 8 10 10M10 6Q12 8 10 10');
     soundToggleSvgPathX.style.stroke = colors.ui;
     soundToggleTooltip.innerHTML = 'Sound: <u>On';
   }
@@ -383,11 +383,11 @@ const toggleSound = () => {
 };
 
 if (soundSetings.on) {
-  soundToggleSvgPathX.setAttribute('d', 'M10 6 Q12 8 10 10M10 6 Q12 8 10 10');
+  soundToggleSvgPathX.setAttribute('d', 'M10 6Q12 8 10 10M10 6Q12 8 10 10');
   soundToggleSvgPathX.style.stroke = colors.ui;
   soundToggleTooltip.innerHTML = 'Sound: <u>On';
 } else {
-  soundToggleSvgPathX.setAttribute('d', 'M11 7 Q10 8 9 9M9 7 Q10 8 11 9');
+  soundToggleSvgPathX.setAttribute('d', 'M11 7Q10 8 9 9M9 7Q10 8 11 9');
   soundToggleSvgPathX.style.stroke = colors.red;
   soundToggleTooltip.innerHTML = 'Sound: <u>Off';
 }
