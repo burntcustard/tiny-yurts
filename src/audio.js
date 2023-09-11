@@ -81,6 +81,12 @@ export const playSound = (
   lowpassNode.type = 'lowpass';
   lowpassNode.frequency.value = lowpassFrequency;
 
+  // Two low pass filters for more aggressive filtering,
+  // without using many more bytes as they're identical
+  const lowpassNode2 = audioContext.createBiquadFilter();
+  lowpassNode2.type = 'lowpass';
+  lowpassNode2.frequency.value = lowpassFrequency;
+
   const highpassNode = audioContext.createBiquadFilter();
   highpassNode.type = 'highpass';
   highpassNode.frequency.value = highpassFrequency;
@@ -89,13 +95,14 @@ export const playSound = (
   volumeNode.gain.value = volume;
 
   source.connect(lowpassNode);
-  lowpassNode.connect(highpassNode);
+  lowpassNode.connect(lowpassNode2);
+  lowpassNode2.connect(highpassNode);
   highpassNode.connect(volumeNode);
   volumeNode.connect(audioContext.destination);
   source.start();
 };
 
-// [ frequencyIndex, noteLength, playbackRate, pingyness, lowpass, highpass ]
+// [ frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass ]
 const warnNotes = {
   [colors.ox]: {
     currentIndex: 0,
@@ -141,12 +148,13 @@ const warnNotes = {
 };
 
 export const playPathPlacementNote = () => {
-  // frequencyIndex, noteLength, playbackRate, pingyness, lowpass, highpass
+  // frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass
   playSound(1, 0.5, 1, 1, 1, 1000, 300, () => 2);
 };
 
 export const playPathDeleteNote = () => {
-  playSound(1, 0.5, 1, 1, 2, 10000, 1500, () => 2);
+  // frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass
+  playSound(1, 0.5, 1, 1, 4, 1000, 1500, () => 2);
 };
 
 export const playWarnNote = (animalType) => {
