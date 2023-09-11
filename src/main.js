@@ -396,6 +396,9 @@ pauseButton.addEventListener('click', togglePause);
 gridRedToggleButton.addEventListener('click', gridRedLockToggle);
 gridToggleButton.addEventListener('click', gridLockToggle);
 soundToggleButton.addEventListener('click', toggleSound);
+soundToggleTooltip.addEventListener('click', () => soundToggleButton.click());
+gridRedToggleTooltip.addEventListener('click', () => gridRedToggleButton.click());
+gridToggleTooltip.addEventListener('click', () => gridToggleButton.click());
 
 document.addEventListener('keypress', (event) => {
   if (event.key === ' ') {

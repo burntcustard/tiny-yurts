@@ -275,7 +275,6 @@ export const initUi = () => {
   gridRedToggleTooltip.style.cssText = `
     position: absolute;
     right: 16px;
-    bottom: 72px;
     display: flex;
     align-items: center;
     color: #eee;
@@ -283,6 +282,8 @@ export const initUi = () => {
     border-radius: 64px;
     padding: 0 64px 0 16px;
     white-space: pre;
+    pointer-events: all;
+    bottom: 72px;
     background: ${colors.ui};
   `;
   gridRedToggleTooltip.style.height = '48px';
@@ -307,7 +308,6 @@ export const initUi = () => {
   gridToggleTooltip.style.cssText = `
     position: absolute;
     right: 16px;
-    bottom: 16px;
     display: flex;
     align-items: center;
     color: #eee;
@@ -315,6 +315,8 @@ export const initUi = () => {
     border-radius: 64px;
     padding: 0 64px 0 16px;
     white-space: pre;
+    pointer-events: all;
+    bottom: 16px;
     background: ${colors.ui};
   `;
   gridToggleTooltip.style.height = '48px';
@@ -349,7 +351,6 @@ export const initUi = () => {
   soundToggleTooltip.style.cssText = `
     position: absolute;
     right: 16px;
-    bottom: 128px;
     display: flex;
     align-items: center;
     color: #eee;
@@ -357,6 +358,8 @@ export const initUi = () => {
     border-radius: 64px;
     padding: 0 64px 0 16px;
     white-space: pre;
+    pointer-events: all;
+    bottom: 128px;
     background: ${colors.ui};
   `;
   soundToggleTooltip.style.height = '48px';
