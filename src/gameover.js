@@ -8,7 +8,7 @@ import { animals } from './animal';
 import { yurts } from './yurt';
 import { colors } from './colors';
 import { menuBackground } from './menu-background';
-import { scoreCounters, uiContainer, gridToggleButton } from './ui';
+import { scoreCounters, uiContainer, gridToggleButton, soundToggleButton, gridRedToggleButton, gridRedToggleTooltip, gridToggleTooltip } from './ui';
 import { createElement } from './create-element';
 
 const gameoverWrapper = createElement();
@@ -181,9 +181,13 @@ export const showGameover = () => {
     scoreWrapper,
   );
 
+  soundToggleButton.style.transition = 'all.2s';
+  gridRedToggleButton.style.transition = 'all.2s';
   gridToggleButton.style.transition = 'all.2s';
-  scoreCounters.style.opacity = 0;
+  soundToggleButton.style.opacity = 0;
+  gridRedToggleButton.style.opacity = 0;
   gridToggleButton.style.opacity = 0;
+  scoreCounters.style.opacity = 0;
 
   setTimeout(() => {
     gameoverWrapper.style.pointerEvents = '';
@@ -199,8 +203,6 @@ export const showGameover = () => {
 };
 
 export const hideGameover = () => {
-  gridToggleButton.style.transition = 'all.2s,opacity 1s 2s';
-
   gameoverWrapper.style.transition = 'opacity 1s 2s';
   menuBackground.style.transition = 'opacity 1s 1s';
   gameoverHeader.style.transition = 'opacity.3s.6s';
@@ -209,8 +211,6 @@ export const hideGameover = () => {
   gameoverText3.style.transition = 'opacity.3s.3s';
   restartButtonWrapper.style.transition = 'opacity.3s.2s';
   menuButtonWrapper.style.transition = 'opacity.3s.1s';
-
-  gridToggleButton.style.opacity = 1;
 
   gameoverWrapper.style.pointerEvents = 'none';
   gameoverWrapper.style.opacity = 0;

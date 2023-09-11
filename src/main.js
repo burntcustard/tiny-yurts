@@ -1,6 +1,6 @@
 import { init, GameLoop } from 'kontra';
 import {
-  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY, gridCellSize, boardWidth, boardHeight,
+  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY, gridCellSize, boardWidth, boardHeight, svgHazardLines,
 } from './svg';
 import { initPointer } from './pointer';
 import { oxFarms } from './ox-farm';
@@ -9,7 +9,7 @@ import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
 import {
-  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath, gridToggleButton, gridRedToggleButton, soundToggleSvgPath, soundToggleButton, soundToggleTooltip, soundToggleSvgPathX
+  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath, gridToggleButton, gridRedToggleButton, soundToggleSvgPath, soundToggleButton, soundToggleTooltip, soundToggleSvgPathX, gridRedToggleTooltip, gridToggleTooltip
 } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
@@ -51,6 +51,18 @@ let totalUpdateCount = 0;
 const startNewGame = () => {
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
+
+  soundToggleButton.style.transition = 'all.2s,width.5s 4s,opacity.5s 3s';
+  gridRedToggleButton.style.transition = 'all.2s,width.5s 4s,opacity.5s 3s';
+  gridToggleButton.style.transition = 'all.2s,width.5s 4s,opacity.5s 3s';
+
+  soundToggleTooltip.style.transition = 'all.5s';
+  gridRedToggleTooltip.style.transition = 'all.5s';
+  gridToggleTooltip.style.transition = 'all.5s';
+
+  soundToggleButton.style.opacity = 1;
+  gridRedToggleButton.style.opacity = 1;
+  gridToggleButton.style.opacity = 1;
 
   oxCounterWrapper.style.width = 0;
   goatCounterWrapper.style.width = 0;
@@ -95,8 +107,10 @@ let gameStarted = false;
 
 const gameoverToMenu = () => {
   gameStarted = false;
+
   svgElement.style.transition = 'transform 2s';
   svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
+
   inventory.paths = 18;
 
   oxCounterWrapper.style.width = 0;
@@ -108,6 +122,23 @@ const gameoverToMenu = () => {
   oxCounter.innerText = 0;
   goatCounter.innerText = 0;
   fishCounter.innerText = 0;
+
+  soundToggleTooltip.style.transition = 'all.2s,width.5s 4s,opacity.5s 4s';
+  gridRedToggleTooltip.style.transition = 'all.2s,width.5s 4s,opacity.5s 4s';
+  gridToggleTooltip.style.transition = 'all.2s,width.5s 4s,opacity.5s 4s';
+  soundToggleButton.style.transition = 'all.2s,width.5s 4s,opacity.5s 4s';
+  gridRedToggleButton.style.transition = 'all.2s,width.5s 4s,opacity.5s 4s';
+  gridToggleButton.style.transition = 'all.2s,width.5s 4s,opacity.5s 4s';
+
+  soundToggleTooltip.style.width =  '96px';
+  gridRedToggleTooltip.style.width = '96px';
+  gridToggleTooltip.style.width = '96px';
+  soundToggleTooltip.style.opacity =  1;
+  gridRedToggleTooltip.style.opacity = 1;
+  gridToggleTooltip.style.opacity = 1;
+  soundToggleButton.style.opacity = 1;
+  gridRedToggleButton.style.opacity = 1;
+  gridToggleButton.style.opacity = 1;
 
   setTimeout(() => {
     goatFarms.length = 0;
@@ -150,6 +181,14 @@ const startGame = () => {
   hideMenu();
   gameStarted = true;
   updateCount = totalUpdateCount = 1;
+
+  soundToggleTooltip.style.transition = 'all.5s';
+  gridRedToggleTooltip.style.transition = 'all.5s';
+  gridToggleTooltip.style.transition = 'all.5s';
+
+  soundToggleButton.style.opacity = 1;
+  gridRedToggleButton.style.opacity = 1;
+  gridToggleButton.style.opacity = 1;
 };
 
 // demoColors();
@@ -256,6 +295,7 @@ const loop = GameLoop({
           f.x - gridWidth / 2 - boardOffsetX + f.width / 2,
           f.y - gridHeight / 2 - boardOffsetY + f.height / 2,
         );
+
         svgElement.style.transition = 'transform 2s ease-out .5s';
         svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
 
@@ -265,8 +305,6 @@ const loop = GameLoop({
         clock.style.opacity = 0;
         pathTilesIndicator.style.opacity = 0;
         pauseButton.style.opacity = 0;
-        gridRedToggleButton.style.opacity = 0;
-        gridRedToggleButton.style.right = '16px';
         gridRedState.on = false;
         gridRedState.buttonShown = false;
         gridRedHide();
