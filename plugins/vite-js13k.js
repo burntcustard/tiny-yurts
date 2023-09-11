@@ -56,7 +56,9 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
     allowFreeVars: true,
   }], {});
 
-  await packer.optimize(); // takes less than 10 seconds by default
+  const parameterOptimizationLevel = 2;
+
+  await packer.optimize(parameterOptimizationLevel); // takes less than 10 seconds by default
 
   const { firstLine, secondLine } = packer.makeDecoder();
 
