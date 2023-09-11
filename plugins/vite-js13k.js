@@ -50,15 +50,18 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
   console.log(`\nJS size: ${new Blob([code]).size}B (post-custom-replace)`);
 
   const packer = new Packer([{
-    data: scriptCode,
-    type: 'js',
     action: 'eval',
     allowFreeVars: true,
+    data: scriptCode,
+    maxMemoryMB: 200, // We're _just_ hitting the regular 150MB default
+    numAbbreviations: 30, // 30 is slightly better than the default 32, but is build-run-specific
+    sparseSelectors: 24, // 2x the default number of contexts, as my code is 2x regular Js13k size
+    type: 'js',
   }], {});
 
-  const parameterOptimizationLevel = 2;
+  const parameterOptimizationLevel = 2; // Takes 10x longer than the default level 0
 
-  await packer.optimize(parameterOptimizationLevel); // takes less than 10 seconds by default
+  await packer.optimize(parameterOptimizationLevel);
 
   const { firstLine, secondLine } = packer.makeDecoder();
 
