@@ -67,7 +67,7 @@ export const initUi = () => {
       padding: 0 20px;
       font-size: 32px;
       height: 56px;
-      border-radius: 48px;
+      border-radius: 64px;
       background: #fff;
       box-shadow: 0 0 0 1px ${colors.shade};
       transition: all .2s, bottom .5s, right .5s, opacity 1s;

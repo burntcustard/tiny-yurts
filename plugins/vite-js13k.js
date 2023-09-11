@@ -94,7 +94,7 @@ function customReplacement(src) {
       .replace(/:\s+/g, ':')  // Remove spaces in between property & values
       .replace(/\,\s+/g, ',') // Remove space after commas
       .replace(/\s{/g, '{') // Remove space in between identifier & opening squigly
-      .replace(/all\s+\./g, 'all.') // Remove space between transition timing & .s
+      .replace(/([a-z])\s+\./g, '$1.') // Remove space between transition timing & .s
       .replace(/(%) ([\d$])/g, '$1$2') // Remove space between '100% 50%' in hwb()
       .replace(/\s\/\s/g, '/') // Remove spaces around `/` in hsl
       .replace(/;\s+/g, ';') // Remove newlines & spaces after semicolons
@@ -108,6 +108,7 @@ function customReplacement(src) {
     // .replace(/type/g, '_type') // Breaks Web Audio API
     .replace(/parent/g, '_parent')
     .replace(/points/g, '_points')
+    .replace(/locked/g, '_locked')
       // Replace const with let declartion
     .replaceAll('const ', 'let ')
     // Replace all strict equality comparison with abstract equality comparison

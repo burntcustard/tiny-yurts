@@ -14,11 +14,10 @@ export const emojiFish = () => {
   fins.setAttribute('fill', colors.fish);
   fins.setAttribute('d', 'm0 11c0 10 16 4 16 0s-16-12-16 0');
 
-  const eye = createSvgElement('circle');
-  eye.setAttribute('cx', 4);
-  eye.setAttribute('cy', 9);
-  eye.setAttribute('r', 1);
-  eye.setAttribute('fill', colors.ui);
+  const eye = createSvgElement('path');
+  eye.setAttribute('d', 'm4 9 0 0')
+  eye.setAttribute('stroke-width', 2);
+  eye.setAttribute('stroke', colors.ui);
 
   emojiFish.append(fins, body, eye);
 

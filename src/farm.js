@@ -1,4 +1,4 @@
-import { Structure } from './structure';
+import { GameObjectClass } from 'kontra';
 import { gridCellSize } from './svg';
 import { createSvgElement } from './svg-utils';
 import {
@@ -17,7 +17,7 @@ export const farms = [];
 const roundness = 2;
 const fenceLineThickness = 1;
 
-export class Farm extends Structure {
+export class Farm extends GameObjectClass {
   constructor(properties) {
     const { relativePathPoints } = properties;
     super(properties);

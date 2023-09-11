@@ -14,11 +14,10 @@ export const emojiOx = () => {
   horn.setAttribute('fill', colors.oxHorn);
   horn.setAttribute('d', 'M12 3c-2 2-5-1-7-1s-3-.5-3-1c0-.5 2-1 4-1s8 1 6 3z');
 
-  const eye = createSvgElement('circle');
-  eye.setAttribute('cx', 8);
-  eye.setAttribute('cy', 6);
-  eye.setAttribute('r', 1);
-  eye.setAttribute('fill', colors.ui);
+  const eye = createSvgElement('path');
+  eye.setAttribute('d', 'm8 6 0 0');
+  eye.setAttribute('stroke-width', 2);
+  eye.setAttribute('stroke', colors.ui);
 
   emojiOx.append(body, horn, eye);
 

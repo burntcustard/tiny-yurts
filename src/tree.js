@@ -1,6 +1,6 @@
+import { GameObjectClass } from 'kontra';
 import { createSvgElement } from './svg-utils';
 import { gridCellSize } from './svg';
-import { Structure } from './structure';
 import { yurtLayer, yurtAndPersonShadowLayer } from './layers';
 import { colors } from './colors';
 
@@ -14,7 +14,7 @@ export const trees = [];
  * - x and y coordinate in the grid
  */
 
-export class Tree extends Structure {
+export class Tree extends GameObjectClass {
   constructor(properties) {
     super({ ...properties });
 

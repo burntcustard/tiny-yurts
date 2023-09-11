@@ -77,10 +77,10 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
     }
   });
 
-  oxEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:24px;background:${colors.ui}`;
-  goatEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:24px;background:${colors.ui}`;
-  fishEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:24px;background:${colors.ui}`;
-  scoreWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:24px;background:${colors.ui}`;
+  oxEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:64px;background:${colors.ui}`;
+  goatEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:64px;background:${colors.ui}`;
+  fishEmojiWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:64px;background:${colors.ui}`;
+  scoreWrapper.style.cssText = `display:inline-flex;padding:6px 12px;line-height:24px;color:#fff;border-radius:64px;background:${colors.ui}`;
   oxEmoji.style.width = '24px';
   oxEmoji.style.height = '24px';
   goatEmoji.style.width = '24px';

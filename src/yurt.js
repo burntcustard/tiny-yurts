@@ -1,6 +1,6 @@
+import { GameObjectClass } from 'kontra';
 import { createSvgElement } from './svg-utils';
 import { gridCellSize } from './svg';
-import { Structure } from './structure';
 import {
   baseLayer, yurtLayer, yurtAndPersonShadowLayer,
 } from './layers';
@@ -18,12 +18,14 @@ export const yurts = [];
  * - x and y coordinate in the grid
  */
 
-export class Yurt extends Structure {
+export class Yurt extends GameObjectClass {
   constructor(properties) {
     const { x, y } = properties;
 
     super(properties);
 
+    this.width = 1;
+    this.height = 1;
     this.points = [{
       x: this.x,
       y: this.y,
