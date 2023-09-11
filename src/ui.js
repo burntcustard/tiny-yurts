@@ -340,7 +340,7 @@ export const initUi = () => {
   soundToggleSvgPathX.setAttribute('stroke-width', 2);
   soundToggleSvgPathX.setAttribute('stroke-linecap', 'round');
   soundToggleSvgPathX.setAttribute('stroke-linejoin', 'round');
-  soundToggleSvgPathX.style.transition = `all.3s`;
+  soundToggleSvgPathX.style.transition = `all .3s`;
   soundToggleSvgPathX.style.transformOrigin = 'center';
   soundToggleSvgPathX.style.transform = 'rotate(0)';
   soundToggleSvg.append(soundToggleSvgPath, soundToggleSvgPathX);

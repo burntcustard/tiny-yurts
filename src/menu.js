@@ -92,9 +92,9 @@ export const showMenu = (focus, firstTime) => {
     menuText1.style.transition = `opacity .5s 1s`;
   }
 
-  menuText1.innerText = localStorage.getItem('Tiny Yurts')
+  menuText1.innerHTML = localStorage.getItem('Tiny Yurts')
     ? `Highscore: ${localStorage.getItem('Tiny Yurts')}`
-    : 'Tip: Left click & drag to connect yurts to\nfarms, or delete paths with right click.'
+    : 'Tip: Left click & drag to connect yurts to<br>farms, or delete paths with right click.'
 
   const farmPxPosition = svgPxToDisplayPx(
     focus.x - gridWidth / 2 - boardOffsetX + focus.width / 2,
