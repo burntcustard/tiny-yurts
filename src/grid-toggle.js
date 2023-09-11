@@ -3,7 +3,7 @@ import { gridRect, gridRectRed } from './grid';
 import { gridPointerLayer } from './layers';
 import { gridToggleButton, gridToggleSvgPath, gridRedToggleSvgPath, gridToggleTooltip, gridRedToggleTooltip } from './ui';
 
-let gridLocked = localStorage.getItem('Tiny Yurts g') !== 'false' ? true : false;
+let gridLocked = localStorage.getItem('Tiny Yurts g') === 'true' ? true : false;
 
 export const gridRedState = {
   locked: false,
