@@ -27,6 +27,7 @@ export const playSound = (
   playbackRate = 1,
   // Makes the note not go on for as long, like it's pinging a tighter string
   pingyness = 1,
+  volume = 1,
   // Most sound below this frequency (Hz) goes through
   lowpassFrequency = 10000,
   // Most sound above this frequency (Hz) goes through
@@ -72,6 +73,10 @@ export const playSound = (
   const buffer = audioContext.createBuffer(1, sampleRate * noteLength, sampleRate);
   buffer.getChannelData(0).set(bufferData);
 
+  const source = audioContext.createBufferSource();
+  source.buffer = buffer;
+  source.playbackRate.value = playbackRate;
+
   const lowpassNode = audioContext.createBiquadFilter();
   lowpassNode.type = 'lowpass';
   lowpassNode.frequency.value = lowpassFrequency;
@@ -80,13 +85,13 @@ export const playSound = (
   highpassNode.type = 'highpass';
   highpassNode.frequency.value = highpassFrequency;
 
-  const source = audioContext.createBufferSource();
-  source.buffer = buffer;
-  source.playbackRate.value = playbackRate;
+  const volumeNode = audioContext.createGain();
+  volumeNode.gain.value = volume;
 
   source.connect(lowpassNode);
   lowpassNode.connect(highpassNode);
-  highpassNode.connect(audioContext.destination);
+  highpassNode.connect(volumeNode);
+  volumeNode.connect(audioContext.destination);
   source.start();
 };
 
@@ -95,31 +100,31 @@ const warnNotes = {
   [colors.ox]: {
     currentIndex: 0,
     notes: [
-      [10, 0.13, 0.25, 400, 600],
-      [11, 0.13, 0.25, 400, 600],
-      [12, 0.13, 0.25, 400, 600],
-      [11, 0.13, 0.25, 400, 600],
-      [12, 0.13, 0.25, 400, 600],
-      [13, 0.13, 0.25, 400, 600],
-      [11, 0.13, 0.25, 400, 600],
-      [10, 0.13, 0.25, 400, 600],
-      [12, 0.13, 0.25, 400, 600],
-      [13, 0.13, 0.25, 400, 600],
+      [10, 0.13, 0.25, 400, 0.6, 600],
+      [11, 0.13, 0.25, 400, 0.6, 600],
+      [12, 0.13, 0.25, 400, 0.6, 600],
+      [11, 0.13, 0.25, 400, 0.6, 600],
+      [12, 0.13, 0.25, 400, 0.6, 600],
+      [13, 0.13, 0.25, 400, 0.6, 600],
+      [11, 0.13, 0.25, 400, 0.6, 600],
+      [10, 0.13, 0.25, 400, 0.6, 600],
+      [12, 0.13, 0.25, 400, 0.6, 600],
+      [13, 0.13, 0.25, 400, 0.6, 600],
     ],
   },
   [colors.goat]: {
     currentIndex: 0,
     notes: [
-      [20, 2, 2, 1, 10000, 1000],
-      [21, 2, 2, 1, 10000, 1000],
-      [22, 2, 2, 1, 10000, 1000],
-      [23, 2, 2, 1, 10000, 1000],
-      [24, 2, 2, 1, 10000, 1000],
-      [25, 2, 2, 1, 10000, 1000],
-      [26, 2, 2, 1, 10000, 1000],
-      [27, 2, 2, 1, 10000, 1000],
-      [28, 2, 2, 1, 10000, 1000],
-      [29, 2, 2, 1, 10000, 1000],
+      [20, 2, 2, 1, 0.5, 10000, 1000],
+      [21, 2, 2, 1, 0.5, 10000, 1000],
+      [22, 2, 2, 1, 0.5, 10000, 1000],
+      [23, 2, 2, 1, 0.5, 10000, 1000],
+      [24, 2, 2, 1, 0.5, 10000, 1000],
+      [25, 2, 2, 1, 0.5, 10000, 1000],
+      [26, 2, 2, 1, 0.5, 10000, 1000],
+      [27, 2, 2, 1, 0.5, 10000, 1000],
+      [28, 2, 2, 1, 0.5, 10000, 1000],
+      [29, 2, 2, 1, 0.5, 10000, 1000],
     ],
   },
   [colors.fish]: {
@@ -137,11 +142,11 @@ const warnNotes = {
 
 export const playPathPlacementNote = () => {
   // frequencyIndex, noteLength, playbackRate, pingyness, lowpass, highpass
-  playSound(2, 1, 1, 1, 1000, 300, () => 2);
+  playSound(1, 0.5, 1, 1, 1, 1000, 300, () => 2);
 };
 
 export const playPathDeleteNote = () => {
-  playSound(2, 1, 1, 1, 10000, 1000, () => 2);
+  playSound(1, 0.5, 1, 1, 2, 10000, 1500, () => 2);
 };
 
 export const playWarnNote = (animalType) => {

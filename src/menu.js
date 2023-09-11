@@ -43,7 +43,6 @@ export const initMenu = (startGame) => {
   startButton.innerText = 'Start';
   startButton.addEventListener('click', () => {
     initAudio();
-    playSound(3);
     startGame();
   });
   startButtonWrapper.style.opacity = 0;
@@ -51,7 +50,6 @@ export const initMenu = (startGame) => {
   fullscreenButton.innerText = 'Fullscreen';
   fullscreenButton.addEventListener('click', () => {
     initAudio();
-    playSound(1);
 
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -94,9 +92,9 @@ export const showMenu = (focus, firstTime) => {
     menuText1.style.transition = 'opacity .5s 1s';
   }
 
-  if (localStorage.getItem('Tiny Yurts')) {
-    menuText1.innerText = `Highscore: ${localStorage.getItem('Tiny Yurts')}`;
-  }
+  menuText1.innerText = localStorage.getItem('Tiny Yurts')
+    ? `Highscore: ${localStorage.getItem('Tiny Yurts')}`
+    : 'Tip: Left click & drag to connect yurts to\nfarms, or delete paths with right click.'
 
   const farmPxPosition = svgPxToDisplayPx(
     focus.x - gridWidth / 2 - boardOffsetX + focus.width / 2,
