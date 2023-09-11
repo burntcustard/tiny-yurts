@@ -69,28 +69,34 @@ export const initUi = () => {
       height: 56px;
       border-radius: 64px;
       background: #fff;
-      box-shadow: 0 0 0 1px ${colors.shade};
       transition: all .2s, bottom .5s, right .5s, opacity 1s;
+      box-shadow: 0 0 0 1px ${colors.shade};
     }
     button:hover {
       box-shadow: 4px 4px 0 1px ${colors.shade};
     }
     button:active {
-      box-shadow: 0 0 0 1px ${colors.shade};
       transform: scale(.95);
+      box-shadow: 0 0 0 1px ${colors.shade};
     }
   `;
   document.head.append(styles);
 
-  uiContainer.style.cssText = 'position:absolute;inset:0;display:grid;overflow:hidden;pointer-events:none';
+  uiContainer.style.cssText = `
+    position: absolute;
+    inset: 0;
+    display: grid;
+    overflow: hidden;
+    pointer-events: none
+  `;
   uiContainer.style.zIndex = 1;
   document.body.append(uiContainer);
 
-  scoreCounters.style.cssText = 'display:flex;position:absolute;top:16px;left:16px;';
-  scoreCounters.style.transition = 'opacity 1s';
+  scoreCounters.style.cssText = `display:flex;position:absolute;top:16px;left:16px;`;
+  scoreCounters.style.transition = `opacity 1s`;
   scoreCounters.style.opacity = 0;
 
-  oxCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s';
+  oxCounterWrapper.style.cssText = `display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s`;
   const oxCounterEmoji = emojiOx();
   oxCounterWrapper.style.width = 0;
   oxCounterWrapper.style.opacity = 0;
@@ -98,7 +104,7 @@ export const initUi = () => {
   oxCounterEmoji.style.height = '48px';
   oxCounterWrapper.append(oxCounterEmoji, oxCounter);
 
-  goatCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s';
+  goatCounterWrapper.style.cssText = `display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s`;
   const goatCounterEmoji = emojiGoat();
   goatCounterWrapper.style.width = 0;
   goatCounterWrapper.style.opacity = 0;
@@ -106,7 +112,7 @@ export const initUi = () => {
   goatCounterEmoji.style.height = '48px';
   goatCounterWrapper.append(goatCounterEmoji, goatCounter);
 
-  fishCounterWrapper.style.cssText = 'display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s';
+  fishCounterWrapper.style.cssText = `display:flex;align-items:center;gap:8px;transition:width 1s,opacity 1s 1s`;
   const fishCounterEmoji = emojiFish();
   fishCounterWrapper.style.width = 0;
   fishCounterWrapper.style.opacity = 0;
@@ -128,7 +134,7 @@ export const initUi = () => {
   clock.style.width = '80px';
   clock.style.height = '80px';
   clock.style.opacity = 0;
-  clock.style.transition = 'opacity 1s';
+  clock.style.transition = `opacity 1s`;
 
   const clockSvg = createSvgElement('svg');
   clockSvg.setAttribute('stroke-linejoin', 'round');
@@ -152,7 +158,7 @@ export const initUi = () => {
   clockHand.setAttribute('d', 'm8 4 0 4');
   clockSvg.append(clockHand);
 
-  clockMonth.style.cssText = 'position:absolute;bottom:8px;color:#eee';
+  clockMonth.style.cssText = `position:absolute;bottom:8px;color:#eee`;
 
   clock.append(clockSvg, clockMonth);
 
@@ -179,7 +185,7 @@ export const initUi = () => {
   });
   pathTilesIndicator.style.transform = 'rotate(-45deg)';
   pathTilesIndicator.style.opacity = 0;
-  pathTilesIndicator.style.transition = 'scale.4s cubic-bezier(.5,2,.5,1),opacity 1s';
+  pathTilesIndicator.style.transition = `scale .4s cubic-bezier(.5, 2, .5, 1), opacity 1s`;
   pathTilesIndicator.style.width = '72px';
   pathTilesIndicator.style.height = '72px';
   pathTilesIndicatorCount.style.cssText = `
@@ -224,12 +230,12 @@ export const initUi = () => {
   pauseSvgPath.setAttribute('stroke-linecap', 'round');
   pauseSvgPath.setAttribute('stroke-linejoin', 'round');
   pauseSvgPath.setAttribute('d', 'M6 6 6 10M10 6 10 8 10 10');
-  pauseSvgPath.style.transition = 'all.2s';
+  pauseSvgPath.style.transition = `all .2s`;
   pauseSvgPath.style.transformOrigin = 'center';
   pauseSvgPath.style.transform = 'rotate(180deg)';
   pauseSvg.append(pauseSvgPath);
 
-  pauseButton.style.cssText = 'position:absolute;padding:0;pointer-events:all';
+  pauseButton.style.cssText = `position:absolute;padding:0;pointer-events:all`;
   if (document.body.scrollHeight < 500) {
     pauseButton.style.top = '108px';
     pauseButton.style.right = '20px';
@@ -259,11 +265,11 @@ export const initUi = () => {
   gridRedToggleSvgPath.setAttribute('stroke-width', 2);
   gridRedToggleSvgPath.setAttribute('stroke-linecap', 'round');
   gridRedToggleSvgPath.setAttribute('stroke-linejoin', 'round');
-  gridRedToggleSvgPath.style.transition = 'all.3s';
+  gridRedToggleSvgPath.style.transition = `all .3s`;
   gridRedToggleSvgPath.style.transformOrigin = 'center';
   gridRedToggleSvg.append(gridRedToggleSvgPath);
   gridRedToggleButton.append(gridRedToggleSvg);
-  gridRedToggleButton.style.cssText = 'position:absolute;bottom:72px;right:16px;padding:0;pointer-events:all;';
+  gridRedToggleButton.style.cssText = `position:absolute;bottom:72px;right:16px;padding:0;pointer-events:all;`;
   gridRedToggleButton.style.width = '48px';
   gridRedToggleButton.style.height = '48px';
   gridRedToggleTooltip.style.cssText = `
@@ -281,7 +287,7 @@ export const initUi = () => {
   `;
   gridRedToggleTooltip.style.height = '48px';
   gridRedToggleTooltip.style.width = '96px';
-  gridRedToggleTooltip.style.transition = 'all.5s';
+  gridRedToggleTooltip.style.transition = `all .5s`;
 
   gridToggleSvg.setAttribute('viewBox', '0 0 16 16');
   gridToggleSvg.setAttribute('width', 48);
@@ -291,11 +297,11 @@ export const initUi = () => {
   gridToggleSvgPath.setAttribute('stroke-width', 2);
   gridToggleSvgPath.setAttribute('stroke-linecap', 'round');
   gridToggleSvgPath.setAttribute('stroke-linejoin', 'round');
-  gridToggleSvgPath.style.transition = 'all.3s';
+  gridToggleSvgPath.style.transition = `all .3s`;
   gridToggleSvgPath.style.transformOrigin = 'center';
   gridToggleSvg.append(gridToggleSvgPath);
   gridToggleButton.append(gridToggleSvg);
-  gridToggleButton.style.cssText = 'position:absolute;bottom:16px;right:16px;padding:0;pointer-events:all;';
+  gridToggleButton.style.cssText = `position:absolute;bottom:16px;right:16px;padding:0;pointer-events:all;`;
   gridToggleButton.style.width = '48px';
   gridToggleButton.style.height = '48px';
   gridToggleTooltip.style.cssText = `
@@ -313,7 +319,7 @@ export const initUi = () => {
   `;
   gridToggleTooltip.style.height = '48px';
   gridToggleTooltip.style.width = '96px';
-  gridToggleTooltip.style.transition = 'all.5s';
+  gridToggleTooltip.style.transition = `all .5s`;
 
   soundToggleSvg.setAttribute('viewBox', '0 0 16 16');
   soundToggleSvg.setAttribute('width', 48);
@@ -323,7 +329,7 @@ export const initUi = () => {
   soundToggleSvgPath.setAttribute('stroke-width', 2);
   soundToggleSvgPath.setAttribute('stroke-linecap', 'round');
   soundToggleSvgPath.setAttribute('stroke-linejoin', 'round');
-  soundToggleSvgPath.style.transition = 'all.3s';
+  soundToggleSvgPath.style.transition = `all .3s`;
   soundToggleSvgPath.style.transformOrigin = 'center';
   soundToggleSvgPath.style.transform = 'rotate(0)';
   soundToggleSvgPath.setAttribute('d', 'M9 13 6 10 4 10 4 6 6 6 9 3');
@@ -332,12 +338,12 @@ export const initUi = () => {
   soundToggleSvgPathX.setAttribute('stroke-width', 2);
   soundToggleSvgPathX.setAttribute('stroke-linecap', 'round');
   soundToggleSvgPathX.setAttribute('stroke-linejoin', 'round');
-  soundToggleSvgPathX.style.transition = 'all.3s';
+  soundToggleSvgPathX.style.transition = `all.3s`;
   soundToggleSvgPathX.style.transformOrigin = 'center';
   soundToggleSvgPathX.style.transform = 'rotate(0)';
   soundToggleSvg.append(soundToggleSvgPath, soundToggleSvgPathX);
   soundToggleButton.append(soundToggleSvg);
-  soundToggleButton.style.cssText = 'position:absolute;bottom:128px;right:16px;padding:0;pointer-events:all;';
+  soundToggleButton.style.cssText = `position:absolute;bottom:128px;right:16px;padding:0;pointer-events:all;`;
   soundToggleButton.style.width = '48px';
   soundToggleButton.style.height = '48px';
   soundToggleTooltip.style.cssText = `
@@ -355,7 +361,7 @@ export const initUi = () => {
   `;
   soundToggleTooltip.style.height = '48px';
   soundToggleTooltip.style.width = '96px';
-  soundToggleTooltip.style.transition = 'all.5s';
+  soundToggleTooltip.style.transition = `all .5s`;
 
   uiContainer.append(
     scoreCounters,

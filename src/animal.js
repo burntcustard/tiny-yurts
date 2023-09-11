@@ -29,8 +29,8 @@ export class Animal extends GameObjectClass {
 
     this.pinSvg = createSvgElement('g');
     this.pinSvg.style.opacity = 0;
-    this.pinSvg.style.willChange = 'opacity, transform';
-    this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1)';
+    this.pinSvg.style.willChange = `opacity, transform`;
+    this.pinSvg.style.transition = `all .8s cubic-bezier(.5, 2, .5, 1)`;
     this.pinSvg.style.transformOrigin = 'bottom';
     this.pinSvg.style.transformBox = 'fill-box';
     this.pinSvg.style.transform = `translate(${x}px, ${y - this.height / 2}px)`;

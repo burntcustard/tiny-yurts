@@ -39,7 +39,7 @@ const pathDragIndicatorWrapper = createSvgElement('g');
 const pathDragIndicator = createSvgElement('path');
 pathDragIndicator.style.opacity = 0;
 pathDragIndicator.style.scale = 0;
-pathDragIndicator.style.transition = 'all.2s, scale.4s cubic-bezier(.5,2,.5,1)';
+pathDragIndicator.style.transition = `all.2s, scale.4s cubic-bezier(.5,2,.5,1)`;
 pathDragIndicatorWrapper.append(pathDragIndicator);
 pathShadowLayer.append(pathDragIndicatorWrapper);
 
@@ -67,7 +67,7 @@ const handlePointerdown = (event) => {
       pathDragIndicatorWrapper.setAttribute('transform', `translate(${toSvgCoord(cellX)} ${toSvgCoord(cellY)})`);
       pathDragIndicator.style.opacity = 1;
       pathDragIndicator.style.scale = 1.3;
-      pathDragIndicator.style.transition = 'all.2s, scale.4s cubic-bezier(.5,2,.5,1)';
+      pathDragIndicator.style.transition = `all.2s, scale.4s cubic-bezier(.5,2,.5,1)`;
     }
   } else if (event.buttons === 2 || gridRedState.locked) {
     gridRedShow();
@@ -187,7 +187,7 @@ const handlePointermove = (event) => {
     return;
   }
 
-  pathDragIndicator.style.transition = 'all.2s, scale.4s cubic-bezier(.5,2,.5,1)';
+  pathDragIndicator.style.transition = `all.2s, scale.4s cubic-bezier(.5,2,.5,1)`;
   pathDragIndicator.style.scale = 1;
 
   // We actually don't want to block building paths in farms :)

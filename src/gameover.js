@@ -40,13 +40,13 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
   gameoverWrapper.style.pointerEvents = 'none';
   gameoverWrapper.style.opacity = 0;
 
-  gameoverHeader.style.cssText = 'font-size:72px;opacity:0';
+  gameoverHeader.style.cssText = `font-size: 72px; opacity: 0`;
   gameoverHeader.innerText = 'Game Over';
 
-  gameoverText1.style.cssText = 'margin-top:48px;font-size:24px;opacity:0';
+  gameoverText1.style.cssText = `margin-top: 48px; font-size: 24px; opacity:0`;
   gameoverText1.innerText = 'Too few people could tend to this farm in time.';
 
-  gameoverText2.style.cssText = 'margin-top:16px;font-size:24px;opacity:0';
+  gameoverText2.style.cssText = `margin-top: 16px; font-size: 24px; opacity: 0`;
 
   // 24px margin-top counteracts the underline in gameoverText2
   gameoverText3.style.cssText = `
@@ -100,7 +100,7 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
   menuButton.addEventListener('click', gameoverToMenu);
 
   gameoverButtons.append(restartButtonWrapper, menuButtonWrapper);
-  gameoverButtons.style.cssText = 'gap:16px;margin-top:48px';
+  gameoverButtons.style.cssText = `gap: 16px; margin-top: 48px;`;
   if (document.body.scrollHeight < 500) {
     gameoverButtons.style.display = 'flex';
     gameoverButtons.style.position = 'absolute';
@@ -144,14 +144,14 @@ export const showGameover = () => {
     localStorage.setItem('Tiny Yurts', score);
   }
 
-  menuBackground.style.clipPath = 'polygon(0 0,100% 0, 100% 100%, 0 100%)';
-  menuBackground.style.transition = 'opacity 2s 1s';
-  gameoverHeader.style.transition = 'opacity 1s 2s';
-  gameoverText1.style.transition = 'opacity 1s 2s';
-  gameoverText2.style.transition = 'opacity 1s 2s';
-  gameoverText3.style.transition = 'opacity 1s 2s';
-  restartButtonWrapper.style.transition = 'opacity 1s 4s';
-  menuButtonWrapper.style.transition = 'opacity 1s 4s';
+  menuBackground.style.clipPath = `polygon(0 0, 100% 0, 100% 100%, 0 100%)`;
+  menuBackground.style.transition = `opacity 2s 1s`;
+  gameoverHeader.style.transition = `opacity 1s 2s`;
+  gameoverText1.style.transition = `opacity 1s 2s`;
+  gameoverText2.style.transition = `opacity 1s 2s`;
+  gameoverText3.style.transition = `opacity 1s 2s`;
+  restartButtonWrapper.style.transition = `opacity 1s 4s`;
+  menuButtonWrapper.style.transition = `opacity 1s 4s`;
 
   oxEmojiWrapper.innerHTML = '';
   oxEmojiWrapper.append(oxEmoji, `×${oxen.length}`);
@@ -181,9 +181,9 @@ export const showGameover = () => {
     scoreWrapper,
   );
 
-  soundToggleButton.style.transition = 'all.2s';
-  gridRedToggleButton.style.transition = 'all.2s';
-  gridToggleButton.style.transition = 'all.2s';
+  soundToggleButton.style.transition = `all .2s`;
+  gridRedToggleButton.style.transition = `all .2s`;
+  gridToggleButton.style.transition = `all .2s`;
   soundToggleButton.style.opacity = 0;
   gridRedToggleButton.style.opacity = 0;
   gridToggleButton.style.opacity = 0;
@@ -203,14 +203,14 @@ export const showGameover = () => {
 };
 
 export const hideGameover = () => {
-  gameoverWrapper.style.transition = 'opacity 1s 2s';
-  menuBackground.style.transition = 'opacity 1s 1s';
-  gameoverHeader.style.transition = 'opacity.3s.6s';
-  gameoverText1.style.transition = 'opacity.3s.5s';
-  gameoverText2.style.transition = 'opacity.3s.4s';
-  gameoverText3.style.transition = 'opacity.3s.3s';
-  restartButtonWrapper.style.transition = 'opacity.3s.2s';
-  menuButtonWrapper.style.transition = 'opacity.3s.1s';
+  gameoverWrapper.style.transition = `opacity 1s 2s`;
+  menuBackground.style.transition = `opacity 1s 1s`;
+  gameoverHeader.style.transition = `opacity .3s .6s`;
+  gameoverText1.style.transition = `opacity .3s .5s`;
+  gameoverText2.style.transition = `opacity .3s .4s`;
+  gameoverText3.style.transition = `opacity .3s .3s`;
+  restartButtonWrapper.style.transition = `opacity .3s .2s`;
+  menuButtonWrapper.style.transition = `opacity .3s .1s`;
 
   gameoverWrapper.style.pointerEvents = 'none';
   gameoverWrapper.style.opacity = 0;

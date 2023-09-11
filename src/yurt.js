@@ -119,9 +119,9 @@ export class Yurt extends GameObjectClass {
     baseShadow.setAttribute('r', 0);
     baseShadow.setAttribute('stroke', 'none');
     baseShadow.setAttribute('transform', `translate(${x},${y})`);
-    baseShadow.style.willChange = 'r, opacity';
+    baseShadow.style.willChange = `r, opacity`;
     baseShadow.style.opacity = 0;
-    baseShadow.style.transition = 'all.4s';
+    baseShadow.style.transition = `all .4s`;
     baseLayer.append(baseShadow);
     setTimeout(() => {
       baseShadow.setAttribute('r', 3);
@@ -158,7 +158,7 @@ export class Yurt extends GameObjectClass {
     this.decoration.setAttribute('stroke-dashoffset', 6.3);
     this.decoration.setAttribute('stroke', this.type);
     this.decoration.style.willChange = 'stroke-dashoffset';
-    this.decoration.style.transition = 'stroke-dashoffset .5s';
+    this.decoration.style.transition = `stroke-dashoffset .5s`;
 
     this.svgGroup.append(this.circle, this.decoration);
 

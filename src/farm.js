@@ -207,7 +207,7 @@ export class Farm extends GameObjectClass {
     fence.setAttribute('stroke', this.fenceColor);
     fence.setAttribute('stroke-dasharray', this.circumference); // Math.PI * 2 + a bit
     fence.setAttribute('stroke-dashoffset', this.circumference);
-    fence.style.transition = 'all 1s';
+    fence.style.transition = `all 1s`;
     fenceLayer.append(fence);
 
     const shadow = createSvgElement('rect');
@@ -219,7 +219,7 @@ export class Farm extends GameObjectClass {
     shadow.style.willChange = 'stroke-dashoffset, transform';
     shadow.setAttribute('stroke-dasharray', this.circumference); // Math.PI * 2 + a bit
     shadow.setAttribute('stroke-dashoffset', this.circumference);
-    shadow.style.transition = 'stroke-dashoffset 1s,transform.5s';
+    shadow.style.transition = `stroke-dashoffset 1s, transform .5s`;
     fenceShadowLayer.append(shadow);
 
     setTimeout(() => {
@@ -233,8 +233,8 @@ export class Farm extends GameObjectClass {
 
     this.pinSvg = createSvgElement('g');
     this.pinSvg.translate = `${x + svgWidth / 2}px, ${y + svgHeight / 2 + 1.5}px`;
-    this.pinSvg.style.willChange = 'opacity, transform';
-    this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1)';
+    this.pinSvg.style.willChange = `opacity, transform`;
+    this.pinSvg.style.transition = `all .8s cubic-bezier(.5, 2, .5, 1)`;
     this.pinSvg.style.transformOrigin = 'bottom';
     this.pinSvg.style.transformBox = 'fill-box';
     this.pinSvg.style.opacity = 0;
@@ -279,7 +279,7 @@ export class Farm extends GameObjectClass {
     this.pinSvg.style.opacity = 1;
     this.warnCircle.style.transition = 'stroke-dashoffset.4s.8s';
     this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(1)`;
-    this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1)';
+    this.pinSvg.style.transition = `all .8s cubic-bezier(.5,2,.5,1)`;
 
     setTimeout(() => {
       this.warnCircle.style.transition = 'stroke-dashoffset.4s';
@@ -289,9 +289,9 @@ export class Farm extends GameObjectClass {
   hideWarn() {
     this.hasWarn = false;
     this.pinSvg.style.opacity = 0;
-    this.warnCircle.style.transition = 'stroke-dashoffset.3s';
+    this.warnCircle.style.transition = `stroke-dashoffset .3s`;
     this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(0)`;
-    this.pinSvg.style.transition = 'all.8s cubic-bezier(.5,2,.5,1) .4s';
+    this.pinSvg.style.transition = `all .8s cubic-bezier(.5, 2, .5, 1) .4s`;
   }
 
   toggleWarn(toggle) {

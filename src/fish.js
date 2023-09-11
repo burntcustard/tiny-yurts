@@ -30,7 +30,7 @@ export class Fish extends Animal {
     this.svgElement = createSvgElement('g');
     this.svgElement.style.transformOrigin = 'center';
     this.svgElement.style.transformBox = 'fill-box';
-    this.svgElement.style.transition = 'all 1s';
+    this.svgElement.style.transition = `all 1s`;
     this.svgElement.style.willChange = 'transform';
     animalLayer.append(this.svgElement);
 
@@ -39,13 +39,13 @@ export class Fish extends Animal {
     this.svgBody.setAttribute('width', this.width);
     this.svgBody.setAttribute('height', this.height);
     this.svgBody.setAttribute('rx', this.roundness);
-    this.svgBody.style.transition = 'fill.2s';
+    this.svgBody.style.transition = `fill .2s`;
     this.svgElement.append(this.svgBody);
 
     this.render();
 
     fishCounterWrapper.style.width = '96px';
-    fishCounterWrapper.style.opacity = '1';
+    fishCounterWrapper.style.opacity = 1;
 
     setTimeout(() => {
       this.scale = 1;

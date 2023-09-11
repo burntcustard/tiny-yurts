@@ -29,7 +29,7 @@ export class Goat extends Animal {
     const goat = createSvgElement('g');
     goat.style.transformOrigin = 'center';
     goat.style.transformBox = 'fill-box';
-    goat.style.transition = 'all 1s';
+    goat.style.transition = `all 1s`;
     goat.style.willChange = 'transform';
     this.svgElement = goat;
     animalLayer.prepend(goat);
@@ -47,7 +47,7 @@ export class Goat extends Animal {
     shadow.setAttribute('rx', this.roundness);
     shadow.style.transformOrigin = 'center';
     shadow.style.transformBox = 'fill-box';
-    shadow.style.transition = 'all 1s';
+    shadow.style.transition = `all 1s`;
     shadow.style.willChange = 'transform';
     this.svgShadowElement = shadow;
     animalShadowLayer.prepend(shadow);

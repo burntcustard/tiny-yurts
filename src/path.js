@@ -207,7 +207,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
     if (!newPathData.svgElement) {
       newPathData.svgElement = createSvgElement('path');
       newPathData.svgElement.setAttribute('d', newPathData.d);
-      newPathData.svgElement.style.transition = 'all.4s, opacity.2s';
+      newPathData.svgElement.style.transition = `all.4s, opacity.2s`;
 
       if (newPathData.path?.points[0].stone
         || newPathData.path?.points[1].stone
@@ -239,7 +239,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
       if (newPathData.path === undefined || !pathInSameCellRecentlyRemoved || isYurtPath) {
         newPathData.svgElement.setAttribute('stroke-width', 0);
         newPathData.svgElement.setAttribute('opacity', 0);
-        newPathData.svgElement.style.willChange = 'stroke-width, opacity';
+        newPathData.svgElement.style.willChange = `stroke-width, opacity`;
 
         if (isYurtPath) {
           newPathData.svgElement.setAttribute('d', `M${newPathData.M}L${newPathData.M}`);

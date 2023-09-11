@@ -30,11 +30,11 @@ export const initMenu = (startGame) => {
   // so that the backdrop-filter can transition properly
   menuBackground.style.clipPath = 'polygon(0 0, calc(20dvw + 400px) 0, calc(20dvw + 350px) 100%, 0 100%)';
 
-  menuHeader.style.cssText = 'font-size:72px;opacity:0;';
+  menuHeader.style.cssText = `font-size: 72px; opacity: 0;`;
   menuHeader.innerText = 'Tiny Yurts';
 
   // Everything but bottom margin
-  menuText1.style.cssText = 'margin:auto 4px 0;opacity:0';
+  menuText1.style.cssText = `margin: auto 4px 0; opacity:0;`;
 
   if (localStorage.getItem('Tiny Yurts')) {
     menuText1.innerText = `Highscore: ${localStorage.getItem('Tiny Yurts')}`;
@@ -63,7 +63,7 @@ export const initMenu = (startGame) => {
   });
   fullscreenButtonWrapper.style.opacity = 0;
 
-  menuButtons.style.cssText = 'display:grid;gap:16px;margin-top:48px';
+  menuButtons.style.cssText = `display: grid; gap: 16px; margin-top: 48px;`;
   startButtonWrapper.append(startButton);
   fullscreenButtonWrapper.append(fullscreenButton);
 
@@ -76,20 +76,20 @@ export const initMenu = (startGame) => {
 
 export const showMenu = (focus, firstTime) => {
   menuWrapper.style.pointerEvents = '';
-  menuBackground.style.clipPath = 'polygon(0 0, calc(20dvw + 400px) 0, calc(20dvw + 350px) 100%, 0 100%)';
-  menuBackground.style.transition = 'clip-path 1s, opacity 2s';
-  menuHeader.style.transition = 'opacity .5s 1s';
-  fullscreenButtonWrapper.style.transition = 'opacity .5s 1.2s';
-  startButtonWrapper.style.transition = 'opacity .5s 1.4s';
-  menuText1.style.transition = 'opacity .5s 1.6s';
+  menuBackground.style.clipPath = `polygon(0 0, calc(20dvw + 400px) 0, calc(20dvw + 350px) 100%, 0 100%)`;
+  menuBackground.style.transition = `clip-path 1s, opacity 2s`;
+  menuHeader.style.transition = `opacity .5s 1s`;
+  fullscreenButtonWrapper.style.transition = `opacity .5s 1.2s`;
+  startButtonWrapper.style.transition = `opacity .5s 1.4s`;
+  menuText1.style.transition = `opacity .5s 1.6s`;
 
   // First time the game is loaded, the menu background needs to be fast
   if (firstTime) {
-    menuBackground.style.transition = 'opacity 0s';
-    menuHeader.style.transition = 'opacity .5s .4s';
-    fullscreenButtonWrapper.style.transition = 'opacity .5s .6s';
-    startButtonWrapper.style.transition = 'opacity .5s .8s';
-    menuText1.style.transition = 'opacity .5s 1s';
+    menuBackground.style.transition = `opacity 0s`;
+    menuHeader.style.transition = `opacity .5s .4s`;
+    fullscreenButtonWrapper.style.transition = `opacity .5s .6s`;
+    startButtonWrapper.style.transition = `opacity .5s .8s`;
+    menuText1.style.transition = `opacity .5s 1s`;
   }
 
   menuText1.innerText = localStorage.getItem('Tiny Yurts')
@@ -116,11 +116,11 @@ export const hideMenu = () => {
   menuWrapper.style.pointerEvents = 'none';
   uiContainer.style.zIndex = '';
 
-  menuBackground.style.transition = 'opacity 1s.6s';
-  menuHeader.style.transition = 'opacity.3s.4s';
-  fullscreenButtonWrapper.style.transition = 'opacity.3s.3s';
-  startButtonWrapper.style.transition = 'opacity.3s.2s';
-  menuText1.style.transition = 'opacity.3s.1s';
+  menuBackground.style.transition = `opacity 1s .6s`;
+  menuHeader.style.transition = `opacity .3s .4s`;
+  fullscreenButtonWrapper.style.transition = `opacity .3s .3s`;
+  startButtonWrapper.style.transition = `opacity .3s .2s`;
+  menuText1.style.transition = `opacity.3s.1s`;
 
   menuBackground.style.opacity = 0;
   fullscreenButtonWrapper.style.opacity = 0;

@@ -53,6 +53,7 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
     data: scriptCode,
     type: 'js',
     action: 'eval',
+    allowFreeVars: true,
   }], {});
 
   await packer.optimize(); // takes less than 10 seconds by default
@@ -87,7 +88,9 @@ function customReplacement(src) {
   // console.log(src);
 
   const replaced = src
-    // Minify CSS template literals
+    // Minify CSS template literals. Use `` to wrap CSS in JS even when no
+    // variables are present, to apply the following. Some strings, like
+    // 'Highscore:' could be broken by this and must be fixed during the build
     .replace(/`[^`]+`/g, tag => tag
       .replace(/`\s+/, '`')  // Remove newlines & spaces at start or string
       .replace(/\n\s+/g, '') // Remove newlines & spaces within values
