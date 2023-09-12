@@ -100,7 +100,7 @@ export class Farm extends GameObjectClass {
 
     if (gameStarted) {
       this.numIssues = Math.floor(this.demand / this.needyness);
-      // this.demand += 20;
+      this.demand += 20; // Extra demand for testing gameover screen etc.
       this.demand += (this.children.length - 1) + ((updateCount * updateCount) / 1e9);
       // console.log((this.children.length - 1) + ((updateCount * updateCount) / 1e9));
 

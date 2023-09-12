@@ -147,12 +147,12 @@ export const showGameover = () => {
 
   menuBackground.style.clipPath = `polygon(0 0, 100% 0, 100% 100%, 0 100%)`;
   menuBackground.style.transition = `opacity 2s 1s`;
-  gameoverHeader.style.transition = `opacity 1s 2s`;
-  gameoverText1.style.transition = `opacity 1s 2s`;
-  gameoverText2.style.transition = `opacity 1s 2s`;
-  gameoverText3.style.transition = `opacity 1s 2s`;
-  restartButtonWrapper.style.transition = `opacity 1s 4s`;
-  menuButtonWrapper.style.transition = `opacity 1s 4s`;
+  gameoverHeader.style.transition = `opacity .5s 2s`;
+  gameoverText1.style.transition = `opacity .5s 2s`;
+  gameoverText2.style.transition = `opacity .5s 2s`;
+  gameoverText3.style.transition = `opacity .5s 2s`;
+  restartButtonWrapper.style.transition = `opacity .5s 2.5s`;
+  menuButtonWrapper.style.transition = `opacity .5s 3s`;
 
   oxEmojiWrapper.innerHTML = '';
   oxEmojiWrapper.append(oxEmoji, `×${oxen.length}`);
