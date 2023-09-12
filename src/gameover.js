@@ -51,6 +51,7 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
   // 24px margin-top counteracts the underline in gameoverText2
   gameoverText3.style.cssText = `
     display: flex;
+    flex-wrap: wrap;
     gap: 4px;
     margin-top: 24px;
     font-size: 24px;

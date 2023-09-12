@@ -49,12 +49,13 @@ export const initUi = () => {
   // TODO: Move elsewhre and minify
   const styles = createElement('style');
   // body has user-select: none; to prevent text being highlighted.
+  // ui black and shade colours inlined to make things smaller maybe
   styles.innerText = `
     body {
       position: relative;
-      font-family: system-ui;
       font-weight: 700;
-      color: #443;
+      font-family: system-ui;
+      color: ${colors.ui};
       margin: 0;
       width: 100vw;
       height: 100vh;
@@ -63,12 +64,13 @@ export const initUi = () => {
     button {
       font-weight: 700;
       font-family: system-ui;
+      color: ${colors.ui};
       border: none;
       padding: 0 20px;
       font-size: 32px;
       height: 56px;
       border-radius: 64px;
-      background: #fff;
+      background: ${colors.yurt};
       transition: all .2s, bottom .5s, right .5s, opacity 1s;
       box-shadow: 0 0 0 1px ${colors.shade};
     }
