@@ -33,20 +33,11 @@ import {
 import { gridRect, gridRectRed } from './grid';
 import { colors } from './colors';
 // import { Tree, trees } from './tree';
-import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound, playPathDeleteNote } from './audio';
+import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound, playPathDeleteNote, playTreeDeleteNote } from './audio';
 
 let updateCount = 0;
 let renderCount = 0;
 let totalUpdateCount = 0;
-
-// const spawnTrees = () => {
-//   for (let i = 0; i < 9; i++) {
-//     new Tree({
-//       x: Math.floor(Math.random() * gridWidth),
-//       y: Math.floor(Math.random() * gridHeight),
-//     });
-//   }
-// };
 
 const startNewGame = () => {
   svgElement.style.transition = `transform 2s`;
@@ -414,11 +405,12 @@ document.addEventListener('keypress', (event) => {
 
   initAudio();
 
-  // if (event.key === 'o') playWarnNote(colors.ox);
-  // if (event.key === 'g') playWarnNote(colors.goat);
-  // if (event.key === 'f') playWarnNote(colors.fish);
-  // if (event.key === 'p') playPathPlacementNote();
-  // if (event.key === 'r') playPathDeleteNote();
+  if (event.key === 'o') playWarnNote(colors.ox);
+  if (event.key === 'g') playWarnNote(colors.goat);
+  if (event.key === 'f') playWarnNote(colors.fish);
+  if (event.key === 'p') playPathPlacementNote();
+  if (event.key === 'r') playPathDeleteNote();
+  if (event.key === 't') playTreeDeleteNote();
 });
 
 setTimeout(() => {

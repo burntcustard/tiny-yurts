@@ -5,6 +5,7 @@ import { pathLayer, pathShadowLayer, rockShadowLayer } from './layers';
 import { gridCellSize } from './svg';
 import { createSvgElement } from './svg-utils';
 import { colors } from './colors';
+import { trees } from './tree';
 
 const toSvgCoord = (c) => gridCellSize / 2 + c * gridCellSize;
 
@@ -297,6 +298,8 @@ export class Path extends GameObjectClass {
       ...properties,
       points,
     });
+
+    trees.filter((t) => this.points.some((p) => p.x === t.x && p.y === t.y)).forEach((tree) => tree.remove());
 
     paths.push(this);
   }

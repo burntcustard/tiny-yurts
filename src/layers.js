@@ -117,6 +117,19 @@ const addYurtLayer = () => {
   return yurtLayer;
 };
 
+const addTreeShadowLayer = () => {
+  const treeShadowLayer = createSvgElement('g');
+  treeShadowLayer.setAttribute('opacity', 0.2);
+  svgElement.append(treeShadowLayer);
+  return treeShadowLayer;
+}
+
+const addTreeLayer = () => {
+  const treeLayer = createSvgElement('g');
+  svgElement.append(treeLayer);
+  return treeLayer;
+}
+
 const addPinLayer = () => {
   const pinLayer = createSvgElement('g');
   pinLayer.setAttribute('stroke-linecap', 'round');
@@ -154,6 +167,8 @@ const layers = {
   fenceShadowLayer: addFenceShadowLayer(),
   fenceLayer: addFenceLayer(),
   yurtLayer: addYurtLayer(),
+  treeShadowLayer: addTreeShadowLayer(),
+  treeLayer: addTreeLayer(),
   pinLayer: addPinLayer(),
   gridPointerLayer: addGridPointerLayer(),
 };
@@ -173,6 +188,8 @@ export const {
   pinLayer,
   pondLayer,
   rockShadowLayer,
+  treeLayer,
+  treeShadowLayer,
   yurtAndPersonShadowLayer,
   yurtLayer,
 } = layers;
@@ -190,6 +207,8 @@ export const clearLayers = () => {
   pinLayer.innerHTML = '';
   pondLayer.innerHTML = '';
   rockShadowLayer.innerHTML = '';
+  treeLayer.innerHTML = '';
+  treeShadowLayer.innerHTML = '';
   yurtAndPersonShadowLayer.innerHTML = '';
   yurtLayer.innerHTML = '';
 };

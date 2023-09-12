@@ -203,20 +203,32 @@ const warnNotes = {
 };
 
 export const playPathPlacementNote = () => {
-  // frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass
-  playSound(1, 0.5, 1, 0, 1, 1000, 300, () => 2);
+  if (audioContext) {
+    // frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass
+    playSound(1, 0.5, 1, 0, 1, 1000, 300, () => 2);
+  }
 };
 
 export const playPathDeleteNote = () => {
-  // frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass
-  playSound(1, 0.5, 1, 0, 6, 800, 1500, () => 2);
+  if (audioContext) {
+    // frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass
+    playSound(1, 0.5, 1, 0, 6, 800, 1500, () => 2);
+  }
+};
+
+export const playTreeDeleteNote = () => {
+  if (audioContext) {
+    playSound(1, 1, 1, 0, 4, 1000, 1000, () => 2);
+  }
 };
 
 export const playWarnNote = (animalType) => {
-  // console.log(warnNotes[animalType]);
-  const noteInfo = warnNotes[animalType].notes[warnNotes[animalType].currentIndex];
-  warnNotes[animalType].currentIndex = (warnNotes[animalType].currentIndex + 1) % warnNotes[animalType].notes.length;
-  playSound(...noteInfo);
-  // const { currentIndex, notes } = warnNotes[animalType];
-  // playSound(notes[currentIndex++]);
+  if (audioContext) {
+    // console.log(warnNotes[animalType]);
+    const noteInfo = warnNotes[animalType].notes[warnNotes[animalType].currentIndex];
+    warnNotes[animalType].currentIndex = (warnNotes[animalType].currentIndex + 1) % warnNotes[animalType].notes.length;
+    playSound(...noteInfo);
+    // const { currentIndex, notes } = warnNotes[animalType];
+    // playSound(notes[currentIndex++]);
+  }
 };

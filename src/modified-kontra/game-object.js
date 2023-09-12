@@ -1,7 +1,7 @@
 import Updatable from './updatable';
 
 /**
- * This is the Kontra.js GameObject, with canvas/context, children and more ripped out
+ * This is the Kontra.js GameObject, with canvas/context and more ripped out
  * https://github.com/straker/kontra/blob/main/src/gameObject.js
  */
 class GameObject extends Updatable {
@@ -12,7 +12,7 @@ class GameObject extends Updatable {
     update = this.advance,
     children = [],
     ...props
-  } = {}) {
+  }) {
     this._c = [];
 
     super.init({

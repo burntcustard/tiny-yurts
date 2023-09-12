@@ -11,6 +11,7 @@ import { weightedRandom } from './weighted-random';
 import { FishFarm, fishFarms } from './fish-farm';
 import { shuffle } from './shuffle';
 import { colors } from './colors';
+import { Tree, trees } from './tree';
 import { createSvgElement } from './svg-utils';
 import { pinLayer, yurtLayer } from './layers';
 
@@ -78,6 +79,7 @@ export const getRandomPosition = ({
   minDistance = 0,
   maxDistance = 99,
   maxNumAttempts = 9, // TODO: Clever ways to not hit this. >8 makes game go sloww
+  avoidTrees = true,
   extra = { x: 0, y: 0 }, // relative to x/y
 }) => {
   let numAttempts = 0;
@@ -235,6 +237,23 @@ export const getRandomPosition = ({
       }
     });
     if (yurtObstruction) continue;
+
+    if (avoidTrees) {
+      const treeObstruction = trees.some((tree) => {
+        for (let w = 0; w < width; w++) {
+          for (let h = 0; h < height; h++) {
+            if (x + w === tree.x && y + h === tree.y) {
+              return true;
+            }
+          }
+        }
+
+        if (x + extra.x === tree.x && y + extra.y === tree.y) {
+          return true;
+        }
+      });
+      if (treeObstruction) continue;
+    }
 
     return ({ x, y });
   }
@@ -413,6 +432,15 @@ export const spawnNewObjects = (updateCount, delay) => {
         });
       }
     }
+
+    // Always 9 starting trees?
+    for (let i = 0; i < 9; i++) {
+      const randomPosition = getRandomPosition({});
+      new Tree({
+        x: randomPosition.x,
+        y: randomPosition.y,
+      });
+    }
   }
 
   // Spawn the first farm, early on, near the center
@@ -458,6 +486,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         // Setting to 32 is sometimes slow, but it's pretty reliable, and small
         maxNumAttempts: 32,
         extra: relativePathPoints ? { x: relativePathPoints[1].x, y: relativePathPoints[1].y } : { x: 0, y: 0 }, // i.e none
+        avoidTrees: false,
       });
 
       // Can't find a position, so instead try to upgrade a farm instead
@@ -473,8 +502,10 @@ export const spawnNewObjects = (updateCount, delay) => {
         return;
       }
 
+      let newFarm;
+
       if (type === colors.ox) {
-        new OxFarm({
+        newFarm = new OxFarm({
           width,
           height,
           x: randomPosition.x,
@@ -482,9 +513,8 @@ export const spawnNewObjects = (updateCount, delay) => {
           relativePathPoints,
           delay,
         });
-        return;
       } if (type === colors.goat) {
-        new GoatFarm({
+        newFarm = new GoatFarm({
           width,
           height,
           x: randomPosition.x,
@@ -492,6 +522,10 @@ export const spawnNewObjects = (updateCount, delay) => {
           relativePathPoints,
           delay, // TODO: See if having this in every new farm call saves bytes
         });
+      }
+
+      if (newFarm) {
+        trees.filter((t) => newFarm.points.some((p) => p.x === t.x && p.y === t.y)).forEach(tree => tree.remove());
         return;
       }
     }
@@ -733,6 +767,7 @@ export const spawnNewObjects = (updateCount, delay) => {
       maxDistance: farms.length + 2,
       minDistance: farms.length ? 2 : 0,
       extra: relativePathPoints ? { x: relativePathPoints[1].x, y: relativePathPoints[1].y } : { x: 0, y: 0 }, // i.e none
+      avoidTrees: false,
     });
 
     // Can't find a position, so instead try to upgrade a farm instead
@@ -768,5 +803,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         delay, // TODO: See if having this in every new farm call saves bytes
       });
     }
+
+    trees.filter((t) => farms.at(-1).points.some((p) => p.x === t.x && p.y === t.y)).forEach(tree => tree.remove());
   }
 };
