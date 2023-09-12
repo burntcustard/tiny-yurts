@@ -70,7 +70,7 @@ export class Tree extends GameObjectClass {
       setTimeout(() => {
         shadow.setAttribute('rx', size * 1.2);
         shadow.setAttribute('ry', size * 0.9);
-        shadow.style.opacity = 0.4;
+        shadow.style.opacity = 0.1;
         shadow.style.transform = `translate(${position.x + size * 0.7}px,${position.y + size * 0.7}px) rotate(45deg)`;
       }, 100 * i);
       this.shadowGroup.append(shadow);

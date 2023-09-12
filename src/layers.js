@@ -119,7 +119,6 @@ const addYurtLayer = () => {
 
 const addTreeShadowLayer = () => {
   const treeShadowLayer = createSvgElement('g');
-  treeShadowLayer.setAttribute('opacity', 0.2);
   svgElement.append(treeShadowLayer);
   return treeShadowLayer;
 }
