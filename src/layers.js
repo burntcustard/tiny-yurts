@@ -70,7 +70,7 @@ const addPathShadowLayer = () => {
   pathShadowLayer.setAttribute('stroke-linecap', 'round');
   pathShadowLayer.setAttribute('fill', 'none');
   pathShadowLayer.setAttribute('stroke', colors.base);
-  pathShadowLayer.setAttribute('stroke-width', 3);
+  pathShadowLayer.setAttribute('stroke-width', 3.14);
   svgElement.append(pathShadowLayer);
   return pathShadowLayer;
 };
@@ -80,7 +80,7 @@ const addPathLayer = () => {
   pathLayer.setAttribute('stroke-linecap', 'round');
   pathLayer.setAttribute('fill', 'none');
   pathLayer.setAttribute('stroke', colors.path);
-  pathLayer.setAttribute('stroke-width', 3);
+  pathLayer.setAttribute('stroke-width', 3.14);
   svgElement.append(pathLayer);
   return pathLayer;
 };
