@@ -218,7 +218,7 @@ export const playPathDeleteNote = () => {
 
 export const playTreeDeleteNote = () => {
   if (audioContext) {
-    playSound(1, 1, 1, 0, 4, 1000, 1000, () => 2);
+    playSound(10, 0.1, 1, 1000, 0.5, 1500, 500, () => 2);
   }
 };
 
