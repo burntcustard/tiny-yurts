@@ -35,27 +35,29 @@ export class Farm extends GameObjectClass {
       }
     }
 
-    setTimeout(() => {
-      // TODO: Make pathPoints a required variable?
-      this.startPath = new Path({
-        points: [
-          {
-            x: this.x + relativePathPoints[0].x,
-            y: this.y + relativePathPoints[0].y,
-            fixed: relativePathPoints[0].fixed,
-            stone: relativePathPoints[0].stone,
-          },
-          {
-            x: this.x + relativePathPoints[1].x,
-            y: this.y + relativePathPoints[1].y,
-            fixed: relativePathPoints[1].fixed,
-            stone: relativePathPoints[1].stone,
-          },
-        ],
-      });
+    if (relativePathPoints) {
+      setTimeout(() => {
+        // TODO: Make pathPoints a required variable?
+        this.startPath = new Path({
+          points: [
+            {
+              x: this.x + relativePathPoints[0].x,
+              y: this.y + relativePathPoints[0].y,
+              fixed: relativePathPoints[0].fixed,
+              stone: relativePathPoints[0].stone,
+            },
+            {
+              x: this.x + relativePathPoints[1].x,
+              y: this.y + relativePathPoints[1].y,
+              fixed: relativePathPoints[1].fixed,
+              stone: relativePathPoints[1].stone,
+            },
+          ],
+        });
 
-      drawPaths({});
-    }, 1500 + properties.delay); // Can't prevent path overlap soon after spawning due to this
+        drawPaths({});
+      }, 1500 + properties.delay); // Can't prevent path overlap soon after spawning due to this
+    }
 
     farms.push(this);
     setTimeout(() => {

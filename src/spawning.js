@@ -246,19 +246,25 @@ export const getRandomPosition = ({
 const getRandomFarmProps = () => {
   const portrait = Math.random() > 0.5;
   const randWidthHeight = portrait ? { w: 2, h: 3 } : { w: 3, h: 2 };
-  const randPathPosX1 = Math.floor(Math.random() * randWidthHeight.w);
-  const randPathPosY1 = Math.floor(Math.random() * randWidthHeight.h);
-  const randPathPosX2 = portrait ? randPathPosX1 * 3 - 1 : randPathPosX1;
-  const randPathPosY2 = portrait ? randPathPosY1 : randPathPosY1 * 3 - 1;
 
-  return ({
+  const farmProps = {
     width: randWidthHeight.w,
     height: randWidthHeight.h,
-    relativePathPoints: [
+  };
+
+  if (!farms.length) {
+    const randPathPosX1 = Math.floor(Math.random() * randWidthHeight.w);
+    const randPathPosY1 = Math.floor(Math.random() * randWidthHeight.h);
+    const randPathPosX2 = portrait ? randPathPosX1 * 3 - 1 : randPathPosX1;
+    const randPathPosY2 = portrait ? randPathPosY1 : randPathPosY1 * 3 - 1;
+
+    farmProps.relativePathPoints = [
       { x: randPathPosX1, y: randPathPosY1 },
       { x: randPathPosX2, y: randPathPosY2 },
-    ],
-  });
+    ];
+  }
+
+  return farmProps;
 };
 
 const getRandomYurtProps = () => {
@@ -451,7 +457,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         // We _need_ this to work on 1st loop otherwise the menu breaks.
         // Setting to 32 is sometimes slow, but it's pretty reliable, and small
         maxNumAttempts: 32,
-        extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
+        extra: relativePathPoints ? { x: relativePathPoints[1].x, y: relativePathPoints[1].y } : { x: 0, y: 0 }, // i.e none
       });
 
       // Can't find a position, so instead try to upgrade a farm instead
@@ -726,7 +732,7 @@ export const spawnNewObjects = (updateCount, delay) => {
         : farms[farms.length - 1], // if undefined randomPosition will use default
       maxDistance: farms.length + 2,
       minDistance: farms.length ? 2 : 0,
-      extra: { x: relativePathPoints[1].x, y: relativePathPoints[1].y },
+      extra: relativePathPoints ? { x: relativePathPoints[1].x, y: relativePathPoints[1].y } : { x: 0, y: 0 }, // i.e none
     });
 
     // Can't find a position, so instead try to upgrade a farm instead

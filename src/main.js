@@ -379,7 +379,8 @@ const toggleSound = () => {
   }
 
   // This returns before playing if soundSettings.on === false
-  playSound(38, 2, 1, 10);
+  // frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass
+  playSound(30, 1, 1, 1, 0.4, 1000, 1000);
 };
 
 if (soundSetings.on) {
