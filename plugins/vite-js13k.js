@@ -114,7 +114,13 @@ function customReplacement(src) {
     // .replace(/type/g, '_type') // Breaks Web Audio API
     .replace(/parent/g, '_parent')
     .replace(/points/g, '_points')
+    .replace(/fixed/g, '_fixed')
+    .replace(/acceleration/g, '_acceleration')
+    // .replace(/destination/g, '_destination') // Breaks paths
+    .replace(/anchor/g, '_anchor')
     .replace(/locked/g, '_locked')
+    // .replace(/normalize/g, '_normalize') // Breaks people movement
+    .replace(/target/g, '_target')
       // Replace const with let declartion
     .replaceAll('const ', 'let ')
     // Replace all strict equality comparison with abstract equality comparison

@@ -166,6 +166,10 @@ export const getRandomPosition = ({
         }
       }
 
+      if (x + extra.x === pondCell.x && y + extra.y === pondCell.y) {
+        return true;
+      }
+
       return false; // TODO: See if removing saves bytes
     }));
     if (pondObstruction) continue;
@@ -182,6 +186,7 @@ export const getRandomPosition = ({
     if (farmObstruction) continue;
 
     const pointOverlapsWithExtra = (point) => point.x === x + extra.x && point.y === y + extra.y;
+
     const farmExtraObstruction = farms.some((farm) => farm.points.some(pointOverlapsWithExtra));
     if (farmExtraObstruction) continue;
 
