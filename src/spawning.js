@@ -788,8 +788,10 @@ export const spawnNewObjects = (updateCount, delay) => {
       return;
     }
 
+    let newFarm;
+
     if (type === colors.ox) {
-      new OxFarm({
+      newFarm = new OxFarm({
         width,
         height,
         x: randomPosition.x,
@@ -797,9 +799,8 @@ export const spawnNewObjects = (updateCount, delay) => {
         relativePathPoints,
         delay,
       });
-      return;
     } if (type === colors.goat) {
-      new GoatFarm({
+      newFarm = new GoatFarm({
         width,
         height,
         x: randomPosition.x,
@@ -809,6 +810,9 @@ export const spawnNewObjects = (updateCount, delay) => {
       });
     }
 
-    trees.filter((t) => farms.at(-1).points.some((p) => p.x === t.x && p.y === t.y)).forEach(tree => tree.remove());
+    if (newFarm) {
+      trees.filter((t) => newFarm.points.some((p) => p.x === t.x && p.y === t.y)).forEach(tree => tree.remove());
+      return;
+    }
   }
 };
