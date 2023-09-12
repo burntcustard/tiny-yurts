@@ -100,7 +100,7 @@ export const showMenu = (focus, firstTime) => {
     focus.x - gridWidth / 2 - boardOffsetX + focus.width / 2,
     focus.y - gridHeight / 2 - boardOffsetY + focus.height / 2,
   );
-  const xOffset = window.innerWidth / 4; // TODO: Calculate properly?
+  const xOffset = innerWidth / 4; // TODO: Calculate properly?
   svgElement.style.transition = '';
   svgElement.style.transform = `translate(${xOffset}px, 0) rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
 
