@@ -280,6 +280,7 @@ export class Farm extends GameObjectClass {
     this.warnCircle.style.transition = 'stroke-dashoffset.4s.8s';
     this.pinSvg.style.transform = `translate(${this.pinSvg.translate}) scale(1)`;
     this.pinSvg.style.transition = `all .8s cubic-bezier(.5,2,.5,1)`;
+    playWarnNote(this.type);
 
     setTimeout(() => {
       this.warnCircle.style.transition = 'stroke-dashoffset.4s';
