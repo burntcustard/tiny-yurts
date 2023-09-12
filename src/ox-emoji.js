@@ -8,7 +8,7 @@ export const emojiOx = () => {
 
   const body = createSvgElement('path');
   body.setAttribute('fill', colors.ox);
-  body.setAttribute('d', 'M15 2h-4c-1 0-5 0-6 2l-2 5c-1 2 0 5 2 5h4 l2 2z');
+  body.setAttribute('d', 'M15 2h-4c-1 0-5 0-6 2l-2 5c-1 2 0 5 2 5h4l2 2z');
 
   const horn = createSvgElement('path');
   horn.setAttribute('fill', colors.oxHorn);

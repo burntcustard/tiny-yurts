@@ -1,4 +1,5 @@
-import { GameObjectClass, Vector } from 'kontra';
+import { Vector } from 'kontra';
+import { GameObjectClass } from './modified-kontra/game-object';
 import { createSvgElement } from './svg-utils';
 import { gridCellSize } from './svg';
 import { colors } from './colors';

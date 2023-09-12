@@ -34,7 +34,7 @@ export const addGridToSvg = () => {
   pattern.setAttribute('patternUnits', 'userSpaceOnUse');
   defs.append(pattern);
   const gridPath = createSvgElement('path');
-  gridPath.setAttribute('d', `M${gridCellSize} 0L0 0 0 ${gridCellSize}`);
+  gridPath.setAttribute('d', `M${gridCellSize} 0 0 0 0 ${gridCellSize}`);
   gridPath.setAttribute('fill', 'none');
   gridPath.setAttribute('stroke', colors.grid);
   gridPath.setAttribute('stroke-width', scaledGridLineThickness);
@@ -54,7 +54,7 @@ export const addGridToSvg = () => {
   patternRed.setAttribute('patternUnits', 'userSpaceOnUse');
   defs.append(patternRed);
   const gridPathRed = createSvgElement('path');
-  gridPathRed.setAttribute('d', `M${gridCellSize} 0L0 0 0 ${gridCellSize}`);
+  gridPathRed.setAttribute('d', `M${gridCellSize} 0 0 0 0 ${gridCellSize}`);
   gridPathRed.setAttribute('fill', 'none');
   gridPathRed.setAttribute('stroke', colors.gridRed);
   gridPathRed.setAttribute('stroke-width', scaledGridLineThickness);

@@ -1,4 +1,4 @@
-import { GameObjectClass } from 'kontra';
+import { GameObjectClass } from './modified-kontra/game-object';
 import { gridCellSize } from './svg';
 import { createSvgElement } from './svg-utils';
 import { pinLayer } from './layers';
@@ -45,7 +45,7 @@ export class Animal extends GameObjectClass {
     // !
     this.warnSvg = createSvgElement('path');
     this.warnSvg.setAttribute('stroke', this.color);
-    this.warnSvg.setAttribute('d', 'M3 6L3 6M3 4.5L3 3');
+    this.warnSvg.setAttribute('d', 'M3 6 3 6M3 4.5 3 3');
     this.warnSvg.setAttribute('transform', 'scale(.5) translate(-3 -10.4)');
     this.warnSvg.style.opacity = 0;
     this.pinSvg.append(this.warnSvg);
@@ -53,7 +53,7 @@ export class Animal extends GameObjectClass {
     // ♥
     this.loveSvg = createSvgElement('path');
     this.loveSvg.setAttribute('fill', this.color);
-    this.loveSvg.setAttribute('d', 'M6 6L4 4A1 1 0 1 1 6 2 1 1 0 1 1 8 4Z');
+    this.loveSvg.setAttribute('d', 'M6 6 4 4A1 1 0 1 1 6 2 1 1 0 1 1 8 4Z');
     this.loveSvg.setAttribute('transform', 'scale(.3) translate(-6 -13)');
     this.loveSvg.style.opacity = 0;
     this.pinSvg.append(this.loveSvg);

@@ -136,6 +136,8 @@ export class Ox extends Animal {
   }
 
   render() {
+    // super.render() also re-renders children in their new locations.
+    // For example the little warning speech bubble things
     super.render();
 
     const x = this.parent.x * gridCellSize + this.x - this.width / 2;

@@ -1,6 +1,6 @@
 // We pass refs to pathData in forEach, for now it's easier to reassign props directly
 /* eslint-disable no-param-reassign */
-import { GameObjectClass } from 'kontra';
+import { GameObjectClass } from './modified-kontra/game-object';
 import { pathLayer, pathShadowLayer, rockShadowLayer } from './layers';
 import { gridCellSize } from './svg';
 import { createSvgElement } from './svg-utils';

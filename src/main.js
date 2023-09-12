@@ -1,4 +1,4 @@
-import { init, GameLoop } from 'kontra';
+import { GameLoop } from './modified-kontra/game-loop';
 import {
   svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY, gridCellSize, boardWidth, boardHeight, svgHazardLines,
 } from './svg';
@@ -171,7 +171,6 @@ const gameoverToMenu = () => {
 initUi();
 initMenuBackground();
 initGameover(startNewGame, gameoverToMenu);
-init(null, { contextless: true });
 initPointer();
 
 const startGame = () => {
@@ -415,11 +414,11 @@ document.addEventListener('keypress', (event) => {
 
   initAudio();
 
-  if (event.key === 'o') playWarnNote(colors.ox);
-  if (event.key === 'g') playWarnNote(colors.goat);
-  if (event.key === 'f') playWarnNote(colors.fish);
-  if (event.key === 'p') playPathPlacementNote();
-  if (event.key === 'r') playPathDeleteNote();
+  // if (event.key === 'o') playWarnNote(colors.ox);
+  // if (event.key === 'g') playWarnNote(colors.goat);
+  // if (event.key === 'f') playWarnNote(colors.fish);
+  // if (event.key === 'p') playPathPlacementNote();
+  // if (event.key === 'r') playPathDeleteNote();
 });
 
 setTimeout(() => {

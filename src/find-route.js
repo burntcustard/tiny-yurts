@@ -1,7 +1,7 @@
 import { paths } from './path';
 import { gridWidth, gridHeight } from './svg';
 
-const gridData = [];
+let gridData = [];
 
 // TODO: Prefer straight x/y over diagonals because they are actually shorter distance
 

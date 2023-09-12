@@ -103,6 +103,9 @@ export const playSound = (
   source.start();
 };
 
+// Ox & Goat tunes are based off Ravel's Ma mère l'oye (1910) III. Laideronnette, impératrice des pagodes:
+// https://en.wikipedia.org/wiki/File:Ravel_Ma_Mere_l%27Oye_Laideronnette_Imperatricedes_Pagodes_m.9-13.png
+
 // [ frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass ]
 const warnNotes = {
   [colors.ox]: {
@@ -148,9 +151,6 @@ const warnNotes = {
   [colors.goat]: {
     currentIndex: 0,
     notes: [
-      // Based off
-      // https://en.wikipedia.org/wiki/File:Ravel_Ma_Mere_l%27Oye_Laideronnette_Imperatricedes_Pagodes_m.9-13.png
-
       [30, 1, 1, 1, 0.3, 3000, 1000], // F#
       [27, 1, 0.995, 1, 0.3, 3000, 1000], // D# 0.995 is annoying but repeated it might not be too bad
       [25, 1, 1, 1, 0.3, 3000, 1000], // C#

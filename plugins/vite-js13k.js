@@ -90,8 +90,6 @@ function replaceHtml(html) {
 const fileRegex = /\.js$/
 
 function customReplacement(src) {
-  // console.log(src);
-
   const replaced = src
     // Minify CSS template literals. Use `` to wrap CSS in JS even when no
     // variables are present, to apply the following. Some strings, like
@@ -111,7 +109,7 @@ function customReplacement(src) {
       .replace(/;`/, '`') // Remove final semicolons in cssText
     )
     .replace(/M0 0l/g, 'M0 0 ') // Don't need line char, can just use space instead
-    .replace(/M0 0L/g, 'M0 0 ')
+    .replace(/M0 0L/g, 'M0 0 ') // This has been swapped out in source, mostly, anyway.
     .replace(/upgrade/g, '_upgrade')
     // .replace(/type/g, '_type') // Breaks Web Audio API
     .replace(/parent/g, '_parent')
