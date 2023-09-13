@@ -26,6 +26,7 @@
 <summary>(Click to show - minor spoilers)</summary>  
 <p>
   <ul>
+    <li>You can build paths while the game is paused, if you need a little more time to think.</li>
     <li>You can delete the path that comes with the starting farm!</li>
     <li>As you can't build paths over water, so to connect a fish farm you have to join your path up to end of the stepping stones it comes with.</li>
     <li>Distance is the most important factor when determining how well a yurt can cope with a farms demands.</li>
