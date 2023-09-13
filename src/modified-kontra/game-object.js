@@ -45,8 +45,6 @@ class GameObject extends Updatable {
     children.map(child => child.render && child.render());
   }
 
-  draw() {}
-
   _pc() {
     this.children.map(child => child._pc());
   }
