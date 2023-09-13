@@ -25,8 +25,6 @@ export class Yurt extends GameObjectClass {
 
     super(properties);
 
-    this.width = 1;
-    this.height = 1;
     this.points = [{
       x: this.x,
       y: this.y,

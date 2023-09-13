@@ -128,9 +128,7 @@ export const initGameover = (startNewGame, gameoverToMenu, toggleGameoverlay) =>
     }
   });
 
-  toggleGameoverlayButton.style.cssText = `position: absolute;`;
-  toggleGameoverlayButton.style.top = '10vmin';
-  toggleGameoverlayButton.style.right = '10vmin';
+  toggleGameoverlayButton.style.cssText = `position: absolute; top: 10vmin; right: 10vmin`;
   toggleGameoverlayButton.style.pointerEvents = 'none';
   toggleGameoverlayButton.style.opacity = 0;
   toggleGameoverlayButton.innerText = 'Overlay On/Off';

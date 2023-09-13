@@ -30,17 +30,17 @@ export const pauseSvgPath = createSvgElement('path');
 export const clockHand = createSvgElement('path');
 
 export const gridToggleButton = createElement('button');
-export const gridToggleSvg = createSvgElement();
+export const gridToggleSvg = createSvgElement('svg');
 export const gridToggleSvgPath = createSvgElement('path');
 export const gridToggleTooltip = createElement();
 
 export const gridRedToggleButton = createElement('button');
-export const gridRedToggleSvg = createSvgElement();
+export const gridRedToggleSvg = createSvgElement('svg');
 export const gridRedToggleSvgPath = createSvgElement('path');
 export const gridRedToggleTooltip = createElement();
 
 export const soundToggleButton = createElement('button');
-export const soundToggleSvg = createSvgElement();
+export const soundToggleSvg = createSvgElement('svg');
 export const soundToggleSvgPath = createSvgElement('path');
 export const soundToggleSvgPathX = createSvgElement('path');
 export const soundToggleTooltip = createElement();
@@ -142,7 +142,7 @@ export const initUi = () => {
   clock.style.opacity = 0;
   clock.style.transition = `opacity 1s`;
 
-  const clockSvg = createSvgElement();
+  const clockSvg = createSvgElement('svg');
   clockSvg.setAttribute('stroke-linejoin', 'round');
   clockSvg.setAttribute('stroke-linecap', 'round');
   clockSvg.setAttribute('viewBox', '0 0 16 16');
@@ -207,7 +207,7 @@ export const initUi = () => {
   }`;
   pathTilesIndicatorCount.style.width = '28px';
   pathTilesIndicatorCount.style.height = '28px';
-  const pathTilesSvg = createSvgElement();
+  const pathTilesSvg = createSvgElement('svg');
   pathTilesSvg.setAttribute('viewBox', '0 0 18 18');
   pathTilesSvg.style.width = '54px';
   pathTilesSvg.style.height = '54px';
@@ -226,7 +226,7 @@ export const initUi = () => {
   // pathTilesIndicatorInner.style.borderRadius = '16px'; // The only non-"infinity"?
   pathTilesIndicator.append(pathTilesSvg, pathTilesIndicatorCount);
 
-  const pauseSvg = createSvgElement();
+  const pauseSvg = createSvgElement('svg');
   pauseSvg.setAttribute('viewBox', '0 0 16 16');
   pauseSvg.setAttribute('width', 64);
   pauseSvg.setAttribute('height', 64);

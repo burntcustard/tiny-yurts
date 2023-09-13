@@ -6,8 +6,8 @@ import Updatable from './updatable';
  */
 class GameObject extends Updatable {
   init({
-    width = 0,
-    height = 0,
+    width = 1,
+    height = 1,
     render = this.draw,
     update = this.advance,
     children = [],

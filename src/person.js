@@ -20,8 +20,6 @@ export class Person extends GameObjectClass {
     const yVariance = Math.random() * 2 - 1;
 
     this.type = this.parent.type;
-    this.height = 1;
-    this.width = 1;
     this.atHome = true; // Is this person sitting in their yurt?
     this.atFarm = 0; // Is the person at a farm? How long have they been there?
     this.destination = null;

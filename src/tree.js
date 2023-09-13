@@ -60,13 +60,11 @@ export class Tree extends GameObjectClass {
       this.svgGroup.append(circle);
 
       const shadow = createSvgElement('ellipse');
-      shadow.setAttribute('stroke', 'none');
       shadow.setAttribute('rx', 0);
       shadow.setAttribute('ry', 0);
       shadow.style.opacity = 0;
       shadow.style.transform = `translate(${position.x}px,${position.y}px) rotate(45deg)`;
       shadow.style.transition = `all .4s cubic-bezier(.5, 1.5, .5, 1)`;
-      shadow.setAttribute('fill', colors.black);
       setTimeout(() => {
         shadow.setAttribute('rx', size * 1.2);
         shadow.setAttribute('ry', size * 0.9);
