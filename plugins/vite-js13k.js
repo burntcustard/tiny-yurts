@@ -54,8 +54,8 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
     allowFreeVars: true,
     data: scriptCode,
     maxMemoryMB: 200, // We're _just_ hitting the regular 150MB default
-    numAbbreviations: 30, // 30 is slightly better than the default 32, but is build-run-specific
-    sparseSelectors: 24, // 2x the default number of contexts, as my code is 2x regular Js13k size
+    numAbbreviations: 30, // 30 might be better than the default 32, but is build-run-specific
+    sparseSelectors: 24, // ~2x the default number of contexts, as my code is 2x regular Js13k size
     type: 'js',
   }], {});
 
@@ -121,6 +121,8 @@ function customReplacement(src) {
     .replace(/locked/g, '_locked')
     // .replace(/normalize/g, '_normalize') // Breaks people movement
     .replace(/target/g, '_target')
+    .replace(/maxDistance/g, '_maxDistance')
+    .replace(/baseLayer/g, '_baseLayer')
       // Replace const with let declartion
     .replaceAll('const ', 'let ')
     // Replace all strict equality comparison with abstract equality comparison
@@ -188,7 +190,7 @@ export function viteJs13k() {
       execFile(advzip, [
         '--recompress',
         '--shrink-insane',
-        '--iter=5000',
+        '--iter=8000',
         'dist/game.zip'
       ], (err) => {
         console.log(`\nZip size: ${fs.statSync('dist/game.zip').size}B (advzip)`);

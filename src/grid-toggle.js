@@ -4,7 +4,7 @@ import { gridPointerLayer } from './layers';
 import { gridToggleButton, gridToggleSvgPath, gridRedToggleSvgPath, gridToggleTooltip, gridRedToggleTooltip } from './ui';
 import { initAudio, playSound } from './audio';
 
-let gridLocked = localStorage.getItem('Tiny Yurts g') === 'true' ? true : false;
+let gridLocked = localStorage.getItem('Tiny Yurtsg') === 'true' ? true : false;
 
 export const gridRedState = {
   locked: false,
@@ -49,11 +49,11 @@ export const gridLockToggle = () => {
   if (gridLocked) {
     gridLocked = false;
     gridHide();
-    localStorage.setItem('Tiny Yurts g', false);
+    localStorage.setItem('Tiny Yurtsg', false);
     gridToggleTooltip.innerHTML = 'Grid: <u>Auto';
   } else {
     gridShow();
-    localStorage.setItem('Tiny Yurts g', true);
+    localStorage.setItem('Tiny Yurtsg', true);
     gridLocked = true;
     gridToggleTooltip.innerHTML = 'Grid: <u>On';
   }

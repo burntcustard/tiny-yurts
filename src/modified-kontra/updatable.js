@@ -17,7 +17,7 @@ class Updatable {
     this.position = new Vector();
     this.velocity = new Vector();
     this.acceleration = new Vector();
-    this.ttl = Infinity;
+    this.isAlive = true;
     Object.assign(this, properties);
   }
 
@@ -42,8 +42,6 @@ class Updatable {
 
     this.position = this.position.add(velocity);
     this._pc();
-
-    this.ttl--;
   }
 
   get dx() {
@@ -60,10 +58,6 @@ class Updatable {
 
   set dy(value) {
     this.velocity.y = value;
-  }
-
-  isAlive() {
-    return this.ttl > 0;
   }
 
   _pc() {}

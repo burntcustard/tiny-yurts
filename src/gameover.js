@@ -28,8 +28,9 @@ const goatEmoji = emojiGoat();
 const fishEmojiWrapper = createElement();
 const fishEmoji = emojiFish();
 const scoreWrapper = createElement();
+export const toggleGameoverlayButton = createElement('button');
 
-export const initGameover = (startNewGame, gameoverToMenu) => {
+export const initGameover = (startNewGame, gameoverToMenu, toggleGameoverlay) => {
   gameoverWrapper.style.cssText = `
     position: absolute;
     inset: 0;
@@ -126,6 +127,13 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
       gameoverButtons.style.left = '';
     }
   });
+
+  toggleGameoverlayButton.style.cssText = `position: absolute; top: 16px; right: 16px;`;
+  toggleGameoverlayButton.style.pointerEvents = 'none';
+  toggleGameoverlayButton.style.opacity = 0;
+  toggleGameoverlayButton.innerText = 'Overlay On/Off';
+  toggleGameoverlayButton.addEventListener('click', toggleGameoverlay);
+
   gameoverWrapper.append(
     gameoverHeader,
     gameoverText1,
@@ -134,7 +142,7 @@ export const initGameover = (startNewGame, gameoverToMenu) => {
     gameoverButtons,
   );
 
-  document.body.append(gameoverWrapper);
+  document.body.append(gameoverWrapper, toggleGameoverlayButton);
 };
 
 export const showGameover = () => {
@@ -153,6 +161,7 @@ export const showGameover = () => {
   gameoverText3.style.transition = `opacity .5s 2s`;
   restartButtonWrapper.style.transition = `opacity .5s 2.5s`;
   menuButtonWrapper.style.transition = `opacity .5s 3s`;
+  toggleGameoverlayButton.style.transition = `all .2s, opacity .5s 3.5s`;
 
   oxEmojiWrapper.innerHTML = '';
   oxEmojiWrapper.append(oxEmoji, `×${oxen.length}`);
@@ -191,6 +200,7 @@ export const showGameover = () => {
   scoreCounters.style.opacity = 0;
 
   setTimeout(() => {
+    toggleGameoverlayButton.style.pointerEvents = ''; // Is separate from the gameoverWrapper
     gameoverWrapper.style.pointerEvents = '';
     gameoverWrapper.style.opacity = 1;
     menuBackground.style.opacity = 1;
@@ -200,6 +210,7 @@ export const showGameover = () => {
     gameoverText3.style.opacity = 1;
     restartButtonWrapper.style.opacity = 1;
     menuButtonWrapper.style.opacity = 1;
+    toggleGameoverlayButton.style.opacity = 1;
   });
 };
 

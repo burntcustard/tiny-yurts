@@ -9,7 +9,7 @@ let audioContext;
 const sampleRate = 44100;
 
 export const soundSetings = {
-  on: localStorage.getItem('Tiny Yurts s') === 'false' ? false : true,
+  on: localStorage.getItem('Tiny Yurtss') === 'false' ? false : true,
 };
 
 export const initAudio = () => {

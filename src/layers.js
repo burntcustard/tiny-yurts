@@ -59,7 +59,6 @@ const addFenceLayer = () => {
 
 const addBaseLayer = () => {
   const baseLayer = createSvgElement('g');
-  baseLayer.id = 'baseLayer';
   baseLayer.setAttribute('fill', colors.base);
   svgElement.append(baseLayer);
   return baseLayer;

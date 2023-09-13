@@ -67,7 +67,7 @@ svgHazardLinesRed.style.transition = `opacity .3s`;
 svgContainerElement.append(svgHazardLines, svgHazardLinesRed);
 
 // Initial SVG element
-export const svgElement = createSvgElement('svg');
+export const svgElement = createSvgElement();
 // touch-action: none is required to prevent default draggness, probably
 svgElement.style.cssText = `
   position: relative;

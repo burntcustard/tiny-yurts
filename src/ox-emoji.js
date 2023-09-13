@@ -2,7 +2,7 @@ import { createSvgElement } from './svg-utils';
 import { colors } from './colors';
 
 export const emojiOx = () => {
-  const emojiOx = createSvgElement('svg');
+  const emojiOx = createSvgElement();
   emojiOx.setAttribute('viewBox', '0 0 16 16');
   emojiOx.setAttribute('stroke-linecap', 'round');
 

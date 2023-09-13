@@ -2,7 +2,7 @@ import { createSvgElement } from './svg-utils';
 import { colors } from './colors';
 
 export const emojiGoat = () => {
-  const emojiGoat = createSvgElement('svg');
+  const emojiGoat = createSvgElement();
   emojiGoat.setAttribute('viewBox', '0 0 20 20');
   emojiGoat.setAttribute('stroke-linecap', 'round');
   emojiGoat.style.width = '48px';

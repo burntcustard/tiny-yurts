@@ -24,7 +24,7 @@ import { yurts } from './yurt';
 import { paths } from './path';
 import { clearLayers } from './layers';
 import { initMenuBackground } from './menu-background';
-import { initGameover, showGameover, hideGameover } from './gameover';
+import { initGameover, showGameover, hideGameover, toggleGameoverlayButton } from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
 import { updateGridData } from './find-route';
 import {
@@ -38,6 +38,8 @@ import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound
 let updateCount = 0;
 let renderCount = 0;
 let totalUpdateCount = 0;
+let gameOverlayHidden;
+let lostFarmPosition;
 
 const startNewGame = () => {
   svgElement.style.transition = `transform 2s`;
@@ -65,6 +67,10 @@ const startNewGame = () => {
   goatCounter.innerText = 0;
   fishCounter.innerText = 0;
   pauseButton.style.opacity = 0;
+
+  toggleGameoverlayButton.style.opacity = 0;
+  toggleGameoverlayButton.style.pointerEvents = 'none';
+  toggleGameoverlayButton.style.transition = `all .2s, opacity .5s`;
 
   setTimeout(() => {
     goatFarms.length = 0;
@@ -114,6 +120,10 @@ const gameoverToMenu = () => {
   goatCounter.innerText = 0;
   fishCounter.innerText = 0;
 
+  toggleGameoverlayButton.style.opacity = 0;
+  toggleGameoverlayButton.style.pointerEvents = 'none';
+  toggleGameoverlayButton.style.transition = `all .2s, opacity .5s`;
+
   soundToggleTooltip.style.transition = `all.2s,width.5s 4s,opacity.5s 4s`;
   gridRedToggleTooltip.style.transition = `all.2s,width.5s 4s,opacity.5s 4s`;
   gridToggleTooltip.style.transition = `all.2s,width.5s 4s,opacity.5s 4s`;
@@ -159,14 +169,26 @@ const gameoverToMenu = () => {
   }, 500);
 };
 
+const toggleGameoverlay = () => {
+  if (gameOverlayHidden) {
+    gameOverlayHidden = false;
+    svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-lostFarmPosition.x}px, ${-lostFarmPosition.y}px)`;
+    showGameover();
+  } else {
+    gameOverlayHidden = true;
+    svgElement.style.transform = '';
+    hideGameover();
+  }
+}
+
 initUi();
 initMenuBackground();
-initGameover(startNewGame, gameoverToMenu);
+initGameover(startNewGame, gameoverToMenu, toggleGameoverlay);
 initPointer();
 
 const startGame = () => {
   svgElement.style.transition = `transform 2s`;
-  svgElement.style.transform = `rotate(0) scale(1) translate(0, 0)`;
+  svgElement.style.transform = '';
   pathTilesIndicatorCount.innerText = inventory.paths;
   hideMenu();
   gameStarted = true;
@@ -281,13 +303,14 @@ const loop = GameLoop({
     farms.forEach((f) => {
       if (!f.isAlive) {
         loop.stop();
-        const farmPxPosition = svgPxToDisplayPx(
+
+        lostFarmPosition = svgPxToDisplayPx(
           f.x - gridWidth / 2 - boardOffsetX + f.width / 2,
           f.y - gridHeight / 2 - boardOffsetY + f.height / 2,
         );
 
         svgElement.style.transition = `transform 2s ease-out .5s`;
-        svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-farmPxPosition.x}px, ${-farmPxPosition.y}px)`;
+        svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-lostFarmPosition.x}px, ${-lostFarmPosition.y}px)`;
 
         oxCounterWrapper.style.opacity = 0;
         goatCounterWrapper.style.opacity = 0;
@@ -356,13 +379,13 @@ const toggleSound = () => {
 
   if (soundSetings.on) {
     soundSetings.on = false;
-    localStorage.setItem('Tiny Yurts s', false);
+    localStorage.setItem('Tiny Yurtss', false);
     soundToggleSvgPathX.setAttribute('d', 'M11 7Q10 8 9 9M9 7Q10 8 11 9');
     soundToggleSvgPathX.style.stroke = colors.red;
     soundToggleTooltip.innerHTML = 'Sound: <u>Off';
   } else {
     soundSetings.on = true;
-    localStorage.setItem('Tiny Yurts s', true);
+    localStorage.setItem('Tiny Yurtss', true);
     soundToggleSvgPathX.setAttribute('d', 'M10 6Q12 8 10 10M10 6Q12 8 10 10');
     soundToggleSvgPathX.style.stroke = colors.ui;
     soundToggleTooltip.innerHTML = 'Sound: <u>On';

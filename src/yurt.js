@@ -153,7 +153,7 @@ export class Yurt extends GameObjectClass {
     this.shadow.style.transition = 'd.6s';
     yurtAndPersonShadowLayer.append(this.shadow);
     setTimeout(() => this.shadow.style.opacity = 0.8, 800);
-    setTimeout(() => this.shadow.setAttribute('d', 'M0 0l2 2'), 900);
+    setTimeout(() => this.shadow.setAttribute('d', 'M0 0 2 2'), 900);
     setTimeout(() => this.shadow.style.willChange = '', 1600);
 
     this.decoration = createSvgElement('circle');
@@ -187,7 +187,7 @@ export class Yurt extends GameObjectClass {
     const y = gridCellSize / 2 + this.y * gridCellSize;
 
     this.shadow.style.transition = 'transform.3s d.4s';
-    this.shadow.setAttribute('d', 'M0 0l2 2');
+    this.shadow.setAttribute('d', 'M0 0 2 2');
     this.shadow.style.transform = `translate(${x}px,${y}px) scale(1)`;
 
     this.svgGroup.style.transition = 'transform.3s';
