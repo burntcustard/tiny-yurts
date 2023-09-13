@@ -53,8 +53,11 @@ export async function replaceScript(html, scriptFilename, scriptCode) {
     action: 'eval',
     allowFreeVars: true,
     data: scriptCode,
-    maxMemoryMB: 200, // We're _just_ hitting the regular 150MB default
+    maxMemoryMB: 200, // We're _just_ hitting the 150MB default
+    modelMaxCount: 4, // Figured out by the online Roadroller version
+    modelRecipBaseCount: 61, // Figured out by the online Roadroller version
     numAbbreviations: 30, // 30 might be better than the default 32, but is build-run-specific
+    recipLearningRate: 2500, // Figured out by the online Roadroller version
     sparseSelectors: 24, // ~2x the default number of contexts, as my code is 2x regular Js13k size
     type: 'js',
   }], {});
