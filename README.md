@@ -27,10 +27,11 @@
 <p>
   <ul>
     <li>You can delete the path that comes with the starting farm!</li>
-    <li>As you can't build paths over water, to connect a fish farm, you have to join your path up to end of the stepping stones it comes with.</li>
-    <li>Distance is the most important factor when determining how well a yurt can help out with a farms demands.</li>
-    <li>You can send your settlers through other farms - if the farm is of a different type, it won't interfere at all, however if it's a farm of the same type, the settlers are more likely to head there than travel through it to the further away one.</li>
-    <li>Your settlers may get stuck at farms if they have no way home. You'll have to re-build a path for them to get back to their own yurt before they can help out again!</li>
+    <li>As you can't build paths over water, so to connect a fish farm you have to join your path up to end of the stepping stones it comes with.</li>
+    <li>Distance is the most important factor when determining how well a yurt can cope with a farms demands.</li>
+    <li>You don't have to connect every yurt!</li>
+    <li>You can send your settlers through other farms. If the farm is of a different type, it won't interfere at all, however if it's a farm of the same type, the settlers are more likely to head there than travel through it to the further away one.</li>
+    <li>Your settlers may get stuck at farms if they have no way home. You'll have to re-build a path for them to get back to their own yurt before they can help out again.</li>
     <li>Diagonal paths use fewer path tiles to go a further distance, but because they are further, it will take settlers longer to get to their destinations for the same number of grid-cells traversed.</li>
     <li>Farms have a "needyness" based on the animal type, times the number of animals minus 1, times a subtle difficulty-over-time curve. For example a farm with two adult oxen and one baby, will have 2 × [ox demand number] × [difficulty scaling].</li>
     <li>Farms issue capacity is based of the total number of adults, times 3. For example a farm with two adult oxen and one baby, will have 2 (adults) × 3 = 6 capacity, which is represented by the two starting (!) and then 4 segments in the pop-up issue indicator. This means you have to deal with farms with only two adults quickly!</li>
