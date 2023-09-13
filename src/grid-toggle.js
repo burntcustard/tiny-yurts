@@ -2,6 +2,7 @@ import { svgHazardLines, svgHazardLinesRed } from './svg';
 import { gridRect, gridRectRed } from './grid';
 import { gridPointerLayer } from './layers';
 import { gridToggleButton, gridToggleSvgPath, gridRedToggleSvgPath, gridToggleTooltip, gridRedToggleTooltip } from './ui';
+import { initAudio, playSound } from './audio';
 
 let gridLocked = localStorage.getItem('Tiny Yurts g') === 'true' ? true : false;
 
@@ -43,6 +44,8 @@ if (gridLocked) {
 }
 
 export const gridLockToggle = () => {
+  initAudio();
+
   if (gridLocked) {
     gridLocked = false;
     gridHide();
@@ -54,6 +57,8 @@ export const gridLockToggle = () => {
     gridLocked = true;
     gridToggleTooltip.innerHTML = 'Grid: <u>On';
   }
+
+  playSound(25, 1, 1, 1, 0.3, 1000, 1000);
 };
 
 export const gridRedShow = () => {
@@ -63,7 +68,10 @@ export const gridRedShow = () => {
 
   if (!gridRedState.locked) {
     // ☒ (trash / bulldoze mode)
-    gridRedToggleSvgPath.setAttribute('d', 'M9 7 7 9M7 7 9 9M4.5 11.5 4.5 4.5 11.5 4.5 11.5 11.5M4.5 11.5 11.5 11.5');
+    gridRedToggleSvgPath.setAttribute(
+      'd',
+      'M4.5 4.5Q4.5 4.5 11.5 4.5 11.5 4.5 11.5 4.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 4.5 11.5 4.5 11.5ZM9 7 7 9M7 7Q9 9 9 9'
+    );
     gridRedToggleSvgPath.style.transform = 'rotate(180deg)';
   }
 };
@@ -73,8 +81,8 @@ export const gridRedHide = () => {
     gridRectRed.style.opacity = 0;
     svgHazardLinesRed.style.opacity = 0;
 
-    // A
-    gridRedToggleSvgPath.setAttribute('d', 'M8 4.5 5 11M8 4.5 11 11M5 11 8 4.5 8 4.5 11 11M6 9.5 10 9.5');
+    // Right Click
+    gridRedToggleSvgPath.setAttribute('d', 'M5 7Q5 4 8 4 11 4 11 7 11 8 11 9 11 12 8 12 5 12 5 9ZM8 4 8 8 M8 8 Q11 8 11 7.5');
     gridRedToggleSvgPath.style.transform = 'rotate(0)';
   }
 };
@@ -82,23 +90,30 @@ export const gridRedHide = () => {
 if (gridRedState.locked) {
   gridRedToggleTooltip.innerHTML = 'Delete: <u>On';
   // ☒ (trash / bulldoze mode)
-  gridRedToggleSvgPath.setAttribute('d', 'M9 7 7 9M7 7 9 9M4.5 11.5 4.5 4.5 11.5 4.5 11.5 11.5M4.5 11.5 11.5 11.5');
+  gridRedToggleSvgPath.setAttribute(
+    'd',
+    'M4.5 4.5 Q4.5 4.5 11.5 4.5 11.5 4.5 11.5 4.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 4.5 11.5 4.5 11.5ZM9 7 7 9M7 7Q9 9 9 9'
+  );
   gridRedToggleSvgPath.style.transform = 'rotate(180deg)';
 } else {
-  gridRedToggleTooltip.innerHTML = 'Delete: <u>Auto';
+  gridRedToggleTooltip.innerHTML = 'Delete: <abbr title="Right Mouse Button">RMB';
   // A
-  gridRedToggleSvgPath.setAttribute('d', 'M8 4.5 5 11M8 4.5 11 11M5 11 8 4.5 8 4.5 11 11M6 9.5 10 9.5');
+  gridRedToggleSvgPath.setAttribute('d', 'M5 7Q5 4 8 4 11 4 11 7 11 8 11 9 11 12 8 12 5 12 5 9ZM8 4 8 8 M8 8 Q11 8 11 7.5');
   gridRedToggleSvgPath.style.transform = 'rotate(0)';
 }
 
 export const gridRedLockToggle = () => {
+  initAudio();
+
   if (gridRedState.locked) {
     gridRedState.locked = false;
     gridRedHide();
-    gridRedToggleTooltip.innerHTML = 'Delete: <u>Auto';
+    gridRedToggleTooltip.innerHTML = 'Delete: <abbr title="Right Mouse Button">RMB';
   } else {
     gridRedShow();
     gridRedState.locked = true;
     gridRedToggleTooltip.innerHTML = 'Delete: <u>On';
   }
+
+  playSound(27, 1, 1, 1, 0.3, 1000, 1000);
 };

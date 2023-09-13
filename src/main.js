@@ -33,7 +33,7 @@ import {
 import { gridRect, gridRectRed } from './grid';
 import { colors } from './colors';
 // import { Tree, trees } from './tree';
-import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound, playPathDeleteNote, playTreeDeleteNote, playYurtSpawnNote } from './audio';
+import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound, playPathDeleteNote, playTreeDeleteNote, playYurtSpawnNote, playOutOfPathsNote } from './audio';
 
 let updateCount = 0;
 let renderCount = 0;
@@ -370,7 +370,7 @@ const toggleSound = () => {
 
   // This returns before playing if soundSettings.on === false
   // frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass
-  playSound(30, 1, 1, 1, 0.4, 1000, 1000);
+  playSound(30, 1, 1, 1, 0.3, 1000, 1000);
 };
 
 if (soundSetings.on) {
@@ -403,15 +403,16 @@ document.addEventListener('keypress', (event) => {
     setTimeout(() => pauseButton.style.transform = '', 150);
   }
 
-  initAudio();
+  // initAudio();
 
-  if (event.key === 'o') playWarnNote(colors.ox);
-  if (event.key === 'g') playWarnNote(colors.goat);
-  if (event.key === 'f') playWarnNote(colors.fish);
-  if (event.key === 'p') playPathPlacementNote();
-  if (event.key === 'r') playPathDeleteNote();
-  if (event.key === 't') playTreeDeleteNote();
-  if (event.key === 'y') playYurtSpawnNote();
+  // if (event.key === 'o') playWarnNote(colors.ox);
+  // if (event.key === 'g') playWarnNote(colors.goat);
+  // if (event.key === 'f') playWarnNote(colors.fish);
+  // if (event.key === 'p') playPathPlacementNote();
+  // if (event.key === 'r') playPathDeleteNote();
+  // if (event.key === 't') playTreeDeleteNote();
+  // if (event.key === 'y') playYurtSpawnNote();
+  // if (event.key === 'n') playOutOfPathsNote(); // 'n'o paths
 });
 
 setTimeout(() => {

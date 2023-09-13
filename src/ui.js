@@ -81,6 +81,10 @@ export const initUi = () => {
       transform: scale(.95);
       box-shadow: 0 0 0 1px ${colors.shade};
     }
+    u, abbr {
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+    }
   `;
   document.head.append(styles);
 

@@ -12,7 +12,7 @@ import { pathTilesIndicator, pathTilesIndicatorCount } from './ui';
 import {
   gridShow, gridHide, gridRedShow, gridRedHide, gridRedState,
 } from './grid-toggle';
-import { playPathPlacementNote } from './audio';
+import { playPathPlacementNote, playOutOfPathsNote } from './audio';
 
 let dragStartCell = {};
 let isDragging = false;
@@ -230,10 +230,13 @@ const handlePointermove = (event) => {
   if (inventory.paths <= 0) {
     pathTilesIndicator.style.scale = 1.1;
     pathTilesIndicatorCount.innerText = '!';
+    playOutOfPathsNote();
+
     setTimeout(() => {
       pathTilesIndicator.style.scale = 1;
       pathTilesIndicatorCount.innerText = inventory.paths;
     }, 300);
+
     pathDragIndicator.style.opacity = 0;
     dragStartCell = {};
     isDragging = false;

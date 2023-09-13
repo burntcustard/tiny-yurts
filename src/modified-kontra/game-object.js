@@ -21,10 +21,6 @@ class GameObject extends Updatable {
       ...props
     });
 
-    // di = done init
-    this._di = true;
-    this._uw();
-
     this.addChild(children);
 
     // rf = render function
@@ -52,7 +48,6 @@ class GameObject extends Updatable {
   draw() {}
 
   _pc() {
-    this._uw();
     this.children.map(child => child._pc());
   }
 
@@ -94,30 +89,6 @@ class GameObject extends Updatable {
   set height(value) {
     this._h = value;
     this._pc();
-  }
-
-  /**
-   * Update world properties
-   */
-  _uw() {
-    // don't update world properties until after the init has finished
-    if (!this._di) return;
-
-    let {
-      _wx = 0,
-      _wy = 0,
-    } = this.parent || {};
-
-    // wx = world x, wy = world y
-    this._wx = this.x;
-    this._wy = this.y;
-
-    // ww = world width, wh = world height
-    this._ww = this.width;
-    this._wh = this.height;
-
-    this._wx += _wx;
-    this._wy += _wy;
   }
 
   set children(value) {

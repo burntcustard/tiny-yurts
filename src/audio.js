@@ -228,6 +228,15 @@ export const playYurtSpawnNote = () => {
   }
 };
 
+export const playOutOfPathsNote = () => {
+  if (audioContext) {
+    // frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass
+    // playSound(18, 0.5, 0.25, 30, 0.2, 1800, 200);
+    setTimeout(() => playSound(8, 0.5, 0.5, 40, 0.1, 1000, 100), 100);
+    setTimeout(() => playSound(5, 0.5, 0.5, 20, 0.1, 1000, 100), 250);
+  }
+};
+
 export const playWarnNote = (animalType) => {
   if (audioContext) {
     // console.log(warnNotes[animalType]);
