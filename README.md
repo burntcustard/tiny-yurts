@@ -28,7 +28,7 @@
   <ul>
     <li>You can build paths while the game is paused, if you need a little more time to think.</li>
     <li>You can delete the path that comes with the starting farm!</li>
-    <li>As you can't build paths over water, so to connect a fish farm you have to join your path up to end of the stepping stones it comes with.</li>
+    <li>Paths cannot be build over water, so to connect a fish farm you have to join a path to the end of the stepping stones.</li>
     <li>Distance is the most important factor when determining how well a yurt can cope with a farms demands.</li>
     <li>You don't have to connect every yurt!</li>
     <li>You can send your settlers through other farms. If the farm is of a different type, it won't interfere at all, however if it's a farm of the same type, the settlers are more likely to head there than travel through it to the further away one.</li>
