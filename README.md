@@ -1,6 +1,6 @@
 # Tiny Yurts
 
-<img src="https://github.com/burntcustard/tiny-yurts/blob/main/screenshot-bigx2.png?raw=true" height="250" alt="Screenshot of the game, showing a green background, with small dots and other simple shapes representing paths, animals, trees, and a pond."/>
+<img src="https://github.com/burntcustard/tiny-yurts/blob/main/screenshot-bigx2.png?raw=true" width="400" alt="Screenshot of the game, showing a green background, with small dots and other simple shapes representing paths, animals, trees, and a pond."/>
 
 ### [Play online](https://burnt.io/tiny-yurts/)
 
