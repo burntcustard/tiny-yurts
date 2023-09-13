@@ -9,8 +9,8 @@
 
 ### How to play
 
-- Touch or left click and drag to build paths between your tiny yurts and your farms to keep the animals happy!
-- You get points for your total number of settlers (dots), which is 2x your number of yurts, plus a point for each animal.
+- Touch or left click and drag to build paths between your yurts and farms to keep the animals happy!
+- You get points for your total number of settlers (2x your number of yurts), plus a point for each animal.
 - __Fullscreen__ is highly recommended for mobile.
 
 ### Tech used
