@@ -61,3 +61,4 @@
 - There is a weird flashing that can happen during the gameover transition on Chrome on Android.
 - There's occasionally a case of disappearing paths on iOS if the game is navigated away from.
 - On small screens, drawing paths is a little fiddly!
+- There is a bug which allows building paths off the edge of the map, which cannot be deleted.
