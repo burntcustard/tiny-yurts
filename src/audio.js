@@ -218,7 +218,13 @@ export const playPathDeleteNote = () => {
 
 export const playTreeDeleteNote = () => {
   if (audioContext) {
-    playSound(10, 0.1, 1, 1000, 0.5, 1500, 500, () => 2);
+    playSound(10, 0.1, 1, 1000, 0.2, 1500, 500, () => 2);
+  }
+};
+
+export const playYurtSpawnNote = () => {
+  if (audioContext) {
+    playSound(39, 0.1, 0.25, 10, 0.2, 1000, 100); // E# (i.e. F. Music is weird)
   }
 };
 

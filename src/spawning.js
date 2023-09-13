@@ -537,7 +537,7 @@ export const spawnNewObjects = (updateCount, delay) => {
   }
 
   // Spawn the first yurt really soon after
-  if (updateCount % spawningLoopLength === 500 + updateRandomness2) {
+  if (updateCount % spawningLoopLength === 500 + (farms.length > 1 ? updateRandomness2 : 0)) {
     const { facing } = getRandomYurtProps();
 
     const farm = (farms.filter((f) => f.type === colors.fish).length && yurts.filter((y) => y.type === colors.fish).length < 2)

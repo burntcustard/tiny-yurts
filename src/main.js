@@ -33,7 +33,7 @@ import {
 import { gridRect, gridRectRed } from './grid';
 import { colors } from './colors';
 // import { Tree, trees } from './tree';
-import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound, playPathDeleteNote, playTreeDeleteNote } from './audio';
+import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound, playPathDeleteNote, playTreeDeleteNote, playYurtSpawnNote } from './audio';
 
 let updateCount = 0;
 let renderCount = 0;
@@ -411,6 +411,7 @@ document.addEventListener('keypress', (event) => {
   if (event.key === 'p') playPathPlacementNote();
   if (event.key === 'r') playPathDeleteNote();
   if (event.key === 't') playTreeDeleteNote();
+  if (event.key === 'y') playYurtSpawnNote();
 });
 
 setTimeout(() => {

@@ -7,6 +7,7 @@ import {
 import { Path, drawPaths, getPathsData } from './path';
 import { colors } from './colors';
 import { Person } from './person';
+import { playYurtSpawnNote } from './audio';
 
 export const yurts = [];
 
@@ -53,6 +54,10 @@ export class Yurt extends GameObjectClass {
       this.children.push(new Person({ x: this.x, y: this.y, parent: this }));
       this.children.forEach((p) => p.addToSvg());
     }, 2000);
+
+    setTimeout(() => {
+      playYurtSpawnNote();
+    }, 100);
 
     yurts.push(this);
     this.addToSvg();
