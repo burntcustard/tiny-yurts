@@ -32,7 +32,7 @@ import {
 } from './grid-toggle';
 import { gridRect, gridRectRed } from './grid';
 import { colors } from './colors';
-// import { Tree, trees } from './tree';
+import { trees } from './tree';
 import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound, playPathDeleteNote, playTreeDeleteNote, playYurtSpawnNote, playOutOfPathsNote } from './audio';
 
 let updateCount = 0;
@@ -84,6 +84,7 @@ const startNewGame = () => {
     yurts.length = 0;
     paths.length = 0;
     ponds.length = 0;
+    trees.length = 0;
     updateCount = 1;
     totalUpdateCount = 1;
     renderCount = 1;
@@ -153,6 +154,7 @@ const gameoverToMenu = () => {
     yurts.length = 0;
     paths.length = 0;
     ponds.length = 0;
+    trees.length = 0;
     updateCount = 0;
     renderCount = 0;
     totalUpdateCount = 0;
