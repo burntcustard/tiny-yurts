@@ -365,14 +365,16 @@ const loop = GameLoop({
 });
 
 const togglePause = () => {
-  if (loop.isStopped) {
-    loop.start();
-    pauseSvgPath.setAttribute('d', 'M6 6 6 10M10 6 10 8 10 10');
-    pauseSvgPath.style.transform = 'rotate(180deg)';
-  } else {
-    loop.stop();
-    pauseSvgPath.setAttribute('d', 'M7 6 7 10M7 6 10 8 7 10');
-    pauseSvgPath.style.transform = 'rotate(0)';
+  if (gameStarted && totalUpdateCount > 210) {
+    if (loop.isStopped) {
+      loop.start();
+      pauseSvgPath.setAttribute('d', 'M6 6 6 10M10 6 10 8 10 10');
+      pauseSvgPath.style.transform = 'rotate(180deg)';
+    } else {
+      loop.stop();
+      pauseSvgPath.setAttribute('d', 'M7 6 7 10M7 6 10 8 7 10');
+      pauseSvgPath.style.transform = 'rotate(0)';
+    }
   }
 };
 
