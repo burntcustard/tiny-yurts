@@ -189,20 +189,22 @@ initGameover(startNewGame, gameoverToMenu, toggleGameoverlay);
 initPointer();
 
 const startGame = () => {
-  svgElement.style.transition = `transform 2s`;
-  svgElement.style.transform = '';
-  pathTilesIndicatorCount.innerText = inventory.paths;
-  hideMenu();
-  gameStarted = true;
-  updateCount = totalUpdateCount = 1;
+  if (!gameStarted) {
+    svgElement.style.transition = `transform 2s`;
+    svgElement.style.transform = '';
+    pathTilesIndicatorCount.innerText = inventory.paths;
+    hideMenu();
+    gameStarted = true;
+    updateCount = totalUpdateCount = 1;
 
-  soundToggleTooltip.style.transition = `all.5s`;
-  gridRedToggleTooltip.style.transition = `all.5s`;
-  gridToggleTooltip.style.transition = `all.5s`;
+    soundToggleTooltip.style.transition = `all.5s`;
+    gridRedToggleTooltip.style.transition = `all.5s`;
+    gridToggleTooltip.style.transition = `all.5s`;
 
-  soundToggleButton.style.opacity = 1;
-  gridRedToggleButton.style.opacity = 1;
-  gridToggleButton.style.opacity = 1;
+    soundToggleButton.style.opacity = 1;
+    gridRedToggleButton.style.opacity = 1;
+    gridToggleButton.style.opacity = 1;
+  }
 };
 
 // demoColors();
@@ -340,6 +342,7 @@ const loop = GameLoop({
 
     farms.forEach((f) => {
       if (!f.isAlive) {
+        gameStarted = false;
         loop.stop();
 
         lostFarmPosition = svgPxToDisplayPx(
