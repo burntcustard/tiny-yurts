@@ -40,68 +40,74 @@ let renderCount = 0;
 let totalUpdateCount = 0;
 let gameOverlayHidden;
 let lostFarmPosition;
+let gameStarted = false;
 
 const startNewGame = () => {
-  svgElement.style.transition = `transform 2s`;
-  svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
+  // console.log(`startNewGame called with gameStarted: ${JSON.stringify(gameStarted)} and loop.isStopped: ${JSON.stringify(loop.isStopped)}`)
+  // Had to wrap this all in a gameStarted check, because restart button still exists
+  // (and has focus!) so could be "pressed" with space bar to re-restart
+  if (!gameStarted && loop.isStopped) {
+    gameStarted = true;
 
-  soundToggleButton.style.transition = `all .2s, width.5s 4s, opacity .5s 3s`;
-  gridRedToggleButton.style.transition = `all .2s, width.5s 4s, opacity .5s 3s`;
-  gridToggleButton.style.transition = `all .2s, width .5s 4s, opacity .5s 3s`;
+    svgElement.style.transition = `transform 2s`;
+    svgElement.style.transform = `rotate(0) scale(2) translate(0, ${svgPxToDisplayPx(0, gridHeight).y / -2}px)`;
 
-  soundToggleTooltip.style.transition = `all .5s`;
-  gridRedToggleTooltip.style.transition = `all .5s`;
-  gridToggleTooltip.style.transition = `all .5s`;
+    soundToggleButton.style.transition = `all .2s, width.5s 4s, opacity .5s 3s`;
+    gridRedToggleButton.style.transition = `all .2s, width.5s 4s, opacity .5s 3s`;
+    gridToggleButton.style.transition = `all .2s, width .5s 4s, opacity .5s 3s`;
 
-  soundToggleButton.style.opacity = 1;
-  gridRedToggleButton.style.opacity = 1;
-  gridToggleButton.style.opacity = 1;
+    soundToggleTooltip.style.transition = `all .5s`;
+    gridRedToggleTooltip.style.transition = `all .5s`;
+    gridToggleTooltip.style.transition = `all .5s`;
 
-  oxCounterWrapper.style.width = 0;
-  goatCounterWrapper.style.width = 0;
-  fishCounterWrapper.style.width = 0;
-  oxCounterWrapper.style.opacity = 0;
-  goatCounterWrapper.style.opacity = 0;
-  fishCounterWrapper.style.opacity = 0;
-  oxCounter.innerText = 0;
-  goatCounter.innerText = 0;
-  fishCounter.innerText = 0;
-  pauseButton.style.opacity = 0;
+    soundToggleButton.style.opacity = 1;
+    gridRedToggleButton.style.opacity = 1;
+    gridToggleButton.style.opacity = 1;
 
-  toggleGameoverlayButton.style.opacity = 0;
-  toggleGameoverlayButton.style.pointerEvents = 'none';
-  toggleGameoverlayButton.style.transition = `all .2s, opacity .5s`;
+    oxCounterWrapper.style.width = 0;
+    goatCounterWrapper.style.width = 0;
+    fishCounterWrapper.style.width = 0;
+    oxCounterWrapper.style.opacity = 0;
+    goatCounterWrapper.style.opacity = 0;
+    fishCounterWrapper.style.opacity = 0;
+    oxCounter.innerText = 0;
+    goatCounter.innerText = 0;
+    fishCounter.innerText = 0;
+    pauseButton.style.opacity = 0;
 
-  setTimeout(() => {
-    goatFarms.length = 0;
-    oxFarms.length = 0;
-    people.length = 0;
-    farms.length = 0;
-    animals.length = 0;
-    oxen.length = 0;
-    goats.length = 0;
-    fishes.length = 0;
-    yurts.length = 0;
-    paths.length = 0;
-    ponds.length = 0;
-    trees.length = 0;
-    updateCount = 1;
-    totalUpdateCount = 1;
-    renderCount = 1;
-    inventory.paths = 18;
-    pathTilesIndicatorCount.innerText = inventory.paths;
-    clearLayers();
-    hideGameover();
-    svgElement.style.transform = '';
+    toggleGameoverlayButton.style.opacity = 0;
+    toggleGameoverlayButton.style.pointerEvents = 'none';
+    toggleGameoverlayButton.style.transition = `all .2s, opacity .5s`;
 
     setTimeout(() => {
-      spawnNewObjects(0);
-      loop.start();
-    }, 1000);
-  }, 1000);
-};
+      goatFarms.length = 0;
+      oxFarms.length = 0;
+      people.length = 0;
+      farms.length = 0;
+      animals.length = 0;
+      oxen.length = 0;
+      goats.length = 0;
+      fishes.length = 0;
+      yurts.length = 0;
+      paths.length = 0;
+      ponds.length = 0;
+      trees.length = 0;
+      updateCount = 1;
+      totalUpdateCount = 1;
+      renderCount = 1;
+      inventory.paths = 18;
+      pathTilesIndicatorCount.innerText = inventory.paths;
+      clearLayers();
+      hideGameover();
+      svgElement.style.transform = '';
 
-let gameStarted = false;
+      setTimeout(() => {
+        spawnNewObjects(0);
+        loop.start();
+      }, 1000);
+    }, 1000);
+  }
+};
 
 const gameoverToMenu = () => {
   gameStarted = false;
@@ -156,8 +162,8 @@ const gameoverToMenu = () => {
     ponds.length = 0;
     trees.length = 0;
     updateCount = 0;
-    renderCount = 0;
     totalUpdateCount = 0;
+    renderCount = 0;
     clearLayers();
     hideGameover();
     svgElement.style.transform = '';
@@ -195,7 +201,9 @@ const startGame = () => {
     pathTilesIndicatorCount.innerText = inventory.paths;
     hideMenu();
     gameStarted = true;
-    updateCount = totalUpdateCount = 1;
+    updateCount = 1;
+    totalUpdateCount = 1;
+    renderCount = 1;
 
     soundToggleTooltip.style.transition = `all.5s`;
     gridRedToggleTooltip.style.transition = `all.5s`;
@@ -215,7 +223,6 @@ spawnNewObjects(totalUpdateCount, 2500);
 showMenu(farms[0], true);
 
 const loop = GameLoop({
-  blur: true, // Still update and render even if the page does not have focus
   update() {
     if (gameStarted) {
       spawnNewObjects(totalUpdateCount, gameStarted);
@@ -363,6 +370,9 @@ const loop = GameLoop({
         gridRedState.buttonShown = false;
         gridRedHide();
 
+        updateCount = 0;
+        totalUpdateCount = 0;
+        renderCount = 0;
         showGameover(startNewGame);
       }
     });
@@ -403,6 +413,7 @@ const loop = GameLoop({
 });
 
 const togglePause = () => {
+  // console.log(`toggle pause called, with gamestarted: ${gameStarted} and totalUpdateCOunt: ${totalUpdateCount} and loop.isStopped: ${loop.isStopped}`);
   if (gameStarted && totalUpdateCount > 210) {
     if (loop.isStopped) {
       loop.start();
