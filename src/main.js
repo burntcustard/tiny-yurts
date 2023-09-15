@@ -261,19 +261,45 @@ const loop = GameLoop({
 
       // Updating this at 60FPS is a bit much but rotates are usually on the GPU anyway
       clockHand.style.transform = `rotate(${totalUpdateCount / 2}deg)`;
-      switch (Math.floor(totalUpdateCount / 720 % 12)) {
-        case 0: clockMonth.innerText = 'Jan'; break;
-        case 1: clockMonth.innerText = 'Feb'; break;
-        case 2: clockMonth.innerText = 'Mar'; break;
-        case 3: clockMonth.innerText = 'Apr'; break;
-        case 4: clockMonth.innerText = 'May'; break;
-        case 5: clockMonth.innerText = 'Jun'; break;
-        case 6: clockMonth.innerText = 'Jul'; break;
-        case 7: clockMonth.innerText = 'Aug'; break;
-        case 8: clockMonth.innerText = 'Sep'; break;
-        case 9: clockMonth.innerText = 'Oct'; break;
-        case 10: clockMonth.innerText = 'Nov'; break;
-        case 11: clockMonth.innerText = 'Dec'; break;
+      // switch (Math.floor(totalUpdateCount / 720 % 12)) {
+      //   case 0: clockMonth.innerText = 'Jan'; break;
+      //   case 1: clockMonth.innerText = 'Feb'; break;
+      //   case 2: clockMonth.innerText = 'Mar'; break;
+      //   case 3: clockMonth.innerText = 'Apr'; break;
+      //   case 4: clockMonth.innerText = 'May'; break;
+      //   case 5: clockMonth.innerText = 'Jun'; break;
+      //   case 6: clockMonth.innerText = 'Jul'; break;
+      //   case 7: clockMonth.innerText = 'Aug'; break;
+      //   case 8: clockMonth.innerText = 'Sep'; break;
+      //   case 9: clockMonth.innerText = 'Oct'; break;
+      //   case 10: clockMonth.innerText = 'Nov'; break;
+      //   case 11: clockMonth.innerText = 'Dec'; break;
+      // }
+      // Converted to from switch to if () for better compression
+      if (Math.floor(totalUpdateCount / 720 % 12) === 0) {
+        clockMonth.innerText = 'Jan';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 1) {
+        clockMonth.innerText = 'Feb';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 2) {
+        clockMonth.innerText = 'Mar';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 3) {
+        clockMonth.innerText = 'Apr';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 4) {
+        clockMonth.innerText = 'May';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 5) {
+        clockMonth.innerText = 'Jun';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 6) {
+        clockMonth.innerText = 'Jul';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 7) {
+        clockMonth.innerText = 'Aug';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 8) {
+        clockMonth.innerText = 'Sep';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 9) {
+        clockMonth.innerText = 'Oct';
+      } else if (Math.floor(totalUpdateCount / 720 % 12) === 10) {
+        clockMonth.innerText = 'Nov';
+      } else {
+        clockMonth.innerText = 'Dec';
       }
     }
 
@@ -283,21 +309,31 @@ const loop = GameLoop({
     // Some things happen 15 times/s instead of 60.
     // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
     /* eslint-disable default-case */
-    switch (updateCount % 4) {
-      case 0:
-        // Update path grid data once every 4 updates (15 times per second) instead of
-        // every single time pathfinding is updated which was 6000 time per second(?)
-        updateGridData();
-        break;
-      case 1:
-        oxFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
-        break;
-      case 2:
-        goatFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
-        break;
-      case 3:
-        fishFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
-        break;
+    // switch (updateCount % 4) {
+    //   case 0:
+    //     // Update path grid data once every 4 updates (15 times per second) instead of
+    //     // every single time pathfinding is updated which was 6000 time per second(?)
+    //     updateGridData();
+    //     break;
+    //   case 1:
+    //     oxFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    //     break;
+    //   case 2:
+    //     goatFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    //     break;
+    //   case 3:
+    //     fishFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    //     break;
+    // }
+    // Converted to from switch to if () for better compression
+    if (updateCount % 4 === 0) {
+      updateGridData();
+    } else if (updateCount % 4 === 1) {
+      oxFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    } else if (updateCount % 4 === 2) {
+      goatFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    } else { // 3
+      fishFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
     }
 
     if (updateCount >= 60) updateCount = 0;
@@ -335,29 +371,28 @@ const loop = GameLoop({
 
     // Some things happen 15 times/s instead of 60.
     // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
-    switch (renderCount % 4) {
-      case 0:
-        // console.log(`Difficulty ramp: ${(totalUpdateCount * totalUpdateCount) / 1e12}`);
-        // pathTilesIndicatorCount.innerText = inventory.paths;
-        // if (inventory.paths = 18== 0) {
-        //   pathTilesIndicatorCount.style.background = colors.red;
-        //   pathTilesIndicatorCount.style.color = '#fff';
-        // } else {
-        //   pathTilesIndicatorCount.style.background = '#eee';
-        //   pathTilesIndicatorCount.style.color = colors.ui;
-        // }
-        // TODO: Highlight in some way if 0 paths left
-        break;
-      case 1:
-        oxFarms.forEach((farm) => farm.render());
-        break;
-      case 2:
-        goatFarms.forEach((farm) => farm.render());
-        break;
-      case 3:
-        fishFarms.forEach((farm) => farm.render());
-        break;
+    // switch (renderCount % 4) {
+    //   case 0:
+    //     break;
+    //   case 1:
+    //     oxFarms.forEach((farm) => farm.render());
+    //     break;
+    //   case 2:
+    //     goatFarms.forEach((farm) => farm.render());
+    //     break;
+    //   case 3:
+    //     fishFarms.forEach((farm) => farm.render());
+    //     break;
+    // }
+    // Converted to from switch to if () for better compression
+    if (renderCount % 4 === 1) {
+      oxFarms.forEach((farm) => farm.render());
+    } else if (renderCount % 4 === 2) {
+      goatFarms.forEach((farm) => farm.render());
+    } else {
+      fishFarms.forEach((farm) => farm.render());
     }
+
     if (renderCount >= 60) renderCount = 0;
 
     people.forEach((p) => p.render());

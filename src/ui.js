@@ -46,7 +46,6 @@ export const soundToggleSvgPathX = createSvgElement('path');
 export const soundToggleTooltip = createElement();
 
 export const initUi = () => {
-  // TODO: Move elsewhre and minify
   const styles = createElement('style');
   // body has user-select: none; to prevent text being highlighted.
   // ui black and shade colours inlined to make things smaller maybe

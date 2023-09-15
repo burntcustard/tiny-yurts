@@ -3,10 +3,7 @@ import { gridWidth, gridHeight } from './svg';
 
 let gridData = [];
 
-// TODO: Prefer straight x/y over diagonals because they are actually shorter distance
-
 const getGridData = () => {
-  // This should be cached somewhere, maybe a second after a grid piece is placed
   const gridData = [];
 
   for (let x = 0; x < gridWidth; x++) {

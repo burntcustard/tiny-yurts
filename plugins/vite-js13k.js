@@ -123,7 +123,8 @@ function customReplacement(src) {
     .replace(/anchor/g, '_anchor')
     .replace(/locked/g, '_locked')
     // .replace(/normalize/g, '_normalize') // Breaks people movement
-    .replace(/target/g, '_target')
+    // Target breaks pause button event.target check to not double-press on spacebar
+    // .replace(/target/g, '_target')
     .replace(/maxDistance/g, '_maxDistance')
     .replace(/baseLayer/g, '_baseLayer')
       // Replace const with let declartion
