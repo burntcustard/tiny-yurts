@@ -19,7 +19,7 @@
 - [Kontra.js](https://straker.github.io/kontra/) game engine by [Steven Lambert](https://stevenklambert.com/).
 - [Karplus-Strong](https://en.wikipedia.org/wiki/Karplus%E2%80%93Strong_string_synthesis) [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) implementation, from [xem's](https://xem.github.io/) [MiniSynth](https://github.com/xem/js1k19/blob/gh-pages/miniSynth/index.html), based on [Keith Horwood's](https://keithwhor.com/) [audiosynth](https://github.com/keithwhor/audiosynth).
 - [JSZip](https://stuk.github.io/jszip/) _and_ [advzip-bin](https://github.com/elliot-nelson/advzip-bin) for zip compression.
-- [Vite](https://vitejs.dev/) and [Terser](https://terser.org/) with a messy, unstable, project-specific ([custom plugin](plugins/vite-js13k.js)) for maximum minification.
+- [Vite](https://vitejs.dev/) and [Terser](https://terser.org/) with a messy, unstable, project-specific [custom plugin](plugins/vite-js13k.js) for maximum minification.
 
 ### Tips & Tricks
 <details>
