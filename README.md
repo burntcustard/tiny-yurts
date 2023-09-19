@@ -55,9 +55,3 @@
    `npm run build`
 
 5. See [package.json](package.json) for other scripts
-
-### Known issues
-
-- There is a weird flashing that can happen during the gameover transition on Chrome on Android.
-- There's occasionally a case of disappearing paths on iOS if the game is navigated away from.
-- On small screens, drawing paths is a little fiddly!
