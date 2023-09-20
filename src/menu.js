@@ -4,8 +4,10 @@ import {
 import { svgPxToDisplayPx } from './cell';
 import { menuBackground } from './menu-background';
 import { createElement } from './create-element';
-import { gridToggleTooltip, gridRedToggleTooltip, soundToggleTooltip, uiContainer } from './ui';
-import { initAudio, playSound } from './audio';
+import {
+  gridToggleTooltip, gridRedToggleTooltip, soundToggleTooltip, uiContainer,
+} from './ui';
+import { initAudio } from './audio';
 
 const menuWrapper = createElement();
 const menuHeader = createElement();
@@ -94,7 +96,7 @@ export const showMenu = (focus, firstTime) => {
 
   menuText1.innerHTML = localStorage.getItem('Tiny Yurts')
     ? `Highscore: ${localStorage.getItem('Tiny Yurts')}`
-    : 'Tip: Left click & drag to connect yurts to<br>farms, or delete paths with right click.'
+    : 'Tip: Left click & drag to connect yurts to<br>farms, or delete paths with right click.';
 
   const farmPxPosition = svgPxToDisplayPx(
     focus.x - gridWidth / 2 - boardOffsetX + focus.width / 2,

@@ -1,6 +1,6 @@
 import { GameLoop } from './modified-kontra/game-loop';
 import {
-  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY, gridCellSize, boardWidth, boardHeight, svgHazardLines,
+  svgElement, gridWidth, gridHeight, boardOffsetX, boardOffsetY,
 } from './svg';
 import { initPointer } from './pointer';
 import { oxFarms } from './ox-farm';
@@ -8,13 +8,14 @@ import { goatFarms } from './goat-farm';
 import { fishFarms } from './fish-farm';
 import { people } from './person';
 import { inventory } from './inventory';
+// We import a huge amount from UI, & should probably use more of it inside itself rather than here
 import {
-  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath, gridToggleButton, gridRedToggleButton, soundToggleSvgPath, soundToggleButton, soundToggleTooltip, soundToggleSvgPathX, gridRedToggleTooltip, gridToggleTooltip
+  // eslint-disable-next-line max-len
+  initUi, scoreCounters, goatCounter, goatCounterWrapper, oxCounter, oxCounterWrapper, fishCounter, fishCounterWrapper, pathTilesIndicator, pathTilesIndicatorCount, clock, clockHand, clockMonth, pauseButton, pauseSvgPath, gridToggleButton, gridRedToggleButton, soundToggleButton, soundToggleTooltip, soundToggleSvgPathX, gridRedToggleTooltip, gridToggleTooltip,
 } from './ui';
 import { farms } from './farm';
 import { svgPxToDisplayPx } from './cell';
 import { spawnNewObjects } from './spawning';
-import { demoColors } from './demo-colors';
 import { animals } from './animal';
 import { oxen } from './ox';
 import { goats } from './goat';
@@ -24,16 +25,17 @@ import { yurts } from './yurt';
 import { paths } from './path';
 import { clearLayers } from './layers';
 import { initMenuBackground } from './menu-background';
-import { initGameover, showGameover, hideGameover, toggleGameoverlayButton } from './gameover';
+import {
+  initGameover, showGameover, hideGameover, toggleGameoverlayButton,
+} from './gameover';
 import { initMenu, showMenu, hideMenu } from './menu';
 import { updateGridData } from './find-route';
 import {
   gridLockToggle, gridRedLockToggle, gridRedHide, gridRedState,
 } from './grid-toggle';
-import { gridRect, gridRectRed } from './grid';
 import { colors } from './colors';
 import { trees } from './tree';
-import { initAudio, playPathPlacementNote, playWarnNote, soundSetings, playSound, playPathDeleteNote, playTreeDeleteNote, playYurtSpawnNote, playOutOfPathsNote } from './audio';
+import { initAudio, soundSetings, playSound } from './audio';
 
 let updateCount = 0;
 let renderCount = 0;
@@ -42,8 +44,200 @@ let gameOverlayHidden;
 let lostFarmPosition;
 let gameStarted = false;
 
+const loop = GameLoop({
+  update() {
+    if (gameStarted) {
+      spawnNewObjects(totalUpdateCount, gameStarted);
+
+      // if (totalUpdateCount === 90) {
+      //   gridRedToggleButton.style.opacity = 1;
+      // }
+
+      if (totalUpdateCount === 120) {
+        scoreCounters.style.opacity = 1;
+      }
+
+      if (totalUpdateCount === 150) {
+        pathTilesIndicator.style.opacity = 1;
+      }
+
+      if (totalUpdateCount === 180) {
+        clock.style.opacity = 1;
+      }
+
+      if (totalUpdateCount === 210) {
+        pauseButton.style.opacity = 1;
+      }
+
+      if (totalUpdateCount % (720 * 12) === 0 && inventory.paths < 99) { // 720
+        pathTilesIndicator.style.scale = 1.1;
+
+        pathTilesIndicatorCount.innerText = '+9';
+
+        setTimeout(() => pathTilesIndicatorCount.innerText = inventory.paths, 1300);
+
+        for (let i = 0; i < 9; i++) {
+          setTimeout(() => {
+            if (inventory.paths < 99) {
+              inventory.paths++;
+              pathTilesIndicatorCount.innerText = inventory.paths;
+            }
+          }, 1300 + 100 * i);
+        }
+
+        setTimeout(() => {
+          pathTilesIndicator.style.scale = 1;
+        }, 300);
+      }
+
+      // Updating this at 60FPS is a bit much but rotates are usually on the GPU anyway
+      clockHand.style.transform = `rotate(${totalUpdateCount / 2}deg)`;
+      // switch (Math.floor(totalUpdateCount / 720 % 12)) {
+      //   case 0: clockMonth.innerText = 'Jan'; break;
+      //   case 1: clockMonth.innerText = 'Feb'; break;
+      //   case 2: clockMonth.innerText = 'Mar'; break;
+      //   case 3: clockMonth.innerText = 'Apr'; break;
+      //   case 4: clockMonth.innerText = 'May'; break;
+      //   case 5: clockMonth.innerText = 'Jun'; break;
+      //   case 6: clockMonth.innerText = 'Jul'; break;
+      //   case 7: clockMonth.innerText = 'Aug'; break;
+      //   case 8: clockMonth.innerText = 'Sep'; break;
+      //   case 9: clockMonth.innerText = 'Oct'; break;
+      //   case 10: clockMonth.innerText = 'Nov'; break;
+      //   case 11: clockMonth.innerText = 'Dec'; break;
+      // }
+      // Converted to from switch to if () for better compression
+      if (Math.floor((totalUpdateCount / 720) % 12) === 0) {
+        clockMonth.innerText = 'Jan';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 1) {
+        clockMonth.innerText = 'Feb';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 2) {
+        clockMonth.innerText = 'Mar';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 3) {
+        clockMonth.innerText = 'Apr';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 4) {
+        clockMonth.innerText = 'May';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 5) {
+        clockMonth.innerText = 'Jun';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 6) {
+        clockMonth.innerText = 'Jul';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 7) {
+        clockMonth.innerText = 'Aug';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 8) {
+        clockMonth.innerText = 'Sep';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 9) {
+        clockMonth.innerText = 'Oct';
+      } else if (Math.floor((totalUpdateCount / 720) % 12) === 10) {
+        clockMonth.innerText = 'Nov';
+      } else {
+        clockMonth.innerText = 'Dec';
+      }
+    }
+
+    updateCount++;
+    totalUpdateCount++;
+
+    // Some things happen 15 times/s instead of 60.
+    // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
+    /* eslint-disable default-case */
+    // switch (updateCount % 4) {
+    //   case 0:
+    //     // Update path grid data once every 4 updates (15 times per second) instead of
+    //     // every single time pathfinding is updated which was 6000 time per second(?)
+    //     updateGridData();
+    //     break;
+    //   case 1:
+    //     oxFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    //     break;
+    //   case 2:
+    //     goatFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    //     break;
+    //   case 3:
+    //     fishFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    //     break;
+    // }
+    // Converted to from switch to if () for better compression
+    if (updateCount % 4 === 0) {
+      updateGridData();
+    } else if (updateCount % 4 === 1) {
+      oxFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    } else if (updateCount % 4 === 2) {
+      goatFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    } else { // 3
+      fishFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
+    }
+
+    if (updateCount >= 60) updateCount = 0;
+
+    farms.forEach((f) => {
+      if (!f.isAlive) {
+        gameStarted = false;
+        loop.stop();
+
+        lostFarmPosition = svgPxToDisplayPx(
+          f.x - gridWidth / 2 - boardOffsetX + f.width / 2,
+          f.y - gridHeight / 2 - boardOffsetY + f.height / 2,
+        );
+
+        svgElement.style.transition = `transform 2s ease-out .5s`;
+        svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-lostFarmPosition.x}px, ${-lostFarmPosition.y}px)`;
+
+        oxCounterWrapper.style.opacity = 0;
+        goatCounterWrapper.style.opacity = 0;
+        fishCounterWrapper.style.opacity = 0;
+        clock.style.opacity = 0;
+        pathTilesIndicator.style.opacity = 0;
+        pauseButton.style.opacity = 0;
+        gridRedState.on = false;
+        gridRedState.buttonShown = false;
+        gridRedHide();
+
+        updateCount = 0;
+        totalUpdateCount = 0;
+        renderCount = 0;
+        // This isn't actually used for a while, so does end up defined.
+        // It would still be good to sort it out in some way though...
+        // eslint-disable-next-line no-use-before-define
+        showGameover(startNewGame);
+      }
+    });
+
+    people.forEach((p) => p.update());
+  },
+  render() {
+    renderCount++;
+
+    // Some things happen 15 times/s instead of 60.
+    // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
+    // switch (renderCount % 4) {
+    //   case 0:
+    //     break;
+    //   case 1:
+    //     oxFarms.forEach((farm) => farm.render());
+    //     break;
+    //   case 2:
+    //     goatFarms.forEach((farm) => farm.render());
+    //     break;
+    //   case 3:
+    //     fishFarms.forEach((farm) => farm.render());
+    //     break;
+    // }
+    // Converted to from switch to if () for better compression
+    if (renderCount % 4 === 1) {
+      oxFarms.forEach((farm) => farm.render());
+    } else if (renderCount % 4 === 2) {
+      goatFarms.forEach((farm) => farm.render());
+    } else {
+      fishFarms.forEach((farm) => farm.render());
+    }
+
+    if (renderCount >= 60) renderCount = 0;
+
+    people.forEach((p) => p.render());
+  },
+});
+
 const startNewGame = () => {
-  // console.log(`startNewGame called with gameStarted: ${JSON.stringify(gameStarted)} and loop.isStopped: ${JSON.stringify(loop.isStopped)}`)
   // Had to wrap this all in a gameStarted check, because restart button still exists
   // (and has focus!) so could be "pressed" with space bar to re-restart
   if (!gameStarted && loop.isStopped) {
@@ -138,10 +332,10 @@ const gameoverToMenu = () => {
   gridRedToggleButton.style.transition = `all.2s,width.5s 4s,opacity.5s 4s`;
   gridToggleButton.style.transition = `all.2s,width.5s 4s,opacity.5s 4s`;
 
-  soundToggleTooltip.style.width =  '96px';
+  soundToggleTooltip.style.width = '96px';
   gridRedToggleTooltip.style.width = '96px';
   gridToggleTooltip.style.width = '96px';
-  soundToggleTooltip.style.opacity =  1;
+  soundToggleTooltip.style.opacity = 1;
   gridRedToggleTooltip.style.opacity = 1;
   gridToggleTooltip.style.opacity = 1;
   soundToggleButton.style.opacity = 1;
@@ -187,7 +381,7 @@ const toggleGameoverlay = () => {
     svgElement.style.transform = '';
     hideGameover();
   }
-}
+};
 
 initUi();
 initMenuBackground();
@@ -222,198 +416,7 @@ spawnNewObjects(totalUpdateCount, 2500);
 
 showMenu(farms[0], true);
 
-const loop = GameLoop({
-  update() {
-    if (gameStarted) {
-      spawnNewObjects(totalUpdateCount, gameStarted);
-
-      // if (totalUpdateCount === 90) {
-      //   gridRedToggleButton.style.opacity = 1;
-      // }
-
-      if (totalUpdateCount === 120) {
-        scoreCounters.style.opacity = 1;
-      }
-
-      if (totalUpdateCount === 150) {
-        pathTilesIndicator.style.opacity = 1;
-      }
-
-      if (totalUpdateCount === 180) {
-        clock.style.opacity = 1;
-      }
-
-      if (totalUpdateCount === 210) {
-        pauseButton.style.opacity = 1;
-      }
-
-      if (totalUpdateCount % (720 * 12) === 0 && inventory.paths < 99) { // 720
-        pathTilesIndicator.style.scale = 1.1;
-
-        pathTilesIndicatorCount.innerText = '+9';
-
-        setTimeout(() => pathTilesIndicatorCount.innerText = inventory.paths, 1300);
-
-        for (let i = 0; i < 9; i++) {
-          setTimeout(() => {
-            if (inventory.paths < 99) {
-              inventory.paths++;
-              pathTilesIndicatorCount.innerText = inventory.paths;
-            }
-          }, 1300 + 100 * i);
-        }
-
-        setTimeout(() => {
-          pathTilesIndicator.style.scale = 1;
-        }, 300);
-      }
-
-      // Updating this at 60FPS is a bit much but rotates are usually on the GPU anyway
-      clockHand.style.transform = `rotate(${totalUpdateCount / 2}deg)`;
-      // switch (Math.floor(totalUpdateCount / 720 % 12)) {
-      //   case 0: clockMonth.innerText = 'Jan'; break;
-      //   case 1: clockMonth.innerText = 'Feb'; break;
-      //   case 2: clockMonth.innerText = 'Mar'; break;
-      //   case 3: clockMonth.innerText = 'Apr'; break;
-      //   case 4: clockMonth.innerText = 'May'; break;
-      //   case 5: clockMonth.innerText = 'Jun'; break;
-      //   case 6: clockMonth.innerText = 'Jul'; break;
-      //   case 7: clockMonth.innerText = 'Aug'; break;
-      //   case 8: clockMonth.innerText = 'Sep'; break;
-      //   case 9: clockMonth.innerText = 'Oct'; break;
-      //   case 10: clockMonth.innerText = 'Nov'; break;
-      //   case 11: clockMonth.innerText = 'Dec'; break;
-      // }
-      // Converted to from switch to if () for better compression
-      if (Math.floor(totalUpdateCount / 720 % 12) === 0) {
-        clockMonth.innerText = 'Jan';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 1) {
-        clockMonth.innerText = 'Feb';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 2) {
-        clockMonth.innerText = 'Mar';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 3) {
-        clockMonth.innerText = 'Apr';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 4) {
-        clockMonth.innerText = 'May';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 5) {
-        clockMonth.innerText = 'Jun';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 6) {
-        clockMonth.innerText = 'Jul';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 7) {
-        clockMonth.innerText = 'Aug';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 8) {
-        clockMonth.innerText = 'Sep';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 9) {
-        clockMonth.innerText = 'Oct';
-      } else if (Math.floor(totalUpdateCount / 720 % 12) === 10) {
-        clockMonth.innerText = 'Nov';
-      } else {
-        clockMonth.innerText = 'Dec';
-      }
-    }
-
-    updateCount++;
-    totalUpdateCount++;
-
-    // Some things happen 15 times/s instead of 60.
-    // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
-    /* eslint-disable default-case */
-    // switch (updateCount % 4) {
-    //   case 0:
-    //     // Update path grid data once every 4 updates (15 times per second) instead of
-    //     // every single time pathfinding is updated which was 6000 time per second(?)
-    //     updateGridData();
-    //     break;
-    //   case 1:
-    //     oxFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
-    //     break;
-    //   case 2:
-    //     goatFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
-    //     break;
-    //   case 3:
-    //     fishFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
-    //     break;
-    // }
-    // Converted to from switch to if () for better compression
-    if (updateCount % 4 === 0) {
-      updateGridData();
-    } else if (updateCount % 4 === 1) {
-      oxFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
-    } else if (updateCount % 4 === 2) {
-      goatFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
-    } else { // 3
-      fishFarms.forEach((farm) => farm.update(gameStarted, totalUpdateCount));
-    }
-
-    if (updateCount >= 60) updateCount = 0;
-
-    farms.forEach((f) => {
-      if (!f.isAlive) {
-        gameStarted = false;
-        loop.stop();
-
-        lostFarmPosition = svgPxToDisplayPx(
-          f.x - gridWidth / 2 - boardOffsetX + f.width / 2,
-          f.y - gridHeight / 2 - boardOffsetY + f.height / 2,
-        );
-
-        svgElement.style.transition = `transform 2s ease-out .5s`;
-        svgElement.style.transform = `rotate(-17deg) scale(2) translate(${-lostFarmPosition.x}px, ${-lostFarmPosition.y}px)`;
-
-        oxCounterWrapper.style.opacity = 0;
-        goatCounterWrapper.style.opacity = 0;
-        fishCounterWrapper.style.opacity = 0;
-        clock.style.opacity = 0;
-        pathTilesIndicator.style.opacity = 0;
-        pauseButton.style.opacity = 0;
-        gridRedState.on = false;
-        gridRedState.buttonShown = false;
-        gridRedHide();
-
-        updateCount = 0;
-        totalUpdateCount = 0;
-        renderCount = 0;
-        showGameover(startNewGame);
-      }
-    });
-
-    people.forEach((p) => p.update());
-  },
-  render() {
-    renderCount++;
-
-    // Some things happen 15 times/s instead of 60.
-    // E.g. because movement handled with CSS transitions will be done at browser FPS anyway
-    // switch (renderCount % 4) {
-    //   case 0:
-    //     break;
-    //   case 1:
-    //     oxFarms.forEach((farm) => farm.render());
-    //     break;
-    //   case 2:
-    //     goatFarms.forEach((farm) => farm.render());
-    //     break;
-    //   case 3:
-    //     fishFarms.forEach((farm) => farm.render());
-    //     break;
-    // }
-    // Converted to from switch to if () for better compression
-    if (renderCount % 4 === 1) {
-      oxFarms.forEach((farm) => farm.render());
-    } else if (renderCount % 4 === 2) {
-      goatFarms.forEach((farm) => farm.render());
-    } else {
-      fishFarms.forEach((farm) => farm.render());
-    }
-
-    if (renderCount >= 60) renderCount = 0;
-
-    people.forEach((p) => p.render());
-  },
-});
-
 const togglePause = () => {
-  // console.log(`toggle pause called, with gamestarted: ${gameStarted} and totalUpdateCOunt: ${totalUpdateCount} and loop.isStopped: ${loop.isStopped}`);
   if (gameStarted && totalUpdateCount > 210) {
     if (loop.isStopped) {
       loop.start();

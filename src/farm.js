@@ -127,7 +127,7 @@ export class Farm extends GameObjectClass {
       let bestRoute = null;
 
       for (let j = 0; j < atHomePeopleOfSameType.length; j++) {
-        const thisPersonsRoute = findRoute({
+        const thisRoute = findRoute({
           from: {
             x: atHomePeopleOfSameType[j].parent.x,
             y: atHomePeopleOfSameType[j].parent.y,
@@ -137,27 +137,27 @@ export class Farm extends GameObjectClass {
 
         // If there is no current best route... this is faster than nothing!
         if (!bestRoute) {
-          bestRoute = thisPersonsRoute;
+          bestRoute = thisRoute;
           closestPerson = atHomePeopleOfSameType[j];
         }
 
         // If this persons route has fewer nodes, it's probably faster.
-        if (thisPersonsRoute && thisPersonsRoute.length < bestRoute.length) {
-          bestRoute = thisPersonsRoute;
+        if (thisRoute && thisRoute.length < bestRoute.length) {
+          bestRoute = thisRoute;
           closestPerson = atHomePeopleOfSameType[j];
         }
 
         // If this persons route has the same number of nodes, but fewer diagonals?
         // Re-calculating these distances is not particularly costly, because
         // it's rare that two routes will have the exact same number of nodes
-        if (thisPersonsRoute && thisPersonsRoute.length === bestRoute.length) {
+        if (thisRoute && thisRoute.length === bestRoute.length) {
           // If this person is from the same yurt as the other person don't check
           if (atHomePeopleOfSameType[j].parent !== closestPerson.parent) {
             const bestDistance = bestRoute.reduce((acc, curr) => acc + (curr.distance ?? 0), 0);
-            const thisDistance = thisPersonsRoute.reduce((acc, curr) => acc + (curr.distance ?? 0), 0);
+            const thisDistance = thisRoute.reduce((acc, curr) => acc + (curr.distance ?? 0), 0);
 
             if (thisDistance < bestDistance) {
-              bestRoute = thisPersonsRoute;
+              bestRoute = thisRoute;
               closestPerson = atHomePeopleOfSameType[j];
             }
           }

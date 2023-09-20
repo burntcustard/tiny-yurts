@@ -1,4 +1,5 @@
-import { colors } from "./colors";
+/* eslint-disable array-bracket-spacing */
+import { colors } from './colors';
 
 // This must only be called on user interaction. So probably on pressing a
 // main menu button? But we don't want to re-do it er ever as well hrm
@@ -9,7 +10,7 @@ let audioContext;
 const sampleRate = 44100;
 
 export const soundSetings = {
-  on: localStorage.getItem('Tiny Yurtss') === 'false' ? false : true,
+  on: localStorage.getItem('Tiny Yurtss') !== 'false',
 };
 
 export const initAudio = () => {
@@ -67,7 +68,7 @@ export const playSound = (
     i++
   ) {
     bufferData[i] = i < 88
-      ? i / 88 * w()
+      ? (i / 88) * w()
       : (1 - (i - 88) / (sampleRate * noteLength)) * w();
   }
 
@@ -103,7 +104,8 @@ export const playSound = (
   source.start();
 };
 
-// Ox & Goat tunes are based off Ravel's Ma mère l'oye (1910) III. Laideronnette, impératrice des pagodes:
+// Ox & Goat tunes are based off:
+// Ravel's Ma mère l'oye (1910) III. Laideronnette, impératrice des pagodes
 // https://en.wikipedia.org/wiki/File:Ravel_Ma_Mere_l%27Oye_Laideronnette_Imperatricedes_Pagodes_m.9-13.png
 
 // [ frequencyIndex, noteLength, playbackRate, pingyness, volume, lowpass, highpass ]
@@ -152,7 +154,7 @@ const warnNotes = {
     currentIndex: 0,
     notes: [
       [30, 1, 1, 1, 0.2, 3000, 1000], // F#
-      [27, 1, 0.995, 1, 0.2, 3000, 1000], // D# 0.995 is annoying but repeated it might not be too bad
+      [27, 1, 0.995, 1, 0.2, 3000, 1000], // D# 0.995 is annoying but repeated isn't too bad
       [25, 1, 1, 1, 0.2, 3000, 1000], // C#
       [27, 1, 0.995, 1, 0.2, 3000, 1000], // D#
 
@@ -239,9 +241,9 @@ export const playOutOfPathsNote = () => {
 
 export const playWarnNote = (animalType) => {
   if (audioContext) {
-    // console.log(warnNotes[animalType]);
-    const noteInfo = warnNotes[animalType].notes[warnNotes[animalType].currentIndex];
-    warnNotes[animalType].currentIndex = (warnNotes[animalType].currentIndex + 1) % warnNotes[animalType].notes.length;
+    const notes = warnNotes[animalType];
+    const noteInfo = notes.notes[notes.currentIndex];
+    notes.currentIndex = (notes.currentIndex + 1) % notes.notes.length;
     playSound(...noteInfo);
     // const { currentIndex, notes } = warnNotes[animalType];
     // playSound(notes[currentIndex++]);

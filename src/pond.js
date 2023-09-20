@@ -1,5 +1,5 @@
 import { createSvgElement } from './svg-utils';
-import { hull } from './hull';
+import { getOutlinePoints } from './hull';
 import { pondLayer } from './layers';
 import { gridCellSize } from './svg';
 
@@ -51,7 +51,7 @@ export const spawnPond = ({
     width, height, x, y, points, avoidancePoints,
   });
 
-  const outline = hull(points);
+  const outline = getOutlinePoints(points);
 
   const pondSvg = createSvgElement('path');
   pondSvg.setAttribute('fill', '#69b');

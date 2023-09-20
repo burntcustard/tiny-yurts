@@ -219,8 +219,7 @@ export const drawPaths = ({ fadeout, noShadow }) => {
         || newPathData.path1?.points[0].stone
         || newPathData.path1?.points[1].stone
         || newPathData.path2?.points[0].stone
-        || newPathData.path2?.points[1].stone)
-      {
+        || newPathData.path2?.points[1].stone) {
         newPathData.svgElement.style.strokeDasharray = '0 3px';
         newPathData.svgElement.style.strokeWidth = '2px';
         newPathData.svgElement.style.stroke = '#bbb';
@@ -299,7 +298,9 @@ export class Path extends GameObjectClass {
       points,
     });
 
-    trees.filter((t) => this.points.some((p) => p.x === t.x && p.y === t.y)).forEach((tree) => tree.remove());
+    trees
+      .filter((t) => this.points.some((p) => p.x === t.x && p.y === t.y))
+      .forEach((tree) => tree.remove());
 
     paths.push(this);
   }

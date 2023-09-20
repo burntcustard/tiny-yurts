@@ -120,13 +120,13 @@ const addTreeShadowLayer = () => {
   const treeShadowLayer = createSvgElement('g');
   svgElement.append(treeShadowLayer);
   return treeShadowLayer;
-}
+};
 
 const addTreeLayer = () => {
   const treeLayer = createSvgElement('g');
   svgElement.append(treeLayer);
   return treeLayer;
-}
+};
 
 const addPinLayer = () => {
   const pinLayer = createSvgElement('g');

@@ -74,6 +74,8 @@ export class Person extends GameObjectClass {
       this.atFarm++;
 
       if (this.atFarm === 2 && this.farmToVisit.type === colors.fish) {
+        // TODO: Give the "bob up to surface" function to the farm or the fish
+        // eslint-disable-next-line max-len, no-param-reassign
         shuffle(this.farmToVisit.children).forEach((fish, i) => setTimeout(() => fish.svgBody.style.fill = colors.fish, i * 250));
       }
 
@@ -86,6 +88,8 @@ export class Person extends GameObjectClass {
         || this.atFarm > 160
       ) {
         if (this.farmToVisit.type === colors.fish) {
+          // TODO: Give the "bob up to surface" function to the farm or the fish
+          // eslint-disable-next-line max-len, no-param-reassign
           shuffle(this.farmToVisit.children).forEach((fish, i) => setTimeout(() => fish.svgBody.style.fill = colors.shade2, 1000 + i * 1000));
         }
 

@@ -2,9 +2,9 @@ import { createSvgElement } from './svg-utils';
 import { colors } from './colors';
 
 export const emojiOx = () => {
-  const emojiOx = createSvgElement();
-  emojiOx.setAttribute('viewBox', '0 0 16 16');
-  emojiOx.setAttribute('stroke-linecap', 'round');
+  const svg = createSvgElement();
+  svg.setAttribute('viewBox', '0 0 16 16');
+  svg.setAttribute('stroke-linecap', 'round');
 
   const body = createSvgElement('path');
   body.setAttribute('fill', colors.ox);
@@ -19,7 +19,7 @@ export const emojiOx = () => {
   eye.setAttribute('stroke-width', 2);
   eye.setAttribute('stroke', colors.ui);
 
-  emojiOx.append(body, horn, eye);
+  svg.append(body, horn, eye);
 
-  return emojiOx;
+  return svg;
 };

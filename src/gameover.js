@@ -8,7 +8,9 @@ import { animals } from './animal';
 import { yurts } from './yurt';
 import { colors } from './colors';
 import { menuBackground } from './menu-background';
-import { scoreCounters, uiContainer, gridToggleButton, soundToggleButton, gridRedToggleButton, gridRedToggleTooltip, gridToggleTooltip } from './ui';
+import {
+  scoreCounters, uiContainer, gridToggleButton, soundToggleButton, gridRedToggleButton,
+} from './ui';
 import { createElement } from './create-element';
 
 const gameoverWrapper = createElement();

@@ -2,11 +2,11 @@ import { createSvgElement } from './svg-utils';
 import { colors } from './colors';
 
 export const emojiGoat = () => {
-  const emojiGoat = createSvgElement();
-  emojiGoat.setAttribute('viewBox', '0 0 20 20');
-  emojiGoat.setAttribute('stroke-linecap', 'round');
-  emojiGoat.style.width = '48px';
-  emojiGoat.style.height = '48px';
+  const svg = createSvgElement();
+  svg.setAttribute('viewBox', '0 0 20 20');
+  svg.setAttribute('stroke-linecap', 'round');
+  svg.style.width = '48px';
+  svg.style.height = '48px';
 
   const body = createSvgElement('path');
   body.setAttribute('fill', colors.goat);
@@ -29,7 +29,7 @@ export const emojiGoat = () => {
   eye.setAttribute('stroke-width', 2);
   eye.setAttribute('stroke', colors.ui);
 
-  emojiGoat.append(horn1, horn2, beard, body, eye);
+  svg.append(horn1, horn2, beard, body, eye);
 
-  return emojiGoat;
+  return svg;
 };

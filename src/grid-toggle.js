@@ -1,10 +1,12 @@
 import { svgHazardLines, svgHazardLinesRed } from './svg';
 import { gridRect, gridRectRed } from './grid';
 import { gridPointerLayer } from './layers';
-import { gridToggleButton, gridToggleSvgPath, gridRedToggleSvgPath, gridToggleTooltip, gridRedToggleTooltip } from './ui';
+import {
+  gridToggleSvgPath, gridRedToggleSvgPath, gridToggleTooltip, gridRedToggleTooltip,
+} from './ui';
 import { initAudio, playSound } from './audio';
 
-let gridLocked = localStorage.getItem('Tiny Yurtsg') === 'true' ? true : false;
+let gridLocked = localStorage.getItem('Tiny Yurtsg') === 'true';
 
 export const gridRedState = {
   locked: false,
@@ -70,7 +72,7 @@ export const gridRedShow = () => {
     // ☒ (trash / bulldoze mode)
     gridRedToggleSvgPath.setAttribute(
       'd',
-      'M4.5 4.5Q4.5 4.5 11.5 4.5 11.5 4.5 11.5 4.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 4.5 11.5 4.5 11.5ZM9 7 7 9M7 7Q9 9 9 9'
+      'M4.5 4.5Q4.5 4.5 11.5 4.5 11.5 4.5 11.5 4.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 4.5 11.5 4.5 11.5ZM9 7 7 9M7 7Q9 9 9 9',
     );
     gridRedToggleSvgPath.style.transform = 'rotate(180deg)';
   }
@@ -92,7 +94,7 @@ if (gridRedState.locked) {
   // ☒ (trash / bulldoze mode)
   gridRedToggleSvgPath.setAttribute(
     'd',
-    'M4.5 4.5 Q4.5 4.5 11.5 4.5 11.5 4.5 11.5 4.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 4.5 11.5 4.5 11.5ZM9 7 7 9M7 7Q9 9 9 9'
+    'M4.5 4.5 Q4.5 4.5 11.5 4.5 11.5 4.5 11.5 4.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 11.5 4.5 11.5 4.5 11.5ZM9 7 7 9M7 7Q9 9 9 9',
   );
   gridRedToggleSvgPath.style.transform = 'rotate(180deg)';
 } else {

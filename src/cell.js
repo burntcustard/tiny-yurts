@@ -62,5 +62,7 @@ export const isPastHalfwayInto = ({ pointer, from, to }) => {
   if (yMid && left) return xDiff < -cellSizePx + fuzzyness;
   if (top && left) return xDiff + yDiff < -cellSizePx * 2 + fuzzyness;
 
-  // return false; // TODO: Maybe remove or swap to void to save space
+  // TODO: Maybe remove or swap to void to save space
+  // false would make more sense than undefined, but undefined gets minified out(?)
+  return undefined;
 };

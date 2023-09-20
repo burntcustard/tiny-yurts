@@ -16,9 +16,11 @@ export class OxFarm extends Farm {
 
     oxFarms.push(this);
 
+    const isBaby = (oxFarms.length - 1) % 2;
+
     setTimeout(() => this.addAnimal({}), 2000 + properties.delay ?? 0);
     setTimeout(() => this.addAnimal({}), 3000 + properties.delay ?? 0);
-    setTimeout(() => this.addAnimal({ isBaby: (oxFarms.length - 1) % 2 }), 4000 + properties.delay ?? 0);
+    setTimeout(() => this.addAnimal({ isBaby }), 4000 + properties.delay ?? 0);
     this.numAnimals = 3;
     this.appearing = true;
     setTimeout(() => this.appearing = false, 3000);

@@ -6,11 +6,17 @@ function orientation(p, q, r) {
   return val > 0 ? 1 : 2; // Clockwise or Counterclockwise
 }
 
-export const hull = (points) => {
+export const getOutlinePoints = (points) => {
   // Find the point with the lowest y-coordinate (and leftmost if ties)
   let leftmost = 0;
   for (let i = 1; i < points.length; i++) {
-    if (points[i].y < points[leftmost].y || (points[i].y === points[leftmost].y && points[i].x < points[leftmost].x)) {
+    if (
+      points[i].y < points[leftmost].y
+      || (
+        points[i].y === points[leftmost].y
+        && points[i].x < points[leftmost].x
+      )
+    ) {
       leftmost = i;
     }
   }

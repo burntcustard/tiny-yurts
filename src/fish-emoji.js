@@ -2,9 +2,9 @@ import { createSvgElement } from './svg-utils';
 import { colors } from './colors';
 
 export const emojiFish = () => {
-  const emojiFish = createSvgElement();
-  emojiFish.setAttribute('viewBox', '0 0 20 20');
-  emojiFish.setAttribute('stroke-linecap', 'round');
+  const svg = createSvgElement();
+  svg.setAttribute('viewBox', '0 0 20 20');
+  svg.setAttribute('stroke-linecap', 'round');
 
   const body = createSvgElement('path');
   body.setAttribute('fill', colors.fish);
@@ -15,11 +15,11 @@ export const emojiFish = () => {
   fins.setAttribute('d', 'm0 11c0 10 16 4 16 0s-16-12-16 0');
 
   const eye = createSvgElement('path');
-  eye.setAttribute('d', 'm4 9 0 0')
+  eye.setAttribute('d', 'm4 9 0 0');
   eye.setAttribute('stroke-width', 2);
   eye.setAttribute('stroke', colors.ui);
 
-  emojiFish.append(fins, body, eye);
+  svg.append(fins, body, eye);
 
-  return emojiFish;
+  return svg;
 };

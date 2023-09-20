@@ -1,4 +1,5 @@
 import { colors } from './colors';
+import { createElement } from './create-element';
 
 export const demoColors = () => {
   const colorTestContainer = createElement('svg');

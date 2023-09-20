@@ -1,20 +1,12 @@
+import { Vector } from 'kontra';
 import { GameObjectClass } from './modified-kontra/game-object';
 import { createSvgElement } from './svg-utils';
 import { gridCellSize } from './svg';
 import { treeShadowLayer, treeLayer } from './layers';
 import { colors } from './colors';
-import { Vector } from 'kontra';
 import { playTreeDeleteNote } from './audio';
 
 export const trees = [];
-
-/**
- * Yurts each need to have...
- * - types - Ox is brown, goat is grey, etc.
- * - number of people currently inside?
- * - people belonging to the yurt?
- * - x and y coordinate in the grid
- */
 
 export class Tree extends GameObjectClass {
   constructor(properties) {
@@ -26,7 +18,7 @@ export class Tree extends GameObjectClass {
   }
 
   addToSvg() {
-    const minSpaceBetweenDots = 0.5;
+    const minDotGap = 0.5;
     const numTrees = Math.random() * 4;
     const x = gridCellSize / 2 + this.x * gridCellSize;
     const y = gridCellSize / 2 + this.y * gridCellSize;
@@ -45,7 +37,7 @@ export class Tree extends GameObjectClass {
 
       // If this new tree (...branch) is too close to another tree in this cell, just skip it.
       // This means that on average, larger trees are less likely to have many siblings
-      if (this.dots.some((d) => d.position.distance(position) < d.size + size + minSpaceBetweenDots)) {
+      if (this.dots.some((d) => d.position.distance(position) < d.size + size + minDotGap)) {
         continue;
       }
 

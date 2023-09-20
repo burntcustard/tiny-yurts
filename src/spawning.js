@@ -5,15 +5,13 @@ import { ponds, spawnPond } from './pond';
 import { OxFarm } from './ox-farm';
 import { GoatFarm } from './goat-farm';
 import {
-  boardOffsetX, boardOffsetY, boardWidth, boardHeight, gridCellSize, gridHeight, gridWidth,
+  boardOffsetX, boardOffsetY, boardWidth, boardHeight, gridHeight, gridWidth,
 } from './svg';
 import { weightedRandom } from './weighted-random';
 import { FishFarm, fishFarms } from './fish-farm';
 import { shuffle } from './shuffle';
 import { colors } from './colors';
 import { Tree, trees } from './tree';
-import { createSvgElement } from './svg-utils';
-import { pinLayer, yurtLayer } from './layers';
 
 const farmTypes = [colors.ox, colors.goat];
 const spawningLoopLength = 3000;
@@ -58,14 +56,7 @@ const getRandomExistingType = () => {
     weights.push(farmTypeCounts[type] / yurtTypeCounts[type]);
   });
 
-  // console.log('Spawning new yurt with type weighting of:');
-  // console.log(weights);
-
-  // console.log(farmTypeCounts);
-
-  // console.log(farmTypeCounts);
   const newType = Object.keys(farmTypeCounts)[weightedRandom(weights)];
-  // console.log('Type chosen:', newType);
 
   return newType;
 };
@@ -83,39 +74,6 @@ export const getRandomPosition = ({
   extra = { x: 0, y: 0 }, // relative to x/y
 }) => {
   let numAttempts = 0;
-
-  // let anchorTestSvg;
-  // if (anchor.width > 0 && anchor.height > 0) {
-  //   // Anchors that have width and height are cyan squares
-  //   anchorTestSvg = createSvgElement('rect');
-  //   anchorTestSvg.setAttribute('width', anchor.width * gridCellSize);
-  //   anchorTestSvg.setAttribute('height', anchor.height * gridCellSize);
-  //   anchorTestSvg.setAttribute('fill', '#0ff9');
-  // } else {
-  //   // Anchors which are just points are yellow dots
-  //   anchorTestSvg = createSvgElement('circle');
-  //   anchorTestSvg.setAttribute('r', 2);
-  //   anchorTestSvg.setAttribute('fill', '#ff09');
-  // }
-  // anchorTestSvg.style.transform = `
-  //   translate(${anchor.x * gridCellSize}px,${anchor.y * gridCellSize}px)
-  // `;
-  // pinLayer.append(anchorTestSvg);
-  // setTimeout(() => anchorTestSvg.style.opacity = 0, 5000);
-  // let minDistSvg = createSvgElement('rect');
-  // minDistSvg.setAttribute(
-  //   'width',
-  //   (minDistance + width + minDistance) * gridCellSize
-  // );
-  // minDistSvg.setAttribute(
-  //   'height',
-  //   (minDistance + height + minDistance) * gridCellSize
-  // );
-  // minDistSvg.setAttribute('stroke', '#f005');
-  // minDistSvg.setAttribute('fill', 'none');
-  // minDistSvg.style.transform = `translate(${(anchor.x - minDistance) * gridCellSize}px,${(anchor.y - minDistance) * gridCellSize}px)`;
-  // pinLayer.append(minDistSvg);
-  // setTimeout(() => minDistSvg.style.opacity = 0, 5000);
 
   while (numAttempts < maxNumAttempts) {
     numAttempts++;
@@ -240,6 +198,8 @@ export const getRandomPosition = ({
       if (x + extra.x === yurt.x && y + extra.y === yurt.y) {
         return true;
       }
+
+      return undefined; // Maybe gets minified out?
     });
     if (yurtObstruction) continue;
 
@@ -256,6 +216,8 @@ export const getRandomPosition = ({
         if (x + extra.x === tree.x && y + extra.y === tree.y) {
           return true;
         }
+
+        return undefined; // Maybe gets minified out?
       });
       if (treeObstruction) continue;
     }
@@ -264,7 +226,7 @@ export const getRandomPosition = ({
   }
 
   // console.log('didnt manage to find somewhere boo');
-  return null; // TODO: See if removing saves bytes
+  return undefined; // TODO: See if removing saves bytes
 };
 
 const getRandomFarmProps = () => {
@@ -317,7 +279,6 @@ let updateRandomness1 = 0;
 let updateRandomness2 = 0;
 let updateRandomness3 = 0;
 let updateRandomness4 = 0;
-let updateRandomness5 = 0;
 
 const spawnInfo = {
   yurtFailed: false,
@@ -331,44 +292,9 @@ export const spawnNewObjects = (updateCount, delay) => {
     updateRandomness2 = Math.floor(Math.random() * 200);
     updateRandomness3 = Math.floor(Math.random() * 200);
     updateRandomness4 = Math.floor(Math.random() * 200);
-    updateRandomness5 = Math.floor(Math.random() * 200);
   }
 
   if (updateCount === 0) {
-    // for (let i = 0; i < 99; i++) {
-    //   const width = 0;
-    //   const height = 0;
-    //   const randomPosition = getRandomPosition({
-    //     width,
-    //     height,
-    //     anchor: {
-    //       x: 14,
-    //       y: 6,
-    //       width: 3,
-    //       height: 2,
-    //     },
-    //     minDistance: 2,
-    //     maxDistance: 3,
-    //     maxNumAttempts: 16,
-    //   });
-    //   if (randomPosition) {
-    //     const x = randomPosition.x * gridCellSize;
-    //     const y = randomPosition.y * gridCellSize;
-
-    //     const testSvg = createSvgElement('circle');
-    //     testSvg.style.transform = `translate(${x + gridCellSize / 2}px,${y + gridCellSize / 2}px)`;
-    //     testSvg.setAttribute('r', 1);
-
-    //     // const testSvg = createSvgElement('rect');
-    //     // testSvg.setAttribute('width', 8 * width);
-    //     // testSvg.setAttribute('height', 8 * height);
-    //     // testSvg.setAttribute('stroke', '#f005');
-    //     testSvg.setAttribute('fill', '#fff5');
-    //     // testSvg.style.transform = `translate(${x}px,${y}px)`;
-    //     yurtLayer.append(testSvg);
-    //   }
-    // }
-
     if (Math.random() > 0.5) {
       const width = 6;
       const height = 4;
@@ -451,7 +377,10 @@ export const spawnNewObjects = (updateCount, delay) => {
   // Spawn the first farm, early on, near the center
   if (
     (updateCount === 0)
-    || (updateCount > 1000 && updateCount % spawningLoopLength === 0 + (farms.length ? updateRandomness1 : 0))
+    || (
+      updateCount > 1000
+      && updateCount % spawningLoopLength === 0 + (farms.length ? updateRandomness1 : 0)
+    )
   ) {
     if (updateCount > 10000 && !fishFarms.length) {
       // Find 4x4 water
@@ -490,7 +419,9 @@ export const spawnNewObjects = (updateCount, delay) => {
         // We _need_ this to work on 1st loop otherwise the menu breaks.
         // Setting to 32 is sometimes slow, but it's pretty reliable, and small
         maxNumAttempts: 32,
-        extra: relativePathPoints ? { x: relativePathPoints[1].x, y: relativePathPoints[1].y } : { x: 0, y: 0 }, // i.e none
+        extra: relativePathPoints
+          ? { x: relativePathPoints[1].x, y: relativePathPoints[1].y }
+          : { x: 0, y: 0 }, // i.e none
         avoidTrees: false,
       });
 
@@ -530,7 +461,9 @@ export const spawnNewObjects = (updateCount, delay) => {
       }
 
       if (newFarm) {
-        trees.filter((t) => newFarm.points.some((p) => p.x === t.x && p.y === t.y)).forEach(tree => tree.remove());
+        trees
+          .filter((t) => newFarm.points.some((p) => p.x === t.x && p.y === t.y))
+          .forEach((tree) => tree.remove());
         return;
       }
     }
@@ -539,8 +472,12 @@ export const spawnNewObjects = (updateCount, delay) => {
   // Spawn the first yurt really soon after
   if (updateCount % spawningLoopLength === 500 + (farms.length > 1 ? updateRandomness2 : 0)) {
     const { facing } = getRandomYurtProps();
-
-    const farm = (farms.filter((f) => f.type === colors.fish).length && yurts.filter((y) => y.type === colors.fish).length < 2)
+    // Using a ternary here saves having a few more variables
+    // eslint-disable-next-line no-nested-ternary
+    const farm = (
+      farms.filter((f) => f.type === colors.fish).length
+      && yurts.filter((y) => y.type === colors.fish).length < 2
+    )
       ? farms.find((f) => f.type === colors.fish)
       : farms.length > 2
         ? farms.at(Math.random() * farms.length)
@@ -576,6 +513,8 @@ export const spawnNewObjects = (updateCount, delay) => {
   // If the first yurt spawn attempt failed, try again ~400ms later
   if (updateCount % spawningLoopLength === 600 + updateRandomness2 && spawnInfo.yurtFailed) {
     const { facing } = getRandomYurtProps();
+    // Using a ternary here saves having a few more variables
+    // eslint-disable-next-line no-nested-ternary
     const farm = (
       farms.filter((f) => f.type === colors.fish).length
       && yurts.filter((y) => y.type === colors.fish).length < 2
@@ -615,6 +554,8 @@ export const spawnNewObjects = (updateCount, delay) => {
   // If the first yurt re-spawn attempt failed, try AGAIN ~400ms later
   if (updateCount % spawningLoopLength === 700 + updateRandomness2 && spawnInfo.yurtFailed) {
     const { facing } = getRandomYurtProps();
+    // Using a ternary here saves having a few more variables
+    // eslint-disable-next-line no-nested-ternary
     const farm = (
       farms.filter((f) => f.type === colors.fish).length
       && yurts.filter((y) => y.type === colors.fish).length < 2
@@ -759,7 +700,7 @@ export const spawnNewObjects = (updateCount, delay) => {
   }
 
   // Extra farm/upgrade attempt every update, not long before the per-round farm/upgrade
-  if (updateCount % spawningLoopLength === 2500 + updateRandomness5 && updateCount > 20000) {
+  if (updateCount % spawningLoopLength === 2500 + updateRandomness4 && updateCount > 20000) {
     const { width, height, relativePathPoints } = getRandomFarmProps();
     const type = getRandomNewType();
 
@@ -771,7 +712,9 @@ export const spawnNewObjects = (updateCount, delay) => {
         : farms[farms.length - 1], // if undefined randomPosition will use default
       maxDistance: farms.length + 2,
       minDistance: farms.length ? 2 : 0,
-      extra: relativePathPoints ? { x: relativePathPoints[1].x, y: relativePathPoints[1].y } : { x: 0, y: 0 }, // i.e none
+      extra: relativePathPoints
+        ? { x: relativePathPoints[1].x, y: relativePathPoints[1].y }
+        : { x: 0, y: 0 }, // i.e none
       avoidTrees: false,
     });
 
@@ -811,8 +754,9 @@ export const spawnNewObjects = (updateCount, delay) => {
     }
 
     if (newFarm) {
-      trees.filter((t) => newFarm.points.some((p) => p.x === t.x && p.y === t.y)).forEach(tree => tree.remove());
-      return;
+      trees
+        .filter((t) => newFarm.points.some((p) => p.x === t.x && p.y === t.y))
+        .forEach((tree) => tree.remove());
     }
   }
 };
