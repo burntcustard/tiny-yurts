@@ -81,3 +81,16 @@ svgElement.style.height = '100vh';
 svgElement.style.maxHeight = '68vw';
 svgElement.style.maxWidth = '200vh';
 svgContainerElement.append(svgElement);
+
+export const gridPointerLayer = createElement();
+gridPointerLayer.style.cssText = `position: absolute`;
+gridPointerLayer.style.width = `${(boardSvgWidth + gridLineThickness) * 8}px`;
+gridPointerLayer.style.height = `${boardSvgHeight + gridLineThickness}px`;
+gridPointerLayer.setAttribute(
+  'transform',
+  `translate(${boardOffsetX * gridCellSize - gridLineThickness} ${boardOffsetY * gridCellSize - gridLineThickness})`
+);
+gridPointerLayer.setAttribute('fill', 'none');
+gridPointerLayer.style.cursor = 'cell';
+gridPointerLayer.style.pointerEvents = 'all';
+svgContainerElement.append(gridPointerLayer);

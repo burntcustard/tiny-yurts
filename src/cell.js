@@ -1,7 +1,6 @@
 import {
-  boardWidth, boardOffsetX, boardOffsetY, gridCellSize,
+  boardWidth, boardOffsetX, boardOffsetY, gridCellSize, gridPointerLayer
 } from './svg';
-import { gridPointerLayer } from './layers';
 
 export const getGridCell = (x, y) => {
   const cellSizePx = gridPointerLayer.getBoundingClientRect().width / boardWidth;

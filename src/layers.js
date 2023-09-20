@@ -135,19 +135,6 @@ const addPinLayer = () => {
   return pinLayer;
 };
 
-const addGridPointerLayer = () => {
-  const gridPointerLayer = createSvgElement('rect');
-  gridPointerLayer.setAttribute('width', `${boardSvgWidth + gridLineThickness}px`);
-  gridPointerLayer.setAttribute('height', `${boardSvgHeight + gridLineThickness}px`);
-  gridPointerLayer.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness} ${boardOffsetY * gridCellSize - gridLineThickness})`);
-  gridPointerLayer.setAttribute('fill', 'none');
-  gridPointerLayer.setAttribute('stroke-width', 0);
-  gridPointerLayer.style.cursor = 'cell';
-  gridPointerLayer.style.pointerEvents = 'all';
-  svgElement.append(gridPointerLayer);
-  return gridPointerLayer;
-};
-
 // Order is important here, because it determines stacking in the SVG
 const layers = {
   gridBackgroundLayer: addGridBackgroundToSvg(),
@@ -168,7 +155,6 @@ const layers = {
   yurtLayer: addYurtLayer(),
   treeLayer: addTreeLayer(),
   pinLayer: addPinLayer(),
-  gridPointerLayer: addGridPointerLayer(),
 };
 
 export const {
@@ -179,7 +165,6 @@ export const {
   fenceShadowLayer,
   gridBlockLayer,
   gridLayer,
-  gridPointerLayer,
   pathLayer,
   pathShadowLayer,
   personLayer,

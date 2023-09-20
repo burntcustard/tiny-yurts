@@ -1,6 +1,5 @@
-import { svgHazardLines, svgHazardLinesRed } from './svg';
+import { svgHazardLines, svgHazardLinesRed, gridPointerLayer } from './svg';
 import { gridRect, gridRectRed } from './grid';
-import { gridPointerLayer } from './layers';
 import {
   gridToggleSvgPath, gridRedToggleSvgPath, gridToggleTooltip, gridRedToggleTooltip,
 } from './ui';

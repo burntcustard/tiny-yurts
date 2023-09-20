@@ -14,8 +14,8 @@ export const gridPointerHandler = createSvgElement('rect');
 export const addGridBackgroundToSvg = () => {
   const gridRectBackground = createSvgElement('rect');
   gridRectBackground.setAttribute('fill', colors.grass);
-  gridRectBackground.setAttribute('width', `${boardSvgWidth + gridLineThickness}px`);
-  gridRectBackground.setAttribute('height', `${boardSvgHeight + gridLineThickness}px`);
+  gridRectBackground.setAttribute('width', boardSvgWidth + gridLineThickness);
+  gridRectBackground.setAttribute('height', boardSvgHeight + gridLineThickness);
   gridRectBackground.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness / 2} ${boardOffsetY * gridCellSize - gridLineThickness / 2})`);
 
   svgElement.append(gridRectBackground);
@@ -39,8 +39,8 @@ export const addGridToSvg = () => {
   gridPath.setAttribute('stroke', colors.grid);
   gridPath.setAttribute('stroke-width', scaledGridLineThickness);
   pattern.append(gridPath);
-  gridRect.setAttribute('width', `${boardSvgWidth + gridLineThickness}px`);
-  gridRect.setAttribute('height', `${boardSvgHeight + gridLineThickness}px`);
+  gridRect.setAttribute('width', boardSvgWidth + gridLineThickness);
+  gridRect.setAttribute('height', boardSvgHeight + gridLineThickness);
   gridRect.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness / 2} ${boardOffsetY * gridCellSize - gridLineThickness / 2})`);
   gridRect.setAttribute('fill', 'url(#grid)');
   gridRect.style.opacity = 0;
@@ -59,8 +59,8 @@ export const addGridToSvg = () => {
   gridPathRed.setAttribute('stroke', colors.gridRed);
   gridPathRed.setAttribute('stroke-width', scaledGridLineThickness);
   patternRed.append(gridPathRed);
-  gridRectRed.setAttribute('width', `${boardSvgWidth + gridLineThickness}px`);
-  gridRectRed.setAttribute('height', `${boardSvgHeight + gridLineThickness}px`);
+  gridRectRed.setAttribute('width', boardSvgWidth + gridLineThickness);
+  gridRectRed.setAttribute('height', boardSvgHeight + gridLineThickness);
   gridRectRed.setAttribute('transform', `translate(${boardOffsetX * gridCellSize - gridLineThickness / 2} ${boardOffsetY * gridCellSize - gridLineThickness / 2})`);
   gridRectRed.setAttribute('fill', 'url(#gridred)');
   gridRectRed.style.opacity = 0;

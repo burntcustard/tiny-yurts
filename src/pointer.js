@@ -1,11 +1,11 @@
 import { Vector } from 'kontra';
 import { createSvgElement } from './svg-utils';
-import { svgContainerElement, gridCellSize } from './svg';
+import { svgContainerElement, gridPointerLayer, gridCellSize } from './svg';
 import { Path, drawPaths, paths } from './path';
 import { inventory } from './inventory';
 import { isPastHalfwayInto, getBoardCell } from './cell';
 import { yurts } from './yurt';
-import { gridPointerLayer, pathShadowLayer } from './layers';
+import { pathShadowLayer } from './layers';
 import { removePath } from './remove-path';
 import { ponds } from './pond';
 import { pathTilesIndicator, pathTilesIndicatorCount } from './ui';
