@@ -276,6 +276,7 @@ const startNewGame = () => {
     setTimeout(() => {
       goatFarms.length = 0;
       oxFarms.length = 0;
+      fishFarms.length = 0;
       people.length = 0;
       farms.length = 0;
       animals.length = 0;
@@ -345,6 +346,7 @@ const gameoverToMenu = () => {
   setTimeout(() => {
     goatFarms.length = 0;
     oxFarms.length = 0;
+    fishFarms.length = 0;
     people.length = 0;
     farms.length = 0;
     animals.length = 0;
